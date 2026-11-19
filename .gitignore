@@ -1,0 +1,29 @@
+# Copy to the project root as .gitignore on day one.
+
+# Downloads stay on the computer, never on GitHub (CLAUDE.md hard rule).
+# Each kind in its own folder: downloads/research, media, fonts, tools, client, ...
+downloads/
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Build output and dependencies
+node_modules/
+dist/
+.astro/
+.cache/
+
+# Local scratch: screenshots, check scripts, logs
+.work/
+*.log
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
