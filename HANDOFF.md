@@ -41,6 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
+- RESUME HERE: loop 15 of 50 (lens 5 Visit + chrome), priorities in docs/review/loop-10/review.md. Loops 1-14 done and pushed. Stopped 2026-11-19 at the usage limit; working tree was clean.
 - [boss] refinement loop 11 (Home): see docs/review/loop-10/review.md priority list
 
 ## Waiting on the owner
