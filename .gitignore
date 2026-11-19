@@ -27,3 +27,7 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# Cloudflare local
+.dev.vars
+.wrangler/

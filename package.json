@@ -1,0 +1,15 @@
+{
+  "name": "mulligan-games-b",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "test": "node --test \"test/*.test.mjs\"",
+    "serve": "node tools/serve.mjs"
+  },
+  "dependencies": {
+    "astro": "^7.4.13"
+  }
+}

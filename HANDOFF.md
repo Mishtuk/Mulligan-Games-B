@@ -48,7 +48,10 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - [ ] Preview deploy to Cloudflare (later)
 
 ## Built without a pattern
-- (none yet)
+- Local server `tools/serve.mjs`: static `dist/` + `_headers` + the Worker in-process with an in-memory D1 shim on `node:sqlite` (`src/worker/d1-shim.js`). Kit says "a tiny node http server" but has no file. Local checks and tests only.
+- Buylist rows as parallel `item_name[]`, `item_set[]`, `item_cond[]`, `item_qty[]` fields with child table `buylist_items` (kit buylist is one textarea). `GET /api/seats` returns `{event_id: seats_left}` (kit's `/api/events` returns full rows).
+- Return page from a same-origin Referer (kit uses a hidden `page` field + `PAGES` map); other origins fall back to the form's home page.
+- `npm test` is `node --test "test/*.test.mjs"`: on Node 24 `node --test test/` fails (treats the folder as a module).
 
 ## Log (newest first)
 - 2026-11-19 Setup from the kit; research files; plan.
