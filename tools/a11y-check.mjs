@@ -42,6 +42,13 @@ const smallProbe = `(() => { const out = []; for (const e of document.querySelec
  if (!e.getBoundingClientRect().width || cs.visibility === 'hidden' || e.closest('.vh,.hp,[hidden],[aria-hidden=true]')) continue;
  if (parseFloat(cs.fontSize) < 12.79) out.push(cs.fontSize + ' ' + e.tagName + '.' + e.className + ' ' + e.textContent.trim().slice(0, 24)); } return [...new Set(out)].slice(0, 8); })()`;
 
+// A word split across two lines (Range rects per word) in pocket titles and short labels (chips, buttons, summaries, nav).
+const wordProbe = `(() => { const out = [], sel = '.pocket-title, .chip, .btn, button, summary, nav a, label, th, .sign *';
+ for (const e of document.querySelectorAll(sel)) { if (!e.getBoundingClientRect().width || e.closest('[hidden],.vh,.hp,thead,details:not([open]) > :not(summary)')) continue;
+  const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT); for (let n; (n = w.nextNode()); ) { const re = /\\S+/g; for (let m; (m = re.exec(n.data)); ) { const r = document.createRange(); r.setStart(n, m.index); r.setEnd(n, m.index + m[0].length);
+   const tops = new Set([...r.getClientRects()].filter((q) => q.width).map((q) => Math.round(q.top / 4))); if (tops.size > 1 && getComputedStyle(n.parentElement).visibility !== 'hidden') out.push(m[0] + ' in ' + e.tagName + '.' + e.className); } } }
+ return [...new Set(out)].slice(0, 8); })()`;
+
 const b = await launch();
 try {
   // 1. zoom 200% (root font-size only, like browser text zoom); then shapes at 100% with a tall viewport so elementFromPoint sees all
@@ -58,6 +65,20 @@ try {
       await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await sleep(200);
       const s = await t.ev(shapeProbe); if (s.length) ok(false, `shapes ${w} ${p}: ${s.join('; ')}`);
     }
+    await t.close();
+  }
+  // 1b. no word broken mid-word in pocket titles and short labels at 320, 390 and 430
+  for (const w of [320, 390, 430]) for (const p of PATHS) {
+    const t = await b.page({ w, h: 800 }); await t.go(base + p);
+    const r = await t.ev(wordProbe); if (r.length) ok(false, `word broken mid-word ${w} ${p}: ${r.join('; ')}`);
+    await t.close();
+  }
+  // 1c. Sell side column: sticky only while it fits the window (guide folded); open guide => not sticky
+  for (const h of [700, 800]) {
+    const t = await b.page({ w: 1280, h }); await t.go(base + '/sell/');
+    const q = (open) => t.ev(`(() => { document.querySelectorAll('.sell-side details').forEach((d) => (d.open = ${open})); const e = document.querySelector('.sell-side'); return { pos: getComputedStyle(e).position, tall: Math.round(e.getBoundingClientRect().height) }; })()`);
+    let r = await q(false); ok(r.pos === 'sticky' && r.tall + 88 <= h, `sell side folded @1280x${h}: sticky and fits ${JSON.stringify(r)}`);
+    r = await q(true); ok(r.pos !== 'sticky' || r.tall + 88 <= h, `sell side guide open @1280x${h}: not sticky when taller than the window ${JSON.stringify(r)}`);
     await t.close();
   }
   // 2. menu sheet
@@ -106,7 +127,7 @@ try {
   const FORMS = [['/', 'request-form'], ['/shop/', 'request-form'], ['/events/', 'signup-form'], ['/sell/', 'buylist-form'], ['/visit/', 'contact-form']];
   const panelProbe = `(() => { const e = document.querySelector(':target'); if (!e) return { id: null }; const r = e.getBoundingClientRect(); return { id: e.id, disp: getComputedStyle(e).display, top: Math.round(r.top), bottom: Math.round(r.bottom), tall: Math.round(r.height), vh: innerHeight, text: e.textContent.trim().length }; })()`;
   const refocus = `(() => { const id = location.hash.slice(1); location.hash = ''; location.hash = '#' + id; return 0; })()`;
-  const panelOk = (r, want) => r.id && want.test(r.id) && r.disp !== 'none' && r.text > 0 && r.top >= 0 && r.top < r.vh / 2; // starts in view, under no header (a panel taller than the screen may run past the fold)
+  const panelOk = (r, want) => r.id && want.test(r.id) && r.disp !== 'none' && r.text > 0 && r.top >= 0 && r.bottom <= r.vh; // fully in view, under no header
   const noJs = async (w) => { const t = await b.page({ w, h: 844 }); await t.cdp('Emulation.setScriptExecutionDisabled', { value: true }); return t; };
   for (const bad of [false, true]) for (const [p, fid] of FORMS) {
     const t = await noJs(390); await t.go(base + p);
