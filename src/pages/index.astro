@@ -79,7 +79,6 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
     </section>
 
     <section class="box box-sky" aria-labelledby="sealed-h">
-      <span class="tab">Sealed</span>
       <h2 id="sealed-h">Sealed and preorders</h2>
       <ul class="sealed-grid">
         {products.length === 0 ? (
@@ -90,14 +89,14 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
               <Fragment slot="foot"><span class="chip">Ask in store</span></Fragment>
             </Pocket>
             <Pocket href="/shop/#preorders" title="Preorders" variant="preorder">
-              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+              <Fragment slot="art"><div class="box-sil is-pack" aria-hidden="true"></div></Fragment>
               <p>Ask what is coming.</p>
               <Fragment slot="foot"><span class="chip">Ask in store</span></Fragment>
             </Pocket>
           </>
         ) : products.slice(0, 3).map((p) => (
           <Pocket href={p.kind === 'preorder' ? '/shop/#preorders' : '/shop/#sealed'} title={p.name} variant={p.kind === 'preorder' ? 'preorder' : 'sealed'}>
-            <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+            <Fragment slot="art"><div class:list={['box-sil', { 'is-pack': p.kind === 'preorder' }]} aria-hidden="true"></div></Fragment>
             <p>{p.game}</p>
             <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}<span class="sticker">{fee(p.price)}</span></Fragment>
           </Pocket>

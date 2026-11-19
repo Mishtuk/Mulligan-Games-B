@@ -139,8 +139,15 @@ main { container-type: inline-size; } /* 100cqw = the page width without the scr
 .pocket-mini { aspect-ratio: auto; min-height: var(--tap); }
 .pocket-mini .pocket-title { flex: 1; border-bottom: 0; border-radius: 2px; align-items: center; min-height: calc(var(--tap) - 6px); }
 .pocket-sealed .pocket-art, .pocket-preorder .pocket-art { margin-top: .5rem; }
+/* Drawn generic product shapes (rule 12: no publisher art). Default: sealed booster box, lid over body. .is-pack: one
+   booster pack with crimped ends, tilted a little (static, no motion). */
 .box-sil { display: grid; place-items: center; aspect-ratio: 3 / 2; background: var(--bg2); border: 2px solid var(--line); border-radius: 4px; }
-.box-sil::before { content: ""; width: 46%; height: 62%; background: var(--card); border: 3px solid var(--line); border-radius: 3px; box-shadow: 4px 4px 0 var(--sky); }
+.box-sil::before { content: ""; width: 68%; height: 52%; border: 3px solid var(--line); border-radius: 3px; box-shadow: 4px 4px 0 var(--accent2);
+  background: linear-gradient(var(--sky) 0 32%, var(--line) 32% calc(32% + 3px), var(--accent) 0); }
+.box-sil.is-pack::before { width: 30%; height: 80%; rotate: -8deg; border-radius: 2px; box-shadow: 3px 3px 0 var(--line);
+  background: repeating-linear-gradient(90deg, var(--line) 0 2px, transparent 2px 5px) top / 100% 11% no-repeat,
+    repeating-linear-gradient(90deg, var(--line) 0 2px, transparent 2px 5px) bottom / 100% 11% no-repeat,
+    linear-gradient(var(--sky), var(--sky)) center / 100% 24% no-repeat, var(--accent2); }
 
 /* binder page */
 .binder { position: relative; container-type: inline-size; margin-top: 0; padding: var(--s-3) var(--s-2) var(--s-3) 2.1rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }

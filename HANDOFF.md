@@ -37,11 +37,11 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 
 ## Status
 - Stage: 3 refinement (first build done 2026-11-19). Gates: G1 passed (owner brief + D4/D5).
-- Last build: pass 2026-11-19. Last test run: 91/91. check-site: 7/7 paths pass.
+- Last build: pass 2026-11-19 (loop 10). Last test run: 119/119. check-site: 7/7 paths pass.
 - Preview: none. Live: none.
 
 ## Now working on
-- [boss] refinement loop 1
+- [boss] refinement loop 11 (Home): see docs/review/loop-10/review.md priority list
 
 ## Waiting on the owner
 - **To set before launch:** `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -62,6 +62,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 10 (boss review): independent score 23/30 (identity 3, actions 4, truth 4, a11y 5 with runs, craft 3, code 4). Worker 411 replaced by streaming byte cap (readCapped, tested); DESIGN.md updated; booster box/pack CSS art on Home and Shop pockets; repeated tabs cut; Sell rail aligned. 119 tests, check-site 7/7. Priorities for 11-20 in docs/review/loop-10/review.md. Not committed.
 - Loop 09 (code/security/SEO/perf): bands bleed with 100cqw (main is a size container), clip removed; sitemap.xml + robots.txt endpoints, canonical/OG/Twitter, JSON-LD openingHoursSpecification; page-weight budget test; CSP has no unsafe-inline (stylesheets no longer inlined); worker: Origin check, content-type 415, content-length 411, Referer allow-list per form. 119 tests green.
 - Loop 8 (copy and voice): bio line on Home, Home Visit box shrunk to one line, honest Sell slab, button and success wording, unique meta on all pages + test/meta.test.mjs. 104 tests green.
 - Loop 7 (Card-shop identity): .band/.band-mat/.band-crimp/.airy in global.css (main overflow-x:clip); Home playmat band + unboxed Sell; Shop crimp band + unboxed Preorders; Visit address band, taped hours sheet, unboxed rules; tab numbers cut. Review and shots in docs/review/loop-07/. Next: Home Visit box duplicates footer, 404 pocket, Sell right rail.

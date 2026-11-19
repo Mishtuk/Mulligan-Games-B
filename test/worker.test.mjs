@@ -227,12 +227,34 @@ test('Content-Type: JSON or text bodies are refused with 415 and a plain message
   assert.equal(rows(env, 'SELECT * FROM contacts').length, 0);
 });
 
-test('Content-Length: missing is 411, over the cap goes back to the form with an error', async () => {
+// A streamed body with no Content-Length, as HTTP/2 or a proxy may send it. Counts how many chunks were pulled.
+function streamed(path, text, chunk = 4096) {
+  const bytes = new TextEncoder().encode(text), state = { pulled: 0, cancelled: false };
+  let at = 0;
+  const body = new ReadableStream({
+    pull(c) { if (at >= bytes.length) return c.close(); state.pulled++; c.enqueue(bytes.slice(at, at += chunk)); },
+    cancel() { state.cancelled = true; },
+  });
+  const req = new Request(ORIGIN + path, { method: 'POST', body, duplex: 'half', headers: {
+    'content-type': 'application/x-www-form-urlencoded', origin: ORIGIN, referer: ORIGIN + HOME[path] } });
+  return { req, state };
+}
+
+test('body size: no Content-Length is read with a byte cap; over the cap (declared or streamed) goes back with an error', async () => {
   const env = newEnv();
-  assert.equal((await post(env, '/api/contact', FORMS[3].valid, { 'content-length': '' })).status, 411);
+  const ok = await post(env, '/api/contact', FORMS[3].valid, { 'content-length': '' });
+  assert.equal(loc(ok), '/visit/?sent=contact#contact');
+  const small = streamed('/api/contact', new URLSearchParams(FORMS[3].valid).toString(), 8);
+  assert.equal(loc(await worker.fetch(small.req, env)), '/visit/?sent=contact#contact');
+  assert.equal(rows(env, 'SELECT * FROM contacts').length, 2);
+
   const big = await post(env, '/api/contact', { ...FORMS[3].valid, message: 'x'.repeat(31000) });
   assert.equal(loc(big), '/visit/?contact=error#contact');
-  assert.equal(rows(env, 'SELECT * FROM contacts').length, 0);
+  const huge = streamed('/api/contact', new URLSearchParams({ ...FORMS[3].valid, message: 'x'.repeat(5_000_000) }).toString());
+  assert.equal(loc(await worker.fetch(huge.req, env)), '/visit/?contact=error#contact');
+  assert.ok(huge.state.cancelled, 'stream cancelled at the cap');
+  assert.ok(huge.state.pulled < 20, `stopped reading early (pulled ${huge.state.pulled} of ~1200 chunks)`);
+  assert.equal(rows(env, 'SELECT * FROM contacts').length, 2);
 });
 
 test('Referer: only a page on that form own list is used (Home may send the want list); paths like // and ../ fall back', async () => {

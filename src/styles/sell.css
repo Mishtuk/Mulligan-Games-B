@@ -50,4 +50,5 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
 }
 @container sell (min-width: 70rem) {
   .sell-grid { grid-template-columns: minmax(0, 42rem) minmax(0, 1fr); column-gap: var(--s-5); }
+  .sell-rules .box:first-child { margin-top: 0; } /* top edge lines up with the slip (no tab above it) */
 }

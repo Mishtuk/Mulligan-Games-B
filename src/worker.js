@@ -101,6 +101,27 @@ function pageOf(req, cfg) {
   return cfg.home;
 }
 
+// Reads the body up to max bytes; null when it is bigger. A declared Content-Length over the cap is refused before
+// reading. A body sent without one (HTTP/2, chunked, some proxies) is streamed and cut off as soon as it passes the cap.
+async function readCapped(req, max) {
+  const declared = req.headers.get('content-length');
+  if (/^\d+$/.test(declared ?? '') && Number(declared) > max) return null;
+  if (!req.body) return new Uint8Array(0);
+  const reader = req.body.getReader(), parts = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > max) { await reader.cancel().catch(() => {}); return null; }
+    parts.push(value);
+  }
+  const out = new Uint8Array(total);
+  let at = 0;
+  for (const p of parts) { out.set(p, at); at += p.byteLength; }
+  return out;
+}
+
 const NO_STORE = { 'Cache-Control': 'no-store' };
 const json = (data, status = 200) => Response.json(data, { status, headers: NO_STORE });
 const plain = (text, status, headers = {}) => new Response(text, { status, headers: { ...NO_STORE, ...headers } });
@@ -137,10 +158,10 @@ export default {
 
     const ip = req.headers.get('CF-Connecting-IP') ?? '';
     if (env.FORM_LIMIT && !(await env.FORM_LIMIT.limit({ key: ip + url.pathname })).success) return plain('Slow down', 429);
-    const size = req.headers.get('content-length') ?? '';
-    if (!/^\d+$/.test(size)) return plain('Length required', 411); // a chunked body would skip the size cap
-    if (Number(size) > MAX_BODY) return done(false);
-    const fd = await req.formData().catch(() => new FormData());
+    const raw = await readCapped(req, MAX_BODY);
+    if (!raw) return done(false); // over the cap, with or without a Content-Length header
+    const fd = await new Response(raw, { headers: { 'content-type': req.headers.get('content-type') } }).formData()
+      .catch(() => new FormData());
     const b = Object.fromEntries([...fd.entries()].map(([k, x]) => [k, typeof x === 'string' ? x : '']));
     if (b.website) return done(true); // honeypot: pretend success, store nothing
     if (!(await human(b['cf-turnstile-response'], ip, env))) return done(false);

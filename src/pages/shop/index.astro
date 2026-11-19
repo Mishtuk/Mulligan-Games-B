@@ -26,7 +26,6 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
     </header>
 
     <section class="box" id="singles" aria-labelledby="singles-h">
-      <span class="tab">Singles</span>
       <h2 id="singles-h">Singles</h2>
       <div class="singles-grid">
         <div class="request" id="request">
@@ -102,7 +101,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
         <ul class="shop-grid">
           {preorders.map((p) => (
             <Pocket href="/visit/#contact" title={p.name} variant="preorder">
-              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+              <Fragment slot="art"><div class="box-sil is-pack" aria-hidden="true"></div></Fragment>
               <p>{p.game}</p>
               <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}<span class="sticker">{price(p.price)}</span></Fragment>
             </Pocket>
