@@ -25,54 +25,66 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
       </nav>
     </header>
 
-    <section class="box" id="singles" aria-labelledby="singles-h">
+    <section class="airy" id="singles" aria-labelledby="singles-h">
       <h2 id="singles-h">Singles</h2>
-      <div class="singles-grid">
-        <div class="request" id="request">
-          <h3>Want list</h3>
-          <p>No online catalog yet. Tell us what you are after and we will email you if it turns up.</p>
-          <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
-            <h3><strong>Got it.</strong> Want list sent.</h3>
-            <p>We will email you if it turns up. Nothing else gets sent.</p>
-            <p><a href="/events/">See this week</a></p>
+      <div class="case" aria-hidden="true">
+        <div class="case-light"></div>
+        {[0, 1].map((r) => (
+          <div class="case-shelf">
+            {Array.from({ length: 8 }, (_, i) => (
+              <span class={`slot${(i + r * 3) % 4 === 1 ? ' is-top' : ''}`}><i class={`cback v${(i + r) % 3}`}></i><b class="price">ASK</b></span>
+            ))}
           </div>
-          <div class="form-msg error" id="request-err" role="alert" tabindex="-1" hidden>
-            <h3><strong>Error:</strong> that did not send.</h3>
-            <p>Check each field and try again, or ask at the counter.</p>
-          </div>
-          <form id="request-form" method="post" action="/api/request" novalidate>
-            <div class="field">
-              <label for="req-cards">Card or cards you want <span class="hint">(required, up to 50 lines)</span></label>
-              <p class="example" id="req-cards-ex">One card per line: name, set, condition, how many. Example: <span class="mono-ex">Sol Ring, Commander Masters, NM, 1</span></p>
-              <textarea id="req-cards" name="cards" required maxlength="2000" rows="6" aria-describedby="req-cards-ex"></textarea>
-            </div>
-            <div class="field">
-              <label for="req-game">Game <span class="hint">(required)</span></label>
-              <select id="req-game" name="game" required>
-                {requestGames.map(([v, l]) => <option value={v}>{l}</option>)}
-              </select>
-            </div>
-            <div class="field">
-              <label for="req-name">Your first name <span class="hint">(required)</span></label>
-              <input type="text" id="req-name" name="name" required maxlength="80" autocomplete="given-name" />
-            </div>
-            <div class="field">
-              <label for="req-email">Email to reach you <span class="hint">(required)</span></label>
-              <input type="email" id="req-email" name="email" required maxlength="120" autocomplete="email" />
-            </div>
-            <div class="hp" aria-hidden="true">
-              <label for="req-website">Leave this empty</label>
-              <input type="text" id="req-website" name="website" tabindex="-1" autocomplete="off" />
-            </div>
-            <button class="btn" type="submit">Send my want list</button>
-          </form>
-        </div>
+        ))}
       </div>
+    </section>
 
-      <h3 class="sub" id="condition">Condition guide</h3>
-      <p>Same grades whether you buy or sell.</p>
+    <div class="shop-duo">
+    <section class="box request" id="request" aria-labelledby="request-h">
+      <h2 id="request-h">Not in the case? Ask for it.</h2>
+      <p>No online catalog yet. Tell us what you are after and we will email you if it turns up.</p>
+      <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
+        <h3><strong>Got it.</strong> Want list sent.</h3>
+        <p>We will email you if it turns up. Nothing else gets sent.</p>
+        <p><a href="/events/">See this week</a></p>
+      </div>
+      <div class="form-msg error" id="request-err" role="alert" tabindex="-1" hidden>
+        <h3><strong>Error:</strong> that did not send.</h3>
+        <p>Check each field and try again, or ask at the counter.</p>
+      </div>
+      <form id="request-form" method="post" action="/api/request" novalidate>
+        <div class="field">
+          <label for="req-cards">Card or cards you want <span class="hint">(required, up to 50 lines)</span></label>
+          <p class="example" id="req-cards-ex">One card per line: name, set, condition, how many. Example: <span class="mono-ex">Sol Ring, Commander Masters, NM, 1</span></p>
+          <textarea id="req-cards" name="cards" required maxlength="2000" rows="6" aria-describedby="req-cards-ex"></textarea>
+        </div>
+        <div class="field">
+          <label for="req-game">Game <span class="hint">(required)</span></label>
+          <select id="req-game" name="game" required>
+            {requestGames.map(([v, l]) => <option value={v}>{l}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="req-name">Your first name <span class="hint">(required)</span></label>
+          <input type="text" id="req-name" name="name" required maxlength="80" autocomplete="given-name" />
+        </div>
+        <div class="field">
+          <label for="req-email">Email to reach you <span class="hint">(required)</span></label>
+          <input type="email" id="req-email" name="email" required maxlength="120" autocomplete="email" />
+        </div>
+        <div class="hp" aria-hidden="true">
+          <label for="req-website">Leave this empty</label>
+          <input type="text" id="req-website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+        <button class="btn" type="submit">Send my want list</button>
+      </form>
+    </section>
+
+    <section class="box box-sky" id="condition" aria-labelledby="condition-h">
+      <h2 id="condition-h">Condition guide</h2>
       <ConditionGuide />
     </section>
+    </div>
 
     <section class="band band-crimp" id="sealed" aria-labelledby="sealed-h">
       <h2 id="sealed-h">Sealed product</h2>

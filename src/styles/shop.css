@@ -5,19 +5,15 @@
 .page-lede { margin-top: var(--s-2); font-size: var(--step-1); line-height: 1.35; }
 .shop-jump { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
 .shop-jump .chip { padding-inline: var(--s-3); }
-.shop > .box { margin-top: var(--section); }
-.shop > .page-head + .box { margin-top: 3rem; }
+.shop > .box, .shop > .shop-duo { margin-top: var(--section); }
+.shop > .page-head + .airy { margin-top: var(--s-5); }
 .shop .box > h2, .shop .band > h2, .shop .airy > h2 { margin-bottom: var(--s-2); }
 .shop .box > h2 + p { margin-bottom: var(--s-2); }
-/* chip anchors land below the sticky header */
-.shop .box, .shop .band, .shop .airy { scroll-margin-top: 5.5rem; }
-.request { scroll-margin-top: 5.5rem; }
+/* chip anchors: html scroll-padding-top already clears the sticky header, so no scroll-margin here */
 .request .example { margin-bottom: var(--s-1); font-size: var(--step--1); color: var(--muted); }
 .mono-ex { font-family: var(--font-mono); color: var(--text); font-weight: 700; }
 .sub { margin: var(--s-5) 0 var(--s-1); }
 
-.singles-grid { display: grid; gap: var(--s-5); margin-top: var(--s-3); }
-.request h3 { margin-bottom: var(--s-1); }
 .request form { margin-top: var(--s-3); max-width: 36rem; }
 .request .form-msg { margin-top: var(--s-3); max-width: 36rem; }
 .request .hint { font-weight: 400; }
@@ -28,17 +24,18 @@
 .cond-table { width: 100%; border-collapse: collapse; background: var(--card); border: var(--border-w) solid var(--line); }
 .cond-table th, .cond-table td { padding: var(--s-2) var(--s-3); text-align: left; vertical-align: middle; border-bottom: 1px solid var(--soft-line); }
 .cond-table thead th { background: var(--bg2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
-.cond-table tbody th { width: 17rem; font-weight: 400; }
+.cond-table tbody th { width: 15rem; font-weight: 400; }
 .cond-table .slab { max-width: 16rem; }
-.cond-table .slab-name, .cond-table .slab-cond { padding-block: .25rem; }
+.cond-table .slab-name, .cond-table .slab-cond { padding-block: .2rem; }
+.cond-table td strong { display: block; }
 .cond-note { margin-top: var(--s-2); font-size: var(--step--1); }
-@container (max-width: 43rem) {
+@container (max-width: 34rem) {
   .cond-table, .cond-table tbody, .cond-table tr, .cond-table th, .cond-table td { display: block; }
   .cond-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  .cond-table tbody tr { padding-bottom: var(--s-2); border-bottom: var(--border-w) solid var(--line); }
-  .cond-table tbody th { width: auto; padding-bottom: var(--s-1); border-bottom: 0; }
-  .cond-table td { display: flex; gap: var(--s-2); padding-block: .2rem; border-bottom: 0; }
-  .cond-table td::before { content: attr(data-label); flex: none; width: 6.5rem; font: 700 var(--step--1)/1.5 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
+  .cond-table tbody tr { padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--soft-line); }
+  .cond-table tbody tr:last-child { border-bottom: 0; }
+  .cond-table tbody th, .cond-table td { padding: 0; border-bottom: 0; }
+  .cond-table td { margin-top: .35rem; font-size: var(--step--1); line-height: 1.4; }
 }
 
 /* Sealed and preorder pockets */
@@ -53,3 +50,27 @@
 @media (min-width: 1000px) {
   .shop-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+
+/* Singles display case: glass shelf, light bar on top, two rows of sleeved cards and toploaders with blank ASK stickers (drawn, static) */
+.case { position: relative; margin-top: var(--s-3); padding-top: 1.6rem; font-size: .85rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.case::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .55; background: repeating-linear-gradient(115deg, transparent 0 2.4rem, var(--card) 2.4rem 2.9rem, transparent 2.9rem 5.6rem); } /* glass glare */
+.case-light { position: absolute; left: var(--s-2); right: var(--s-2); top: .45rem; height: .55rem; background: var(--card); border: 2px solid var(--line); border-radius: 4px; }
+/* one visible row of slots: extra slots drop into zero-height rows and are clipped */
+.case-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(4.4em, 1fr)); grid-template-rows: auto; grid-auto-rows: 0; overflow: hidden; justify-items: center; align-items: end; padding: var(--s-2) var(--s-2) .6rem; border-bottom: .4rem solid var(--accent2); }
+
+.case-shelf + .case-shelf { border-top: 3px solid var(--line); }
+
+.case-shelf:last-child { border-bottom: .6rem solid var(--line); }
+.slot { display: grid; justify-items: center; gap: .45em; padding-inline: .3em; }
+.slot:nth-child(3n+2) .cback { rotate: -1.5deg; }
+.slot.is-top { padding-top: 5px; }
+.slot.is-top .cback { outline: 2px solid var(--line); outline-offset: 3px; box-shadow: 4px 4px 0 var(--line); }
+.price { padding: 0 .45em; background: var(--card); border: 2px solid var(--line); border-radius: 3px; font: 700 .7rem/1.4 var(--font-mono); letter-spacing: .04em; }
+.slot.is-top .price { margin-top: 5px; }
+@media (min-width: 600px) { .case { font-size: 1.1rem; } .case-shelf { padding-inline: var(--s-4); } .case-light { left: var(--s-4); right: var(--s-4); } }
+@media (min-width: 1000px) { .case { font-size: 1.3rem; } }
+
+/* want list + condition guide side by side on wide screens */
+.shop-duo { display: grid; gap: var(--section); align-items: start; }
+.shop-duo > .box { margin-top: 0; }
+@media (min-width: 1000px) { .shop-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); } .shop-duo .request form { max-width: none; } }

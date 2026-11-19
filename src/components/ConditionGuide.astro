@@ -12,13 +12,12 @@ const rows = [
 <div class="cond-guide">
   <table class="cond-table">
     <caption class="vh">Card condition guide</caption>
-    <thead><tr><th scope="col">Condition</th><th scope="col">What it looks like</th><th scope="col">Example</th></tr></thead>
+    <thead><tr><th scope="col">Condition</th><th scope="col">What it looks like</th></tr></thead>
     <tbody>
       {rows.map(([name, code, look, ex]) => (
         <tr>
           <th scope="row"><Slab name={name} cond={code} /></th>
-          <td data-label="Looks like">{look}</td>
-          <td data-label="Example">{ex}</td>
+          <td><strong>{look}</strong> <span class="muted">{ex}</span></td>
         </tr>
       ))}
     </tbody>

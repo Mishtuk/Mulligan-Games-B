@@ -149,6 +149,14 @@ main { container-type: inline-size; } /* 100cqw = the page width without the scr
     repeating-linear-gradient(90deg, var(--line) 0 2px, transparent 2px 5px) bottom / 100% 11% no-repeat,
     linear-gradient(var(--sky), var(--sky)) center / 100% 24% no-repeat, var(--accent2); }
 
+/* Generic sleeved card back (rule 12: no publisher art). Sized by font-size: 3.2em x 4.5em. Home hero hand and Shop case. */
+.cback { position: relative; display: block; flex: none; width: 3.2em; height: 4.5em; background: var(--card); border: 3px solid var(--line); border-radius: 4px; box-shadow: 2px 2px 0 var(--line); }
+.cback::before { content: ""; position: absolute; inset: .3em; border: 2px solid var(--line); border-radius: 2px; background: repeating-linear-gradient(45deg, var(--sky) 0 .35em, var(--card) .35em .7em); }
+.cback::after { content: ""; position: absolute; left: 50%; top: 50%; width: 1em; height: 1em; translate: -50% -50%; rotate: 45deg; background: var(--accent); border: 2px solid var(--line); }
+.cback.v1::before { background: repeating-linear-gradient(45deg, var(--accent2) 0 .35em, var(--card) .35em .7em); }
+.cback.v2::before { background: repeating-linear-gradient(45deg, var(--accent) 0 .35em, var(--card) .35em .7em); }
+.cback.v2::after { background: var(--sky); }
+
 /* binder page */
 .binder { position: relative; container-type: inline-size; margin-top: 0; padding: var(--s-3) var(--s-2) var(--s-3) 2.1rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
 .binder::before { content: ""; position: absolute; left: .45rem; top: .75rem; bottom: .75rem; width: 1.1rem; pointer-events: none;

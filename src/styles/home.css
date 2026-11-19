@@ -38,13 +38,10 @@ html.js .tonight-nojs { display: none; }
 
 /* Hero: a fanned hand of three sleeved card backs (drawn, static) */
 .hand { display: none; position: absolute; right: var(--s-3); top: 3.4rem; font-size: .55rem; width: 6em; height: 6em; pointer-events: none; }
-.hand i { position: absolute; left: 50%; bottom: 0; width: 3.2em; height: 4.5em; margin-left: -1.6em; transform-origin: 50% 110%; background: var(--card); border: 3px solid var(--line); border-radius: 4px; box-shadow: 2px 2px 0 var(--line); }
-.hand i::before { content: ""; position: absolute; inset: .3em; border: 2px solid var(--line); border-radius: 2px; background: repeating-linear-gradient(45deg, var(--sky) 0 .35em, var(--card) .35em .7em); }
-.hand i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 1em; height: 1em; translate: -50% -50%; rotate: 45deg; background: var(--accent); border: 2px solid var(--line); }
-.hand i:nth-child(1) { rotate: -22deg; }
-.hand i:nth-child(2) { rotate: -2deg; }
-.hand i:nth-child(2)::before { background: repeating-linear-gradient(45deg, var(--accent2) 0 .35em, var(--card) .35em .7em); }
-.hand i:nth-child(3) { rotate: 18deg; }
+.hand .cback { position: absolute; left: 50%; bottom: 0; margin-left: -1.6em; transform-origin: 50% 110%; }
+.hand .cback:nth-child(1) { rotate: -22deg; }
+.hand .cback:nth-child(2) { rotate: -2deg; }
+.hand .cback:nth-child(3) { rotate: 18deg; }
 @media (min-width: 380px) { .hand { display: block; } }
 
 /* What we play: small sleeved cards, title on the label band */
