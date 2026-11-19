@@ -1,0 +1,5 @@
+---
+// Open chip. Server text is "Hours" (links to Visit); public/js/open-chip.js replaces the text with the live state.
+const { class: cls = '' } = Astro.props;
+---
+<a class:list={['chip', cls]} href="/visit/" data-open-chip data-off><span class="dot" aria-hidden="true"></span><span class="chip-text">Hours</span></a>

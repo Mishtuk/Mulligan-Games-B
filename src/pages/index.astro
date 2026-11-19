@@ -1,13 +1,134 @@
 ---
+import Base from '../layouts/Base.astro';
+import BinderWeek from '../components/BinderWeek.astro';
+import TonightStrip from '../components/TonightStrip.astro';
+import Pocket from '../components/Pocket.astro';
+import store from '../data/store.json';
+import games from '../data/games.json';
+import products from '../data/products.json';
+import '../styles/home.css';
+
+// Worker field values for /api/request (src/worker.js GAMES)
+const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
+const a = store.address;
+const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mulligan Games</title>
-  </head>
-  <body>
-    <h1>Mulligan Games</h1>
-  </body>
-</html>
+<Base title="Game nights and cards" description="Mulligan Games is a local card and gaming shop at 445 York Road in Warminster, PA. See tonight's game nights, ask for a card, sell your cards, and check our hours.">
+  <div class="wrap home">
+    <section class="hero box" aria-labelledby="hero-h">
+      <h1 id="hero-h">Pull up a chair.</h1>
+      <p class="hero-line">Singles, sealed and games most nights in Warminster.</p>
+      <p class="hero-cta">
+        <a class="btn" href="/shop/">Find a card</a>
+        <a class="btn btn-secondary" href="/events/">This week</a>
+      </p>
+    </section>
+
+    <div class="home-tonight"><TonightStrip /></div>
+
+    <section class="home-binder" aria-labelledby="binder-h">
+      <h2 id="binder-h">Binder week</h2>
+      <p class="muted">Tap a day to see what is on. Nights come from public listings, so confirm with the store.</p>
+      <BinderWeek />
+    </section>
+
+    <section class="box request" id="request" aria-labelledby="request-h">
+      <span class="tab">02 / Find a card</span>
+      <h2 id="request-h">Looking for a card?</h2>
+      <p>Want list: tell us what you are after and we will message you.</p>
+      <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
+        <h3><strong>Got it.</strong> Request sent.</h3>
+        <p>We will message you if we find it. Nothing else is sent to you.</p>
+        <p><a href="/shop/">See the shop page</a></p>
+      </div>
+      <div class="form-msg error" id="request-err" role="alert" tabindex="-1" hidden>
+        <h3><strong>Error:</strong> that did not send.</h3>
+        <p>Check each field and try again, or ask at the counter.</p>
+      </div>
+      <form id="request-form" method="post" action="/api/request" novalidate>
+        <div class="field">
+          <label for="req-cards">Card or cards you want <span class="hint">(required, one per line)</span></label>
+          <textarea id="req-cards" name="cards" required maxlength="2000" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label for="req-game">Game <span class="hint">(required)</span></label>
+          <select id="req-game" name="game" required>
+            {requestGames.map(([v, l]) => <option value={v}>{l}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="req-name">Your first name <span class="hint">(required)</span></label>
+          <input type="text" id="req-name" name="name" required maxlength="80" autocomplete="given-name" />
+        </div>
+        <div class="field">
+          <label for="req-email">Email to reach you <span class="hint">(required)</span></label>
+          <input type="email" id="req-email" name="email" required maxlength="120" autocomplete="email" />
+        </div>
+        <div class="hp" aria-hidden="true">
+          <label for="req-website">Leave this empty</label>
+          <input type="text" id="req-website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+        <button class="btn" type="submit">Send request</button>
+      </form>
+    </section>
+
+    <section class="box" aria-labelledby="play-h">
+      <span class="tab">03 / What we play</span>
+      <h2 id="play-h">What we play</h2>
+      <ul class="play-grid">
+        {games.map((g) => <Pocket href={`/events/?game=${g.id}`} title={g.name} variant="mini" />)}
+      </ul>
+    </section>
+
+    <section class="box box-sky" aria-labelledby="sealed-h">
+      <span class="tab">04 / Sealed</span>
+      <h2 id="sealed-h">Sealed and preorders</h2>
+      <ul class="sealed-grid">
+        {products.length === 0 ? (
+          <>
+            <Pocket href="/shop/#sealed" title="Sealed product" variant="sealed">
+              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+              <p>Boxes, decks and more.</p>
+              <Fragment slot="foot"><span class="chip">Ask in store</span></Fragment>
+            </Pocket>
+            <Pocket href="/shop/#preorders" title="Preorders" variant="preorder">
+              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+              <p>Release dates and deposits.</p>
+              <Fragment slot="foot"><span class="chip">Ask in store</span></Fragment>
+            </Pocket>
+          </>
+        ) : products.slice(0, 3).map((p) => (
+          <Pocket href={p.kind === 'preorder' ? '/shop/#preorders' : '/shop/#sealed'} title={p.name} variant={p.kind === 'preorder' ? 'preorder' : 'sealed'}>
+            <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+            <p>{p.game}</p>
+            <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}<span class="sticker">{fee(p.price)}</span></Fragment>
+          </Pocket>
+        ))}
+      </ul>
+    </section>
+
+    <section class="box sell" aria-labelledby="sell-h">
+      <span class="tab">05 / Sell to us</span>
+      <h2 id="sell-h">Sell to us</h2>
+      <div class="slab">
+        <span class="slab-name">Got cards to sell? Build a list, bring it in.</span>
+        <span class="slab-cond" aria-hidden="true">NM</span>
+        <span class="slab-id">Buylist rates: ask in store</span>
+      </div>
+      <p class="sell-cta"><a class="btn" href="/sell/">Build your list</a></p>
+    </section>
+
+    <section class="box" aria-labelledby="visit-h">
+      <span class="tab">06 / Visit</span>
+      <h2 id="visit-h">Visit us</h2>
+      <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
+      <p class="muted">Address: {a.certainty}. Confirm with the store.</p>
+      <p class="visit-today"><strong data-today-hours>Hours: <a href="/visit/">see all hours</a></strong></p>
+      <p class="visit-cta">
+        <a class="btn btn-ghost" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a>
+        <a class="btn btn-secondary" href="/visit/">Plan your visit</a>
+      </p>
+    </section>
+  </div>
+  <script is:inline slot="scripts" src="/js/request-form.js" defer></script>
+</Base>

@@ -52,9 +52,12 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist rows as parallel `item_name[]`, `item_set[]`, `item_cond[]`, `item_qty[]` fields with child table `buylist_items` (kit buylist is one textarea). `GET /api/seats` returns `{event_id: seats_left}` (kit's `/api/events` returns full rows).
 - Return page from a same-origin Referer (kit uses a hidden `page` field + `PAGES` map); other origins fall back to the form's home page.
 - `npm test` is `node --test "test/*.test.mjs"`: on Node 24 `node --test test/` fails (treats the folder as a module).
+- Shared hours/today logic lives in `public/js/hours.js` (browser ES module); `src/lib/hours.js` re-exports it so Astro and `node --test` use the same file.
+- Tonight strip: all nights server-rendered inside a closed `<details>`; `public/js/today.js` opens it and shows only today (store zone). No-JS keeps the details plus a "This week" link.
+- Open chip, today highlights and request-form messages are plain external scripts reading `<script type="application/json">` blocks (CSP-safe).
 
 ## Log (newest first)
-- 2026-11-19 Setup from the kit; research files; plan.
+- 2026-11-19 Slice A (coder): foundation + Home built (layout, global/home CSS, Pocket/BinderWeek/TonightStrip/OpenChip, data JSON, fonts, logo, hours.js + tests). Not committed.- 2026-11-19 Setup from the kit; research files; plan.
 
 ## How to run
 - Install: `npm install` · Dev: `npm run dev` · Build: `npm run build` · Test: `npm test`

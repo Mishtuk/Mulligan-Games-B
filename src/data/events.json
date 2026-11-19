@@ -1,0 +1,185 @@
+{
+  "weekly": [
+    {
+      "id": "wed-1400-commander-open-play",
+      "day": 3,
+      "time": "14:00",
+      "game": "Magic",
+      "format": "Commander Open Play",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "wed-1700-avalon-hill-tabletop-open-play",
+      "day": 3,
+      "time": "17:00",
+      "game": "Tabletop",
+      "format": "Avalon Hill Tabletop Open Play",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "wed-1900-standard-showdown",
+      "day": 3,
+      "time": "19:00",
+      "game": "Magic",
+      "format": "Standard Showdown",
+      "fee": 10,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "wed-1900-pauper-night",
+      "day": 3,
+      "time": "19:00",
+      "game": "Magic",
+      "format": "Pauper Night",
+      "fee": 10,
+      "cap": 28,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "thu-1700-edh-open-play",
+      "day": 4,
+      "time": "17:00",
+      "game": "Magic",
+      "format": "EDH Open Play",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "thu-1900-pre-modern-weekly",
+      "day": 4,
+      "time": "19:00",
+      "game": "Magic",
+      "format": "Pre-Modern Weekly",
+      "fee": 10,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "thu-1900-magic-academy-deck-building",
+      "day": 4,
+      "time": "19:00",
+      "game": "Magic",
+      "format": "Magic Academy: Deck Building",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "fri-1700-edh-open-play",
+      "day": 5,
+      "time": "17:00",
+      "game": "Magic",
+      "format": "EDH Open Play",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "fri-1900-draft-fnm",
+      "day": 5,
+      "time": "19:00",
+      "game": "Magic",
+      "format": "Draft FNM",
+      "fee": 20,
+      "cap": 28,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "sat-1400-commander-open-play",
+      "day": 6,
+      "time": "14:00",
+      "game": "Magic",
+      "format": "Commander Open Play",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "sat-1800-draft",
+      "day": 6,
+      "time": "18:00",
+      "game": "Magic",
+      "format": "Draft",
+      "fee": 20,
+      "cap": 16,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "sun-1400-commander-open-play",
+      "day": 0,
+      "time": "14:00",
+      "game": "Magic",
+      "format": "Commander Open Play",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    },
+    {
+      "id": "sun-1600-magic-academy-learn-to-play",
+      "day": 0,
+      "time": "16:00",
+      "game": "Magic",
+      "format": "Magic Academy: Learn to Play",
+      "fee": null,
+      "cap": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Likely"
+    }
+  ],
+  "oneoffs": [
+    {
+      "id": "once-2026-11-21-star-trek-commander-party",
+      "date": "2026-11-21",
+      "time": "14:00",
+      "title": "Star Trek Commander Party",
+      "game": "Magic",
+      "fee": null,
+      "cap": null,
+      "signup": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Confirmed"
+    },
+    {
+      "id": "once-2026-11-28-d-d-encounters-celebration",
+      "date": "2026-11-28",
+      "time": "16:00",
+      "title": "D&D Encounters Celebration",
+      "game": "D&D",
+      "fee": null,
+      "cap": null,
+      "signup": null,
+      "source": "https://locator.wizards.com/store/15986",
+      "certainty": "Confirmed"
+    },
+    {
+      "id": "once-undated-second-saturday-summoner-skirmis",
+      "date": null,
+      "time": "12:00",
+      "title": "Second Saturday Summoner Skirmish (Radiance 2), doors 11:00",
+      "game": "Riftbound",
+      "fee": 10,
+      "cap": null,
+      "signup": null,
+      "source": "https://playriftbound.com/en-US/events/117056984221295231",
+      "certainty": "Unverified date"
+    }
+  ]
+}

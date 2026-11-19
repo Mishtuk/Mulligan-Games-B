@@ -1,0 +1,77 @@
+/* Home page layout. Tokens and components come from global.css. */
+.home { display: grid; gap: 0; padding-top: var(--s-3); }
+.home > section, .home > .home-tonight { min-width: 0; }
+.hero { margin-top: var(--s-2); padding: var(--s-3); box-shadow: var(--shadow); }
+.hero h1 { overflow-wrap: anywhere; }
+.hero-line { margin-top: var(--s-2); font-size: var(--step-1); line-height: 1.35; }
+.hero-cta, .visit-cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-3); }
+.home-tonight .box { margin-top: 2.25rem; }
+.home-binder { margin-top: var(--s-4); }
+.home-binder > h2 { margin-bottom: .25rem; }
+.home-binder > p { margin-bottom: var(--s-2); font-size: var(--step--1); }
+
+/* Tonight strip */
+.tonight h2 { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-2); }
+.tonight-day { padding: .1em .5em; background: var(--sky); border: 2px solid var(--line); border-radius: 4px; }
+.tonight-dayh { margin: var(--s-2) 0 .25rem; font-size: var(--step-0); }
+html.js [data-tonight][data-ready] .tonight-dayh { display: none; }
+.tonight-list { display: grid; gap: var(--s-2); }
+.tonight-list li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .25rem var(--s-2); padding-block: .4rem; border-bottom: 1px solid var(--soft-line); }
+.tonight-list li:last-child { border-bottom: 0; }
+.tonight-what { min-width: 0; }
+.tonight-join { grid-column: 1 / -1; justify-self: start; box-shadow: var(--shadow-sm); }
+.tonight summary { display: flex; align-items: center; min-height: var(--tap); font-weight: 700; color: var(--link); cursor: pointer; }
+html.js .tonight summary { display: none; }
+html.js .tonight-nojs { display: none; }
+.tonight-nojs { margin-top: var(--s-2); }
+.tonight-empty { margin-top: var(--s-1); }
+
+/* Request form */
+.request form { margin-top: var(--s-3); max-width: 36rem; }
+.request .form-msg { margin-top: var(--s-3); max-width: 36rem; }
+.request p + p { margin-top: .25rem; }
+.request .hint { font-weight: 400; }
+
+/* Game pockets */
+.play-grid, .sealed-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); margin-top: var(--s-3); }
+.sealed-grid .pocket-body p { max-width: 20ch; }
+.sell .slab { margin-top: var(--s-3); max-width: 36rem; }
+.sell-cta { margin-top: var(--s-3); }
+.visit-today { margin-top: var(--s-2); }
+.home .box { margin-top: var(--section); }
+.home .home-tonight .box { margin-top: 2.25rem; }
+.home .hero { margin-top: var(--s-2); }
+
+@media (min-width: 600px) {
+  .play-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sealed-grid { grid-template-columns: repeat(3, minmax(0, 12rem)); }
+}
+
+@media (min-width: 1100px) {
+  .home { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-5); align-items: start; }
+  .hero { grid-column: 1 / 8; grid-row: 1; margin-top: 2.25rem; padding: var(--s-5); align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+  .home-binder { grid-column: 8 / 13; grid-row: 1; margin-top: 2.25rem; }
+  .home-tonight { grid-column: 1 / -1; grid-row: 2; }
+  .home > .box:not(.hero) { grid-column: 1 / -1; }
+  .home .request { grid-column: 1 / 8; }
+  .tonight-list li { grid-template-columns: 5rem 1fr auto auto; }
+  .tonight-join { grid-column: auto; }
+  .binder .pocket-title { font-size: var(--step-0); }
+}
+
+/* 390 first: keep a pocket inside the first 844px */
+@media (max-width: 819px) {
+  .home { padding-top: .25rem; }
+  .hero { margin-top: .5rem; }
+  .hero h1 { line-height: 1; }
+  .hero-line { margin-top: .4rem; font-size: var(--step-0); }
+  .hero-cta { margin-top: var(--s-2); }
+  .home-tonight .box { padding-block: var(--s-2); }
+  .tonight h2 { font-size: var(--step-1); }
+  .tonight-list { gap: 0; }
+  .tonight-list li { padding-block: .15rem; }
+  .home-binder { margin-top: var(--s-3); }
+  .home-binder > h2 { font-size: var(--step-1); }
+  .home-binder > p { display: none; }
+  .tonight-what .muted { display: none; }
+}

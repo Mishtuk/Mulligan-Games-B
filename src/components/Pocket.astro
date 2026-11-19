@@ -1,0 +1,13 @@
+---
+// One 5:7 pocket: title bar, optional art window, text box, foot line. The title link is stretched over the whole pocket.
+// variant: binder | sealed | preorder | mini. closed: dashed "Closed" look (still a list item).
+interface Props { href: string; title: string; variant?: 'binder' | 'sealed' | 'preorder' | 'mini'; closed?: boolean; day?: number; flag?: boolean; }
+const { href, title, variant = 'binder', closed = false, day, flag = false } = Astro.props;
+const has = (n: string) => Astro.slots.has(n);
+---
+<li class:list={['pocket', `pocket-${variant}`, { 'pocket-closed': closed }]} data-pocket-day={day}>
+  <h3 class="pocket-title"><a href={href}>{title}</a></h3>
+  {has('art') && <div class="pocket-art"><slot name="art" /></div>}
+  {variant !== 'mini' && <div class="pocket-body">{flag && <span class="pocket-flag" hidden>Today</span>}<slot /></div>}
+  {has('foot') && <div class="pocket-foot"><slot name="foot" /></div>}
+</li>

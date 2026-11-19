@@ -1,0 +1,118 @@
+---
+import '../styles/global.css';
+import store from '../data/store.json';
+import OpenChip from '../components/OpenChip.astro';
+import { DAYS, toWeek, hoursText } from '../lib/hours.js';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+const fullTitle = `${title} | Mulligan Games, Warminster PA`;
+const path = Astro.url.pathname;
+const current = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const navDesk = [['Events', '/events/'], ['Shop', '/shop/'], ['Sell to us', '/sell/'], ['Visit', '/visit/']];
+const navSheet = [['Events', '/events/'], ['Shop', '/shop/'], ['Visit', '/visit/'], ['Sell to us', '/sell/'], ['Home', '/']];
+
+const week = toWeek(store.hours);
+const order = [1, 2, 3, 4, 5, 6, 0];
+const a = store.address;
+const L = store.links;
+const links = [
+  L.instagram && ['Instagram', L.instagram], L.x && ['X', L.x], L.patreon && ['Patreon', L.patreon],
+  L.topdeck && ['TopDeck', L.topdeck], L.wizardsLocator && ['Wizards store locator', L.wizardsLocator],
+  L.discord && ['Discord', L.discord], L.tiktok && ['TikTok', L.tiktok],
+].filter(Boolean) as string[][];
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Store',
+  name: store.name,
+  description,
+  address: { '@type': 'PostalAddress', streetAddress: a.street, addressLocality: a.city, addressRegion: a.state, postalCode: a.zip, addressCountry: 'US' },
+  hasMap: store.mapsUrl,
+  openingHours: order.filter((d) => week[d]).map((d) => `${DAYS[d].slice(0, 2)} ${week[d]!.open}-${week[d]!.close === '24:00' ? '23:59' : week[d]!.close}`),
+  ...(store.phone ? { telephone: store.phone } : {}),
+  sameAs: links.map((l) => l[1]).filter((u) => u !== L.wizardsLocator),
+};
+const ldJson = JSON.stringify(ld).replace(/</g, '\\u003c');
+const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline src="/js/motion-boot.js"></script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#FAF8FF" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/img/logo/apple-touch-180.png" />
+    <link rel="preload" href="/fonts/titan-one-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/atkinson-hyperlegible-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json" set:html={ldJson}></script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="btn skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap site-header-in">
+        <a class="brand" href="/"><img src="/img/logo/mulligan-games-340.png" width="340" height="120" alt="Mulligan Games, home" /></a>
+        <nav class="nav-desk" aria-label="Main">
+          {navDesk.map(([label, href]) => <a href={href} aria-current={current(href) ? 'page' : undefined}>{label}</a>)}
+        </nav>
+        <OpenChip class="header-chip" />
+        <button type="button" id="motion" aria-pressed="true">Motion: on</button>
+        <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu-sheet">Menu</button>
+      </div>
+      <nav class="menu-sheet" id="menu-sheet" aria-label="Menu">
+        {navSheet.map(([label, href]) => <a href={href} aria-current={current(href) ? 'page' : undefined}>{label}</a>)}
+      </nav>
+    </header>
+    <div class="chip-strip"><div class="wrap"><OpenChip /></div></div>
+
+    <main id="main"><slot /></main>
+
+    <div class="stripe stripe-foot" aria-hidden="true"></div>
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div>
+            <h2>Visit us</h2>
+            <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
+            <p class="foot-note">Address: {a.certainty}. Confirm with the store.</p>
+            <p><a href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
+            {store.phone && <p><a href={`tel:${store.phone}`}>{store.phone}</a></p>}
+            {store.email && <p><a href={`mailto:${store.email}`}>{store.email}</a></p>}
+          </div>
+          <div>
+            <h2>Hours</h2>
+            <dl class="hours">
+              {order.map((d) => (
+                <div data-day={d}><dt>{DAYS[d]}</dt><dd>{hoursText(week[d])}</dd></div>
+              ))}
+            </dl>
+            <p class="foot-note">{store.hoursCertainty}: confirm hours with the store.</p>
+          </div>
+          <nav aria-label="Footer: pages">
+            <h2>Pages</h2>
+            <ul>
+              <li><a href="/">Home</a></li>
+              {navDesk.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
+              <li><a href="/privacy/">Privacy</a></li>
+            </ul>
+          </nav>
+          <nav aria-label="Footer: find us online">
+            <h2>Find us online</h2>
+            <ul>{links.map(([label, href]) => <li><a href={href} rel="noopener">{label}<span class="vh"> (opens another site)</span></a></li>)}</ul>
+          </nav>
+        </div>
+        <p class="foot-legal">Not affiliated with Wizards of the Coast, The Pokémon Company, Bandai or any publisher. Game names belong to their owners.</p>
+      </div>
+    </footer>
+    <script type="application/json" id="hours-data" set:html={hoursData}></script>
+    <script is:inline src="/js/site.js" defer></script>
+    <script is:inline type="module" src="/js/open-chip.js"></script>
+    <script is:inline type="module" src="/js/today.js"></script>
+    <slot name="scripts" />
+  </body>
+</html>

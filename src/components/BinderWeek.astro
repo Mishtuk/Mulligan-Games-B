@@ -1,0 +1,51 @@
+---
+// Binder page: Mon-Sun pockets plus Monthly series and Open play. Reads events.json and store.json hours.
+import Pocket from './Pocket.astro';
+import events from '../data/events.json';
+import store from '../data/store.json';
+import { DAYS, DAY_SHORT, toWeek, fmtTime, byTime } from '../lib/hours.js';
+
+const week = toWeek(store.hours);
+const slugs = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+const order = [1, 2, 3, 4, 5, 6, 0]; // Monday first
+const isOpenPlay = (e: { format: string }) => /open play/i.test(e.format);
+
+const days = order.map((d) => {
+  const rows = events.weekly.filter((e) => e.day === d).sort(byTime);
+  // Face shows the competitive night (has a fee) when there is one, else the first night of the day.
+  const head = rows.find((e) => e.fee !== null && !isOpenPlay(e)) ?? rows[0];
+  return { d, name: DAYS[d], slug: slugs[d], closed: !week[d], head, more: Math.max(0, rows.length - 1) };
+});
+
+const openPlay = events.weekly.filter(isOpenPlay);
+const openPlayDays = [...new Set(openPlay.map((e) => e.day))].sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
+const openPlayGames = [...new Set(openPlay.map((e) => e.game))].join(' and ');
+const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
+---
+<div class="binder">
+  <ol class="binder-grid">
+    {days.map((x) => (
+      <Pocket href={`/events/#${x.slug}`} title={x.name} day={x.d} closed={x.closed} flag={!x.closed}>
+        {x.closed ? <p>Closed</p>
+          : x.head ? <>
+              <p class="pocket-game">{x.head.game}</p>
+              <p>{x.head.format}</p>
+              {x.more > 0 && <p class="muted">+{x.more} more {x.more === 1 ? 'night' : 'nights'}</p>}
+            </>
+          : <p>Nothing booked yet.</p>}
+        <Fragment slot="foot">
+          {!x.closed && x.head && <><span class="mono">{fmtTime(x.head.time)}</span><span class="sticker">{fee(x.head.fee)}</span></>}
+        </Fragment>
+      </Pocket>
+    ))}
+    <Pocket href="/events/#monthly" title="Monthly series">
+      <p>Dates: ask in store.</p>
+      <Fragment slot="foot"><span class="mono">Monthly</span></Fragment>
+    </Pocket>
+    <Pocket href="/events/#open-play" title="Open play">
+      <p class="pocket-game">{openPlayGames}</p>
+      <p>{openPlayDays.map((d) => DAY_SHORT[d]).join(', ')}</p>
+      <Fragment slot="foot"><span class="mono">Drop in</span></Fragment>
+    </Pocket>
+  </ol>
+</div>

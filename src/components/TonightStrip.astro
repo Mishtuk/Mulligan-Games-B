@@ -1,0 +1,65 @@
+---
+// Tonight strip. Every night's rows are rendered on the server (so no-JS and crawlers see the real list, behind a closed
+// <details>); public/js/today.js opens it, shows only today's rows (store time zone) and fills the empty state.
+import events from '../data/events.json';
+import { DAYS, fmtTime, byTime } from '../lib/hours.js';
+
+const order = [3, 4, 5, 6, 0, 1, 2];
+const groups = order
+  .map((d) => ({ name: DAYS[d], rows: events.weekly.filter((e) => e.day === d).sort(byTime) }))
+  .filter((g) => g.rows.length);
+const once = events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certainty));
+const none = !groups.length && !once.length;
+const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
+const label = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+const data = JSON.stringify({ weekly: events.weekly, oneoffs: events.oneoffs }).replace(/</g, '\\u003c');
+---
+<section class="box tonight" data-tonight aria-labelledby="tonight-h">
+  <span class="tab">01 / Tonight</span>
+  <h2 id="tonight-h">Tonight <span class="tonight-day mono" data-day-label hidden></span></h2>
+  {none ? (
+    <p>No nights booked yet. Check Discord or ask in store.</p>
+  ) : (
+    <>
+      <p class="tonight-empty" data-empty hidden>
+        Nothing booked tonight. <span data-next></span>
+        <a href="/events/">See this week</a>
+      </p>
+      <details class="tonight-all">
+        <summary>See every night this week</summary>
+        {groups.map((g) => (
+          <div data-day-group>
+            <h3 class="tonight-dayh">{g.name}</h3>
+            <ul class="tonight-list">
+              {g.rows.map((e) => (
+                <li data-event-id={e.id}>
+                  <span class="mono tonight-time">{fmtTime(e.time)}</span>
+                  <span class="tonight-what"><strong>{e.format}</strong> <span class="muted">{e.game}</span></span>
+                  <span class="sticker">{fee(e.fee)}</span>
+                  {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Sign up<span class="vh"> for {e.format}</span></a>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        {once.length > 0 && (
+          <div data-day-group>
+            <h3 class="tonight-dayh">Special nights</h3>
+            <ul class="tonight-list">
+              {once.map((e) => (
+                <li data-event-id={e.id}>
+                  <span class="mono tonight-time">{fmtTime(e.time)}</span>
+                  <span class="tonight-what"><strong>{e.title}</strong> <span class="muted">{e.game}, {label(e.date)}</span></span>
+                  <span class="sticker">{fee(e.fee)}</span>
+                  {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Sign up<span class="vh"> for {e.title}</span></a>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </details>
+      <p class="tonight-nojs"><a class="btn btn-ghost" href="/events/">This week</a></p>
+    </>
+  )}
+  <script type="application/json" id="events-data" set:html={data}></script>
+</section>

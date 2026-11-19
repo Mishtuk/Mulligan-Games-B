@@ -1,0 +1,37 @@
+[
+  {
+    "id": "magic",
+    "name": "Magic",
+    "color": "sky"
+  },
+  {
+    "id": "pokemon",
+    "name": "Pokemon",
+    "color": "sky"
+  },
+  {
+    "id": "one-piece",
+    "name": "One Piece",
+    "color": "sky"
+  },
+  {
+    "id": "riftbound",
+    "name": "Riftbound",
+    "color": "sky"
+  },
+  {
+    "id": "hololive",
+    "name": "Hololive",
+    "color": "sky"
+  },
+  {
+    "id": "tabletop",
+    "name": "Warhammer and tabletop",
+    "color": "sky"
+  },
+  {
+    "id": "dnd",
+    "name": "D&D",
+    "color": "sky"
+  }
+]

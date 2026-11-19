@@ -1,0 +1,67 @@
+{
+  "name": "Mulligan Games",
+  "timezone": "America/New_York",
+  "address": {
+    "street": "445 York Road",
+    "city": "Warminster",
+    "state": "PA",
+    "zip": "18974",
+    "certainty": "Likely (455 on Wizards)"
+  },
+  "hours": [
+    {
+      "day": 0,
+      "open": "13:00",
+      "close": "22:00"
+    },
+    {
+      "day": 1,
+      "closed": true
+    },
+    {
+      "day": 2,
+      "closed": true
+    },
+    {
+      "day": 3,
+      "open": "14:00",
+      "close": "22:00"
+    },
+    {
+      "day": 4,
+      "open": "14:00",
+      "close": "22:00"
+    },
+    {
+      "day": 5,
+      "open": "14:00",
+      "close": "24:00"
+    },
+    {
+      "day": 6,
+      "open": "14:00",
+      "close": "24:00"
+    }
+  ],
+  "hoursCertainty": "Likely",
+  "links": {
+    "instagram": "https://www.instagram.com/mulligangames/",
+    "x": "https://twitter.com/MulliganGames",
+    "patreon": "https://www.patreon.com/MulliganGames",
+    "topdeck": "https://topdeck.gg/hubs/kDIKT0uYJKWSH4B61HxuLrsNxMI2",
+    "wizardsLocator": "https://locator.wizards.com/store/15986",
+    "discord": null,
+    "tiktok": null
+  },
+  "phone": null,
+  "email": null,
+  "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mulligan%20Games%2C%20445%20York%20Road%2C%20Warminster%2C%20PA%2018974",
+  "placeholders": [
+    "phone",
+    "email",
+    "discord",
+    "parking",
+    "fees",
+    "rates"
+  ]
+}
