@@ -11,11 +11,10 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
   <div class="wrap sell">
     <header class="page-head">
       <h1>Sell to us</h1>
-      <p class="page-lede">Build a buylist, send it, then bring the cards to the counter.</p>
     </header>
 
     <ol class="stubs" aria-label="How selling works">
-      <li class="stub"><span class="stub-no" aria-hidden="true">1</span><div><h2>Build your buylist</h2><p>Name each card, pick a condition, choose cash or store credit.</p></div></li>
+      <li class="stub"><span class="stub-no" aria-hidden="true">1</span><div><h2>Build your buylist</h2><p>Name each card and pick a condition.</p></div></li>
       <li class="stub"><span class="stub-no" aria-hidden="true">2</span><div><h2>Send it</h2><p>We reply by email.</p></div></li>
       <li class="stub"><span class="stub-no" aria-hidden="true">3</span><div><h2>Bring the cards in</h2><p>We check every card at the counter.</p></div></li>
     </ol>
@@ -27,7 +26,6 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
         <ul class="sign-list">
           <li>Cash or store credit, you pick.</li>
           <li>Rates are set at the counter.</li>
-          <li>We check every card.</li>
           <li>Bring them sleeved or in a box. Got bulk? Ask at the counter.</li>
         </ul>
       </aside>
@@ -35,7 +33,7 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
       <section class="slip-wrap" id="buylist" aria-labelledby="slip-h">
         <div class="form-msg ok" id="buylist-ok" role="status" tabindex="-1" hidden>
           <h2 id="slip-ok-h"><strong>Got it.</strong> Buylist sent.</h2>
-          <p>We will reply by email. Then bring the cards in and we will look them over. Rates are set at the counter.</p>
+          <p>We will reply by email.</p>
           <p><a href="/visit/">Hours and directions</a></p>
         </div>
         <div class="form-msg error" id="buylist-err" role="alert" tabindex="-1" hidden>
@@ -100,15 +98,6 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
       </section>
 
       <div class="cond-wrap">
-      <section class="look" aria-labelledby="look-h">
-        <h2 id="look-h">What we look at</h2>
-        <ul>
-          <li><strong>Corners</strong> sharp or soft</li>
-          <li><strong>Edges</strong> clean or whitened</li>
-          <li><strong>Surface</strong> scratches, creases, marks</li>
-          <li><strong>Centring</strong> how even the borders sit</li>
-        </ul>
-      </section>
       <ConditionGuide />
       </div>
     </div>

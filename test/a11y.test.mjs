@@ -65,11 +65,14 @@ test('form-check helpers', () => {
   assert.equal(plural(3), '3 things');
 });
 
-test('sell: counter sign, three numbered stubs, what-we-look-at card above the folded condition guide', { skip: !built }, () => {
+test('sell: counter sign, three numbered stubs, each fact once, folded condition guide', { skip: !built }, () => {
   const s = html('sell/index.html');
   assert.match(s, /class="sign"[\s\S]*Rates are set at the counter/);
   assert.equal((s.match(/class="stub"/g) || []).length, 3);
-  assert.match(s, /<h2 id="look-h">What we look at[\s\S]*<details class="cond-fold"/);
+  assert.match(s, /<details class="cond-fold"/);
+  assert.doesNotMatch(s, /What we look at/);
+  const body = s.slice(s.indexOf('<main'), s.indexOf('<footer')); // facts in the page body, not the meta description
+  for (const fact of [/store credit, you pick/, /Rates are set at the counter/, /check every card/]) assert.equal((body.match(fact) || []).length, 1, String(fact));
 });
 
 test('scripts off: each form result panel is the redirect fragment and shows by :target; a sent form steps aside', { skip: !built }, () => {
