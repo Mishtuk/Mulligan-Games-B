@@ -16,7 +16,6 @@
 
 /* pairings sheet: taped paper. html scroll-padding-top (5rem) already clears the sticky header, so scroll-margin stays small */
 .sheet-wrap > h2, .special > h2 { font-size: var(--step-2); }
-.sheet-sub { margin-top: .25rem; font-size: var(--step--1); }
 .sheet { container: sheet / inline-size; position: relative; margin-top: 1.5rem; padding: var(--s-3); background: var(--card); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
 .day { padding-block: var(--s-3); border-top: 2px solid var(--soft-line); scroll-margin-top: .5rem; }
 .day:first-of-type { border-top: 0; padding-top: var(--s-1); }
@@ -31,13 +30,16 @@
 .ev-none { margin: var(--s-2) 0; padding: var(--s-2) var(--s-3); background: var(--bg2); border: 2px solid var(--line); border-radius: var(--radius); font-weight: 700; }
 .ev-note { margin-top: var(--s-3); color: var(--muted); font-size: var(--step--1); }
 
+/* one visible header row for the whole sheet (aria-hidden); each day's table keeps a visually hidden thead so every table stays valid for screen readers */
+.sheet-head { display: grid; grid-template-columns: 10% 12% 25% 9% 44%; margin-top: var(--s-2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+.sheet-head span { padding: .4rem .5rem; }
 .pairings { width: 100%; margin-top: var(--s-2); border-collapse: collapse; table-layout: fixed; text-align: left; }
 .pairings thead th { padding: .4rem .5rem; border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
 .pairings td, .pairings tbody th { padding: .55rem .5rem; border-bottom: 1px solid var(--soft-line); vertical-align: middle; font-weight: 400; }
 .pairings tbody th { font-weight: 700; }
 .pairings tbody tr[data-today] { background: var(--sky); }
 .act { display: flex; align-items: center; flex-wrap: wrap; gap: 0 var(--s-2); }
-.pairings thead th:nth-child(1) { width: 10%; } .pairings thead th:nth-child(2) { width: 12%; } .pairings thead th:nth-child(3) { width: 25%; } .pairings thead th:nth-child(4) { width: 9%; } .pairings thead th:nth-child(5) { width: 44%; }
+.pairings col:nth-child(1) { width: 10%; } .pairings col:nth-child(2) { width: 12%; } .pairings col:nth-child(3) { width: 25%; } .pairings col:nth-child(4) { width: 9%; } .pairings col:nth-child(5) { width: 44%; }
 .cap { display: block; color: var(--muted); font-size: var(--step--1); font-weight: 400; }
 .btn-sm { min-height: var(--tap); padding: .25rem var(--s-2); box-shadow: var(--shadow-sm); }
 .cal { display: inline-flex; align-items: center; min-height: var(--tap); }
@@ -45,6 +47,7 @@
 /* stack when the sheet is narrow (rem container query, so 200% text stacks too): one compact card per night. Line 1 time + format, line 2 game, fee and cap chips, line 3 actions.
    Still a table (roles kept); data-label only prefixes the cap. */
 @container sheet (max-width: 40rem) {
+  .sheet-head, .pairings colgroup { display: none; }
   .pairings thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .pairings, .pairings tbody { display: block; }
   .pairings { table-layout: auto; }

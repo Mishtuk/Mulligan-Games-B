@@ -127,6 +127,14 @@ test('seed times: New York wall clock to UTC across winter and summer', () => {
   assert.equal(localToUtc('2026-03-08', '19:00'), '2026-03-08 23:00');
 });
 
+test('Events shows a fee only when known: no dash chip, no legend, one visible header row', () => {
+  const page = read('src/pages/events/index.astro');
+  assert.doesNotMatch(page, /A dash in Fee|Fee: ask at the counter|aria-hidden="true">–/);
+  assert.equal((page.match(/e\.fee !== null &&/g) || []).length, 2);
+  assert.match(page, /class="sheet-head mono" aria-hidden="true"/);
+  assert.match(page, /<thead role="rowgroup" class="vh">/);
+});
+
 test('pairings sheet ships Wed..Tue and the script rotates from today; closed days are one line', () => {
   const page = read('src/pages/events/index.astro'), js = read('public/js/events.js');
   assert.match(page, /const order = \[3, 4, 5, 6, 0, 1, 2\]/);

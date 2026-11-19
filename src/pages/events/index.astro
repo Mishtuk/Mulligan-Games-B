@@ -19,7 +19,6 @@ const special = upcomingOneoffs(events.oneoffs, zoned(store.timezone).date);
 // Sign-up nights: four weeks from the build date, same rows and ids as the D1 seed (tools/seed-events.mjs).
 const nights = upcomingSignup(seedEvents(events.weekly, zoned(store.timezone).date), zoned(store.timezone).date);
 const likely = [...weekly, ...special].some(isLikely);
-const fee = (n: number | null) => (n === null ? 'Fee: ask at the counter' : `$${n}`);
 const a = store.address;
 // Chip ids from games.json; "other" is not a chip.
 const chips = games.map((g) => ({ id: g.id, name: g.name }));
@@ -43,10 +42,10 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       <div class="ev-main">
         <section class="sheet-wrap" aria-labelledby="sheet-h">
           <h2 id="sheet-h">Pairings sheet</h2>
-          <p class="muted sheet-sub">Same nights every week.</p>
           <p class="ev-none" id="ev-none" role="status" hidden></p>
           <div class="sheet">
             <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
+            <div class="sheet-head mono" aria-hidden="true"><span>Time</span><span>Game</span><span>Format</span><span>Fee</span><span>Seat</span></div>
             {days.map((x) => (
               <section class="day" id={x.slug} aria-labelledby={`h-${x.slug}`} data-day={x.d} data-closed={x.closed ? '' : undefined}>
                 <h3 id={`h-${x.slug}`}>{x.name} <span class="day-date mono" data-day-date hidden></span>{x.closed && <span class="day-closed">· Closed</span>}</h3>
@@ -56,7 +55,8 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                   <>
                     <table class="pairings" role="table">
                       <caption class="vh">{x.name} game nights</caption>
-                      <thead role="rowgroup">
+                      <colgroup aria-hidden="true"><col /><col /><col /><col /><col /></colgroup>
+                      <thead role="rowgroup" class="vh">
                         <tr role="row"><th scope="col" role="columnheader">Time</th><th scope="col" role="columnheader">Game</th><th scope="col" role="columnheader">Format</th><th scope="col" role="columnheader">Fee</th><th scope="col" role="columnheader">Seat</th></tr>
                       </thead>
                       <tbody role="rowgroup">
@@ -65,7 +65,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                             <td role="cell" data-label="Time"><span class="mono">{fmtTime(e.time)}</span></td>
                             <td role="cell" data-label="Game">{e.game}</td>
                             <th scope="row" role="rowheader" data-label="Format">{e.format}{e.cap !== null && <span class="cap"> {e.cap} seats</span>}</th>
-                            <td role="cell" data-label="Fee"><span class="sticker">{e.fee === null ? <><span aria-hidden="true">–</span><span class="vh">{fee(null)}</span></> : fee(e.fee)}</span></td>
+                            <td role="cell" data-label="Fee">{e.fee !== null && <span class="sticker">${e.fee}</span>}</td>
                                                         <td role="cell" data-label="Seat" class="row-act"><div class="act">
                               {e.cap !== null && <a class="btn btn-secondary btn-sm" href="#signup">Hold a seat<span class="vh"> for {e.format}, {x.name}</span></a>}
                               <a class="cal" href={`/events/${e.id}.ics`}>Add to calendar<span class="vh">: {e.format}, {x.name}</span></a></div>
@@ -80,7 +80,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
               </section>
             ))}
           </div>
-          {likely && <p class="ev-note">Nights and fees come from public listings. Confirm with the store. A dash in Fee means ask at the counter.</p>}
+          {likely && <p class="ev-note">Nights and fees come from public listings. Confirm with the store.</p>}
         </section>
 
       </div>
@@ -99,7 +99,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                         <h3>{e.title}</h3>
                         <p class="muted">{e.game} · <span class="mono">{fmtTime(e.time)}</span> · {a.street}</p>
                         <p class="ticket-act">
-                          <span class="sticker">{fee(e.fee)}</span>
+                          {e.fee !== null && <span class="sticker">${e.fee}</span>}
                           {e.cap !== null
                             ? <a class="btn btn-secondary" href="#signup">Hold a seat<span class="vh"> for {e.title}</span></a>
                             : <a class="btn btn-ghost" href={`/events/${e.id}.ics`}>Add to calendar<span class="vh">: {e.title}</span></a>}
