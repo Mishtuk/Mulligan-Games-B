@@ -3,14 +3,12 @@ import Base from '../layouts/Base.astro';
 import BinderWeek from '../components/BinderWeek.astro';
 import TonightStrip from '../components/TonightStrip.astro';
 import Pocket from '../components/Pocket.astro';
-import store from '../data/store.json';
 import games from '../data/games.json';
 import products from '../data/products.json';
 import '../styles/home.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
-const a = store.address;
 const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
 ---
 <Base title="Magic, Pokemon and One Piece nights" description="Local card and gaming shop at 445 York Road, Warminster, PA. Game nights, singles, sealed product and a buylist. Stop in and stay for a game.">
@@ -22,6 +20,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
         <a class="btn" href="/shop/">Find a card</a>
         <a class="btn btn-secondary" href="/events/">This week</a>
       </p>
+      <div class="hand" aria-hidden="true"><i></i><i></i><i></i></div>
     </section>
 
     <div class="home-tonight"><TonightStrip /></div>
@@ -74,7 +73,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
     <section class="band band-mat" aria-labelledby="play-h">
       <h2 id="play-h">What we play</h2>
       <ul class="play-grid">
-        {games.map((g) => <Pocket href={`/events/?game=${g.id}`} title={g.name} variant="mini" />)}
+        {games.map((g) => <Pocket href={`/events/?game=${g.id}`} title={g.name} variant="mini"><Fragment slot="art"><div class="sleeve" aria-hidden="true"></div></Fragment></Pocket>)}
       </ul>
     </section>
 
@@ -112,15 +111,6 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
         <span class="slab-id">Build a list, bring them in. Rates: ask in store.</span>
       </div>
       <p class="sell-cta"><a class="btn" href="/sell/">Build my buylist</a></p>
-    </section>
-
-    <section class="box" aria-labelledby="visit-h">
-      <h2 id="visit-h">Stop in</h2>
-      <p class="visit-today">{a.street}, {a.city}. <strong data-today-hours><a href="/visit/">See hours</a></strong></p>
-      <p class="visit-cta">
-        <a class="btn btn-ghost" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a>
-        <a class="btn btn-secondary" href="/visit/">Hours and rules</a>
-      </p>
     </section>
   </div>
   <script is:inline slot="scripts" src="/js/request-form.js" defer></script>
