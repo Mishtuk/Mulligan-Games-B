@@ -1,16 +1,9 @@
 // Pure helpers for the Events page and its .ics files. No DOM, no Astro. Times are the store's wall clock (America/New_York).
-import { zoned, DAY_SHORT } from './hours.js';
+import { zoned, DAY_SHORT, fmtTime } from './hours.js';
 
 // events.json "game" labels -> games.json ids (the filter chips and the ?game= links use the ids).
 const GAME_IDS = { Magic: 'magic', Pokemon: 'pokemon', 'One Piece': 'one-piece', Riftbound: 'riftbound', Hololive: 'hololive', Tabletop: 'tabletop', 'D&D': 'dnd' };
 export const gameId = (name) => GAME_IDS[name] ?? 'other';
-
-// The D1 placeholder events from schema.sql (the sign-up form posts these ids; test/events.test.mjs checks they still match the seed).
-export const SIGNUP_EVENTS = [
-  { id: 1, title: 'Commander Night (placeholder)', seats: null },
-  { id: 2, title: 'Pokemon League (placeholder)', seats: 12 },
-  { id: 3, title: 'Riftbound Skirmish (placeholder)', seats: 8 },
-];
 
 // Rows we may show: Unverified rows never appear.
 export const isShown = (e) => !/^Unverified/i.test(e.certainty ?? '');
@@ -75,4 +68,10 @@ export function eventIcs(e, { now = Date.now(), tz = TZID, place = '', host = 'm
 export function dateParts(date) {
   const [y, m, d] = date.split('-').map(Number), t = new Date(Date.UTC(y, m - 1, d));
   return { dom: String(d), mon: t.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }), dow: DAY_SHORT[t.getUTCDay()] };
+}
+
+// Sign-up <option> text: "Draft FNM, Fri Nov 20, 7pm". Rows come from src/data/signup-events.json (tools/seed-events.mjs), same ids as the D1 seed.
+export function signupLabel(e) {
+  const p = dateParts(e.date);
+  return `${e.title}, ${p.dow} ${p.mon} ${p.dom}, ${fmtTime(e.time)}`;
 }

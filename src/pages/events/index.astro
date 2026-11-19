@@ -6,11 +6,13 @@ import events from '../../data/events.json';
 import store from '../../data/store.json';
 import games from '../../data/games.json';
 import { DAYS, toWeek, fmtTime, byTime, zoned } from '../../lib/hours.js';
-import { gameId, isShown, isLikely, upcomingOneoffs, dateParts, SIGNUP_EVENTS } from '../../lib/events.js';
+import signup from '../../data/signup-events.json';
+import { gameId, isShown, isLikely, upcomingOneoffs, dateParts, signupLabel } from '../../lib/events.js';
 import '../../styles/events.css';
 
 const week = toWeek(store.hours);
-const order = [1, 2, 3, 4, 5, 6, 0];
+// Same week order as Home's binder (Wed first, closed Mon/Tue last). public/js/events.js re-orders from today.
+const order = [3, 4, 5, 6, 0, 1, 2];
 const weekly = events.weekly.filter(isShown);
 const days = order.map((d) => ({ d, name: DAYS[d], slug: DAYS[d].toLowerCase(), closed: !week[d], rows: weekly.filter((e) => e.day === d).sort(byTime) }));
 const special = upcomingOneoffs(events.oneoffs, zoned(store.timezone).date);
@@ -25,7 +27,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
   <div class="wrap ev">
     <header class="ev-head">
       <h1>Game nights</h1>
-      <p class="ev-lead">What is on at the store, day by day. Tap Sign up to hold a seat.</p>
+      <p class="ev-lead">What is on at the store, day by day.</p>
     </header>
 
     <div class="ev-layout">
@@ -40,16 +42,14 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       <div class="ev-main">
         <section class="sheet-wrap" aria-labelledby="sheet-h">
           <h2 id="sheet-h">Pairings sheet</h2>
-          <p class="muted sheet-sub">The same nights every week, Monday to Sunday. Tonight is marked for you.</p>
+          <p class="muted sheet-sub">The same nights every week, starting from today. Tonight is marked.</p>
           <p class="ev-none" id="ev-none" role="status" hidden></p>
           <div class="sheet">
             <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
             {days.map((x) => (
               <section class="day" id={x.slug} aria-labelledby={`h-${x.slug}`} data-day={x.d} data-closed={x.closed ? '' : undefined}>
-                <h3 id={`h-${x.slug}`}>{x.name} <span class="day-date mono" data-day-date hidden></span>{x.closed && <span class="chip chip-closed">Closed</span>}</h3>
-                {x.closed ? (
-                  <p class="day-note">Closed. Nothing booked.</p>
-                ) : x.rows.length === 0 ? (
+                <h3 id={`h-${x.slug}`}>{x.name} <span class="day-date mono" data-day-date hidden></span>{x.closed && <span class="day-closed">· Closed</span>}</h3>
+                {x.closed ? null : x.rows.length === 0 ? (
                   <p class="day-note">Nothing booked yet.</p>
                 ) : (
                   <>
@@ -116,7 +116,6 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       <span class="tab">03 / Sign up</span>
       <h2 id="signup-h">Hold a seat</h2>
       <p>Pick a night, tell us your first name and email. Under 13 with a grown-up (confirm with the store).</p>
-      <p class="muted">These are placeholder nights while the owner sets up the real list. Dates and seat counts are test data.</p>
 
       <div class="form-msg ok" id="signup-ok" role="status" tabindex="-1" hidden>
         <h3><strong>You are in.</strong> Seat held.</h3>
@@ -139,7 +138,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
         <div class="field">
           <label for="su-event">Night <span class="hint">(required)</span></label>
           <select id="su-event" name="event_id" required>
-            {SIGNUP_EVENTS.map((e) => <option value={e.id} data-limited={e.seats !== null ? '' : undefined}>{e.title}</option>)}
+            {signup.events.map((e) => <option value={e.id}>{signupLabel(e)}</option>)}
           </select>
           <p class="hint seats" id="su-seats" aria-live="polite">Seats: ask</p>
         </div>

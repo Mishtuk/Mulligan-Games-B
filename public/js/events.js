@@ -18,10 +18,14 @@ function dated() {
     const el = $('[data-day-date]', sec);
     el.textContent = `${ahead === 0 ? 'Today' : DOW[t.getUTCDay()]} ${MONTHS[t.getUTCMonth()]} ${t.getUTCDate()}`;
     el.hidden = false;
+    sec.dataset.ahead = ahead;
     const today = ahead === 0;
     sec.toggleAttribute('data-today', today);
     for (const tr of $$('tbody tr', sec)) { tr.toggleAttribute('data-today', today); $('[data-tonight-chip]', tr)?.toggleAttribute('hidden', !today); }
   }
+  // Time order from today: today first, then the next six days (the page ships Wed..Tue for no-JS)
+  const sheet = $('.sheet');
+  if (sheet) for (const sec of $$('.day[data-day]').sort((a, b) => a.dataset.ahead - b.dataset.ahead)) sheet.append(sec);
   // Special nights already past (the page may be older than the visit)
   for (const li of $$('.ticket[data-date]')) {
     li.toggleAttribute('data-past', li.dataset.date < z.date);

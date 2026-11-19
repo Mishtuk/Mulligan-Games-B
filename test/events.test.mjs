@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fold, icsText, eventIcs, nextWeekday, upcomingOneoffs, gameId, SIGNUP_EVENTS, dateParts } from '../src/lib/events.js';
+import { fold, icsText, eventIcs, nextWeekday, upcomingOneoffs, gameId, signupLabel, dateParts } from '../src/lib/events.js';
 
+import { seedEvents, seedSql, localToUtc } from '../src/lib/seed-events.js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
 const events = JSON.parse(read('src/data/events.json'));
@@ -79,11 +80,16 @@ test('game ids match games.json; dateParts', () => {
   assert.deepEqual(dateParts('2026-11-21'), { dom: '21', mon: 'Nov', dow: 'Sat' });
 });
 
-test('sign-up select mirrors the D1 seed in schema.sql; form uses the Worker field names', () => {
-  const sql = read('schema.sql');
-  const seed = [...sql.matchAll(/\('([^']+)', '[^']*', strftime\([^)]*\), (NULL|\d+), /g)].map((m) => ({ title: m[1], seats: m[2] === 'NULL' ? null : Number(m[2]) }));
-  assert.deepEqual(SIGNUP_EVENTS.map(({ title, seats }) => ({ title, seats })), seed);
-  assert.deepEqual(SIGNUP_EVENTS.map((e) => e.id), seed.map((_, i) => i + 1));
+test('sign-up select mirrors the D1 seed in schema.sql (both generated from events.json); form uses the Worker field names', () => {
+  const sql = read('schema.sql'), signup = JSON.parse(read('src/data/signup-events.json'));
+  const rows = seedEvents(events.weekly, signup.from);
+  assert.ok(sql.includes(seedSql(rows, signup.from)), 'schema.sql seed is stale: run node tools/seed-events.mjs ' + signup.from);
+  assert.deepEqual(signup.events, rows.map(({ id, title, date, time, seats }) => ({ id, title, date, time, seats })));
+  assert.deepEqual([...new Set(rows.map((r) => r.title + ' ' + r.seats))].sort(), ['Draft 16', 'Draft FNM 28', 'Pauper Night 28']);
+  assert.equal(rows.length, 12);
+  assert.deepEqual(rows.map((r) => r.id), rows.map((_, i) => i + 1));
+  assert.equal(signupLabel(signup.events[0]), 'Draft FNM, Fri Nov 20, 7pm');
+  assert.match(read('src/pages/events/index.astro'), /signup\.events\.map/);
   const page = read('src/pages/events/index.astro');
   assert.match(page, /action="\/api\/signup"/);
   for (const n of ['name="event_id"', 'name="name"', 'name="email"', 'name="players_note"', 'name="website"']) assert.ok(page.includes(n), n);
@@ -107,4 +113,17 @@ test('built output (when dist exists): every day section and one .ics per weekly
   for (const d of ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']) assert.match(html, new RegExp(`id="${d}"`));
   for (const e of events.weekly) assert.ok(fs.existsSync(path.join(root, `dist/events/${e.id}.ics`)), e.id);
   assert.doesNotMatch(html, /Second Saturday Summoner/);
+});
+
+test('seed times: New York wall clock to UTC across winter and summer', () => {
+  assert.equal(localToUtc('2026-11-20', '19:00'), '2026-11-21 00:00');
+  assert.equal(localToUtc('2026-07-10', '19:00'), '2026-07-10 23:00');
+  assert.equal(localToUtc('2026-03-08', '19:00'), '2026-03-08 23:00');
+});
+
+test('pairings sheet ships Wed..Tue and the script rotates from today; closed days are one line', () => {
+  const page = read('src/pages/events/index.astro'), js = read('public/js/events.js');
+  assert.match(page, /const order = \[3, 4, 5, 6, 0, 1, 2\]/);
+  assert.match(page, /day-closed/);
+  assert.match(js, /dataset\.ahead/);
 });

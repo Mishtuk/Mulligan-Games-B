@@ -13,7 +13,6 @@
 .chip-filter[aria-current="page"] { background: var(--sky); }
 .chip-filter[aria-current="page"]::before { content: "\2713"; }
 .chip-filter:hover { text-decoration: underline; }
-.chip-closed { margin-left: var(--s-1); background: var(--bg3); vertical-align: middle; }
 .chip-tonight { min-height: 0; background: var(--accent); }
 
 /* pairings sheet: taped paper */
@@ -30,6 +29,9 @@
 .day[data-today] { margin-inline: calc(var(--s-3) * -1); padding-inline: var(--s-3); background: var(--bg2); }
 .day[data-today] .day-date { background: var(--sky); }
 .day-note { margin-top: var(--s-1); color: var(--muted); }
+.day[data-closed] { padding-block: var(--s-2); }
+.day[data-closed] h3 { font-size: var(--step-0); color: var(--muted); }
+.day-closed { font-weight: 500; }
 .ev-none { margin: var(--s-2) 0; padding: var(--s-2) var(--s-3); background: var(--bg2); border: 2px solid var(--line); border-radius: var(--radius); font-weight: 700; }
 .ev-note { margin-top: var(--s-3); color: var(--muted); font-size: var(--step--1); }
 
