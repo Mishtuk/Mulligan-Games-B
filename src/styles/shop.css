@@ -25,7 +25,7 @@
 .cond-table th, .cond-table td { padding: var(--s-2) var(--s-3); text-align: left; vertical-align: middle; border-bottom: 1px solid var(--soft-line); }
 .cond-table thead th { background: var(--bg2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
 .cond-table tbody th { width: 15rem; font-weight: 400; }
-.cond-table .slab { max-width: 16rem; }
+.cond-table .slab { max-width: min(16rem, 100%); }
 .cond-table .slab-name, .cond-table .slab-cond { padding-block: .2rem; }
 .cond-table td strong { display: block; }
 .cond-note { margin-top: var(--s-2); font-size: var(--step--1); }
@@ -34,7 +34,7 @@
   .cond-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .cond-table tbody tr { padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--soft-line); }
   .cond-table tbody tr:last-child { border-bottom: 0; }
-  .cond-table tbody th, .cond-table td { padding: 0; border-bottom: 0; }
+  .cond-table tbody th, .cond-table td { width: auto; padding: 0; border-bottom: 0; }
   .cond-table td { margin-top: .35rem; font-size: var(--step--1); line-height: 1.4; }
 }
 
@@ -61,7 +61,7 @@
 .case-shelf + .case-shelf { border-top: 3px solid var(--line); }
 
 .case-shelf:last-child { border-bottom: .6rem solid var(--line); }
-.slot { display: grid; justify-items: center; gap: .45em; padding-inline: .3em; }
+.slot { display: grid; justify-items: center; align-content: end; gap: .45em; height: 100%; padding-inline: .3em; overflow: hidden; } /* extra slots land in 0-height rows: hidden, not stacked on the visible ones */
 .slot:nth-child(3n+2) .cback { rotate: -1.5deg; }
 .slot.is-top { padding-top: 5px; }
 .slot.is-top .cback { outline: 2px solid var(--line); outline-offset: 3px; box-shadow: 4px 4px 0 var(--line); }
@@ -74,3 +74,7 @@
 .shop-duo { display: grid; gap: var(--section); align-items: start; }
 .shop-duo > .box { margin-top: 0; }
 @media (min-width: 1000px) { .shop-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); } .shop-duo .request form { max-width: none; } }
+@container (max-width: 20rem) {
+  .cond-table .slab { grid-template-columns: minmax(0, 1fr); }
+  .cond-table .slab-cond { border-left: 0; border-top: var(--border-w) solid var(--line); }
+}

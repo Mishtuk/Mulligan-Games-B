@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 16 of 50 (lens 6 A11y + motion), priorities in docs/review/loop-10/review.md. Loops 1-15 done; loop 15 (Visit + chrome) not yet committed by the boss.
+- RESUME HERE: loop 17 of 50 (lens 7 Identity + craft), priorities in docs/review/loop-10/review.md. Loops 1-16 done; loops 15 and 16 not yet committed by the boss.
 - [boss] refinement loop 11 (Home): see docs/review/loop-10/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 16 (a11y + motion): `npm run a11y` (tools/a11y-check.mjs, tools/cdp.mjs) added; fixed 200% overflow of the condition guide slab, stacked duplicate slots in the Shop case, Events pairings stack now a rem container query. Screenshots in docs/review/loop-16/.
 - 2026-11-19 loop 15 (Visit + chrome): `.sign` moved to global.css (+ `.sign-sky`), Visit house rules are a taped sign; Base prop `footHours="link"` drops the footer hours list on /visit/; 404 is a drawn misprinted card; Privacy has section dividers and 62ch; hours header right-aligned. 123 tests, check-site PASS.
 - Loop 14 (Sell): counter sign + 3 receipt stubs + folded condition guide; cut How we pay box. Shots in docs/review/loop-14/.
 - (loop 13, Shop) Drawn singles case (.case in shop.css, shared .cback in global.css used by Home hero too); want list + condition guide in .shop-duo; guide compact (2 cols); scroll-margin removed on Shop sections. 121 tests, check-site PASS (port 4313), shots in docs/review/loop-13/.

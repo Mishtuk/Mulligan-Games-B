@@ -25,7 +25,8 @@ Kit `C:\Users\alexm\projects\Base-Website-Design-Template` is READ-ONLY referenc
 - Screenshots of the pages you changed at 390x844 and 1280x800 (scripts in `.work/`), into `docs/review/loop-NN/`.
   LOOK at them before and after. Stop the server (kill only your own PID).
 - Append one row to `docs/refinement-log.md`: `| NN | lens | before -> after /30 | what changed (1-2 lines) | handed on (1 line) |`.
-- Add a line to `HANDOFF.md` "Log" (newest first). Do not commit; the boss commits and pushes.
+- Add a line to `HANDOFF.md` "Log" (newest first) and set the "RESUME HERE" line in "Now working on" to the next
+  loop number. Do not commit; the boss commits and pushes.
 
 ## Report (max 8 lines)
 Score before -> after, changes, test count, check-site result, screenshot folder, what you did not check, one
