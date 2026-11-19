@@ -35,41 +35,6 @@
   .cond-table td { margin-top: .35rem; font-size: var(--step--1); line-height: 1.4; }
 }
 
-/* Sealed and preorder pockets */
-.shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-3); }
-.shop-grid .pocket-title { font-size: 1.05rem; }
-.shop-grid .pocket-body p { max-width: 20ch; }
-.shop-grid .pocket-foot { gap: .3rem; }
-.shelf { max-width: 36rem; }
-.shelf h3 { margin-bottom: var(--s-1); }
-.shelf .btn { margin-top: var(--s-3); }
-@media (min-width: 600px) { .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .shop-grid .pocket-title { font-size: var(--step-1); } }
-@media (min-width: 1000px) {
-  .shop-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-
-/* Singles display case: glass shelf, light bar on top, two rows of sleeved cards and toploaders with blank ASK stickers (drawn, static) */
-.case { position: relative; margin-top: var(--s-3); padding-top: 1.6rem; font-size: .85rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.case-light { position: absolute; left: var(--s-2); right: var(--s-2); top: .45rem; height: .55rem; background: var(--card); border: 2px solid var(--line); border-radius: 4px; }
-/* one visible row of slots: extra slots drop into zero-height rows and are clipped */
-.case-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(4.4em, 1fr)); grid-template-rows: auto; grid-auto-rows: 0; overflow: hidden; justify-items: center; align-items: end; padding: var(--s-2) var(--s-2) .6rem; border-bottom: .4rem solid var(--accent2); }
-
-.case-shelf + .case-shelf { border-top: 3px solid var(--line); }
-
-.case-shelf:last-child { border-bottom: .6rem solid var(--line); }
-.slot { display: grid; justify-items: center; align-content: end; gap: .45em; height: 100%; padding-inline: .3em; overflow: hidden; } /* extra slots land in 0-height rows: hidden, not stacked on the visible ones */
-.slot:nth-child(3n+2) .cback { rotate: -1.5deg; }
-.slot.is-top { padding-top: 5px; }
-.slot.is-top .cback { outline: 2px solid var(--line); outline-offset: 3px; box-shadow: var(--shadow-sm); }
-.price { padding: 0 .45em; background: var(--card); border: 2px solid var(--line); border-radius: 3px; font: 700 .7rem/1.4 var(--font-mono); letter-spacing: .04em; }
-.slot.is-top .price { margin-top: 5px; }
-@media (min-width: 600px) { .case { font-size: 1rem; } .case-shelf { padding-inline: var(--s-4); } .case-light { left: var(--s-4); right: var(--s-4); } }
-@media (min-width: 1000px) { .case { font-size: 1.05rem; } }
-
-/* want list + condition guide side by side on wide screens */
-.shop-duo { display: grid; gap: var(--section); align-items: start; }
-.shop-duo > .box { margin-top: 0; }
-@media (min-width: 1000px) { .shop-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); } .shop-duo .request form { max-width: none; } }
 @container (max-width: 20rem) {
   .cond-table .slab { grid-template-columns: minmax(0, 1fr); }
   .cond-table .slab-cond { border-left: 0; border-top: var(--border-w) solid var(--line); }

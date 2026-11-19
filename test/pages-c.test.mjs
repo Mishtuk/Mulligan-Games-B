@@ -102,11 +102,12 @@ test('shop: pockets only when products.json has rows, otherwise one shelf panel 
   const shop = html('shop/index.html');
   if (products.length === 0) {
     assert.doesNotMatch(shop, /class="shop-grid"/);
-    assert.match(shop, /On the shelf/);
+    assert.match(shop, /class="shelf-art"/);
+    assert.match(shop, /Preorders at the counter/);
     assert.equal((shop.match(/[Aa]sk (about stock|us)<\/a>/g) ?? []).length >= 2, true);
   } else {
     assert.match(shop, /class="shop-grid"/);
-    assert.doesNotMatch(shop, /On the shelf/);
+    assert.doesNotMatch(shop, /shelf-art/);
   }
   assert.match(shop, /Sol Ring, Commander Masters, NM, 1/);
   assert.doesNotMatch(shop, /Photo coming/);

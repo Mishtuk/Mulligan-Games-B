@@ -6,6 +6,7 @@ import games from '../../data/games.json';
 import products from '../../data/products.json';
 import { splitProducts, joinNames } from '../../lib/shop.js';
 import '../../styles/shop.css';
+import '../../styles/shop-only.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
@@ -87,7 +88,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
     </div>
 
     <section class="band band-crimp" id="sealed" aria-labelledby="sealed-h">
-      <h2 id="sealed-h">Sealed product</h2>
+      <h2 id="sealed-h">Sealed</h2>
       {sealed.length ? (
         <ul class="shop-grid">
           {sealed.map((p) => (
@@ -100,7 +101,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
         </ul>
       ) : (
         <div class="shelf">
-          <h3>On the shelf</h3>
+          <div class="shelf-art" aria-hidden="true"><div class="box-sil"></div><div class="box-sil is-pack"></div></div>
           <p>We carry {gameNames}. Ask at the counter for a box or a deck.</p>
           <a class="btn" href="/visit/#contact">Ask about stock</a>
         </div>
@@ -120,7 +121,14 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
           ))}
         </ul>
       ) : (
-        <p>Nothing listed yet. Preorder at the counter, or <a href="/visit/#contact">ask us</a> what is coming and when.</p>
+        <div class="slip">
+          <p class="slip-head">Preorders at the counter</p>
+          <ul>
+            <li>Ask for the release date</li>
+            <li>Ask what deposit it takes</li>
+          </ul>
+          <a href="/visit/#contact">Ask us</a>
+        </div>
       )}
     </section>
   </div>

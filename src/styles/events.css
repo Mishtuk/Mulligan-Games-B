@@ -96,3 +96,5 @@
   .ev-side .tickets { grid-template-columns: 1fr; }
   .ev-side .signup { margin-top: calc(var(--s-4) + .9rem); }
 }
+/* wide and tall enough to hold the whole right column: it stays under the header while the sheet scrolls (no motion) */
+@container (min-width: 64rem) { @media (min-height: 56rem) { .ev-side { position: sticky; top: 5rem; } } }
