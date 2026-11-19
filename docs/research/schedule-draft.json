@@ -1,0 +1,44 @@
+{
+  "timezone": "America/New_York",
+  "note": "Draft from public pages checked 2026-11-19. close 24:00 means midnight. fee null = not listed. Do not publish Unverified items.",
+  "hours": [
+    {"day":0,"open":"13:00","close":"22:00"},
+    {"day":1,"closed":true},
+    {"day":2,"closed":true},
+    {"day":3,"open":"14:00","close":"22:00"},
+    {"day":4,"open":"14:00","close":"22:00"},
+    {"day":5,"open":"14:00","close":"24:00"},
+    {"day":6,"open":"14:00","close":"24:00"}
+  ],
+  "hoursSource": "https://www.keepupcards.com/shop/mulligan-games-warminster-pa",
+  "hoursCertainty": "Likely",
+  "weekly": [
+    {"day":3,"time":"14:00","game":"Magic","format":"Commander Open Play","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":3,"time":"17:00","game":"Tabletop","format":"Avalon Hill Tabletop Open Play","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":3,"time":"19:00","game":"Magic","format":"Standard Showdown","fee":10,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":3,"time":"19:00","game":"Magic","format":"Pauper Night","fee":10,"cap":28,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":4,"time":"17:00","game":"Magic","format":"EDH Open Play","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":4,"time":"19:00","game":"Magic","format":"Pre-Modern Weekly","fee":10,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":4,"time":"19:00","game":"Magic","format":"Magic Academy: Deck Building","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":5,"time":"17:00","game":"Magic","format":"EDH Open Play","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":5,"time":"19:00","game":"Magic","format":"Draft FNM","fee":20,"cap":28,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":6,"time":"14:00","game":"Magic","format":"Commander Open Play","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":6,"time":"18:00","game":"Magic","format":"Draft","fee":20,"cap":16,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":0,"time":"14:00","game":"Magic","format":"Commander Open Play","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"},
+    {"day":0,"time":"16:00","game":"Magic","format":"Magic Academy: Learn to Play","fee":null,"source":"https://locator.wizards.com/store/15986","certainty":"Likely"}
+  ],
+  "oneoffs": [
+    {"date":"2026-11-21","time":"14:00","title":"Star Trek Commander Party","game":"Magic","fee":null,"cap":null,"signup":null,"source":"https://locator.wizards.com/store/15986","certainty":"Confirmed"},
+    {"date":"2026-11-28","time":"16:00","title":"D&D Encounters Celebration","game":"D&D","fee":null,"cap":null,"signup":null,"source":"https://locator.wizards.com/store/15986","certainty":"Confirmed"},
+    {"date":null,"time":"12:00","title":"Second Saturday Summoner Skirmish (Radiance 2), doors 11:00","game":"Riftbound","fee":10,"cap":null,"signup":null,"source":"https://playriftbound.com/en-US/events/117056984221295231","certainty":"Unverified date"}
+  ],
+  "links": {
+    "wizardsLocator": "https://locator.wizards.com/store/15986",
+    "topdeckHub": "https://topdeck.gg/hubs/kDIKT0uYJKWSH4B61HxuLrsNxMI2",
+    "patreon": "https://www.patreon.com/MulliganGames",
+    "x": "https://twitter.com/MulliganGames",
+    "instagram": "https://www.instagram.com/mulligangames/",
+    "tiktok": null,
+    "discord": null
+  }
+}
