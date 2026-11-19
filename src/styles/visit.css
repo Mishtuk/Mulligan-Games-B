@@ -36,7 +36,7 @@
 .visit-form .hint { font-weight: 400; }
 
 @media (min-width: 400px) { .today-chip { display: inline-block; margin: 0 0 0 .4rem; } }
-@media (min-width: 700px) { .visit-band { grid-template-columns: auto auto 1fr; align-items: center; } .visit-band > address { grid-column: 1; } .visit-band .visit-actions { grid-column: 2; grid-row: 1; margin: 0; } .visit-band > .reach { grid-column: 1 / -1; } }
+@media (min-width: 700px) { .visit-band { grid-template-columns: auto auto 1fr; align-items: center; } .visit-band > address { grid-column: 1; } .visit-band .visit-actions { grid-column: 2; grid-row: 1; margin: 0; } .visit-band > .reach { grid-column: 1 / -1; } .visit-photo { grid-column: 3; grid-row: 1; justify-self: end; width: min(100%, 16rem); min-width: 0; } }
 @media (min-width: 1000px) {
   .visit-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-5); }
   .visit-form { margin-top: .8rem !important; }

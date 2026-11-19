@@ -36,7 +36,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
             <p class="shelf-tag">{shelfTags[r]}</p>
             <div class="slots" aria-hidden="true">
             {Array.from({ length: 8 }, (_, i) => (
-              <span class={`slot${(i + r * 3) % 4 === 1 ? ' is-top' : ''}`}><i class={`cback v${(i + r) % 3}`}></i><b class="price">ASK</b></span>
+              <span class={`slot${(i + r * 3) % 4 === 1 ? ' is-top' : ''}`}><i class={`cback v${(i + r) % 3}`}></i></span>
             ))}
             </div>
           </div>

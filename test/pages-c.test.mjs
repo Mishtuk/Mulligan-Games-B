@@ -66,13 +66,26 @@ test('built pages: forms post the Worker routes and field names', { skip: !built
   for (const n of ['cards', 'game', 'name', 'email', 'website']) assert.ok(shop.includes(`name="${n}"`), `shop ${n}`);
 });
 
-test('built pages: no duplicate ids, at most one hazard stripe, no invented prices', { skip: !built && 'run npm run build first' }, () => {
+test('built pages: no duplicate ids, no hazard stripe, no invented prices', { skip: !built && 'run npm run build first' }, () => {
   for (const f of PAGES) {
     const s = html(f), ids = [...s.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
     assert.equal(new Set(ids).size, ids.length, `${f} duplicate ids`);
-    assert.ok((s.match(/class="stripe/g) ?? []).length <= 1, `${f} stripes`);
+    assert.ok((s.match(/class="stripe/g) ?? []).length === 0, `${f} stripes`);
     assert.doesNotMatch(s.replace(/<script[\s\S]*?<\/script>/g, ''), /\$\d/, `${f} shows a price`);
   }
+});
+
+test('photo slots: at most 2, marked placeholders while store.json photos are null, real img once set', { skip: !built && 'run npm run build first' }, () => {
+  const store = JSON.parse(read('src/data/store.json'));
+  assert.deepEqual(Object.keys(store.photos).sort(), ['playRoom', 'storefront']);
+  const pages = { storefront: 'visit/index.html', playRoom: 'events/index.html' };
+  let ph = 0;
+  for (const [k, f] of Object.entries(pages)) {
+    const s = html(f);
+    if (store.photos[k] === null) { assert.match(s, /class="ph[ "]/, `${f} placeholder`); assert.match(s, /Photo coming:/); ph++; }
+    else { const p = store.photos[k]; assert.ok(p.src && p.alt && p.width && p.height, `${k} needs src, alt, width, height`); assert.match(s, /<img [^>]*width=/, `${f} img`); assert.doesNotMatch(s, /Photo coming:/); }
+  }
+  for (const f of PAGES) assert.ok((html(f).match(/class="ph[ "]/g) ?? []).length <= 1, `${f} more than one slot`);
 });
 
 test('visit page hides phone, email and Discord while they are null', { skip: !built && 'run npm run build first' }, () => {

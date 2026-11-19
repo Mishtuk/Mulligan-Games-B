@@ -1,6 +1,7 @@
 ---
 // Events: filter chips, weekly pairings sheet (by weekday), special nights, sign-up. Data: events.json, store.json, games.json.
 // Weekdays, not dates, so "this week" is right on the day it is viewed without a rebuild; public/js/events.js adds today's date and marks tonight.
+import Photo from "../../components/Photo.astro";
 import Base from '../../layouts/Base.astro';
 import events from '../../data/events.json';
 import store from '../../data/store.json';
@@ -164,6 +165,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
         </div>
       </section>
       <p class="ev-ask">Want a night we do not list? <a href="/visit/#contact">Ask us</a></p>
+      <Photo class="ev-photo" photo={store.photos.playRoom} label="the play room" />
         </div>
     </div>
   </div>

@@ -1,0 +1,14 @@
+---
+// One photo slot. photo = null in src/data/store.json renders a marked placeholder; fill the field to swap in the real <img>.
+// photo shape: { src, alt, width, height, srcset?, sizes? }. Never a person (HANDOFF "Photo slots").
+const { photo = null, label, class: cls = '' } = Astro.props;
+---
+{photo ? (
+  <figure class:list={['photo', cls]}>
+    <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} srcset={photo.srcset} sizes={photo.sizes} loading="lazy" decoding="async" />
+  </figure>
+) : (
+  <figure class:list={['ph', cls]}>
+    <figcaption><b>Photo coming:</b> {label}</figcaption>
+  </figure>
+)}

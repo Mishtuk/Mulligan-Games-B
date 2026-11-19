@@ -99,5 +99,6 @@
   .ev-side .tickets { grid-template-columns: 1fr; }
   .ev-side .signup { margin-top: calc(var(--s-4) + .9rem); }
 }
+.ev-photo { margin-top: var(--s-3); }
 .ev-ask { margin-top: var(--s-3); padding: var(--s-2) var(--s-3); background: var(--bg2); border: 2px dashed var(--line); border-radius: var(--radius); }
 .ev-ask a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 700; }

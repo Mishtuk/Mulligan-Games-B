@@ -90,7 +90,7 @@ a.chip { min-height: var(--tap); }
 .slab-name { padding: var(--s-2) var(--s-3); font-weight: 700; overflow-wrap: anywhere; }
 .slab-cond { padding: var(--s-2) var(--s-3); border-left: var(--border-w) solid var(--line); font: 700 1.5rem/1.2 var(--font-mono); display: flex; align-items: center; }
 
-/* ---- box + tab, stripe ---- */
+/* ---- box + tab ---- */
 .box { position: relative; margin-top: 2.25rem; padding: var(--s-4) var(--s-3); background: var(--card); color: var(--text); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
 .tab { position: absolute; left: calc(var(--border-w) * -1); top: 0; translate: 0 -100%; padding: .35em .9em; background: var(--line); color: var(--bg); }
 /* full-bleed bands and airy sections (rhythm: dense box, band, airy, never 3 alike) */
@@ -98,15 +98,19 @@ body { container: page / inline-size; } /* header switches nav by page width in 
 main { container-type: inline-size; } /* 100cqw = the page width without the scrollbar, so bands can bleed with no clipping */
 .band { position: relative; isolation: isolate; padding-block: var(--s-5); margin-top: var(--section); }
 .band::before { content: ""; position: absolute; inset: 0 auto; left: 50%; width: 100cqw; translate: -50% 0; z-index: -1; background: var(--bg2); border-block: var(--border-w) solid var(--line); }
+/* photo slot: .ph is the marked placeholder (store.json photos.* = null), .photo the real image */
+.ph { margin: 0; aspect-ratio: 2 / 1; display: grid; place-items: center; padding: var(--s-2); text-align: center; background: repeating-linear-gradient(135deg, var(--bg2) 0 14px, var(--card) 14px 28px); color: var(--text); border: 2px dashed var(--line); border-radius: var(--radius); }
+.ph figcaption { min-width: 0; overflow-wrap: anywhere; max-width: 28ch; padding: var(--s-1) var(--s-3); background: var(--card); border-radius: 3px; }
+.photo { margin: 0; }
+.photo img { display: block; width: 100%; height: auto; border: var(--border-w) solid var(--line); border-radius: var(--radius); }
 .tape { position: absolute; top: -.8rem; width: 4.5rem; height: 1.4rem; background: var(--sky); border: 2px solid var(--line); pointer-events: none; }
 .tape-l { left: 1rem; rotate: -4deg; }
 .tape-r { right: 1rem; rotate: 3deg; }
-/* posted sign, taped up (Sell counter sign, Visit house rules). .sign-sky is the paper-blue variant */
+/* posted sign, taped up (Visit house rules). .sign-sky is the paper-blue variant */
 .sign { position: relative; margin-top: var(--s-5); padding: var(--s-5) var(--s-4) var(--s-4); background: var(--accent); color: var(--on-accent); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); rotate: -1deg; }
 .sign h2 { font-size: var(--step-3); line-height: 1; margin-bottom: var(--s-3); }
 .sign-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); font-weight: 700; }
 .sign-list li { padding-top: var(--s-1); border-top: 2px dashed var(--line); }
-.stripe { height: 1rem; background: repeating-linear-gradient(-45deg, var(--line) 0 14px, var(--accent) 14px 28px); border-block: var(--border-w) solid var(--line); }
 
 .page-lede { margin-top: var(--s-2); font-size: var(--step-1); line-height: 1.35; }
 .request form, .request .form-msg { margin-top: var(--s-3); max-width: 36rem; }
@@ -185,8 +189,7 @@ html:not(.js) .site-header { position: static; }
 }
 
 /* ---- footer ---- */
-.stripe-foot { margin-top: var(--section); }
-.site-footer { padding-block: var(--s-5) var(--s-4); background: var(--bg2); border-top: var(--border-w) solid var(--line); }
+.site-footer { margin-top: var(--section); padding-block: var(--s-5) var(--s-4); background: var(--bg2); border-top: var(--border-w) solid var(--line); }
 .foot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr)); gap: var(--s-3) var(--s-5); }
 .site-footer h2 { margin-bottom: var(--s-1); font-size: var(--step-1); }
 .site-footer address { font-style: normal; }

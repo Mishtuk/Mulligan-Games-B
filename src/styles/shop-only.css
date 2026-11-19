@@ -49,8 +49,6 @@
 .slot:nth-child(3n+2) .cback { rotate: -1.5deg; }
 .slot.is-top { padding-top: 5px; }
 .slot.is-top .cback { outline: 2px solid var(--line); outline-offset: 3px; box-shadow: var(--shadow-sm); }
-.price { padding: 0 .45em; background: var(--card); border: 2px solid var(--line); border-radius: 3px; font: 700 .7rem/1.4 var(--font-mono); letter-spacing: .04em; }
-.slot.is-top .price { margin-top: 5px; }
 @media (min-width: 600px) { .case { font-size: 1rem; } .case-shelf { padding-inline: var(--s-4); } }
 @media (min-width: 1000px) { .case { font-size: 1.05rem; } }
 

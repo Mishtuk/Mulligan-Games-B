@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Photo from "../../components/Photo.astro";
 import HoursTable from '../../components/HoursTable.astro';
 import store from '../../data/store.json';
 import '../../styles/shop.css';
@@ -25,6 +26,7 @@ const road = rest.join(' ');
           <span class="placard-town">{a.city}, {a.state} {a.zip}</span>
         </address>
         <p class="visit-actions"><a class="btn btn-wide" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
+        <Photo class="visit-photo" photo={store.photos.storefront} label="the storefront at 445 York Road" />
         {(store.phone || store.email || L.discord) && (
           <ul class="reach">
             {store.phone && <li>Phone: <a href={`tel:${store.phone}`}>{store.phone}</a></li>}
@@ -36,7 +38,6 @@ const road = rest.join(' ');
 
     <div class="visit-grid">
       <section class="box sheet-box" id="hours" aria-labelledby="hours-h">
-        <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
         <h2 id="hours-h">Hours</h2>
         <HoursTable />
       </section>
