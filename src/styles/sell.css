@@ -10,7 +10,7 @@
 .slip .hint { font-weight: 400; }
 .slip-head { text-align: center; }
 .slip-head h2 { font: 700 var(--step-0)/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
-.slip-total { margin: var(--s-3) 0; font-weight: 700; text-align: right; }
+.slip-total { max-width: none; margin: var(--s-3) 0; font-weight: 700; text-align: right; }
 .tear { margin: var(--s-3) calc(var(--s-3) * -1); border-top: 3px dashed var(--soft-line); }
 .slip-rows { display: grid; gap: var(--s-3); }
 .slip-row { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem; gap: var(--s-2); padding-bottom: var(--s-3); border-bottom: 2px dashed var(--soft-line); }
@@ -62,9 +62,14 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
 .stub p { font-size: var(--step--1); margin-top: .15rem; }
 
 .cond-wrap { margin-top: var(--s-4); }
-.cond-link { margin-top: var(--s-2); }
+.look { margin-bottom: var(--s-3); padding: var(--s-3) var(--s-4); background: var(--card); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.look h2 { font-size: var(--step-1); margin-bottom: var(--s-2); }
+.look ul { display: grid; gap: var(--s-1); list-style: none; padding: 0; }
+.look li { padding-bottom: var(--s-1); border-bottom: 2px dashed var(--soft-line); }
+.look li:last-child { border-bottom: 0; padding-bottom: 0; }
+.look strong { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .04em; margin-right: var(--s-1); }
 .cond-fold {  background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-.cond-fold summary { display: flex; align-items: center; min-height: var(--tap); padding: 0 var(--s-3); font: 700 var(--step-1)/1.2 var(--font-display); cursor: pointer; }
+.cond-fold summary { display: flex; align-items: center; min-height: var(--tap); padding: 0 var(--s-3); font-weight: 700; cursor: pointer; }
 .cond-fold summary::after { content: "+"; margin-left: auto; padding-left: var(--s-3); font: 700 var(--step-2)/1 var(--font-display); }
 .cond-fold[open] summary::after { content: "\2212"; }
 .cond-fold summary::-webkit-details-marker { display: none; }
