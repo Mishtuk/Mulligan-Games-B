@@ -76,3 +76,10 @@ test('hours are listed once per page: Visit has the table and its footer only li
     assert.match(read(f), /<dl class="hours"/, f);
   }
 });
+
+test('Visit shows the address once: its footer drops the Visit us column; other pages keep it', { skip }, () => {
+  const foot = (f) => read(f).slice(read(f).indexOf('<footer'));
+  assert.ok(!/<h2[^>]*>Visit us<\/h2>/.test(foot('visit/index.html')));
+  assert.ok(!/Open in Maps/.test(foot('visit/index.html')));
+  for (const f of ['index.html', 'events/index.html', 'shop/index.html', 'sell/index.html']) assert.match(foot(f), /Visit us<\/h2>/, f);
+});

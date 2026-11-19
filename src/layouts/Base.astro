@@ -5,9 +5,10 @@ import OpenChip from '../components/OpenChip.astro';
 import { DAYS, toWeek, hoursText } from '../lib/hours.js';
 import { SITE_URL, LOGO } from '../lib/site.js';
 
-interface Props { title: string; description: string; noindex?: boolean; footHours?: 'full' | 'link'; }
+interface Props { title: string; description: string; noindex?: boolean; footHours?: 'full' | 'link'; footVisit?: boolean; }
+// footVisit=false: the page already shows the address, Maps link and contacts, so the footer drops its Visit us column.
 // footHours='link': the page already shows the hours table, so the footer points to it instead of repeating it.
-const { title, description, noindex = false, footHours = 'full' } = Astro.props;
+const { title, description, noindex = false, footHours = 'full', footVisit = true } = Astro.props;
 const fullTitle = `${title} | Mulligan Games, Warminster PA`;
 const path = Astro.url.pathname;
 const canonical = SITE_URL + path;
@@ -96,13 +97,13 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
     <footer class="site-footer">
       <div class="wrap">
         <div class="foot-grid">
-          <div>
+          {footVisit && <div>
             <h2>Visit us</h2>
             <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
             <p><a href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
             {store.phone && <p><a href={`tel:${store.phone}`}>{store.phone}</a></p>}
             {store.email && <p><a href={`mailto:${store.email}`}>{store.email}</a></p>}
-          </div>
+          </div>}
           <div>
             <h2>Hours</h2>
             {footHours === 'link' ? (

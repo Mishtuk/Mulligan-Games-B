@@ -1,6 +1,7 @@
 /* Shop page. Tokens and components (box, pocket, slab, chip, form) come from global.css.
    Also holds the shared page-head and condition-guide styles used by /sell/ and /visit/. */
-.page-head { padding-top: var(--s-4); }
+.page-head { padding-top: var(--s-1); }
+@media (min-width: 52rem) { .page-head { padding-top: var(--s-4); } }
 .page-head h1 { font-size: var(--step-3); }
 
 /* Condition guide (also on /sell/) */

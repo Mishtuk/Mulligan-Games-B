@@ -42,10 +42,9 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
   .row-remove { order: 5; }
 }
 @container sell (min-width: 70rem) {
-  .sell-grid { grid-template-columns: minmax(0, 42rem) minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: var(--s-5); }
-  .slip-wrap { grid-column: 1; grid-row: 1 / span 2; }
-  .sign { grid-column: 2; grid-row: 1; }
-  .cond-wrap { grid-column: 2; grid-row: 2; }
+  .sell-grid { grid-template-columns: minmax(0, 42rem) minmax(0, 1fr); column-gap: var(--s-5); }
+  .slip-wrap { grid-column: 1; grid-row: 1; }
+  .sell-side { grid-column: 2; grid-row: 1; position: sticky; top: 5.5rem; }
 }
 @container sell (min-width: 40rem) {
   .stubs { grid-template-columns: repeat(3, minmax(0, 1fr)); }

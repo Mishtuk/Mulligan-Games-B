@@ -10,11 +10,11 @@ const L = store.links;
 const [num, ...rest] = a.street.split(' ');
 const road = rest.join(' ');
 ---
-<Base footHours="link" title="Hours and directions" description="Hours and directions for Mulligan Games, 445 York Road, Warminster, PA. House rules, what to bring, and a form to ask about stock or events.">
+<Base footHours="link" footVisit={false} title="Hours and directions" description="Hours and directions for Mulligan Games, 445 York Road, Warminster, PA. House rules, what to bring, and a form to ask about stock or events.">
   <div class="wrap visit">
     <header class="page-head">
       <h1>Visit us</h1>
-      <p class="page-lede">Stop in and stay for a game. Find a table, bring a deck.</p>
+      <p class="page-lede">Stop in and stay for a game.</p>
     </header>
 
     <section class="band visit-band" id="find" aria-labelledby="find-h">

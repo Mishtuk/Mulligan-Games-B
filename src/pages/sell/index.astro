@@ -20,6 +20,7 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
     </ol>
 
     <div class="sell-grid">
+      <div class="sell-side">
       <aside class="sign" aria-labelledby="sign-h">
         <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
         <h2 id="sign-h">We buy cards</h2>
@@ -29,6 +30,8 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
           <li>Bring them sleeved or in a box. Got bulk? Ask at the counter.</li>
         </ul>
       </aside>
+        <div class="cond-wrap"><ConditionGuide /></div>
+      </div>
 
       <section class="slip-wrap" id="buylist" aria-labelledby="slip-h">
         <div class="form-msg ok" id="buylist-ok" role="status" tabindex="-1" hidden>
@@ -96,10 +99,6 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
           <button class="btn" type="submit">Send my buylist</button>
         </form>
       </section>
-
-      <div class="cond-wrap">
-      <ConditionGuide />
-      </div>
     </div>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/sell-rows.js"></script>

@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 35 of 50 (Visit + chrome). Loops 1-34 done. Priorities: docs/review/loop-30/review.md (simplify and finish, no new objects).
+- RESUME HERE: loop 36 of 50 (A11y). Loops 1-35 done. Priorities: docs/review/loop-30/review.md (simplify and finish, no new objects).
 - [boss] refinement loop 31 (Home): see docs/review/loop-30/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 35 (Visit + chrome): Open in Maps beside the placard at 1280; footer Visit us column dropped on /visit/ (Base footVisit prop); smaller gap under the Open-now strip at 390 (page-head); Sell right column (sign + guide) sticky at 1280, guide now sits before the slip in DOM/390 order; cut Visit lede 2nd sentence. Tests 133. Shots docs/review/loop-35/.
 - Loop 34 (Sell): each fact once across steps, sign and sent panel; cut lede and What-we-look-at card; Shop want list two-column at 1100px+. Tests 132, a11y pass.
 - Loop 33 (Shop): shelf tags on case rows with visible caption, ConditionGuide folded on both Shop and Sell (one component), Sealed gap at 1280 closed, 132 tests, a11y + check-site pass. Shots docs/review/loop-33/.
 - Loop 32 (Events): fee shown only when known (no "–" chips, no legend sentence, special-night chip gone when unknown); one visible header row for the pairings sheet (aria-hidden div) while each day keeps its own table with a visually hidden thead + colgroup for column widths; cut "Same nights every week." Test added (131). Shots docs/review/loop-32/.
