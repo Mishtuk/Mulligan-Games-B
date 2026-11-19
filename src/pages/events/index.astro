@@ -7,7 +7,7 @@ import store from '../../data/store.json';
 import games from '../../data/games.json';
 import { DAYS, toWeek, fmtTime, byTime, zoned } from '../../lib/hours.js';
 import signup from '../../data/signup-events.json';
-import { gameId, isShown, isLikely, upcomingOneoffs, dateParts, signupLabel } from '../../lib/events.js';
+import { gameId, isShown, isLikely, upcomingOneoffs, dateParts, signupLabel, upcomingSignup } from '../../lib/events.js';
 import '../../styles/events.css';
 
 const week = toWeek(store.hours);
@@ -16,6 +16,7 @@ const order = [3, 4, 5, 6, 0, 1, 2];
 const weekly = events.weekly.filter(isShown);
 const days = order.map((d) => ({ d, name: DAYS[d], slug: DAYS[d].toLowerCase(), closed: !week[d], rows: weekly.filter((e) => e.day === d).sort(byTime) }));
 const special = upcomingOneoffs(events.oneoffs, zoned(store.timezone).date);
+const nights = upcomingSignup(signup.events, zoned(store.timezone).date);
 const likely = [...weekly, ...special].some(isLikely);
 const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
 const a = store.address;
@@ -112,8 +113,10 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       </div>
     </div>
 
-    <section class="box box-sky signup" id="signup" aria-labelledby="signup-h">
-      <span class="tab">Sign up</span>
+    <section class="signup" id="signup" aria-labelledby="signup-h">
+      <span class="clip" aria-hidden="true"></span>
+      <div class="paper">
+      <p class="sheet-label mono">Sign-up sheet</p>
       <h2 id="signup-h">Hold a seat</h2>
       <p>Pick a night, add your first name and email. Under 13? Bring a grown-up (confirm with the store).</p>
 
@@ -134,11 +137,13 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       </div>
       <noscript><p class="muted">No JavaScript, no message here. If the address ends in sent=signup, it went through.</p></noscript>
 
-      <form id="signup-form" method="post" action="/api/signup" novalidate>
+      <p class="signup-empty" id="signup-empty" role="status" hidden={nights.length > 0}>Sign-ups for the next nights open soon. Just turn up, or ask in store.</p>
+
+      <form id="signup-form" method="post" action="/api/signup" novalidate hidden={nights.length === 0}>
         <div class="field">
           <label for="su-event">Night <span class="hint">(required)</span></label>
           <select id="su-event" name="event_id" required>
-            {signup.events.map((e) => <option value={e.id}>{signupLabel(e)}</option>)}
+            {nights.map((e) => <option value={e.id} data-date={e.date}>{signupLabel(e)}</option>)}
           </select>
           <p class="hint seats" id="su-seats" aria-live="polite">Seats: ask</p>
         </div>
@@ -160,6 +165,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
         </div>
         <button class="btn" type="submit">Hold my seat</button>
       </form>
+      </div>
     </section>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/events.js"></script>

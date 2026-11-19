@@ -10,6 +10,7 @@ try { tz = JSON.parse(document.getElementById('hours-data').textContent).tz; } c
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+let reordered = false;
 function dated() {
   const z = zoned(tz), [y, m, d] = z.date.split('-').map(Number);
   for (const sec of $$('.day[data-day]')) {
@@ -26,6 +27,9 @@ function dated() {
   // Time order from today: today first, then the next six days (the page ships Wed..Tue for no-JS)
   const sheet = $('.sheet');
   if (sheet) for (const sec of $$('.day[data-day]').sort((a, b) => a.dataset.ahead - b.dataset.ahead)) sheet.append(sec);
+  // The browser scrolled to #wednesday etc. before the reorder moved it: scroll again (the .day scroll-margin clears the sticky header)
+  if (!reordered && sheet && /^#[a-z]+$/.test(location.hash)) document.querySelector(`.day${location.hash}`)?.scrollIntoView();
+  reordered = true;
   // Special nights already past (the page may be older than the visit)
   for (const li of $$('.ticket[data-date]')) {
     li.toggleAttribute('data-past', li.dataset.date < z.date);
@@ -72,6 +76,18 @@ async function seats() {
   };
   sel.addEventListener('change', say);
   say();
+}
+
+// The sign-up list is seeded by hand: drop nights that have already passed (store zone) and say so honestly when none are left.
+function pruneNights() {
+  const sel = $('#su-event'), form = $('#signup-form');
+  if (!sel || !form) return;
+  const today = zoned(tz).date;
+  for (const o of $$('option[data-date]', sel)) if (o.dataset.date < today) o.remove();
+  const none = sel.options.length === 0;
+  form.hidden = none;
+  const msg = $('#signup-empty');
+  if (msg) msg.hidden = !none;
 }
 
 function formState() {
@@ -127,6 +143,7 @@ function formState() {
 
 function run() { dated(); filter(); }
 run();
+pruneNights();
 seats();
 formState();
 document.addEventListener('visibilitychange', () => { if (!document.hidden) run(); });

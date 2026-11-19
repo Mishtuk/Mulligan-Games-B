@@ -38,11 +38,11 @@ const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
         </Fragment>
       </Pocket>
     ))}
-    <Pocket href="/events/#monthly" title="Monthly series">
+    <Pocket href="/events/#special" title="Monthly series">
       <p>Dates: ask in store.</p>
       <Fragment slot="foot"><span class="mono">Monthly</span></Fragment>
     </Pocket>
-    <Pocket href="/events/#open-play" title="Open play">
+    <Pocket href="/events/#sheet-h" title="Open play">
       <p class="pocket-game">{openPlayGames}</p>
       <p>{openPlayDays.map((d) => DAY_SHORT[d]).join(', ')}</p>
       <Fragment slot="foot"><span class="mono">Drop in</span></Fragment>

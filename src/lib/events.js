@@ -13,6 +13,10 @@ export const isLikely = (e) => /^Likely/i.test(e.certainty ?? '');
 export const upcomingOneoffs = (oneoffs, today) =>
   oneoffs.filter((e) => e.date && isShown(e) && e.date >= today).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 
+// Sign-up nights that are not before `today` (YYYY-MM-DD, store zone). The seed is made by hand (tools/seed-events.mjs), so a stale
+// build must never offer nights that have passed.
+export const upcomingSignup = (nights, today) => nights.filter((e) => e.date >= today);
+
 // ---- iCalendar (RFC 5545) ----
 export const TZID = 'America/New_York';
 const VTIMEZONE = ['BEGIN:VTIMEZONE', `TZID:${TZID}`,

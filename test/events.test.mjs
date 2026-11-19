@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fold, icsText, eventIcs, nextWeekday, upcomingOneoffs, gameId, signupLabel, dateParts } from '../src/lib/events.js';
+import { fold, icsText, eventIcs, nextWeekday, upcomingOneoffs, gameId, signupLabel, dateParts, upcomingSignup } from '../src/lib/events.js';
 
 import { seedEvents, seedSql, localToUtc } from '../src/lib/seed-events.js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -89,7 +89,7 @@ test('sign-up select mirrors the D1 seed in schema.sql (both generated from even
   assert.equal(rows.length, 12);
   assert.deepEqual(rows.map((r) => r.id), rows.map((_, i) => i + 1));
   assert.equal(signupLabel(signup.events[0]), 'Draft FNM, Fri Nov 20, 7pm');
-  assert.match(read('src/pages/events/index.astro'), /signup\.events\.map/);
+  assert.match(read('src/pages/events/index.astro'), /nights\.map/);
   const page = read('src/pages/events/index.astro');
   assert.match(page, /action="\/api\/signup"/);
   for (const n of ['name="event_id"', 'name="name"', 'name="email"', 'name="players_note"', 'name="website"']) assert.ok(page.includes(n), n);
@@ -126,4 +126,31 @@ test('pairings sheet ships Wed..Tue and the script rotates from today; closed da
   assert.match(page, /const order = \[3, 4, 5, 6, 0, 1, 2\]/);
   assert.match(page, /day-closed/);
   assert.match(js, /dataset\.ahead/);
+});
+
+test('sign-up never offers past nights: filtered at build (America/New_York) and in the browser, honest empty state', () => {
+  const nights = JSON.parse(read('src/data/signup-events.json')).events;
+  const first = nights[0].date, last = nights.at(-1).date;
+  assert.equal(upcomingSignup(nights, first).length, nights.length);
+  assert.equal(upcomingSignup(nights, '2026-11-21').every((e) => e.date >= '2026-11-21'), true);
+  assert.ok(upcomingSignup(nights, '2026-11-21').length < nights.length);
+  assert.deepEqual(upcomingSignup(nights, last).map((e) => e.date), [last]); // the night itself is still offered
+  assert.deepEqual(upcomingSignup(nights, '2099-01-01'), []); // every seeded night stale: nothing offered
+  const page = read('src/pages/events/index.astro'), js = read('public/js/events.js');
+  assert.match(page, /upcomingSignup\(signup\.events, zoned\(store\.timezone\)\.date\)/);
+  assert.match(page, /Sign-ups for the next nights open soon\. Just turn up, or ask in store\./);
+  assert.match(page, /data-date=\{e\.date\}/);
+  assert.match(js, /o\.dataset\.date < today/);
+  assert.match(js, /zoned\(tz\)\.date/);
+  assert.match(page, /hidden=\{nights\.length === 0\}/);
+});
+
+test('sign-up sheet is a clipboard: clip, SIGN-UP SHEET mono label, still a labelled form; day anchors re-scroll after the reorder', () => {
+  const page = read('src/pages/events/index.astro'), css = read('src/styles/events.css'), js = read('public/js/events.js');
+  assert.match(page, /class="clip" aria-hidden="true"/);
+  assert.match(page, /class="sheet-label mono">Sign-up sheet</);
+  assert.match(page, /<label for="su-name">/);
+  assert.doesNotMatch(css.slice(css.indexOf('/* sign-up')), /animation|transition/);
+  assert.match(css, /\.day \{[^}]*scroll-margin-top: .5rem/);
+  assert.match(js, /scrollIntoView\(\)/);
 });
