@@ -7,6 +7,8 @@ import '../../styles/visit.css';
 
 const a = store.address;
 const L = store.links;
+const [num, ...rest] = a.street.split(' ');
+const road = rest.join(' ');
 ---
 <Base footHours="link" title="Hours and directions" description="Hours and directions for Mulligan Games, 445 York Road, Warminster, PA. House rules, what to bring, and a form to ask about stock or events.">
   <div class="wrap visit">
@@ -16,10 +18,13 @@ const L = store.links;
     </header>
 
     <section class="band visit-band" id="find" aria-labelledby="find-h">
-        <h2 id="find-h">Address</h2>
-        <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
-        <p class="visit-actions"><a class="btn btn-secondary btn-wide" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
-        <p><strong>Parking:</strong> ask us.</p>
+        <h2 id="find-h" class="vh">Address</h2>
+        <address class="placard">
+          <span class="placard-num" aria-hidden="true">{num}</span>
+          <span class="vh">{num} </span><span class="placard-road">{road}</span>
+          <span class="placard-town">{a.city}, {a.state} {a.zip}</span>
+        </address>
+        <p class="visit-actions"><a class="btn btn-wide" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
         {(store.phone || store.email || L.discord) && (
           <ul class="reach">
             {store.phone && <li>Phone: <a href={`tel:${store.phone}`}>{store.phone}</a></li>}
@@ -54,7 +59,7 @@ const L = store.links;
       <section class="box visit-form" id="contact" aria-labelledby="contact-h">
         <span class="tab">Contact</span>
         <h2 id="contact-h">Ask us something</h2>
-        <p>Stock, preorders, events or your data. We reply by email.</p>
+        <p>Stock, events or your data. We reply by email.</p>
         <div class="form-msg ok" id="contact-ok" role="status" tabindex="-1" hidden>
           <h3><strong>Got it.</strong> Message sent.</h3>
           <p>We will reply by email.</p>
@@ -75,7 +80,7 @@ const L = store.links;
           </div>
           <div class="field">
             <label for="c-message">Message <span class="hint">(required)</span></label>
-            <textarea id="c-message" name="message" required maxlength="1000" rows="5"></textarea>
+            <textarea id="c-message" name="message" required maxlength="1000" rows="3"></textarea>
           </div>
           <div class="hp" aria-hidden="true">
             <label for="c-website">Leave this empty</label>

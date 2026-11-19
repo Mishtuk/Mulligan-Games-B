@@ -212,7 +212,7 @@ textarea { min-height: 6.5rem; resize: vertical; }
 .chip-strip { display: flex; align-items: center; background: var(--bg); }
 .chip-strip .chip { border-color: transparent; background: transparent; padding-inline: 0; }
 .chip-strip .chip.is-open { background: transparent; }
-html:not(.js) #menu-btn { display: none; }
+html:not(.js) #menu-btn, html:not(.js) #motion { display: none; }
 html:not(.js) .menu-sheet { display: block; position: static; box-shadow: none; }
 /* Scripts off the menu links sit open in the header, so the header scrolls away instead of covering a third of the screen. */
 html:not(.js) .site-header { position: static; }
