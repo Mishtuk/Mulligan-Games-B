@@ -64,3 +64,10 @@ test('form-check helpers', () => {
   assert.equal(plural(1), '1 thing');
   assert.equal(plural(3), '3 things');
 });
+
+test('sell: counter sign, three numbered stubs, condition guide folded and linked to Shop', { skip: !built }, () => {
+  const s = html('sell/index.html');
+  assert.match(s, /class="sign"[\s\S]*Rates are set at the counter/);
+  assert.equal((s.match(/class="stub"/g) || []).length, 3);
+  assert.match(s, /<details class="cond-fold"[\s\S]*href="\/shop\/#condition"/);
+});

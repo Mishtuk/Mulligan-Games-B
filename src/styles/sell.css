@@ -1,11 +1,5 @@
 /* Sell page: the buylist slip (receipt panel) and the rules column. Tokens and components come from global.css; page-head and guide from shop.css. */
 .sell-grid { display: grid; gap: var(--s-5); margin-top: var(--s-4); align-items: start; }
-.sell-rules .box { margin-top: var(--section); }
-.sell-rules .box:first-child { margin-top: 2.25rem; }
-.sell-rules .box > h2 { margin-bottom: var(--s-2); }
-.sell-rules .box > p + p { margin-top: var(--s-1); }
-.sell-rules .cond-table { margin-top: var(--s-3); }
-.sell-rules .cond-note { margin-top: var(--s-2); }
 
 .sell { container: sell / inline-size; }
 .slip-wrap { max-width: 42rem; width: 100%; container-type: inline-size; }
@@ -33,7 +27,6 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
 .radio { display: flex; align-items: center; gap: var(--s-2); min-height: var(--tap); }
 .radio input { width: 1.5rem; height: 1.5rem; margin: 0; accent-color: var(--accent2); }
 .slip .field { margin-bottom: var(--s-3); }
-.sell-rules .box { font-family: var(--font-body); }
 
 @container (min-width: 27rem) {
   .slip-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 6.5rem; }
@@ -49,6 +42,33 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
   .row-remove { order: 5; }
 }
 @container sell (min-width: 70rem) {
-  .sell-grid { grid-template-columns: minmax(0, 42rem) minmax(0, 1fr); column-gap: var(--s-5); }
-  .sell-rules .box:first-child { margin-top: 0; } /* top edge lines up with the slip (no tab above it) */
+  .sell-grid { grid-template-columns: minmax(0, 42rem) minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: var(--s-5); }
+  .slip-wrap { grid-column: 1; grid-row: 1 / span 2; }
+  .sign { grid-column: 2; grid-row: 1; }
+  .cond-wrap { grid-column: 2; grid-row: 2; }
 }
+@container sell (min-width: 40rem) {
+  .stubs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stubs .stub { border-top-style: solid; border-right: 3px dashed var(--soft-line); }
+  .stubs .stub:last-child { border-right: var(--border-w) solid var(--line); }
+}
+
+/* how it works: three receipt stubs */
+.stubs { display: grid; gap: 0; margin-top: var(--s-4); }
+.stub { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-3); align-items: center; padding: var(--s-3); background: var(--card); border: var(--border-w) solid var(--line); border-top-style: dashed; }
+.stub:first-child { border-top-style: solid; }
+.stub-no { font: var(--display-weight) var(--step-3)/1 var(--font-display); color: var(--accent2); min-width: 1.5ch; text-align: center; }
+.stub h2 { font-size: var(--step-1); }
+.stub p { font-size: var(--step--1); margin-top: .15rem; }
+
+/* counter sign, taped up */
+.sign { position: relative; margin-top: var(--s-5); padding: var(--s-5) var(--s-4) var(--s-4); background: var(--accent); color: var(--on-accent); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); rotate: -1deg; }
+.sign h2 { font-size: var(--step-3); line-height: 1; margin-bottom: var(--s-3); }
+.sign-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); font-weight: 700; }
+.sign-list li { padding-top: var(--s-1); border-top: 2px dashed var(--line); }
+.cond-wrap { margin-top: var(--s-4); }
+.cond-link { margin-top: var(--s-2); }
+.cond-fold {  background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.cond-fold summary { display: flex; align-items: center; min-height: var(--tap); padding: 0 var(--s-3); font: 700 var(--step-1)/1.2 var(--font-display); cursor: pointer; }
+.cond-fold[open] summary { border-bottom: 2px dashed var(--line); }
+.cond-fold > :not(summary) { margin: var(--s-3); }

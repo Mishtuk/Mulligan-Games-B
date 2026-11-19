@@ -62,6 +62,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 14 (Sell): counter sign + 3 receipt stubs + folded condition guide; cut How we pay box. Shots in docs/review/loop-14/.
 - (loop 13, Shop) Drawn singles case (.case in shop.css, shared .cback in global.css used by Home hero too); want list + condition guide in .shop-duo; guide compact (2 cols); scroll-margin removed on Shop sections. 121 tests, check-site PASS (port 4313), shots in docs/review/loop-13/.
 - Loop 12 (Events): clipboard sign-up sheet; stale seed nights filtered at build and in JS with an honest empty state (+2 tests, 121 total); compact pairings rows at 390; day anchor scroll fixed after reorder; Home Monthly/Open play links fixed; sign-up tab cut. Shots in docs/review/loop-12/.
 - Loop 11 (Home): want-list box 5fr/7fr two-column at 1100+; hero card-back fan (.hand); play grid = mini sleeved cards (.sleeve); Stop in box cut. Shots docs/review/loop-11/.
