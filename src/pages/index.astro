@@ -73,7 +73,7 @@ const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
     <section class="band band-mat" aria-labelledby="play-h">
       <h2 id="play-h">What we play</h2>
       <ul class="play-grid">
-        {games.map((g) => <Pocket href={`/events/?game=${g.id}`} title={g.name} variant="mini"><Fragment slot="art"><div class="sleeve" aria-hidden="true"></div></Fragment></Pocket>)}
+        {games.map((g) => <Pocket href={`/events/?game=${g.id}`} title={g.name} variant="mini"><Fragment slot="art"><div class={`sleeve g-${g.id}`} aria-hidden="true"></div></Fragment></Pocket>)}
       </ul>
     </section>
 

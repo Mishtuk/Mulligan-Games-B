@@ -8,7 +8,6 @@
 .home-tonight .box { margin-top: 2.25rem; }
 .home-binder { margin-top: var(--s-4); }
 .home-binder > h2 { margin-bottom: .25rem; }
-.home-binder > p { margin-bottom: var(--s-2); font-size: var(--step--1); }
 
 /* Tonight strip */
 .tonight h2 { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-2); }
@@ -32,7 +31,7 @@ html.js .tonight-nojs { display: none; }
 
 /* Game pockets */
 .play-grid, .sealed-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); margin-top: var(--s-3); }
-.play-grid { grid-template-columns: repeat(auto-fill, minmax(4.75rem, 1fr)); gap: var(--s-2) .5rem; }
+.play-grid { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); gap: var(--s-3) var(--s-2); }
 
 /* Hero: a fanned hand of three sleeved card backs (drawn, static) */
 .hand { display: none; position: absolute; right: var(--s-3); top: .9rem; font-size: 16px; width: 6em; height: 6em; pointer-events: none; }
@@ -47,7 +46,20 @@ html.js .tonight-nojs { display: none; }
 .play-grid .pocket-art { order: 1; flex: 1; margin: 0; min-height: 0; }
 .sleeve { position: relative; height: 100%; border: 2px solid var(--line); border-bottom: 0; border-radius: 2px 2px 0 0; background: repeating-linear-gradient(45deg, var(--sky) 0 .3rem, var(--card) .3rem .6rem); }
 .sleeve::before { content: ""; position: absolute; left: 50%; top: 50%; width: 1.1rem; height: 1.1rem; translate: -50% -50%; rotate: 45deg; background: var(--accent); border: 2px solid var(--line); }
-.play-grid .pocket-title { order: 2; flex: none; align-items: center; justify-content: center; min-height: 0; padding: .3rem .1rem; border: 2px solid var(--line); border-radius: 0 0 2px 2px; font-size: .7rem; line-height: 1.1; text-align: center; overflow-wrap: normal; hyphens: none; }
+.play-grid .pocket-title { order: 2; flex: none; align-items: center; justify-content: center; min-height: 0; padding: .3rem .1rem; border: 2px solid var(--line); border-radius: 0 0 2px 2px; font-size: .85rem; line-height: 1.1; text-align: center; overflow-wrap: normal; hyphens: none; }
+/* One back per game: same tokens, different pattern and mark */
+.g-pokemon { background: repeating-linear-gradient(0deg, var(--accent) 0 .3rem, var(--card) .3rem .6rem); }
+.g-pokemon::before { border-radius: 50%; background: var(--sky); }
+.g-one-piece { background: repeating-linear-gradient(90deg, var(--accent2) 0 .3rem, var(--card) .3rem .6rem); }
+.g-one-piece::before { rotate: 0deg; }
+.g-riftbound { background: repeating-linear-gradient(45deg, var(--sky) 0 .3rem, var(--card) .3rem .6rem), repeating-linear-gradient(-45deg, var(--sky) 0 .3rem, var(--card) .3rem .6rem); background-blend-mode: multiply; }
+.g-riftbound::before { background: var(--accent2); }
+.g-hololive { background: radial-gradient(circle, var(--accent) 0 .15rem, var(--card) .16rem) 0 0 / .7rem .7rem; }
+.g-hololive::before { border-radius: 50%; background: var(--accent2); }
+.g-tabletop { background: repeating-linear-gradient(135deg, var(--accent2) 0 .3rem, var(--sky) .3rem .6rem); }
+.g-tabletop::before { rotate: 0deg; background: var(--card); }
+.g-dnd { background: repeating-linear-gradient(45deg, var(--accent) 0 .3rem, var(--card) .3rem .6rem); }
+.g-dnd::before { background: var(--sky); }
 .play-grid .pocket:nth-child(odd) { rotate: -1deg; }
 .play-grid .pocket:nth-child(even) { rotate: 1deg; }
 .sealed-grid .pocket-body p { max-width: 20ch; }
@@ -55,8 +67,6 @@ html.js .tonight-nojs { display: none; }
 .sell-cta { margin-top: var(--s-3); }
 .home .box { margin-top: var(--section); }
 .home > .band, .home > .airy { margin-top: var(--section); }
-.home .home-tonight .box { margin-top: 2.25rem; }
-.home .hero { margin-top: var(--s-2); }
 
 @media (min-width: 600px) {
   .play-grid { grid-template-columns: repeat(4, minmax(0, 8rem)); gap: var(--s-3); }
@@ -71,12 +81,14 @@ html.js .tonight-nojs { display: none; }
   .home-binder { grid-column: 8 / 13; grid-row: 1 / 4; margin-top: 2.25rem; }
   .home-tonight { grid-column: 1 / 8; grid-row: 2; }
   .home > .box:not(.hero), .home > .band, .home > .airy { grid-column: 1 / -1; }
-  .home > .box.request { display: grid; grid-template-columns: 5fr 7fr; column-gap: var(--s-5); align-items: start; padding: var(--s-4) var(--s-5); }
+  .home > .box.request { display: grid; grid-template-columns: 3fr 9fr; column-gap: var(--s-5); align-items: start; padding: var(--s-4) var(--s-5); }
   .request > h2, .request > p { grid-column: 1; }
   .request > form, .request > .form-msg { grid-column: 2; max-width: none; margin-top: 0; }
-  .request > form { grid-row: span 3; display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-3); align-items: end; }
-  .request > form .field:first-child { grid-column: 1 / -1; }
-  .request > form .btn { justify-self: start; margin-bottom: var(--s-3); }
+  .request > form { grid-row: span 3; display: grid; grid-template-columns: 1.5fr 1fr 1fr; column-gap: var(--s-3); align-items: end; }
+  .request > form .field:first-child { grid-row: span 2; align-self: stretch; grid-template-rows: auto 1fr; }
+  .request > form textarea { height: 100%; min-height: 6rem; resize: none; }
+  .request > form .btn { grid-column: 3; justify-self: start; margin-bottom: var(--s-3); }
+  .request > form > :not(.field, .btn, .hp) { grid-column: 1 / -1; }
   .hand { font-size: 22px; right: var(--s-5); top: 1.5rem; }
   .home > .box.box-sky { grid-column: 1 / 8; }
   .home > .airy.sell { grid-column: 8 / 13; }
@@ -97,8 +109,6 @@ html.js .tonight-nojs { display: none; }
   .tonight-list li { padding-block: .15rem; }
   .home-binder { margin-top: var(--s-3); }
   .home-binder > h2 { font-size: var(--step-1); }
-  .home-binder > p { display: none; }
   .tonight-what .muted { display: none; }
 }
 .sell .slab-cond { font-size: var(--step-0); text-transform: uppercase; text-align: center; }
-.play-grid .pocket-title a { overflow-wrap: normal; }
