@@ -21,6 +21,10 @@ used in two rounds gets deleted.
 - **D5** (2026-11-19, boss): Stack? **Ruling:** Astro static build to `dist/`, Cloudflare Workers static assets with one
   Worker (`src/worker.js`) for `/api/*` forms and D1; tests with `node --test`; no deploy without the owner.
   **Why:** kit default (quick-site "Astro for more than one page"); five pages share a layout.
+- **D6** (2026-11-19, boss, loop 3): Toploader featured single on Shop with no real card? **Ruling:** removed until the
+  owner sends a real card photo; per-game "Ask in store" pockets replaced by one "On the shelf" panel; product pockets
+  render only from products.json rows. **Why:** empty placeholders read as a template, not a shop (D4 marked it optional).
+  DESIGN.md to be brought in line at loop 10.
 
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.

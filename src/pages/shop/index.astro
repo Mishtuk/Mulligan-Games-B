@@ -2,22 +2,22 @@
 import Base from '../../layouts/Base.astro';
 import Pocket from '../../components/Pocket.astro';
 import ConditionGuide from '../../components/ConditionGuide.astro';
-import Toploader from '../../components/Toploader.astro';
 import games from '../../data/games.json';
 import products from '../../data/products.json';
+import { splitProducts, joinNames } from '../../lib/shop.js';
 import '../../styles/shop.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
-const sealed = products.filter((p) => p.kind !== 'preorder');
-const preorders = products.filter((p) => p.kind === 'preorder');
+const { sealed, preorders } = splitProducts(products);
+const gameNames = joinNames(games);
 const price = (n: number | null) => (n === null || n === undefined ? 'Ask in store' : `$${n}`);
 ---
 <Base title="Shop singles, sealed and preorders" description="Singles, sealed product and preorders at Mulligan Games in Warminster, PA. Send a want list, check our condition guide, and ask in store for stock and prices.">
   <div class="wrap shop">
     <header class="page-head">
       <h1>Shop</h1>
-      <p class="page-lede">Singles, sealed product and preorders. Stock changes daily, so ask at the counter or send a request.</p>
+      <p class="page-lede">Singles, sealed product and preorders. Stock changes daily, so ask at the counter or send a want list.</p>
       <nav class="shop-jump" aria-label="Shop sections">
         <a class="chip" href="#singles">Singles</a>
         <a class="chip" href="#sealed">Sealed</a>
@@ -31,7 +31,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
       <div class="singles-grid">
         <div class="request" id="request">
           <h3>Looking for a card?</h3>
-          <p>No online catalog yet. Send a want list and we will message you if we find it. Add set, condition and how many on the same line if it matters.</p>
+          <p>No online catalog yet. Send a want list and we will message you if we find it.</p>
           <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
             <h3><strong>Got it.</strong> Request sent.</h3>
             <p>We will message you if we find it. Nothing else is sent to you.</p>
@@ -43,8 +43,9 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
           </div>
           <form id="request-form" method="post" action="/api/request" novalidate>
             <div class="field">
-              <label for="req-cards">Card or cards you want <span class="hint">(required, one per line, up to 50)</span></label>
-              <textarea id="req-cards" name="cards" required maxlength="2000" rows="4"></textarea>
+              <label for="req-cards">Card or cards you want <span class="hint">(required, up to 50 lines)</span></label>
+              <p class="example" id="req-cards-ex">One card per line: name, set, condition, how many. Example: <span class="mono-ex">Sol Ring, Commander Masters, NM, 1</span></p>
+              <textarea id="req-cards" name="cards" required maxlength="2000" rows="6" aria-describedby="req-cards-ex"></textarea>
             </div>
             <div class="field">
               <label for="req-game">Game <span class="hint">(required)</span></label>
@@ -67,7 +68,6 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
             <button class="btn" type="submit">Send request</button>
           </form>
         </div>
-        <Toploader />
       </div>
 
       <h3 class="sub" id="condition">Condition guide</h3>
@@ -78,44 +78,41 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
     <section class="box box-sky" id="sealed" aria-labelledby="sealed-h">
       <span class="tab">02 / Sealed</span>
       <h2 id="sealed-h">Sealed product</h2>
-      <p>Boxes, decks and more. Prices and stock: ask in store.</p>
-      <ul class="shop-grid">
-        {sealed.length ? sealed.map((p) => (
-          <Pocket href="/visit/#contact" title={p.name} variant="sealed">
-            <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
-            <p>{p.game}</p>
-            <Fragment slot="foot"><span class="sticker">{price(p.price)}</span></Fragment>
-          </Pocket>
-        )) : games.map((g) => (
-          <Pocket href="/visit/#contact" title={g.name} variant="sealed">
-            <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
-            <p>Sealed {g.name} product.</p>
-            <Fragment slot="foot"><span class="chip">Ask in store</span></Fragment>
-          </Pocket>
-        ))}
-      </ul>
-      <p class="empty-line">Stock changes daily. Ask at the counter or send a request.</p>
+      {sealed.length ? (
+        <ul class="shop-grid">
+          {sealed.map((p) => (
+            <Pocket href="/visit/#contact" title={p.name} variant="sealed">
+              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+              <p>{p.game}</p>
+              <Fragment slot="foot"><span class="sticker">{price(p.price)}</span></Fragment>
+            </Pocket>
+          ))}
+        </ul>
+      ) : (
+        <div class="shelf">
+          <h3>On the shelf</h3>
+          <p>We stock {gameNames}. Prices and stock change daily, so ask in store.</p>
+          <a class="btn" href="/visit/#contact">Ask in store</a>
+        </div>
+      )}
     </section>
 
     <section class="box" id="preorders" aria-labelledby="preorders-h">
       <span class="tab">03 / Preorders</span>
       <h2 id="preorders-h">Preorders</h2>
-      <p>Release dates and deposits: ask in store.</p>
-      <ul class="shop-grid">
-        {preorders.length ? preorders.map((p) => (
-          <Pocket href="/visit/#contact" title={p.name} variant="preorder">
-            <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
-            <p>{p.game}</p>
-            <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}<span class="sticker">{price(p.price)}</span></Fragment>
-          </Pocket>
-        )) : games.map((g) => (
-          <Pocket href="/visit/#contact" title={g.name} variant="preorder">
-            <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
-            <p>Upcoming {g.name} releases.</p>
-            <Fragment slot="foot"><span class="mono">Date: ask</span><span class="chip">Deposit: ask in store</span></Fragment>
-          </Pocket>
-        ))}
-      </ul>
+      {preorders.length ? (
+        <ul class="shop-grid">
+          {preorders.map((p) => (
+            <Pocket href="/visit/#contact" title={p.name} variant="preorder">
+              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
+              <p>{p.game}</p>
+              <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}<span class="sticker">{price(p.price)}</span></Fragment>
+            </Pocket>
+          ))}
+        </ul>
+      ) : (
+        <p>No preorders listed here yet. <a href="/visit/#contact">Ask in store</a> about upcoming releases, dates and deposits.</p>
+      )}
     </section>
   </div>
   <script is:inline slot="scripts" src="/js/request-form.js" defer></script>
