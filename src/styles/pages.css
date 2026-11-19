@@ -4,9 +4,16 @@
 .nf-box h1 { font-size: var(--step-3); }
 .page-lede { margin-top: var(--s-2); font-size: var(--step-1); line-height: 1.35; }
 .nf-cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-4); }
-.nf-pocket { width: 11rem; }
-.nf-pocket .pocket { aspect-ratio: 5 / 7; }
-.nf-pocket .pocket-body { justify-content: center; align-items: center; text-align: center; font-family: var(--font-mono); }
+/* misprinted card: generic sleeved card whose printed frame is off-centre and crooked (drawn, static) */
+.misprint { width: 11rem; aspect-ratio: 5 / 7; padding: .45rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: 10px; box-shadow: var(--shadow); rotate: 2deg; justify-self: start; }
+.mp-card { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; background: var(--card); border: 2px solid var(--line); border-radius: 4px; }
+.mp-card > span { position: absolute; display: block; }
+.mp-frame { inset: .9rem -.9rem .3rem .9rem; border: 3px solid var(--accent2); rotate: -3.5deg; }
+.mp-title { left: 1.5rem; right: .2rem; top: 1.5rem; height: 1.1rem; background: var(--sky); border: 2px solid var(--line); rotate: -3.5deg; }
+.mp-art { left: 1.7rem; right: .4rem; top: 3.5rem; height: 38%; background: repeating-linear-gradient(45deg, var(--accent) 0 .5rem, var(--card) .5rem 1rem); border: 2px solid var(--line); rotate: -3.5deg; }
+.mp-text { left: 1.9rem; right: .7rem; bottom: 2.6rem; height: .35rem; background: var(--soft-line); rotate: -3.5deg; }
+.mp-short { bottom: 1.9rem; right: 2.6rem; }
+.mp-stamp { left: .5rem; bottom: .5rem; padding: .05em .4em; background: var(--line); color: var(--bg); font: 700 var(--step--1)/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
 @media (min-width: 820px) {
   .nf { grid-template-columns: minmax(0, 1fr) 12rem; column-gap: var(--s-5); }
   .nf-box { padding: var(--s-5); }
@@ -15,8 +22,11 @@
 .prose { padding-top: var(--s-4); }
 .prose .page-head { padding-top: 0; }
 .prose h1 { font-size: var(--step-3); }
-.prose section { margin-top: var(--s-5); max-width: var(--measure); }
-.prose h2 { margin-bottom: var(--s-2); }
+.prose section { margin-top: var(--s-5); padding-top: var(--s-4); max-width: var(--measure); border-top: 2px solid var(--soft-line); }
+.prose .page-head + section { margin-top: var(--s-4); }
+.prose h2 { margin-bottom: var(--s-2); font-size: var(--step-2); }
 .prose p + p, .prose ul { margin-top: var(--s-2); }
+.prose ul + p { margin-top: var(--s-3); }
 .prose ul { display: grid; gap: var(--s-1); padding-left: 1.2rem; list-style: disc; }
+.prose .page-head { max-width: var(--measure); }
 .prose .page-head p.muted { margin-top: var(--s-2); }

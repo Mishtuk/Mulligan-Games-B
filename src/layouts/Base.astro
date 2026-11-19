@@ -5,8 +5,9 @@ import OpenChip from '../components/OpenChip.astro';
 import { DAYS, toWeek, hoursText } from '../lib/hours.js';
 import { SITE_URL, LOGO } from '../lib/site.js';
 
-interface Props { title: string; description: string; noindex?: boolean; }
-const { title, description, noindex = false } = Astro.props;
+interface Props { title: string; description: string; noindex?: boolean; footHours?: 'full' | 'link'; }
+// footHours='link': the page already shows the hours table, so the footer points to it instead of repeating it.
+const { title, description, noindex = false, footHours = 'full' } = Astro.props;
 const fullTitle = `${title} | Mulligan Games, Warminster PA`;
 const path = Astro.url.pathname;
 const canonical = SITE_URL + path;
@@ -104,12 +105,18 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
           </div>
           <div>
             <h2>Hours</h2>
-            <dl class="hours">
-              {order.map((d) => (
-                <div data-day={d}><dt>{DAYS[d]}</dt><dd>{hoursText(week[d])}</dd></div>
-              ))}
-            </dl>
-            <p class="foot-note">Hours and nights can change, so check before a long trip.</p>
+            {footHours === 'link' ? (
+              <p class="foot-hours-link"><a href="#hours">Opening hours, in the table above</a></p>
+            ) : (
+              <>
+                <dl class="hours">
+                  {order.map((d) => (
+                    <div data-day={d}><dt>{DAYS[d]}</dt><dd>{hoursText(week[d])}</dd></div>
+                  ))}
+                </dl>
+                <p class="foot-note">Hours and nights can change, so check before a long trip.</p>
+              </>
+            )}
           </div>
           <nav aria-label="Footer: find us online">
             <h2>Find us online</h2>

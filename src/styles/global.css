@@ -111,6 +111,13 @@ main { container-type: inline-size; } /* 100cqw = the page width without the scr
 .tape { position: absolute; top: -.8rem; width: 4.5rem; height: 1.4rem; background: var(--sky); border: 2px solid var(--line); pointer-events: none; }
 .tape-l { left: 1rem; rotate: -4deg; }
 .tape-r { right: 1rem; rotate: 3deg; }
+/* posted sign, taped up (Sell counter sign, Visit house rules). .sign-sky is the paper-blue variant */
+.sign { position: relative; margin-top: var(--s-5); padding: var(--s-5) var(--s-4) var(--s-4); background: var(--accent); color: var(--on-accent); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); rotate: -1deg; }
+.sign-sky { background: var(--bg2); color: var(--text); rotate: 1deg; }
+.sign h2 { font-size: var(--step-3); line-height: 1; margin-bottom: var(--s-3); }
+.sign-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); font-weight: 700; }
+.sign-list li { padding-top: var(--s-1); border-top: 2px dashed var(--line); }
+.sign-note { margin-top: var(--s-3); font-size: var(--step--1); font-weight: 400; }
 .stripe { height: 1rem; background: repeating-linear-gradient(-45deg, var(--line) 0 14px, var(--accent) 14px 28px); border-block: var(--border-w) solid var(--line); }
 
 /* ---- placeholder photo ---- */
@@ -230,6 +237,7 @@ html:not(.js) .menu-sheet { display: block; position: static; box-shadow: none; 
 .hours [aria-current="date"] { background: var(--card); border-left: 4px solid var(--accent2); }
 .hours [aria-current="date"] dt::after { content: " (today)"; font-weight: 400; }
 .foot-links { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-3); }
+.foot-hours-link { margin: 0; }
 .foot-note { color: var(--muted); font-size: var(--step--1); margin-top: var(--s-1); }
 .foot-legal { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--soft-line); color: var(--muted); font-size: var(--step--1); max-width: none; }
 

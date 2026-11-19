@@ -8,7 +8,7 @@ import '../../styles/visit.css';
 const a = store.address;
 const L = store.links;
 ---
-<Base title="Hours and directions" description="Hours and directions for Mulligan Games, 445 York Road, Warminster, PA. House rules, what to bring, and a form to ask about stock or events.">
+<Base footHours="link" title="Hours and directions" description="Hours and directions for Mulligan Games, 445 York Road, Warminster, PA. House rules, what to bring, and a form to ask about stock or events.">
   <div class="wrap visit">
     <header class="page-head">
       <h1>Visit us</h1>
@@ -37,17 +37,18 @@ const L = store.links;
           <HoursTable />
         </section>
 
-        <section class="airy" id="play" aria-labelledby="play-h">
-          <h2 id="play-h">Play space and house rules</h2>
-          <p><strong>Bring:</strong> your deck, sleeves and dice. New to a game? Ask the counter.</p>
-          <ul class="rules">
-            <li>Be kind. Everyone here is trying to have a good night.</li>
+        <aside class="sign sign-sky" id="play" aria-labelledby="play-h">
+          <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
+          <h2 id="play-h">House rules</h2>
+          <ul class="sign-list">
+            <li>Be kind. Everyone is here for a good night.</li>
             <li>Ask before you touch someone else's cards.</li>
             <li>Clean up your table when you leave.</li>
             <li>Stay home if you are sick.</li>
-            <li>Age rules and entry fees: <span class="chip">Ask in store</span></li>
+            <li>Bring your deck, sleeves and dice. New to a game? Ask the counter.</li>
           </ul>
-        </section>
+          <p class="sign-note">Age rules and entry fees: confirm with the store.</p>
+        </aside>
       </div>
 
       <section class="box visit-form" id="contact" aria-labelledby="contact-h">

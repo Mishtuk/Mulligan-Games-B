@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 15 of 50 (lens 5 Visit + chrome), priorities in docs/review/loop-10/review.md. Loops 1-14 done and pushed. Stopped 2026-11-19 at the usage limit; working tree was clean.
+- RESUME HERE: loop 16 of 50 (lens 6 A11y + motion), priorities in docs/review/loop-10/review.md. Loops 1-15 done; loop 15 (Visit + chrome) not yet committed by the boss.
 - [boss] refinement loop 11 (Home): see docs/review/loop-10/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- 2026-11-19 loop 15 (Visit + chrome): `.sign` moved to global.css (+ `.sign-sky`), Visit house rules are a taped sign; Base prop `footHours="link"` drops the footer hours list on /visit/; 404 is a drawn misprinted card; Privacy has section dividers and 62ch; hours header right-aligned. 123 tests, check-site PASS.
 - Loop 14 (Sell): counter sign + 3 receipt stubs + folded condition guide; cut How we pay box. Shots in docs/review/loop-14/.
 - (loop 13, Shop) Drawn singles case (.case in shop.css, shared .cback in global.css used by Home hero too); want list + condition guide in .shop-duo; guide compact (2 cols); scroll-margin removed on Shop sections. 121 tests, check-site PASS (port 4313), shots in docs/review/loop-13/.
 - Loop 12 (Events): clipboard sign-up sheet; stale seed nights filtered at build and in JS with an honest empty state (+2 tests, 121 total); compact pairings rows at 390; day anchor scroll fixed after reorder; Home Monthly/Open play links fixed; sign-up tab cut. Shots in docs/review/loop-12/.
