@@ -9,7 +9,7 @@
   if (failed && err) { err.hidden = false; }
   if (sent || failed) {
     const target = sent ? ok : err;
-    target?.focus();
+    requestAnimationFrame(() => target?.focus());
     try { history.replaceState(null, '', location.pathname + '#request'); } catch { /* ignore */ }
   }
   form.addEventListener('submit', (e) => {

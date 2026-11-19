@@ -61,6 +61,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 6 (Accessibility and motion): 200% text fixed on Events and Sell (container queries in rem), menu sheet closes on focus or click out, shared public/js/form-check.js (summary, aria-describedby, focus) on Home, Shop, Sell, Visit, pocket link names, role=group cut from buylist rows; test/a11y.test.mjs (+7, 103). CDP checks in .work/ (zoom, menu, motion, forms, landmarks). Shots in docs/review/loop-06. Not committed.
 - Loop 5 (Visit + chrome): jargon removed from all built HTML (test/no-jargon.test.mjs), footer tightened to 3 blocks, Visit page gets Bring line and primary Maps button, chip strip slimmed. Screenshots docs/review/loop-05/.
 - Loop 04 (Sell): slip starts at one row with JS (public/js/sell-rows.js trims the 3 server rows, Remove hidden on a single row, showRemove tested); receipt header, "lines: N" foot, one-line rows at >=820; store credit folded into How we pay; two-column at >=1180. 95 tests. Not committed.
 - Loop 03 (Shop): sealed/preorders render pockets only when products.json has rows (src/lib/shop.js), else one "On the shelf" panel + preorder note; want-list worked example; toploader placeholder removed; chip anchors scroll-margin. 95 tests green.

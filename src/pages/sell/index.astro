@@ -37,7 +37,7 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
           <div class="tear" aria-hidden="true"></div>
           <ol class="slip-rows">
             {ROWS.map((n) => (
-              <li class="slip-row" role="group" aria-label={`Card ${n}`}>
+              <li class="slip-row" aria-label={`Card ${n}`}>
                 <p class="row-top"><span class="mono">Card <span class="row-no">{n}</span></span>
                   <button type="button" class="row-remove btn btn-ghost" hidden aria-label={`Remove card ${n}`}>Remove</button></p>
                 <label class="f-name"><span>Card name{n === 1 ? ' (required)' : ''}</span>
@@ -100,4 +100,5 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
     </div>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/sell-rows.js"></script>
+  <script is:inline slot="scripts" type="module" src="/js/form-check.js"></script>
 </Base>

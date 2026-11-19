@@ -8,7 +8,7 @@
   if (sent && ok) { form.hidden = true; ok.hidden = false; }
   if (failed && err) err.hidden = false;
   if (sent || failed) {
-    (sent ? ok : err)?.focus();
+    const p = sent ? ok : err; requestAnimationFrame(() => p?.focus());
     try { history.replaceState(null, '', location.pathname + '#contact'); } catch { /* ignore */ }
   }
   form.addEventListener('submit', (e) => {

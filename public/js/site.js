@@ -25,9 +25,13 @@
   if (menu && sheet) {
     const set = (open) => { sheet.toggleAttribute('data-open', open); menu.setAttribute('aria-expanded', String(open)); };
     menu.addEventListener('click', () => set(!sheet.hasAttribute('data-open')));
-    document.querySelector('.site-header').addEventListener('keydown', (e) => {
+    const header = document.querySelector('.site-header');
+    header.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && sheet.hasAttribute('data-open')) { set(false); menu.focus(); }
     });
+    // Focus or a click leaving the header closes the sheet, so it never hangs open over the page behind it.
+    header.addEventListener('focusout', (e) => { if (e.relatedTarget && !header.contains(e.relatedTarget)) set(false); });
+    document.addEventListener('click', (e) => { if (!header.contains(e.target)) set(false); });
     matchMedia('(min-width: 820px)').addEventListener('change', (e) => { if (e.matches) set(false); });
   }
 })();

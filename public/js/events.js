@@ -84,7 +84,7 @@ function formState() {
   if (panel) {
     if (panel !== err) form.hidden = true;
     panel.hidden = false;
-    panel.focus();
+    requestAnimationFrame(() => panel.focus()); // after first layout, or the browser drops the focus
     try { history.replaceState(null, '', location.pathname + '#signup'); } catch { /* ignore */ }
   }
 

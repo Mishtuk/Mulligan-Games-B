@@ -77,8 +77,8 @@ if (typeof document !== 'undefined') {
     // Result panels
     const state = stateFromQuery(location.search);
     const ok = document.getElementById('buylist-ok'), err = document.getElementById('buylist-err');
-    if (state === 'sent' && ok) { form.hidden = true; ok.hidden = false; ok.focus(); }
-    if (state === 'error' && err) { err.hidden = false; err.focus(); }
+    if (state === 'sent' && ok) { form.hidden = true; ok.hidden = false; requestAnimationFrame(() => ok.focus()); }
+    if (state === 'error' && err) { err.hidden = false; requestAnimationFrame(() => err.focus()); }
     if (state) { try { history.replaceState(null, '', location.pathname + '#buylist'); } catch { /* ignore */ } }
 
     form.addEventListener('submit', (e) => {
