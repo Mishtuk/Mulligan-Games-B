@@ -1,4 +1,4 @@
-/* Sell page: the buylist slip (receipt panel) and the rules column. Tokens and components come from global.css; page-head and guide from shop.css. */
+/* Sell page: the buylist slip (receipt panel) and the rules column. Tokens and components come from global.css; page-head and guide from shared.css. */
 .sell-grid { display: grid; gap: var(--s-5); margin-top: var(--s-4); align-items: start; }
 
 .sell { container: sell / inline-size; }

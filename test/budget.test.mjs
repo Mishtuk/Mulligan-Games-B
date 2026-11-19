@@ -11,9 +11,9 @@ const skip = !fs.existsSync(dist);
 const pages = ['index', 'events/index', 'shop/index', 'sell/index', 'visit/index', 'privacy/index', '404'];
 const read = (f) => fs.readFileSync(path.join(dist, f));
 
-// Loop 29 (CSS split per page: Pocket, home and shop-only rules left global.css): heaviest raw page Events about 129,000 bytes, heaviest gzipped page Events 18,177 (Sell 17,927; HTML+CSS+JS, fonts counted raw). Loop 19 was 129,847 / 19,087 (Sell).
-// Gzip stays at 19,200 on purpose: about 1,000 bytes of headroom now. Before adding CSS, put it in the page file, not global.css; trim before raising.
-const BUDGET = { raw: 136000, gzip: 19200 };
+// Loop 39 measure (HTML+CSS+JS, fonts counted raw): heaviest raw page Events 125,812 bytes; heaviest gzipped page Home 18,616 (Events 18,270, Sell 17,764).
+// Budget is about 5% above the heaviest page. Before adding CSS, put it in the page file, not global.css; trim before raising.
+const BUDGET = { raw: 132100, gzip: 19550 };
 
 // Every CSS and JS file the page loads: linked files plus the modules they import.
 function assets(html) {

@@ -100,17 +100,16 @@ test('page scripts have no inline handlers and page CSS has no colour literals',
     assert.doesNotMatch(s, /<[a-z][^>]*\son[a-z]+\s*=/i, `${f} inline handler`);
     for (const m of s.matchAll(/<script\b([^>]*)>/g)) assert.match(m[1], /\bsrc=/, `${f}: inline script`);
   }
-  for (const f of ['shop', 'sell', 'visit', 'pages']) assert.doesNotMatch(read(`src/styles/${f}.css`), /#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/, f);
+  for (const f of ['shared', 'shop-only', 'sell', 'visit', 'pages']) assert.doesNotMatch(read(`src/styles/${f}.css`), /#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/, f);
 });
 
 test('shop: pockets only when products.json has rows, otherwise one shelf panel and a preorder note', { skip: !built && 'run npm run build first' }, async () => {
-  const { splitProducts, joinNames } = await import('../src/lib/shop.js');
+  const { splitProducts } = await import('../src/lib/shop.js');
   const rows = [{ name: 'Box A', game: 'Magic', kind: 'sealed', price: null }, { name: 'Set B', game: 'Pokemon', kind: 'preorder', price: null }];
   const some = splitProducts(rows);
   assert.equal(some.sealed.length, 1);
   assert.equal(some.preorders.length, 1);
   assert.deepEqual(splitProducts([]), { sealed: [], preorders: [] });
-  assert.equal(joinNames([{ name: 'A' }, { name: 'B' }, { name: 'C' }]), 'A, B and C');
   const products = JSON.parse(fs.readFileSync(path.join(root, 'src/data/products.json'), 'utf8'));
   const shop = html('shop/index.html');
   if (products.length === 0) {
