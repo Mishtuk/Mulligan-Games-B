@@ -9,7 +9,9 @@ const rows = [
   ['Damaged', 'DMG', 'Something is wrong with the card.', 'Tears, water damage, thin spots, ink or marker.'],
 ];
 ---
-<div class="cond-guide">
+<details class="cond-fold">
+  <summary><span><span class="cf-show">Show</span><span class="cf-hide">Hide</span> condition guide (NM–DMG)</span></summary>
+  <div class="cond-guide">
   <table class="cond-table">
     <caption class="vh">Card condition guide</caption>
     <thead><tr><th scope="col">Condition</th><th scope="col">What it looks like</th></tr></thead>
@@ -23,4 +25,5 @@ const rows = [
     </tbody>
   </table>
   <p class="muted cond-note">A guide, not a promise. We grade every card at the counter.</p>
-</div>
+  </div>
+</details>

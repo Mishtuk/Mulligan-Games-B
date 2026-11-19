@@ -12,6 +12,7 @@ import '../../styles/shop-only.css';
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
 const { sealed, preorders } = splitProducts(products);
 const gameNames = joinNames(games);
+const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbound"];
 const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the counter' : `$${n}`);
 ---
 <Base title="Singles, sealed and preorders" description="Singles, sealed product and preorders for Magic, Pokemon, One Piece and more in Warminster, PA. Send a want list or ask at the counter.">
@@ -28,18 +29,22 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
 
     <section class="airy" id="singles" aria-labelledby="singles-h">
       <h2 id="singles-h">Singles</h2>
-      <div class="case" aria-hidden="true">
+      <p class="muted case-note">Singles by game. Ask at the counter for a price.</p>
+      <div class="case">
         {[0, 1].map((r) => (
           <div class="case-shelf">
+            <p class="shelf-tag">{shelfTags[r]}</p>
+            <div class="slots" aria-hidden="true">
             {Array.from({ length: 8 }, (_, i) => (
               <span class={`slot${(i + r * 3) % 4 === 1 ? ' is-top' : ''}`}><i class={`cback v${(i + r) % 3}`}></i><b class="price">ASK</b></span>
             ))}
+            </div>
           </div>
         ))}
       </div>
+      <ConditionGuide />
     </section>
 
-    <div class="shop-duo">
     <section class="box request" id="request" aria-labelledby="request-h">
       <h2 id="request-h">Not in the case? Ask for it.</h2>
       <p>No online catalog yet. Send a want list and we will email you if it turns up.</p>
@@ -79,12 +84,6 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
         <button class="btn" type="submit">Send my want list</button>
       </form>
     </section>
-
-    <section class="box box-sky" id="condition" aria-labelledby="condition-h">
-      <h2 id="condition-h">Condition guide</h2>
-      <ConditionGuide />
-    </section>
-    </div>
 
     <section class="band band-crimp" id="sealed" aria-labelledby="sealed-h">
       <div class="stock"><div class="stock-sealed">

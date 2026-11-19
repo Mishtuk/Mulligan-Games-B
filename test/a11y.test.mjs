@@ -89,3 +89,11 @@ test('Home shows a fee chip only for a known fee (no "Ask at the counter" sticke
   assert.doesNotMatch(s, /<span class="sticker">(?!\$\d)/);
   assert.match(s, /<span class="sticker">\$\d+<\/span>/);
 });
+
+test('shop: condition guide folded like Sell (one component, closed); case rows carry visible game tags', { skip: !built }, () => {
+  const shop = fs.readFileSync(path.join(dist, 'shop', 'index.html'), 'utf8'), sell = fs.readFileSync(path.join(dist, 'sell', 'index.html'), 'utf8');
+  for (const h of [shop, sell]) { assert.match(h, /<details class="cond-fold"[^>]*>/); assert.doesNotMatch(h, /<details class="cond-fold" open/); }
+  assert.match(shop, /class="shelf-tag">Magic · Commander staples</);
+  assert.match(shop, /class="shelf-tag">Pokemon · One Piece · Riftbound</);
+  assert.doesNotMatch(shop, /class="case" aria-hidden/);
+});

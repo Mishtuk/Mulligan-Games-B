@@ -34,7 +34,7 @@ const shapeProbe = `(() => { const out = [];
   const cx = r.left + r.width / 2, cy = r.top + Math.min(r.height / 2, 12); if (cx < 0 || cy < 0 || cx > innerWidth || cy > innerHeight) continue;
   const clipped = (() => { for (let n = e.parentElement; n && n !== document.body; n = n.parentElement) { if (getComputedStyle(n).overflow !== 'visible') { const q = n.getBoundingClientRect(); if (cx < q.left || cx > q.right || cy < q.top || cy > q.bottom) return true; } } return false; })(); if (clipped) continue;
   const top = document.elementFromPoint(cx, cy); if (top && top !== e && !e.contains(top) && !top.contains(e) && !(top.tagName === 'A' && top.closest('li,article,tr,.pocket')?.contains(e))) out.push('text covered by ' + top.tagName + '.' + top.className + ': ' + e.tagName + '.' + e.className + ' ' + e.textContent.trim().slice(0, 24)); }
- for (const e of document.querySelectorAll('.cback,.sleeve,.case,.clip,.tape,.misprint,.box-sil,.hand,.stub-no,[class*=mp-]')) if (!e.closest('[aria-hidden=true]')) out.push('drawn shape not aria-hidden: ' + e.tagName + '.' + e.className);
+ for (const e of document.querySelectorAll('.cback,.sleeve,.slots,.clip,.tape,.misprint,.box-sil,.hand,.stub-no,[class*=mp-]')) if (!e.closest('[aria-hidden=true]')) out.push('drawn shape not aria-hidden: ' + e.tagName + '.' + e.className);
  return [...new Set(out)].slice(0, 10); })()`;
 
 // Body text under 12.8px (.8rem); decorative aria-hidden text is exempt.

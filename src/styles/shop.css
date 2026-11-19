@@ -26,3 +26,17 @@
   .cond-table .slab { grid-template-columns: minmax(0, 1fr); }
   .cond-table .slab-cond { border-left: 0; border-top: var(--border-w) solid var(--line); }
 }
+
+/* Condition guide fold: one state (closed) on /shop/ and /sell/ */
+.cond-fold {  background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.cond-fold summary { display: flex; align-items: center; min-height: var(--tap); padding: 0 var(--s-3); font-weight: 700; cursor: pointer; }
+.cond-fold summary::after { content: "+"; margin-left: auto; padding-left: var(--s-3); font: 700 var(--step-2)/1 var(--font-display); }
+.cond-fold[open] summary::after { content: "\2212"; }
+.cond-fold summary::-webkit-details-marker { display: none; }
+.cond-fold summary { list-style: none; }
+.cond-fold summary .cf-hide, .cond-fold[open] summary .cf-show { display: none; }
+.cond-fold[open] summary .cf-hide { display: inline; }
+.cond-fold summary > span { flex: 1; }
+.cond-fold summary:hover { background: var(--card); }
+.cond-fold[open] summary { border-bottom: 2px dashed var(--line); }
+.cond-fold > :not(summary) { margin: var(--s-3); }
