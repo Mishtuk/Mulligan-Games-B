@@ -9,7 +9,6 @@ import '../styles/home.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
-const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
 ---
 <Base title="Magic, Pokemon and One Piece nights" description="Local card and gaming shop at 445 York Road, Warminster, PA. Game nights, singles, sealed product and a buylist. Stop in and stay for a game.">
   <div class="wrap home">
@@ -85,19 +84,17 @@ const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
             <Pocket href="/visit/#contact" title="Sealed product" variant="sealed">
               <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
               <p>Want a box or a deck? Ask at the counter.</p>
-              <Fragment slot="foot"><span class="chip">Ask about stock</span></Fragment>
             </Pocket>
             <Pocket href="/visit/#contact" title="Preorders" variant="preorder">
               <Fragment slot="art"><div class="box-sil is-pack" aria-hidden="true"></div></Fragment>
               <p>Preorder at the counter, or ask what is coming.</p>
-              <Fragment slot="foot"><span class="chip">Ask what is coming</span></Fragment>
             </Pocket>
           </>
         ) : products.slice(0, 3).map((p) => (
           <Pocket href={p.kind === 'preorder' ? '/shop/#preorders' : '/shop/#sealed'} title={p.name} variant={p.kind === 'preorder' ? 'preorder' : 'sealed'}>
             <Fragment slot="art"><div class:list={['box-sil', { 'is-pack': p.kind === 'preorder' }]} aria-hidden="true"></div></Fragment>
             <p>{p.game}</p>
-            <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}<span class="sticker">{fee(p.price)}</span></Fragment>
+            <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}{p.price !== null && <span class="sticker">${p.price}</span>}</Fragment>
           </Pocket>
         ))}
       </ul>

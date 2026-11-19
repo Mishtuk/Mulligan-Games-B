@@ -10,7 +10,6 @@ const groups = order
   .filter((g) => g.rows.length);
 const once = events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certainty));
 const none = !groups.length && !once.length;
-const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
 const label = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
 const bare = ({ certainty, source, ...e }: Record<string, unknown>) => e;
 const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certainty)).map(bare) }).replace(/</g, '\\u003c');
@@ -36,7 +35,7 @@ const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.o
                 <li data-event-id={e.id}>
                   <span class="mono tonight-time">{fmtTime(e.time)}</span>
                   <span class="tonight-what"><strong>{e.format}</strong> <span class="muted">{e.game}</span></span>
-                  <span class="sticker">{fee(e.fee)}</span>
+                  {e.fee !== null && <span class="sticker">${e.fee}</span>}
                   {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Hold a seat<span class="vh"> for {e.format}</span></a>}
                 </li>
               ))}
@@ -51,7 +50,7 @@ const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.o
                 <li data-event-id={e.id}>
                   <span class="mono tonight-time">{fmtTime(e.time)}</span>
                   <span class="tonight-what"><strong>{e.title}</strong> <span class="muted">{e.game}, {label(e.date)}</span></span>
-                  <span class="sticker">{fee(e.fee)}</span>
+                  {e.fee !== null && <span class="sticker">${e.fee}</span>}
                   {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Hold a seat<span class="vh"> for {e.title}</span></a>}
                 </li>
               ))}

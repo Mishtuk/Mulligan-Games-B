@@ -20,7 +20,6 @@ const days = order.map((d) => {
 const openPlay = events.weekly.filter(isOpenPlay);
 const openPlayDays = [...new Set(openPlay.map((e) => e.day))].sort((a, b) => ((a + 4) % 7) - ((b + 4) % 7));
 const openPlayGames = [...new Set(openPlay.map((e) => e.game))].join(' and ');
-const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
 ---
 <div class="binder">
   <ol class="binder-grid">
@@ -34,7 +33,7 @@ const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
             </>
           : <p>Nothing booked yet.</p>}
         <Fragment slot="foot">
-          {!x.closed && x.head && <><span class="mono">{fmtTime(x.head.time)}</span><span class="sticker">{fee(x.head.fee)}</span></>}
+          {!x.closed && x.head && <><span class="mono">{fmtTime(x.head.time)}</span>{x.head.fee !== null && <span class="sticker">${x.head.fee}</span>}</>}
         </Fragment>
       </Pocket>
     ))}

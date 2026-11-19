@@ -15,6 +15,7 @@
 .pocket-foot .mono { font-size: var(--step--1); }
 .pocket[data-today] .pocket-title { background: var(--accent); color: var(--on-accent); }
 .pocket-closed { background: var(--bg3); border-style: dashed; box-shadow: none; }
+@media (max-width: 819px) { .binder .pocket-closed { aspect-ratio: auto; align-self: start; } }
 .pocket-closed .pocket-title { background: var(--bg3); border-bottom-style: dashed; }
 .pocket-closed .pocket-body { justify-content: center; color: var(--muted); }
 .pocket-art { margin: 0 .6rem; }
@@ -102,7 +103,7 @@ html.js .tonight-nojs { display: none; }
 @media (min-width: 600px) {
   .play-grid { grid-template-columns: repeat(4, minmax(0, 8rem)); gap: var(--s-3); }
   .play-grid .pocket-title { font-size: .85rem; }
-  .sealed-grid { grid-template-columns: repeat(3, minmax(0, 12rem)); }
+  .sealed-grid { grid-template-columns: repeat(auto-fit, minmax(0, 12rem)); }
 }
 
 @media (min-width: 900px) { .play-grid { grid-template-columns: repeat(7, minmax(0, 8.5rem)); } }
@@ -127,7 +128,7 @@ html.js .tonight-nojs { display: none; }
   .home > .box.box-sky { grid-column: 1 / 8; }
   .home > .airy.sell { grid-column: 8 / 13; }
   .tonight-list li { grid-template-columns: 5rem 1fr auto auto; }
-  .tonight-join { grid-column: auto; }
+  .tonight-join { grid-column: -2 / -1; }
 }
 
 /* 390 first: keep a pocket inside the first 844px */

@@ -83,3 +83,9 @@ test('scripts off: each form result panel is the redirect fragment and shows by 
     assert.match(h, new RegExp(`id="${name}-ok"[\\s\\S]*?<form[^>]*id="${name}-form"`), p);
   }
 });
+
+test('Home shows a fee chip only for a known fee (no "Ask at the counter" sticker)', { skip: !built }, () => {
+  const s = html('index.html');
+  assert.doesNotMatch(s, /<span class="sticker">(?!\$\d)/);
+  assert.match(s, /<span class="sticker">\$\d+<\/span>/);
+});
