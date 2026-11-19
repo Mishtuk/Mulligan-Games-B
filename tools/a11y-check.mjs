@@ -1,7 +1,7 @@
 // npm run a11y [baseUrl]: accessibility and motion checks in real Chrome (CDP). Needs `npm run build` first.
 // Without a URL it serves dist/ itself on port 4399. Checks: 200% text zoom on all paths at 1280/390/320 (no sideways
 // scroll, no clipped text), tilted text stays within 3deg and nothing sits on top of text, drawn shapes are aria-hidden,
-// body text >= .8rem, menu sheet (Enter, Esc returns focus, focus out and outside click close), motion off => 0 animations and no transitions, forms: empty submit -> focused error summary, ?sent= -> success panel.
+// body text >= .8rem, menu sheet (Enter, Esc returns focus, focus out and outside click close), motion off => 0 animations and no transitions, forms: empty submit -> focused error summary, ?sent= -> success panel, and with scripts OFF every form posted for real (good and bad email) plus every :target result panel (success, waitlist, error) visible and in view at 100% and 200% text.
 import { spawn } from 'node:child_process';
 import { launch, sleep } from './cdp.mjs';
 
@@ -99,6 +99,37 @@ try {
     await t.go(`${base}${p}?sent=${sent}`); await sleep(100);
     s = await t.ev(`({ focus: document.activeElement.id, hidden: document.getElementById('${fid}').hidden })`);
     ok(s.focus === `${name}-ok` && s.hidden, `form ${p}: ?sent=${sent} focuses the success panel ${JSON.stringify(s)}`);
+    await t.close();
+  }
+  // 5. scripts OFF, end to end: post all 5 forms through the browser (good and bad email); the Worker redirects to #<form>-ok|-wait|-err,
+  // that result panel must show and sit in view, at 100% and at 200% text. Then every result panel by URL, at 390 and 1280.
+  const FORMS = [['/', 'request-form'], ['/shop/', 'request-form'], ['/events/', 'signup-form'], ['/sell/', 'buylist-form'], ['/visit/', 'contact-form']];
+  const panelProbe = `(() => { const e = document.querySelector(':target'); if (!e) return { id: null }; const r = e.getBoundingClientRect(); return { id: e.id, disp: getComputedStyle(e).display, top: Math.round(r.top), bottom: Math.round(r.bottom), tall: Math.round(r.height), vh: innerHeight, text: e.textContent.trim().length }; })()`;
+  const refocus = `(() => { const id = location.hash.slice(1); location.hash = ''; location.hash = '#' + id; return 0; })()`;
+  const panelOk = (r, want) => r.id && want.test(r.id) && r.disp !== 'none' && r.text > 0 && r.top >= 0 && r.top < r.vh / 2; // starts in view, under no header (a panel taller than the screen may run past the fold)
+  const noJs = async (w) => { const t = await b.page({ w, h: 844 }); await t.cdp('Emulation.setScriptExecutionDisabled', { value: true }); return t; };
+  for (const bad of [false, true]) for (const [p, fid] of FORMS) {
+    const t = await noJs(390); await t.go(base + p);
+    const email = bad ? 'not-an-email' : `a11y${Date.now() % 1e6}${Math.random().toString(36).slice(2, 6)}@example.com`;
+    await t.ev(`(() => { const f = document.getElementById('${fid}'); f.noValidate = true;
+      const set = (n, v) => f.querySelectorAll('[name="' + n + '"]').forEach((e, i) => { if (i === 0 || n !== 'item_name[]') e.value = v; });
+      set('name', 'A11y'); set('email', '${email}'); set('cards', 'Sol Ring'); set('message', 'Hello <b>&'); set('item_name[]', 'Sol Ring');
+      f.querySelectorAll('[name="item_qty[]"]').forEach((e, i) => (e.value = i ? '' : '1'));
+      const pay = f.querySelector('[name=payout][value=cash]'); if (pay) pay.checked = true;
+      const ev = f.querySelector('[name=event_id]'); if (ev) ev.selectedIndex = 0;
+      f.querySelector('button[type=submit]').click(); return 0; })()`);
+    await sleep(1500);
+    const want = bad ? /-err$/ : /-(ok|wait)$/, tag = `${bad ? 'bad email' : 'good'} ${p}`;
+    let r = await t.ev(panelProbe); ok(panelOk(r, want), `no-JS post, ${tag}: result panel ${JSON.stringify(r)}`);
+    await t.ev(`document.documentElement.style.fontSize='200%'`); await t.ev(refocus); await sleep(300);
+    r = await t.ev(panelProbe); ok(panelOk(r, want), `no-JS post, ${tag}, 200% text: result panel ${JSON.stringify(r)}`);
+    await t.close();
+  }
+  const RESULTS = ['/?sent=request#request-ok', '/?request=error#request-err', '/shop/?sent=request#request-ok', '/shop/?request=error#request-err', '/events/?sent=signup#signup-ok', '/events/?sent=waitlist#signup-wait', '/events/?signup=error#signup-err', '/sell/?sent=buylist#buylist-ok', '/sell/?buylist=error#buylist-err', '/visit/?sent=contact#contact-ok', '/visit/?contact=error#contact-err'];
+  for (const [w, zooms] of [[390, ['', '200%']], [1280, ['200%']]]) for (const u of RESULTS) for (const z of zooms) {
+    const t = await noJs(w); await t.go(base + u);
+    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(refocus); await sleep(300); }
+    const r = await t.ev(panelProbe); ok(panelOk(r, /./), `no-JS result ${u} @${w} ${z || '100%'}: ${JSON.stringify(r)}`);
     await t.close();
   }
 } finally { b.quit(); server?.kill(); }

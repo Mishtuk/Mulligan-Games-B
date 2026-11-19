@@ -1,3 +1,7 @@
+.band-crimp { padding-top: calc(var(--s-5) + .9rem); }
+.band-crimp::after { content: ""; position: absolute; top: 0; left: 50%; width: 100cqw; translate: -50% 0; height: .9rem; background: repeating-linear-gradient(90deg, var(--line) 0 3px, transparent 3px 7px); border-bottom: var(--border-w) solid var(--line); }
+.cback.v2::before { background: repeating-linear-gradient(45deg, var(--accent) 0 .35em, var(--card) .35em .7em); }
+.cback.v2::after { background: var(--sky); }
 /* Shop page only (split from shop.css so Sell and Visit do not carry it). */
 /* Page rules: jump chips, section spacing, want-list hints */
 .shop-jump { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }

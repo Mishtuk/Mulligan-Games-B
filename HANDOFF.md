@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 29 of 50 (Code). Loops 1-28 done. Priorities: docs/review/loop-20/review.md.
+- RESUME HERE: loop 30 of 50 (review, boss). Loops 1-29 done. Priorities: docs/review/loop-20/review.md.
 - [boss] refinement loop 21 (Home): see docs/review/loop-20/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- 2026-11-19 loop 29 (Code): `npm run a11y` now runs the JS-off form run (5 forms posted good and bad, 11 :target panels, 100% and 200% text; proven to fail with a bad scroll-padding); global.css split per page (Pocket -> pocket.css, home/shop/visit-only rules to their page files; 14 full-page shots byte-identical): Sell gzip 18,582 -> 17,927, Events 18,832 -> 18,177 (budget still 19,200); `npm run build:deploy` / DEPLOY=1 fails on placeholder SITE_URL (test/deploy.test.mjs); the 'What we play' contrast flake was the sticky header's Menu button passing over the heading at one scroll step, not a layout fault: check-site (our copy) now skips text under a sticky/fixed header. Tests 129.
 - 2026-11-19 loop 28 (Copy): unknowns rule in DESIGN.md glossary (confirm with the store = facts we may have wrong; ask at the counter = settled in person), applied site-wide, test/voice.test.mjs over dist/; Shop/Visit leads in shop words; Events rows pair Hold a seat + Add to calendar (Cap column folded into Format), 1280 end blank 470 -> 352px. Tests 127, a11y and check-site pass, Sell gzip 18,582.
 - Loop 27 (designer): 1280 dead space removed on Home, Shop, Visit (notes in docs/review/loop-27/notes.md); case light bar cut; Events end gap (470px) left.
 - Loop 26 (A11y, 25 -> 26 est.): no body text under .8rem on any path (check now in `npm run a11y`); JS-off panels at 200% land at 32px not 160px (`html:not(.js)` scroll-padding); Visit 1280 hours | contact, House rules full width in 2 columns; cut duplicate reply line in contact success panel. Shots: docs/review/loop-26/.
@@ -98,4 +99,6 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 ## How to run
 - Install: `npm install` · Dev: `npm run dev` · Build: `npm run build` · Test: `npm test`
 - Sign-up nights: the Events page builds its list from `events.json` (4 weeks from the build date, `seedEvents` in `src/lib/seed-events.js`); the build writes no tracked files. ids come from each night (YYYYMMDDHHMM*10+slot), so build and seed agree whatever day each ran. On deploy day: `node tools/seed-events.mjs > .work/seed.sql` then `wrangler d1 execute mulligan --remote --file .work/seed.sql` (INSERT OR IGNORE: safe to re-run, keeps sign-ups). Rebuild and re-seed at least every 3 weeks. `schema.sql` is tables only; `tools/serve.mjs` seeds the local D1 itself.
+- Deploy build: `npm run build:deploy` (same as `DEPLOY=1 npm run build`) fails while `SITE_URL` in `src/lib/site.js` is a placeholder (http, localhost, .example/.test, example.com); plain `npm run build` still works for preview. Use `build:deploy` for anything that ships.
+- A11y: `npm run a11y` also posts all 5 forms with scripts off (good and bad email) and loads all 11 result panels at 100% and 200% text (about 90 s).
 - Browser check: `npm run build && npm run serve` then `node tools/check-site.mjs http://localhost:4321 / /events/ ...`
