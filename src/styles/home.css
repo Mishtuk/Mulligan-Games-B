@@ -75,7 +75,7 @@ html.js .tonight-nojs { display: none; }
 .play-grid .pocket-art { order: 1; flex: 1; margin: 0; min-height: 0; }
 .sleeve { position: relative; height: 100%; border: 2px solid var(--line); border-bottom: 0; border-radius: 2px 2px 0 0; background: repeating-linear-gradient(45deg, var(--sky) 0 .3rem, var(--card) .3rem .6rem); }
 .sleeve::before { content: ""; position: absolute; left: 50%; top: 50%; width: 1.1rem; height: 1.1rem; translate: -50% -50%; rotate: 45deg; background: var(--accent); border: 2px solid var(--line); }
-.play-grid .pocket-title { order: 2; flex: none; align-items: center; justify-content: center; min-height: 0; padding: .3rem .1rem; border: 2px solid var(--line); border-radius: 0 0 2px 2px; font-size: .85rem; line-height: 1.1; text-align: center; overflow-wrap: normal; hyphens: none; }
+.play-grid .pocket-title { order: 2; flex: none; align-items: center; justify-content: center; min-height: 0; padding: .3rem .1rem; border: 2px solid var(--line); border-radius: 0 0 2px 2px; font-size: .8rem; line-height: 1.1; text-align: center; overflow-wrap: normal; hyphens: none; }
 /* One back per game: same tokens, different pattern and mark */
 .g-pokemon { background: repeating-linear-gradient(0deg, var(--accent) 0 .3rem, var(--card) .3rem .6rem); }
 .g-pokemon::before { border-radius: 50%; background: var(--sky); }
@@ -93,7 +93,7 @@ html.js .tonight-nojs { display: none; }
 .play-grid .pocket:nth-child(even) { rotate: 1deg; }
 .sealed-grid .pocket-body p { max-width: 20ch; }
 .sealed-grid .pocket-title { font-size: .95rem; }
-.sealed-grid .pocket-title a { overflow-wrap: normal; hyphens: none; }
+.play-grid .pocket-title a, .sealed-grid .pocket-title a { overflow-wrap: normal; hyphens: none; }
 .sell .slab { margin-top: var(--s-3); max-width: 36rem; }
 .sell-cta { margin-top: var(--s-3); }
 .home .box { margin-top: var(--section); }
@@ -101,6 +101,7 @@ html.js .tonight-nojs { display: none; }
 
 @media (min-width: 600px) {
   .play-grid { grid-template-columns: repeat(4, minmax(0, 8rem)); gap: var(--s-3); }
+  .play-grid .pocket-title { font-size: .85rem; }
   .sealed-grid { grid-template-columns: repeat(3, minmax(0, 12rem)); }
 }
 

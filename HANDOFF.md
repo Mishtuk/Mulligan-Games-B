@@ -37,12 +37,12 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 
 ## Status
 - Stage: 3 refinement (first build done 2026-11-19). Gates: G1 passed (owner brief + D4/D5).
-- Last build: pass 2026-11-19 (loop 20). Last test run: 126/126. check-site: 7/7 paths pass. npm run a11y: pass.
+- Last build: pass 2026-11-19 (loop 30). Last test run: 129/129. check-site: 7/7 paths pass. npm run a11y: pass.
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 30 of 50 (review, boss). Loops 1-29 done. Priorities: docs/review/loop-20/review.md.
-- [boss] refinement loop 21 (Home): see docs/review/loop-20/review.md priority list
+- RESUME HERE: loop 31 of 50 (Home). Loops 1-30 done. Priorities: docs/review/loop-30/review.md (simplify and finish, no new objects).
+- [boss] refinement loop 31 (Home): see docs/review/loop-30/review.md priority list
 
 ## Waiting on the owner
 - **To set before launch:** `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- 2026-11-19 loop 30 (boss review of 21-29): independent 24 -> 25/30 (loop 20's table summed to 24, not 25). All 5 forms run in 4 modes (JS/JS-off x good/bad) show a focused result; seed ids stable across 3 dates and equal to the build; tree clean after build; CSS split verified (no missing or duplicate rules per page); check-site header skip kept (narrow, proven safe). Fixed: Home game label broke mid-word at 390 ("Warhamme r"); undone: loop-23 sticky Events column (taller than the viewport, only delayed the sign-up form). Tests 129, check-site 0, a11y pass. Priorities 31-39 in docs/review/loop-30/review.md.
 - 2026-11-19 loop 29 (Code): `npm run a11y` now runs the JS-off form run (5 forms posted good and bad, 11 :target panels, 100% and 200% text; proven to fail with a bad scroll-padding); global.css split per page (Pocket -> pocket.css, home/shop/visit-only rules to their page files; 14 full-page shots byte-identical): Sell gzip 18,582 -> 17,927, Events 18,832 -> 18,177 (budget still 19,200); `npm run build:deploy` / DEPLOY=1 fails on placeholder SITE_URL (test/deploy.test.mjs); the 'What we play' contrast flake was the sticky header's Menu button passing over the heading at one scroll step, not a layout fault: check-site (our copy) now skips text under a sticky/fixed header. Tests 129.
 - 2026-11-19 loop 28 (Copy): unknowns rule in DESIGN.md glossary (confirm with the store = facts we may have wrong; ask at the counter = settled in person), applied site-wide, test/voice.test.mjs over dist/; Shop/Visit leads in shop words; Events rows pair Hold a seat + Add to calendar (Cap column folded into Format), 1280 end blank 470 -> 352px. Tests 127, a11y and check-site pass, Sell gzip 18,582.
 - Loop 27 (designer): 1280 dead space removed on Home, Shop, Visit (notes in docs/review/loop-27/notes.md); case light bar cut; Events end gap (470px) left.
