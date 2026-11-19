@@ -11,6 +11,16 @@ used in two rounds gets deleted.
 - **D3** (2026-11-19, boss): Phone, email, fees, rates? **Ruling:** marked placeholders in `src/data/*.json` until
   the owner confirms. Address 445 York Road and the hours are public store facts and are shown with a "confirm" flag
   in data. **Why:** hard rule 5 and "no guessing the client's facts".
+- **D4** (2026-11-19, boss after designer + advisor): Which direction? **Ruling:** direction A "Pairings Wall" skin
+  (3px ink borders, hard purple shadows from the logo outline, sky tint, orange fills) with two borrowed moves: C's
+  binder-week page as the Home IDEA (5:7 pockets, ring holes, a pocket above the fold at 390) and B's toploader as the
+  Shop page featured single. Pairings sheet becomes the Events page table. Advisor conditions in
+  `docs/review/directions.md` bind DESIGN.md (4-6px radius, display face with more game-shop character than Space
+  Grotesk tested beside the logo, one hazard stripe per page max, Home and Events from one events data file).
+  **Why:** strongest card objects for a phone, carries the logo, cheapest to build, nothing like the rejected old look.
+- **D5** (2026-11-19, boss): Stack? **Ruling:** Astro static build to `dist/`, Cloudflare Workers static assets with one
+  Worker (`src/worker.js`) for `/api/*` forms and D1; tests with `node --test`; no deploy without the owner.
+  **Why:** kit default (quick-site "Astro for more than one page"); five pages share a layout.
 
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.

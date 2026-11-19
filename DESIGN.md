@@ -1,0 +1,173 @@
+# Design spec: Mulligan Games B ("Pairings Wall")
+
+Written by the designer for the coder. Sources: `docs/review/directions.md` (A + advisor conditions), `DECISIONS.md` D3-D5, `docs/research/*`. Kit picks (read-only kit): preset `neo-brutalist` adapted (colours, display face, radius changed), site type `card-game-store`, patterns `site-header`, `motion-switch`, `cross-document-view-transition`, `ticket-card`, `product-card`, `enquiry-form`, `ph`. Where this file and a prototype disagree, tell the designer.
+**Status:** 2026-11-19. Designed: everything below. Waits on owner: phone/email, photos, fees, buylist rates, hosted store, Discord, confirmed hours.
+**Main actions, one tap from every page:** Events, Shop, Visit (header and Menu sheet).
+
+## 1. The idea
+A card shop is paper and plastic: pairings taped to the wall, a binder open on the counter, price stickers, a case of toploaders. The site is that counter. Near-white ground, ink-black 3px borders and hard purple shadows (the logo's thick outline made into a border language), sky tint panels (the letters), orange fills (the inner edge). Every object is drawn from real shop things (binder page, pairings sheet, slab label, toploader), generic shapes only. Nothing is cream, serif, pill-shaped or video.
+1. **Binder week** is the Home IDEA: seven day pockets (Mon-Sun) plus Monthly and Open play in 5:7 pockets on a binder page with a ring-hole strip. A pocket is in the first 390px screen.
+2. **One Pocket (5:7)** is the shared frame for binder days, sealed tiles, preorder tiles and the toploader (a heavier variant).
+3. **Pairings sheet** is the Events table: taped paper, ruled rows, table numbers, real `<table>`.
+4. **Tab and stripe** section labels (mono folder tab "01 / EVENTS"); at most ONE hazard stripe per page, decorative, no text on it.
+5. **Sticker price chip and slab label** for prices and condition.
+6. **Events data is one file** (`src/data/events.json`); Home binder and Events pairings both read it. Toploader/featured content is optional with a CSS placeholder, never needed for launch.
+
+## 2. Tokens (light only; `color-scheme: light`; never auto-invert)
+```css
+:root {
+  color-scheme: light;
+  --bg: #FAF8FF;          /* page; never warm toward cream */
+  --bg2: #DDF0FB;         /* sky tint panels */
+  --card: #FFFFFF;        /* pocket / paper surface */
+  --bg3: #E7E3F0;         /* closed or disabled pocket */
+  --text: #1B1030;
+  --muted: #4B4560;
+  --line: #1B1030;        /* borders, decoration */
+  --soft-line: #8D86A6;   /* thin dividers, UI only (3.3) */
+  --accent: #F28C28;      /* FILL only */
+  --on-accent: #1B1030;
+  --accent2: #5B2A86;     /* secondary button fill, tab */
+  --on-accent2: #FFFFFF;
+  --link: #5B2A86;
+  --alt: #5B2A86;
+  --sky: #7EC8F0;         /* FILL only */
+  --error: #B3261E;
+  --ok: #1E6B3A;
+  --font-display: "Titan One", "Arial Black", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --display-weight: 400;  /* Titan One has one weight */
+  --tracking: 0; --display-case: none;
+  --border-w: 3px; --radius: 5px;
+  --shadow: 6px 6px 0 var(--accent2); --shadow-sm: 3px 3px 0 var(--accent2);
+  --step--1: .875rem;
+  --step-0: clamp(1rem,.95rem + .25vw,1.125rem);
+  --step-1: clamp(1.25rem,1.1rem + .7vw,1.5rem);
+  --step-2: clamp(1.6rem,1.3rem + 1.4vw,2.25rem);
+  --step-3: clamp(2.2rem,1.6rem + 3vw,3.75rem);
+  --display: clamp(2.6rem,1rem + 9vw,7rem);   /* hero only */
+  --s-1:.5rem; --s-2:.75rem; --s-3:1rem; --s-4:1.5rem; --s-5:2.25rem;
+  --section: clamp(2.75rem,1.5rem + 5vw,6rem);
+  --gutter: clamp(16px,12px + 2vw,40px);
+  --measure: 62ch; --tap: 48px; --max: 1200px;
+}
+```
+**Computed pairs (WCAG, node):**
+| Pair | Ratio | Rule |
+|---|---|---|
+| text/bg 17.1; text/card 18.1; text/bg2 15.4; text/bg3 14.3 | pass | body, headings |
+| muted/bg 8.6; muted/card 9.1; muted/bg2 7.7; muted/bg3 7.2 | pass | secondary text |
+| link(purple)/bg 9.4; /card 9.9; /bg2 8.5 | pass | links, focus ring |
+| on-accent ink / orange 7.4 | pass | primary button text |
+| white / purple 9.9; bg / purple 9.4 | pass | secondary button, tab text (tab = bg on ink 17.1) |
+| error/bg 6.2, /card 6.5; ok/bg 6.2, /bg2 5.6 | pass | messages (always with icon + word) |
+| ink / sky 9.8; ink-border / bg 17.1 | pass | sky fills carry ink text |
+| soft-line / bg 3.3; focus purple / bg 9.4; purple ring on orange button 4.0 | >=3 | UI edges only |
+**Banned pairs:** text in `--sky` on anything light (1.7); text in `--accent` orange on `--bg`/`--card` (2.3); orange as the only edge of a control (needs the ink border); `--soft-line` or `--muted` as text on `--bg3` under 4.5 (it is 7.2, fine) but never `--soft-line` as text (3.3); text on the hazard stripe; white on orange (2.3); any pair not in the table.
+Focus: `:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }`, on orange buttons the ring is offset so it lands on `--bg`.
+
+### Fonts (max 4 files, self-host, `font-display: swap`, CSP `font-src 'self'`)
+| Role | Font (Fontsource id) | Files | Use |
+|---|---|---|---|
+| Display | Titan One `titan-one` | latin-400 | H1/H2, pocket day names, big numbers; sentence case; never body, never past ~3 lines |
+| Body | Atkinson Hyperlegible `atkinson-hyperlegible` | latin-400, latin-700 | everything else; 16px minimum |
+| Mono | Space Mono `space-mono` | latin-700 | tab labels, prices, times, table numbers, slab labels |
+URL pattern: `https://cdn.jsdelivr.net/fontsource/fonts/<id>@latest/latin-<weight>-normal.woff2` (download to `downloads/fonts/`, move used files to `public/fonts/`). Total 4 files.
+**Why beside the logo:** the wordmark is chunky, rounded-edge letters with a thick outline; Titan One is a heavy rounded game-box face with the same weight and softness, so headings read as the same family without copying the blackletter-ish letterforms. Space Grotesk was too neutral ("startup"). Atkinson is for legibility at small size and has friendly open shapes. Verify at build: screenshot the header (logo 160px wide, about 56px tall) beside a 28px Titan One H1 and the 340px logo on Home; if the display looks too toylike with parents, fallback is `bowlby-one` latin-400 (same slot). Headings never start with "The" + a word.
+| Type scale | Phone / desktop | Notes |
+|---|---|---|
+| Display (hero H1) | 2.6rem to 7rem, lh 1.05 | one or two lines; width-fit not required |
+| H2 | 1.6 to 2.25rem Titan One, lh 1.15 | |
+| H3 / pocket title | 1.25 to 1.5rem Titan One | |
+| Body | 1 to 1.125rem Atkinson, lh 1.55 | measure 62ch |
+| Label | .875rem Space Mono 700 uppercase, tracking .04em | never below 14px |
+
+### Layout
+Max 1200px, gutter 16px at 390, breakpoints 390 (check), 820 (nav to Menu), 1280 (check). 12-col grid at desktop, single column and 2-col pockets on phone. Sections spaced `--section`, each in a bordered box on `--bg` (cards sit 6px higher via shadow). Radius 4-6px on boxes, pockets, buttons, inputs; chips and stickers 4px (no pills anywhere).
+
+## 3. Motion (low; nothing moves on its own)
+- Moves: button press (translate 4px 4px, shadow 6px to 2px) and Pocket hover/focus lift (translate -2px -2px, shadow grows). Both 120ms ease-out, only on `:hover` / `:active` / `:focus-visible`.
+- Page change: cross-document view transition, crossfade 150ms (kit pattern); instant under Motion off.
+- Motion switch (kit `motion-switch`): in the header on every page, visible label "Motion: on/off", real `<button aria-pressed>`, 48px, default on unless `prefers-reduced-motion: reduce` (then off and the switch says off); choice in `localStorage` (try/catch), applied as `data-motion="off"` on `<html>`. All motion CSS is under `@media (prefers-reduced-motion: no-preference) { html:not([data-motion="off"]) ... }`.
+- Banned: foil shimmer, glow, pulse, parallax, autoplay carousel or video, spinning dice, counters that animate, flash/strobe, sound. Nothing flashes over 3/s.
+
+## 4. Components (states: default, hover, focus, pressed, disabled, empty, loading, error where relevant)
+**Header.** Sticky, bg `--bg`, 3px bottom border. Left: logo as link to Home (`<img alt="Mulligan Games, home">`, 340x120 source shown 160px wide at 390, 170px at 1280, explicit width/height). At >=820: nav Events, Shop, Sell to us, Visit (links, 48px, current page = 3px underline in `--accent2` plus `aria-current`), then the Open chip and the Motion switch. Below 820: logo, Motion switch, and a "Menu" button (48px, `aria-expanded`) opening a full-width bordered sheet (all five destinations incl. Home, 56px rows, Events/Shop/Visit first, Esc and focus return, no scroll lock trap). Under the header at 390: a one-line strip with the Open chip. Skip link first. **Open chip:** computed in the browser from `store.json` hours in America/New_York: "Open now, until 10pm" (sky fill, ink text) or "Opens Wed 2pm" (white, ink border); with JS off shows "Hours" linking to Visit. Chip text and an icon, never colour alone.
+**Footer.** `--accent2` is not used as bg; footer is `--bg2` with 3px top border. Columns (stack at 390): address (445 York Road, Warminster, PA 18974) + Open in Maps link; hours list; links (Instagram, X, Patreon, TopDeck, Wizards locator; Discord only when set); phone/email placeholder line shown only when set. Legal line: "Not affiliated with Wizards of the Coast, The Pokémon Company, Bandai or any publisher. Game names belong to their owners." Privacy link. Link targets 48px high.
+**Buttons.** `.btn` primary: orange fill, ink text, 3px ink border, radius 5, `--shadow` 6px purple, min-height 48. Secondary: `--accent2` fill, white text. Ghost: transparent, ink border. Hover: lift (motion on). Pressed: translate 4px, shadow 2px (motion on); with motion off pressed = shadow removed and bg darken via border only. Disabled: `--bg3`, muted text, no shadow, `aria-disabled`. Loading: label becomes "Sending..." and disabled.
+**Chips.** 2px ink border, 4px radius, 14-16px text, filter chips are links/buttons 48px high with `aria-pressed`/`aria-current`; selected = sky fill + check mark. Status chips: "Likely", "Confirm", "Full", "Out" with word + border.
+**Pocket (5:7).** `aspect-ratio: 5/7` (min-height grows if text needs it; never clip: use `min-height` not fixed height, at 200% zoom the grid drops to 1 column). Real `<li>` with an `<a>` or `<button>` stretched over it. Anatomy: title bar (Titan One, ink on sky, 3px bottom border), art window (photo, or CSS placeholder), text box (white `--card`), foot line (mono price/time + sticker). 3px ink border, radius 5, `--shadow-sm`. States: hover lift; focus ring; pressed shadow 0; selected = orange tab; closed = `--bg3`, dashed 3px border, text "Closed" (still a list item); empty = dashed, "Nothing booked yet". Variants: **binder pocket** (day name, game, time, fee chip; face shows day, game, time, fee; text-only look = sky title bar over white body, designed on purpose); **sealed tile** (art window shows a CSS box silhouette, name, game, "Ask in store" chip); **preorder tile** (release date in mono, deposit rule "Ask in store", booster crimp is NOT used: plain frame).
+**Binder page container.** `--bg2` panel, 3px border, left strip of 6 ring-hole circles (CSS radial gradient, decorative, `aria-hidden`), pockets in a grid inside: 3 cols at 1280, 2 cols at 390; at 200% zoom 1 col. `<ol>` of 9 items.
+**Toploader (Shop, optional).** Pocket with a 6px frame (3px border + 3px inset `--card` ring), a 20px notch at the top (CSS), a slab label under the art. Needs no photo: CSS card-back placeholder with "Photo coming". One per page.
+**Slab-style condition label.** 3-part strip, 3px ink border: left name (body 700), right condition big (mono 700, 1.5rem: NM/LP/MP/HP/DMG), bottom tiny id (mono .75rem is NOT used; id is 14px). Sky fill, ink text. No grading-company colours or names.
+**Tab and stripe section label.** `.box` position relative, 3px ink border, `--shadow-sm`; `.tab` at top-left, ink bg, `--bg` text, mono 700 14px uppercase ("01 / EVENTS"), translated up 100%. One hazard stripe per page, 1rem tall (`repeating-linear-gradient(-45deg, var(--line) 0 14px, var(--accent) 14px 28px)`), `aria-hidden`, placed once above the footer, no text over it.
+**Sticker price chip.** Bg `--card`, 2px ink border, 4px radius, mono 700, rotate 2deg (max 3), `box-shadow: 2px 2px 0 var(--line)`; price text ink on white. Prices appear only where the owner supplied them; else "Ask in store".
+**Forms.** Visible `<label>` above every field (never placeholder-only), 48px inputs, 3px ink border, radius 5, focus ring. Required marked "(required)" in text. Error summary at top (`role="alert"`, `tabindex=-1`, focused on submit failure, border 3px `--error`, icon + "Fix N things:" with links to fields); field error under the field in `--error` with "Error:" prefix. Success: replaces form with a bordered `--bg2` panel, `role="status"`, what happens next, link back. Honeypot `.hp` field (off-screen, `tabindex=-1`, `autocomplete=off`). Works without JS (POST then 303 to `?sent=1` page state). Turnstile slot reserved. No child data beyond first name.
+**Pairings table.** `<table>` with `<caption class="vh">`, `<th scope>`; columns Night, Game, Format, Time, Fee, Table cap, Sign up. Paper `--card`, ruled 1px `--soft-line` rows, 3px outer border, two CSS tape strips on the top corners (decorative). Row for today: sky fill + "Tonight" chip. At 390: each row becomes a block (`display:block` rows, cells `display:flex` with `data-label` shown via `::before` in mono), still a real table for AT (`role` kept). Past/unknown fees show "Fee: ask".
+**Placeholder photo.** `.ph`: `--bg2` fill, diagonal 1px `--soft-line` hatch, centered mono "Photo coming", fixed aspect via variants (4:3, 5:7, 16:9, 1:1). Never a person. Alt text empty+`role="img" aria-label="Photo coming: <what>"`. Real photo replaces it with a 3px ink border, `loading="lazy"`, width/height set.
+
+## 5. Pages (390 first, then 1280)
+Titles: "<Page> | Mulligan Games, Warminster PA". Every page: header, `<main id="main">`, footer. Hazard stripe max one.
+
+### Home (`/`)
+Purpose: what's on this week, find a card, when to come in. Source: `events.json`, `store.json`.
+```
+390                      1280
+[logo]   [Motion][Menu]  [logo] Events Shop Sell Visit [Open] [Motion]
+[Open now, until 10pm]   +-----------------------+  +------------+
++----------------------+ | Pull up a chair.      |  | binder page |
+| TONIGHT   Fri        | | Singles, sealed,      |  | o [Wed][Thu]|
+| Draft FNM 7pm $20 [Join]| and games most nights.|  | o [Fri][Sat]|
++----------------------+ | [Find a card] [Events]|  | o [Sun][Mon]|
+o [Fri ] [Sat ]  <- binder +-----------------------+  +------------+
+o [Sun ] [Mon ]  (above   TONIGHT strip full width
+  fold: top row visible)
+```
+Top to bottom at 390: (1) header + Open chip; (2) hero: H1 "Pull up a chair." plus one line ("Singles, sealed and games most nights in Warminster."), buttons "Find a card" (to Shop) and "This week" (to Events); (3) **Tonight strip** bordered box: today's events from `events.json` sorted by time, each with time, format, fee, "Sign up" if seats; empty: "Nothing booked tonight. Next up: <date, format>."; (4) **Binder week**: first row of 2 pockets (today's pocket selected) must sit within the first 844px; seven day pockets + "Monthly series" + "Open play"; each pocket links to `/events/#<day>`; (5) card request/search: one-input form "Looking for a card?" posting to `/api/request` (name of card, game select, contact email, optional note) with label "Want list, we'll message you"; (6) What we play: game chips grid (Magic, Pokemon, One Piece, Riftbound, Hololive, Warhammer/tabletop, D&D) as small pockets linking to `/events/?game=`; (7) Sealed and preorders strip: 2-3 pockets "Ask in store" until products exist; (8) Sell to us teaser: slab-style strip "Got cards to sell? Build a list, bring it in." + button; (9) Visit block: address, today's hours, Open in Maps; (10) footer. At 1280: hero left (7 cols) + binder page right (5 cols, 3 cols of pockets compact), Tonight strip full width below, sections 2-up where listed.
+Empty states: no events -> "No nights booked yet. Check Discord or ask in store." Done when: pocket above fold at 390, text readable with no images, JS off still shows server-rendered events.
+
+### Events (`/events/`)
+Purpose: see week and sign up. Source `events.json`. Top: H1 "Game nights", filter chips by game (links `?game=magic`, "All" default; works without JS via static sections plus JS enhancement; selected = sky + check). Then per-week **pairings sheet** (current week then next), grouped by date, from the weekly rows plus one-offs expanded to dates. One-offs as ticket-style rows: bordered row, date block left (mono), title, fee chip, "Sign up" button, notches CSS. Sign-up form for events with seats (`cap` not null): select event (`name=event_id`), first name, email, format notes; posts `/api/signup`; seats left refreshed by JS, else "Seats: ask". Full: "Waitlist" label. `.ics` link per event (generated at build, "Add to calendar"). House rules for age: short list, "Under 13 with a grown-up" (placeholder, owner to confirm; shown as a flagged item in data). 1280: filter chips on the left rail, sheet right. Empty: pairings sheet shows "No <game> nights this week."
+
+### Shop (`/shop/`)
+Tabs as in-page sections with chips: Singles | Sealed | Preorders (anchors, all content on one page; nav "Shop"). **Singles:** no hosted store yet, so "Card request / want list" form (card name, game, set optional, condition select, qty, email) posting `/api/request`; below it **condition guide** table NM/LP/MP/HP/DMG (Short description, example) with slab labels in the first column; optional toploader featured single (CSS placeholder, remove when empty). **Sealed:** pockets per game with "Ask in store" chip until `products.json` has rows. **Preorders:** pocket per release (date mono, "Ask in store for deposit"). Empty: "Stock changes daily. Ask at the counter or send a request." 1280: 3-4 pocket columns.
+
+### Sell to us (`/sell/`)
+Buylist slip: a narrow receipt panel with dashed tear lines (white, ink border, mono). Rows (name, set, condition select, qty), "Add a row" (button, 48px), choose "Cash or store credit" (radio), name, email; live count "3 lines" (`aria-live="polite"`, no prices, no animated counters); "Send list" posts `/api/buylist` (rows serialised into `items`, one per line "name, set, condition, qty"). Without JS: a textarea with the same format. After: success panel. Sections: How we pay (placeholder "Rates: ask in store"), condition rules (reuse guide), store credit rules (placeholder, flagged). 1280: slip left, rules right.
+
+### Visit (`/visit/`)
+Hours table (7 rows, today highlighted sky + "Today" chip, Mon-Tue "Closed", flagged "Confirm hours with the store" note since Likely), address + "Open in Maps" link (no embed by default), parking note placeholder, play space (tables, house rules list), contact form (`/api/contact`: name, email, message), Discord placeholder shown only when set, phone placeholder. 1280: hours + address left, form right.
+
+### 404 and privacy
+404: H1 "Misprint.", sentence, buttons Home / Events / Shop, a lone pocket with "Page not found" (no motion). Privacy: plain text page, what forms store (D1 rows), no analytics yet.
+
+## 6. Data model (coder reads these; Home and Events both read events.json)
+- `src/data/store.json`: `{name, timezone:"America/New_York", address:{street:"445 York Road", city, state, zip, certainty:"Likely (455 on Wizards)"}, hours:[{day,0-6,open,close|closed}] (shape from schedule-draft), hoursCertainty:"Likely", links:{instagram,x,patreon,topdeck,wizardsLocator,discord:null,tiktok:null}, phone:null, email:null, mapsUrl, placeholders:["phone","email","discord","parking","fees","rates"]}`. Null = hidden or "Ask in store"; never invent.
+- `src/data/events.json`: `{weekly:[{id,day,time,game,format,fee|null,cap|null,source,certainty}], oneoffs:[{id,date|null,time,title,game,fee,cap,signup,source,certainty}]}` (copy of `docs/research/schedule-draft.json`). `Likely` rows show a quiet "Confirm with the store" note once per page (footer of the sheet), not per row; `Confirmed` none; `Unverified` (e.g. date null) not shown. Seats left is computed from D1, never stored.
+- `src/data/games.json`: `[{id:"magic",name,color}]` for Magic, Pokemon, One Piece, Riftbound, Hololive, Tabletop, D&D (labels only, no publisher logos).
+- `src/data/products.json`: empty array at launch (sealed, preorder rows: `{game,name,price|null,releaseDate,kind}`).
+Facts flagged Likely: hours, address (445 vs 455), whole weekly schedule, fees. Confirmed: two one-offs. Unverified: Pokemon/One Piece/Hololive/Riftbound/D&D weekly nights, Discord invite.
+
+## 7. Copy direction
+Friendly, short, local, a little dry. Words: binder, sleeve, pairings, playmat, prerelease, store credit, top 8, bulk, table, seat. Lines: H1 "Pull up a chair." CTAs: "Find a card", "This week", "Sign up", "Build your list", "Open in Maps". Section heads: "Tonight", "Binder week", "What we play", "Sell to us", "Visit us". Empty: "Nothing booked yet." 404: "Misprint." Refuse: "elevate", "seamless", "journey", "unleash", "world-class", "your one-stop shop", exclamation overload, headings starting "The" + a word, invented prices/rates/ratings/reviews, player names, publisher logos or card art.
+
+## 8. Photos and media
+Needed from owner: storefront, play room, singles case, a shot of tables during a night. Until then `.ph` placeholders (4:3 hero card, 16:9 visit, 1:1 tiles). Real people only with consent, none staged. No video, no embed by default (maps is a link).
+
+## 9. References used
+| Reference | Took | Did not take |
+|---|---|---|
+| Kit neo-brutalist preset | border, hard shadow, tab-and-stripe, tokens shape | yellow/blue palette, 0 radius, Space Grotesk, pill nav |
+| Ultra PRO / Dragon Shield | white page, objects carry colour | their art, logos |
+| Face to Face Games | event card = dated title + one button | carousel |
+| Misty Mountain / Nutmeg / Cardsurfer | events with price, table counts, sell page | their copy |
+
+## 10. Checks the build must pass
+- Screenshots 390x844 and 1280x800, Motion on and off (switch and reduced-motion), look at them; no horizontal scroll at 320, 390, 768, 1024, 1280, 1600.
+- 200% text zoom: no clipping, pockets drop to 1 column, tables stack.
+- `tools/check-site.mjs` on `/`, `/events/`, `/shop/`, `/sell/`, `/visit/`, 404, privacy: no duplicate ids, 48px targets, one h1, labels, alt, a skip link.
+- Contrast: a test asserts every pair in section 2 (>=4.5 text, >=3 UI); banned pairs not used.
+- `document.getAnimations().length` is 0 at rest; Motion off removes hover lift and transition; nothing flashes.
+- Forms: valid, empty, hostile input, honeypot, 303 redirect; output escaped.
+- Home: a pocket visible inside the first 844px at 390; no "The"+word headings; at most one hazard stripe per page; footer non-affiliation line present; no placeholder data shown as fact.
