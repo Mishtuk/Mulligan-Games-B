@@ -31,8 +31,7 @@
 }
 
 /* Singles display case: glass shelf, light bar on top, two rows of sleeved cards and toploaders with blank ASK stickers (drawn, static) */
-.case { position: relative; margin-top: var(--s-3); padding-top: 1.6rem; font-size: .85rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.case-light { position: absolute; left: var(--s-2); right: var(--s-2); top: .45rem; height: .55rem; background: var(--card); border: 2px solid var(--line); border-radius: 4px; }
+.case { position: relative; margin-top: var(--s-3); padding-top: var(--s-2); font-size: .85rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
 /* one visible row of slots: extra slots drop into zero-height rows and are clipped */
 .case-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(4.4em, 1fr)); grid-template-rows: auto; grid-auto-rows: 0; overflow: hidden; justify-items: center; align-items: end; padding: var(--s-2) var(--s-2) .6rem; border-bottom: .4rem solid var(--accent2); }
 
@@ -45,10 +44,21 @@
 .slot.is-top .cback { outline: 2px solid var(--line); outline-offset: 3px; box-shadow: var(--shadow-sm); }
 .price { padding: 0 .45em; background: var(--card); border: 2px solid var(--line); border-radius: 3px; font: 700 .7rem/1.4 var(--font-mono); letter-spacing: .04em; }
 .slot.is-top .price { margin-top: 5px; }
-@media (min-width: 600px) { .case { font-size: 1rem; } .case-shelf { padding-inline: var(--s-4); } .case-light { left: var(--s-4); right: var(--s-4); } }
+@media (min-width: 600px) { .case { font-size: 1rem; } .case-shelf { padding-inline: var(--s-4); } }
 @media (min-width: 1000px) { .case { font-size: 1.05rem; } }
 
 /* want list + condition guide side by side on wide screens */
 .shop-duo { display: grid; gap: var(--section); align-items: start; }
 .shop-duo > .box { margin-top: 0; }
 @media (min-width: 1000px) { .shop-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); } .shop-duo .request form { max-width: none; } }
+
+/* Sealed and Preorders share one band row on wide screens; the condition guide stretches to the want list */
+.stock { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+.band .stock .airy { margin-top: 0; }
+@media (min-width: 1000px) {
+  .stock { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-6, 4rem); align-items: start; }
+  .shop-duo { align-items: stretch; }
+  .shop-duo > .box-sky, .shop-duo .cond-guide { display: flex; flex-direction: column; }
+  .shop-duo .cond-guide { flex: 1; }
+  .shop-duo .cond-table { flex: 1; }
+}

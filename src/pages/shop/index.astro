@@ -29,7 +29,6 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
     <section class="airy" id="singles" aria-labelledby="singles-h">
       <h2 id="singles-h">Singles</h2>
       <div class="case" aria-hidden="true">
-        <div class="case-light"></div>
         {[0, 1].map((r) => (
           <div class="case-shelf">
             {Array.from({ length: 8 }, (_, i) => (
@@ -88,6 +87,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
     </div>
 
     <section class="band band-crimp" id="sealed" aria-labelledby="sealed-h">
+      <div class="stock"><div class="stock-sealed">
       <h2 id="sealed-h">Sealed</h2>
       {sealed.length ? (
         <ul class="shop-grid">
@@ -106,8 +106,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
           <a class="btn" href="/visit/#contact">Ask about stock</a>
         </div>
       )}
-    </section>
-
+      </div>
     <section class="airy" id="preorders" aria-labelledby="preorders-h">
       <h2 id="preorders-h">Preorders</h2>
       {preorders.length ? (
@@ -130,6 +129,8 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
           <a href="/visit/#contact">Ask us</a>
         </div>
       )}
+    </section>
+    </div>
     </section>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>

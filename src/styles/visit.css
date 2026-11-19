@@ -40,3 +40,14 @@
   .visit-grid > .sign { grid-column: 1 / -1; }
   .visit-grid .sign-list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-5); align-items: start; }
 }
+
+/* 1280: hours sheet stretches to the contact box; House rules is a notice board (title left, rules right) */
+@media (min-width: 1000px) {
+  .visit-grid { align-items: stretch; }
+  .sheet-box { display: flex; flex-direction: column; }
+  .sheet-box .hours-table { flex: 1; }
+  .visit-grid > .sign { margin-top: 3.5rem; display: grid; grid-template-columns: 15rem minmax(0, 1fr); column-gap: var(--s-5); align-items: start; }
+  .visit-grid > .sign h2 { font-size: var(--step-2); margin-bottom: 0; }
+  .visit-grid > .sign .sign-list { grid-column: 2; grid-row: 1 / span 2; }
+  .visit-grid > .sign .sign-note { grid-column: 1; margin-top: var(--s-2); }
+}
