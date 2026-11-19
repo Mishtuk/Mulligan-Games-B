@@ -215,6 +215,7 @@ textarea { min-height: 6.5rem; resize: vertical; }
 html:not(.js) #menu-btn, html:not(.js) #motion { display: none; }
 html:not(.js) .menu-sheet { display: block; position: static; box-shadow: none; }
 /* Scripts off the menu links sit open in the header, so the header scrolls away instead of covering a third of the screen. */
+html:not(.js) { scroll-padding-top: var(--s-3); }
 html:not(.js) .site-header { position: static; }
 @media (max-width: 359px) { .site-header-in { flex-wrap: wrap; } }
 @container page (min-width: 52rem) {

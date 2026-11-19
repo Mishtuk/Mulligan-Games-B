@@ -8,7 +8,7 @@
 .visit-grid { display: grid; gap: 0; margin-top: var(--s-5); align-items: start; }
 .visit-grid .box { margin-top: var(--section); }
 .visit-grid .box:first-child { margin-top: .8rem; }
-.visit-main > .sign { margin-top: var(--section); }
+.visit-grid > .sign { margin-top: var(--section); }
 .sheet-box { box-shadow: var(--shadow); }
 .visit .box > h2 { margin-bottom: var(--s-2); }
 .visit .box p + p, .visit .box address + p { margin-top: var(--s-1); }
@@ -36,5 +36,7 @@
 @media (min-width: 700px) { .visit-band { grid-template-columns: 1fr auto; align-items: center; } .visit-band > h2, .visit-band > address, .visit-band > p:not(.visit-actions), .visit-band > .reach { grid-column: 1; } .visit-band .visit-actions { grid-column: 2; grid-row: 1; margin: 0; } }
 @media (min-width: 1000px) {
   .visit-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-5); }
-  .visit-form { margin-top: .8rem !important; position: sticky; top: 6rem; }
+  .visit-form { margin-top: .8rem !important; }
+  .visit-grid > .sign { grid-column: 1 / -1; }
+  .visit-grid .sign-list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-5); align-items: start; }
 }

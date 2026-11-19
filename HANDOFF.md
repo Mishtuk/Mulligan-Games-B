@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 26 of 50 (A11y). Loops 1-25 done. Priorities: docs/review/loop-20/review.md.
+- RESUME HERE: loop 27 of 50 (Identity). Loops 1-26 done. Priorities: docs/review/loop-20/review.md.
 - [boss] refinement loop 21 (Home): see docs/review/loop-20/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 26 (A11y, 25 -> 26 est.): no body text under .8rem on any path (check now in `npm run a11y`); JS-off panels at 200% land at 32px not 160px (`html:not(.js)` scroll-padding); Visit 1280 hours | contact, House rules full width in 2 columns; cut duplicate reply line in contact success panel. Shots: docs/review/loop-26/.
 - Loop 25 (Visit + chrome, 27 -> 28 est.): Address is a street-number placard (445 in Titan One, road and town beside it) with a primary Open in Maps button; contact box shorter (lede, 3-row textarea); Motion button hidden under html:not(.js); Sell fold summary "Show condition guide (NM–DMG)" one line. Cut the "Parking: ask us" line. Shots: docs/review/loop-25.
 - Loop 24 (Sell): leftover Shop-only rules moved into shop-only.css (Sell gzip 18,582 -> 18,407, then 18,561 with the new card); 1280 right column fills with a "What we look at" card (corners, edges, surface, centring) above the condition fold; fold summary in body type; LINES total uses full width. Cut: dead .sub rule, "Same guide on the Shop page" link. Shots docs/review/loop-24.
 - Loop 23 (Shop): Sealed band draws box + pack on a shelf edge (reuses .box-sil), one "Sealed" heading; Preorders is a mono pre-order slip (release date, deposit, no invented facts); Events right column sticky at 1280 when viewport >= 56rem tall; Shop-only CSS split to shop-only.css (Sell gzip back under budget). Cut: "On the shelf" h3. Shots docs/review/loop-23.

@@ -1,7 +1,7 @@
 // npm run a11y [baseUrl]: accessibility and motion checks in real Chrome (CDP). Needs `npm run build` first.
 // Without a URL it serves dist/ itself on port 4399. Checks: 200% text zoom on all paths at 1280/390/320 (no sideways
 // scroll, no clipped text), tilted text stays within 3deg and nothing sits on top of text, drawn shapes are aria-hidden,
-// menu sheet (Enter, Esc returns focus, focus out and outside click close), motion off => 0 animations and no transitions, forms: empty submit -> focused error summary, ?sent= -> success panel.
+// body text >= .8rem, menu sheet (Enter, Esc returns focus, focus out and outside click close), motion off => 0 animations and no transitions, forms: empty submit -> focused error summary, ?sent= -> success panel.
 import { spawn } from 'node:child_process';
 import { launch, sleep } from './cdp.mjs';
 
@@ -37,6 +37,11 @@ const shapeProbe = `(() => { const out = [];
  for (const e of document.querySelectorAll('.cback,.sleeve,.case,.clip,.tape,.misprint,.box-sil,.hand,.stub-no,[class*=mp-]')) if (!e.closest('[aria-hidden=true]')) out.push('drawn shape not aria-hidden: ' + e.tagName + '.' + e.className);
  return [...new Set(out)].slice(0, 10); })()`;
 
+// Body text under 12.8px (.8rem); decorative aria-hidden text is exempt.
+const smallProbe = `(() => { const out = []; for (const e of document.querySelectorAll('body *')) { if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue; const cs = getComputedStyle(e);
+ if (!e.getBoundingClientRect().width || cs.visibility === 'hidden' || e.closest('.vh,.hp,[hidden],[aria-hidden=true]')) continue;
+ if (parseFloat(cs.fontSize) < 12.79) out.push(cs.fontSize + ' ' + e.tagName + '.' + e.className + ' ' + e.textContent.trim().slice(0, 24)); } return [...new Set(out)].slice(0, 8); })()`;
+
 const b = await launch();
 try {
   // 1. zoom 200% (root font-size only, like browser text zoom); then shapes at 100% with a tall viewport so elementFromPoint sees all
@@ -46,6 +51,8 @@ try {
     await t.ev(`document.documentElement.style.fontSize='200%'`); await sleep(300);
     const r = await t.ev(zoomProbe); if (r.length) ok(false, `zoom 200% ${w} ${p}: ${r.join('; ')}`);
     if (w !== 320) {
+      await t.ev(`document.querySelectorAll('details').forEach((d) => (d.open = true))`);
+      const sm = await t.ev(smallProbe); if (sm.length) ok(false, `small text (<.8rem) ${w} ${p}: ${sm.join('; ')}`);
       await t.ev(`document.documentElement.style.fontSize=''`); await sleep(100);
       const h = await t.ev(`document.documentElement.scrollHeight`);
       await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await sleep(200);
