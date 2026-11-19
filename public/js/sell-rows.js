@@ -1,10 +1,13 @@
 // Buylist slip: add / remove rows, live "N lines" count, success and error panels from ?sent=buylist / ?buylist=error.
-// The slip is server-rendered with 5 rows and works without this file. The Worker reads item_name[], item_set[], item_cond[], item_qty[].
+// The slip is server-rendered with 3 rows (JS trims it to 1) and works without this file. The Worker reads item_name[], item_set[], item_cond[], item_qty[].
 export const MAX_ROWS = 40;
 
 // A line counts when the card name has text. Blank rows are skipped by the Worker too.
 export const countLines = (names) => names.filter((n) => String(n ?? '').trim() !== '').length;
-export const linesText = (n) => `${n} ${n === 1 ? 'line' : 'lines'}`;
+export const linesText = (n) => String(n);
+
+// Remove only shows when there is more than one row.
+export const showRemove = (rowCount) => rowCount > 1;
 
 // Which row gets focus after removing row `i` from a list that now has `remaining` rows: the one that took its place, else the last. -1 = none left.
 export const focusAfterRemove = (i, remaining) => (remaining === 0 ? -1 : Math.min(i, remaining - 1));
@@ -25,7 +28,7 @@ if (typeof document !== 'undefined') {
         r.setAttribute('aria-label', `Card ${i + 1}`);
         r.querySelector('.row-no').textContent = String(i + 1);
         const rm = r.querySelector('.row-remove');
-        rm.hidden = false;
+        rm.hidden = !showRemove(rows().length);
         rm.setAttribute('aria-label', `Remove card ${i + 1}`);
       });
       const full = rows().length >= MAX_ROWS;
@@ -34,6 +37,9 @@ if (typeof document !== 'undefined') {
     };
     const announce = () => { count.textContent = linesText(countLines(names())); };
 
+    // JS starts the slip at one row; the extra server rows are only for no-JS use.
+    rows().slice(1).forEach((r) => { if (!r.querySelector('[name="item_name[]"]').value.trim()) r.remove(); });
+    document.getElementById('line-total').hidden = false;
     add.hidden = false;
     refresh();
     announce();

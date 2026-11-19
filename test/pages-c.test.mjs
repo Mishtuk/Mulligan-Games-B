@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { countLines, linesText, focusAfterRemove, stateFromQuery, MAX_ROWS } from '../public/js/sell-rows.js';
+import { countLines, linesText, showRemove, focusAfterRemove, stateFromQuery, MAX_ROWS } from '../public/js/sell-rows.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
@@ -11,9 +11,10 @@ const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
 test('buylist rows: line count ignores blank names', () => {
   assert.equal(countLines(['', '  ', 'Lightning Bolt', undefined, 'Goblin']), 2);
   assert.equal(countLines([]), 0);
-  assert.equal(linesText(1), '1 line');
-  assert.equal(linesText(0), '0 lines');
-  assert.equal(linesText(3), '3 lines');
+  assert.equal(linesText(0), '0');
+  assert.equal(linesText(3), '3');
+  assert.equal(showRemove(1), false, 'no Remove on a single row');
+  assert.equal(showRemove(2), true);
   assert.equal(MAX_ROWS, 40); // the Worker's MAX_ITEMS
 });
 
@@ -64,7 +65,7 @@ test('built pages: forms post the Worker routes and field names', { skip: !built
   const sell = html('sell/index.html');
   assert.match(sell, /action="\/api\/buylist"/);
   for (const n of ['item_name[]', 'item_set[]', 'item_cond[]', 'item_qty[]', 'payout', 'name', 'email', 'website']) assert.ok(sell.includes(`name="${n}"`), `sell ${n}`);
-  assert.equal((sell.match(/name="item_name\[\]"/g) ?? []).length, 5, 'five server-rendered rows');
+  assert.equal((sell.match(/name="item_name\[\]"/g) ?? []).length, 3, 'three server-rendered rows');
   assert.match(sell, /aria-live="polite"/);
   const visit = html('visit/index.html');
   assert.match(visit, /action="\/api\/contact"/);

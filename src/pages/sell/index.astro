@@ -5,7 +5,7 @@ import '../../styles/shop.css';
 import '../../styles/sell.css';
 
 const CONDS = [['NM', 'NM'], ['LP', 'LP'], ['MP', 'MP'], ['HP', 'HP'], ['DMG', 'DMG']];
-const ROWS = [1, 2, 3, 4, 5];
+const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at one and "Add a row" adds more
 ---
 <Base title="Sell your cards to us" description="Sell cards to Mulligan Games in Warminster, PA. Build a list, choose cash or store credit, and send it to the shop. Rates: ask in store.">
   <div class="wrap sell">
@@ -32,8 +32,7 @@ const ROWS = [1, 2, 3, 4, 5];
         </div>
         <form id="buylist-form" class="slip" method="post" action="/api/buylist">
           <div class="slip-head">
-            <h2 id="slip-h">Buylist slip</h2>
-            <p class="mono">Count: <span id="line-count" aria-live="polite">0 lines</span></p>
+            <h2 id="slip-h">Mulligan Games &middot; Buylist</h2>
           </div>
           <div class="tear" aria-hidden="true"></div>
           <ol class="slip-rows">
@@ -45,7 +44,7 @@ const ROWS = [1, 2, 3, 4, 5];
                   <input type="text" id={n === 1 ? 'card-1' : undefined} name="item_name[]" maxlength="100" autocomplete="off" required={n === 1} /></label>
                 <label class="f-set"><span>Set <span class="hint">(optional)</span></span>
                   <input type="text" name="item_set[]" maxlength="80" autocomplete="off" /></label>
-                <label class="f-cond"><span>Condition <span class="hint">(see guide)</span></span>
+                <label class="f-cond"><span>Condition</span>
                   <select name="item_cond[]">{CONDS.map(([v, l]) => <option value={v}>{l}</option>)}</select></label>
                 <label class="f-qty"><span>Quantity</span>
                   <input type="number" name="item_qty[]" min="1" max="99" value="1" inputmode="numeric" /></label>
@@ -78,8 +77,8 @@ const ROWS = [1, 2, 3, 4, 5];
             <input type="text" id="slip-website" name="website" tabindex="-1" autocomplete="off" />
           </div>
           <div class="tear" aria-hidden="true"></div>
+          <p class="slip-total mono" id="line-total" hidden>lines: <span id="line-count" aria-live="polite">0</span></p>
           <button class="btn" type="submit">Send list</button>
-          <p class="slip-fine">No prices here: rates are set in store.</p>
         </form>
       </section>
 
@@ -87,8 +86,7 @@ const ROWS = [1, 2, 3, 4, 5];
         <section class="box" aria-labelledby="pay-h">
           <span class="tab">01 / How we pay</span>
           <h2 id="pay-h">How we pay</h2>
-          <p>Pick cash or store credit on the slip. Rates: <span class="chip">Ask in store</span></p>
-          <p class="muted">We do not post a price list here yet. Bring your cards in and we will go through them with you.</p>
+          <p>Pick cash or store credit on the slip. Rates and store credit terms: ask at the counter.</p>
         </section>
 
         <section class="box box-sky" aria-labelledby="cond-h">
@@ -98,11 +96,6 @@ const ROWS = [1, 2, 3, 4, 5];
           <ConditionGuide />
         </section>
 
-        <section class="box" aria-labelledby="credit-h">
-          <span class="tab">03 / Store credit</span>
-          <h2 id="credit-h">Store credit rules</h2>
-          <p><span class="chip">Placeholder</span> Store credit terms are not set yet. Ask in store.</p>
-        </section>
       </div>
     </div>
   </div>
