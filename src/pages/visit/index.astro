@@ -21,16 +21,14 @@ const L = store.links;
           <span class="tab">01 / Hours</span>
           <h2 id="hours-h">Hours</h2>
           <HoursTable />
-          <p class="muted hours-note">{store.hoursCertainty}: confirm hours with the store.</p>
         </section>
 
         <section class="box box-sky" id="find" aria-labelledby="find-h">
           <span class="tab">02 / Find us</span>
           <h2 id="find-h">Address</h2>
           <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
-          <p class="muted">Address: {a.certainty}. Confirm with the store.</p>
-          <p class="visit-actions"><a class="btn btn-ghost" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
-          <p><strong>Parking:</strong> ask in store. We have not confirmed the details yet.</p>
+          <p class="visit-actions"><a class="btn btn-secondary btn-wide" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
+          <p><strong>Parking:</strong> ask in store.</p>
           {(store.phone || store.email || L.discord) && (
             <ul class="reach">
               {store.phone && <li>Phone: <a href={`tel:${store.phone}`}>{store.phone}</a></li>}
@@ -43,13 +41,13 @@ const L = store.links;
         <section class="box" id="play" aria-labelledby="play-h">
           <span class="tab">03 / Play space</span>
           <h2 id="play-h">Play space and house rules</h2>
-          <p>Tables are for playing. Sit down, shuffle up, and ask the counter if you need a hand finding a game.</p>
+          <p><strong>Bring:</strong> your deck, sleeves and dice. New to a game? Ask the counter.</p>
           <ul class="rules">
             <li>Be kind. Everyone here is trying to have a good night.</li>
             <li>Ask before you touch someone else's cards.</li>
             <li>Clean up your table when you leave.</li>
             <li>Stay home if you are sick.</li>
-            <li>Ages and entry fees: <span class="chip">Ask in store</span></li>
+            <li>Age rules and entry fees: <span class="chip">Ask in store</span></li>
           </ul>
         </section>
       </div>

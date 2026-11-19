@@ -122,7 +122,6 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
       <span class="tab">06 / Visit</span>
       <h2 id="visit-h">Visit us</h2>
       <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
-      <p class="muted">Address: {a.certainty}. Confirm with the store.</p>
       <p class="visit-today"><strong data-today-hours>Hours: <a href="/visit/">see all hours</a></strong></p>
       <p class="visit-cta">
         <a class="btn btn-ghost" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a>

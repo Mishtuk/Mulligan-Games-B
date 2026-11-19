@@ -12,7 +12,8 @@ const once = events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certa
 const none = !groups.length && !once.length;
 const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
 const label = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
-const data = JSON.stringify({ weekly: events.weekly, oneoffs: events.oneoffs }).replace(/</g, '\\u003c');
+const bare = ({ certainty, source, ...e }: Record<string, unknown>) => e;
+const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certainty)).map(bare) }).replace(/</g, '\\u003c');
 ---
 <section class="box tonight" data-tonight aria-labelledby="tonight-h">
   <span class="tab">01 / Tonight</span>

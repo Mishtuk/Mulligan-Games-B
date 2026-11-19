@@ -5,6 +5,8 @@
 .visit .box > h2 { margin-bottom: var(--s-2); }
 .visit .box p + p, .visit .box address + p { margin-top: var(--s-1); }
 .visit-actions { margin-block: var(--s-3); }
+.btn-wide { width: 100%; }
+@media (min-width: 480px) { .btn-wide { width: auto; } }
 .hours-note { margin-top: var(--s-2); font-size: var(--step--1); }
 
 .hours-table { width: 100%; max-width: 28rem; border-collapse: collapse; }

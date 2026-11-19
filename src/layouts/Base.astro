@@ -79,7 +79,6 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
           <div>
             <h2>Visit us</h2>
             <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
-            <p class="foot-note">Address: {a.certainty}. Confirm with the store.</p>
             <p><a href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
             {store.phone && <p><a href={`tel:${store.phone}`}>{store.phone}</a></p>}
             {store.email && <p><a href={`mailto:${store.email}`}>{store.email}</a></p>}
@@ -91,19 +90,14 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
                 <div data-day={d}><dt>{DAYS[d]}</dt><dd>{hoursText(week[d])}</dd></div>
               ))}
             </dl>
-            <p class="foot-note">{store.hoursCertainty}: confirm hours with the store.</p>
+            <p class="foot-note">Hours and nights can change, so check before a long trip.</p>
           </div>
-          <nav aria-label="Footer: pages">
-            <h2>Pages</h2>
-            <ul>
-              <li><a href="/">Home</a></li>
-              {navDesk.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
-              <li><a href="/privacy/">Privacy</a></li>
-            </ul>
-          </nav>
           <nav aria-label="Footer: find us online">
             <h2>Find us online</h2>
-            <ul>{links.map(([label, href]) => <li><a href={href} rel="noopener">{label}<span class="vh"> (opens another site)</span></a></li>)}</ul>
+            <ul class="foot-links">
+              {links.map(([label, href]) => <li><a href={href} rel="noopener">{label}<span class="vh"> (opens another site)</span></a></li>)}
+              <li><a href="/privacy/">Privacy</a></li>
+            </ul>
           </nav>
         </div>
         <p class="foot-legal">Not affiliated with Wizards of the Coast, The Pokémon Company, Bandai or any publisher. Game names belong to their owners.</p>
