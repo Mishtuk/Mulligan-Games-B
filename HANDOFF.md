@@ -61,6 +61,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- 2026-11-19 Loop 1 Home (coder): logo CSS crop, binder Wed-first, pocket title clamp, hero/Tonight rebalanced at 1280, shorter binder note; +1 test (92). Not committed.
 - 2026-11-19 Slice C (coder): Shop, Sell, Visit, 404, Privacy built (pages, shop/sell/visit/pages.css, Slab/ConditionGuide/Toploader/HoursTable, sell-rows/visit-hours/visit-contact JS, test/pages-c.test.mjs). Not committed.
 - 2026-11-19 Slice B (coder): Events page (filter chips, pairings sheet, special nights, sign-up, .ics per night, events.js/events.css, test/events.test.mjs). Not committed.
 - 2026-11-19 Slice A (coder): foundation + Home built (layout, global/home CSS, Pocket/BinderWeek/TonightStrip/OpenChip, data JSON, fonts, logo, hours.js + tests). Not committed.- 2026-11-19 Setup from the kit; research files; plan.

@@ -135,6 +135,8 @@ a.chip { min-height: var(--tap); }
 .binder-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
 @container (min-width: 20rem) { .binder-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @container (max-width: 30rem) { .binder .pocket-title { font-size: .9rem; } }
+@container (min-width: 20rem) { .binder .pocket-title { font-size: clamp(.72rem, 3.4cqi, var(--step-0)); } }
+.pocket-title a { min-width: 0; overflow-wrap: anywhere; }
 @container (max-width: 13rem) { .binder-grid { grid-template-columns: 1fr; } }
 
 /* ---- forms ---- */
@@ -152,8 +154,8 @@ textarea { min-height: 6.5rem; resize: vertical; }
 /* ---- header ---- */
 .site-header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: var(--border-w) solid var(--line); }
 .site-header-in { display: flex; align-items: center; gap: var(--s-1); padding-block: .4rem; }
-.brand { display: block; flex: none; margin-right: auto; line-height: 0; }
-.brand img { width: 160px; height: auto; mix-blend-mode: multiply; } /* the logo file has a white ground: multiply lets the page colour show through */
+.brand { display: block; flex: none; width: 160px; margin-right: auto; line-height: 0; aspect-ratio: 340 / 98; overflow: hidden; } /* crop the file's bottom 18%: orange specks sit below the letters (rows 100+ of 120) */
+.brand img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; } /* the logo file has a white ground: multiply lets the page colour show through */
 .nav-desk { display: none; }
 .nav-desk a, .menu-sheet a { display: flex; align-items: center; min-height: var(--tap); color: var(--text); font-weight: 700; text-decoration: none; }
 .nav-desk a { padding: 0 var(--s-2); border-bottom: 3px solid transparent; }

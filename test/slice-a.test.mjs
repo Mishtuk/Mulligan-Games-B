@@ -78,3 +78,11 @@ test('logo, favicon and fonts exist', () => {
     assert.ok(fs.existsSync(path.join(root, f)), f);
   }
 });
+
+test('binder week: open nights lead (Wednesday first), closed Monday and Tuesday last', () => {
+  const s = read('src/components/BinderWeek.astro');
+  assert.match(s, /const order = \[3, 4, 5, 6, 0, 1, 2\]/);
+  const html = read('dist/index.html');
+  const pos = (n) => html.indexOf(`>${n}</a></h3>`);
+  assert.ok(pos('Wednesday') > 0 && pos('Wednesday') < pos('Sunday') && pos('Sunday') < pos('Monday') && pos('Monday') < pos('Tuesday'));
+});

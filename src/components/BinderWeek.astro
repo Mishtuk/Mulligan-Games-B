@@ -1,5 +1,5 @@
 ---
-// Binder page: Mon-Sun pockets plus Monthly series and Open play. Reads events.json and store.json hours.
+// Binder page: Wed-Tue pockets (closed days last) plus Monthly series and Open play (between Sun and Mon). Reads events.json and store.json hours.
 import Pocket from './Pocket.astro';
 import events from '../data/events.json';
 import store from '../data/store.json';
@@ -7,7 +7,7 @@ import { DAYS, DAY_SHORT, toWeek, fmtTime, byTime } from '../lib/hours.js';
 
 const week = toWeek(store.hours);
 const slugs = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-const order = [1, 2, 3, 4, 5, 6, 0]; // Monday first
+const order = [3, 4, 5, 6, 0, 1, 2]; // Wednesday first: the shop is closed Mon and Tue, so a real night leads on a phone
 const isOpenPlay = (e: { format: string }) => /open play/i.test(e.format);
 
 const days = order.map((d) => {
@@ -18,7 +18,7 @@ const days = order.map((d) => {
 });
 
 const openPlay = events.weekly.filter(isOpenPlay);
-const openPlayDays = [...new Set(openPlay.map((e) => e.day))].sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
+const openPlayDays = [...new Set(openPlay.map((e) => e.day))].sort((a, b) => ((a + 4) % 7) - ((b + 4) % 7));
 const openPlayGames = [...new Set(openPlay.map((e) => e.game))].join(' and ');
 const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
 ---
