@@ -71,3 +71,15 @@ test('sell: counter sign, three numbered stubs, condition guide folded and linke
   assert.equal((s.match(/class="stub"/g) || []).length, 3);
   assert.match(s, /<details class="cond-fold"[\s\S]*href="\/shop\/#condition"/);
 });
+
+test('scripts off: each form result panel is the redirect fragment and shows by :target; a sent form steps aside', { skip: !built }, () => {
+  const css = fs.readFileSync(path.resolve(dist, '..', 'src/styles/global.css'), 'utf8');
+  assert.match(css, /\.form-msg\[hidden\]:target \{ display: block !important; \}/); // beats [hidden] { display: none !important }
+  assert.match(css, /:has\(> \.form-msg\.ok:target\) > form \{ display: none; \}/);
+  for (const [p, name] of [['index.html', 'request'], ['shop/index.html', 'request'], ['events/index.html', 'signup'], ['sell/index.html', 'buylist'], ['visit/index.html', 'contact']]) {
+    const h = html(p);
+    for (const k of ['ok', 'err']) assert.match(h, new RegExp(`class="form-msg (ok|error)" id="${name}-${k}"[^>]*hidden`), `${p} #${name}-${k}`);
+    // panel and form are siblings, so the :has() rule can hide the form
+    assert.match(h, new RegExp(`id="${name}-ok"[\\s\\S]*?<form[^>]*id="${name}-form"`), p);
+  }
+});

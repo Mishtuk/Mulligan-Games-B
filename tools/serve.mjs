@@ -6,6 +6,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import worker from '../src/worker.js';
 import { makeD1 } from '../src/worker/d1-shim.js';
+import { zoned } from '../src/lib/hours.js';
+import { seedEvents, seedSql, TZ } from '../src/lib/seed-events.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
@@ -15,7 +17,9 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=
   '.avif': 'image/avif', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8', '.ico': 'image/x-icon', '.xml': 'application/xml' };
 
 const env = {
-  DB: makeD1(fs.readFileSync(path.join(root, 'schema.sql'), 'utf8')),
+  // Tables from schema.sql plus four weeks of sign-up nights from today, the same rows the built Events page offers.
+  DB: makeD1(fs.readFileSync(path.join(root, 'schema.sql'), 'utf8') + '\n' +
+    seedSql(seedEvents(JSON.parse(fs.readFileSync(path.join(root, 'src/data/events.json'), 'utf8')).weekly, zoned(TZ).date), '')),
   LOCAL: '1',
   ASSETS: { fetch: () => new Response('Not found', { status: 404 }) },
 };

@@ -37,12 +37,12 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 
 ## Status
 - Stage: 3 refinement (first build done 2026-11-19). Gates: G1 passed (owner brief + D4/D5).
-- Last build: pass 2026-11-19 (loop 10). Last test run: 119/119. check-site: 7/7 paths pass.
+- Last build: pass 2026-11-19 (loop 20). Last test run: 126/126. check-site: 7/7 paths pass. npm run a11y: pass.
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 20 of 50 (lens 10 boss review). Loops 1-19 done; loops 15-19 not yet committed by the boss.
-- [boss] refinement loop 11 (Home): see docs/review/loop-10/review.md priority list
+- RESUME HERE: loop 21 of 50 (lens 1 Home). Loops 1-20 done; loop 20 not yet committed by the boss. Priorities: docs/review/loop-20/review.md.
+- [boss] refinement loop 21 (Home): see docs/review/loop-20/review.md priority list
 
 ## Waiting on the owner
 - **To set before launch:** `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 20 (boss review of 11-19): independent 22 -> 25/30. Fixed loop-19 regression (Events sign-up check threw ReferenceError `err`, no error summary); results now show with scripts off (Worker redirects to #form-ok|-wait|-err, CSS :target); no-JS header no longer sticky; seed ruling: no prebuild, positional ids replaced by stable ids, INSERT OR IGNORE, no seed in schema.sql, signup-events.json removed; `npm run a11y` now runs every form. 126 tests, check-site 0, a11y passed. Priorities 21-29 in docs/review/loop-20/review.md.
 - Loop 19 (code): prebuild seeds sign-up events from the build date; nested-interactive test over dist/; shared public/js/form-state.js; budget re-measured (gzip headroom 0.6%, trim before raising); dead CSS/tokens/functions cut. 125 tests, check-site 0, a11y passed.
 - Loop 18 (copy and voice): glossary in DESIGN.md s7; one name per thing across 7 paths; "ask at the counter", "Hold a seat", store credit; form success/error copy unified; Sell guide summary has a Show/Hide + affordance; Home sealed pockets link to contact. 123 tests, check-site 0, a11y passed.
 - Loop 17 (identity + craft): design review docs/review/loop-17/. Header switches to Menu by `@container page (min-width: 52rem)` (body is the container); hero hand bigger; object family unified (sleeve stripes, --shadow-sm, radii); Home Sealed + Sell side by side at 1100px+; cut Shop case glare. 123 tests, check-site and a11y pass.
@@ -88,5 +89,5 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 
 ## How to run
 - Install: `npm install` · Dev: `npm run dev` · Build: `npm run build` · Test: `npm test`
-- `npm run build` first runs `tools/seed-events.mjs` (npm `prebuild`): it rewrites `src/data/signup-events.json` and the seed block in `schema.sql` from `events.json`, 4 weeks from the build date in the store zone (`node tools/seed-events.mjs YYYY-MM-DD` for a fixed date; same date = same output). That does NOT touch the real D1: the owner still has to run `wrangler d1 execute <db> --file=schema.sql` (or just the seed block) after a build to put the new nights in the live database. Rebuild and re-seed at least every 3 weeks.
+- Sign-up nights: the Events page builds its list from `events.json` (4 weeks from the build date, `seedEvents` in `src/lib/seed-events.js`); the build writes no tracked files. ids come from each night (YYYYMMDDHHMM*10+slot), so build and seed agree whatever day each ran. On deploy day: `node tools/seed-events.mjs > .work/seed.sql` then `wrangler d1 execute mulligan --remote --file .work/seed.sql` (INSERT OR IGNORE: safe to re-run, keeps sign-ups). Rebuild and re-seed at least every 3 weeks. `schema.sql` is tables only; `tools/serve.mjs` seeds the local D1 itself.
 - Browser check: `npm run build && npm run serve` then `node tools/check-site.mjs http://localhost:4321 / /events/ ...`

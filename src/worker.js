@@ -15,7 +15,7 @@ const SIGNUP_SQL = `INSERT OR IGNORE INTO registrations (event_id, name, email, 
 const text = (max, opt) => ({ max, opt });
 const FORMS = {
   '/api/signup': { form: 'signup', home: '/events/', save: saveSignup, fields: {
-    event_id: { type: 'int', min: 1, max: 1e9 }, name: text(80), email: { type: 'email' }, players_note: text(200, 1) } },
+    event_id: { type: 'int', min: 1, max: 1e13 }, name: text(80), email: { type: 'email' }, players_note: text(200, 1) } },
   '/api/buylist': { form: 'buylist', home: '/sell/', save: saveBuylist, fields: {
     name: text(80), email: { type: 'email' }, payout: { type: 'pick', of: ['cash', 'credit'] }, note: text(500, 1) } },
   '/api/request': { form: 'request', home: '/shop/', pages: ['/shop/', '/'], save: saveRequest, fields: {
@@ -153,8 +153,9 @@ export default {
     if (!FORM_TYPES.test(req.headers.get('content-type') ?? '')) return plain('Unsupported', 415);
 
     const page = pageOf(req, cfg);
+    // The #<form>-ok|-wait|-err fragment shows the panel by CSS :target when scripts are off; the script reads the query.
     const done = (ok, sent = cfg.form) => new Response(null, { status: 303,
-      headers: { ...NO_STORE, Location: `${page}?${ok ? `sent=${sent}` : `${cfg.form}=error`}#${cfg.form}` } });
+      headers: { ...NO_STORE, Location: `${page}?${ok ? `sent=${sent}` : `${cfg.form}=error`}#${cfg.form}-${!ok ? 'err' : sent === 'waitlist' ? 'wait' : 'ok'}` } });
 
     const ip = req.headers.get('CF-Connecting-IP') ?? '';
     if (env.FORM_LIMIT && !(await env.FORM_LIMIT.limit({ key: ip + url.pathname })).success) return plain('Slow down', 429);

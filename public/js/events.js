@@ -95,11 +95,11 @@ function formState() {
   if (!form) return;
   showResult(form, 'signup', { signup: 'ok', waitlist: 'wait' });
 
-  const list = $('#signup-err-list'), server = $('#signup-err-server'), head = $('#signup-err-h');
+  const list = $('#signup-err-list'), server = $('#signup-err-server'), head = $('#signup-err-h'), err = $('#signup-err');
   const rules = [
     ['su-event', 'Choose a night.', (el) => !!el.value],
     ['su-name', 'Enter your first name.', (el) => !!el.value.trim()],
-    ['su-email', 'Enter a valid email.', (el) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())],
+    ['su-email', 'Enter a valid email.', (el) => emailOk(el.value)],
   ];
   const clear = () => { for (const f of $$('.field-err', form)) f.remove(); for (const el of $$('[aria-invalid]', form)) { el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); } };
 

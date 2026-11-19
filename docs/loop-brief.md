@@ -10,7 +10,9 @@ priorities. Everything else is here.
 Kit `C:\Users\alexm\projects\Base-Website-Design-Template` is READ-ONLY reference. Never open `Mulligan-Games-Website-concept-`.
 
 ## Do
-1. Score the site before (six 0-5 scores, plan's rubric) from screenshots and code, not memory.
+1. Score the site before (six 0-5 scores, plan's rubric) from screenshots and code, not memory. Start from the
+   latest review's score (`docs/review/loop-N0/review.md`) and move it only with evidence; reviews found loop
+   self-scores of 29-30 were really 22-25. Read that review's priority line for your loop.
 2. Pick the 2-4 changes with the biggest gain inside your lens (the boss's priorities first). Small, surgical diffs.
    A loop also cuts: remove something redundant, wordy or fussy when you see it.
 3. Never invent facts: no prices, fees, phone, rates, reviews, people. Public pages never show research jargon
@@ -19,7 +21,7 @@ Kit `C:\Users\alexm\projects\Base-Website-Design-Template` is READ-ONLY referenc
    no inline scripts (CSP), headings never "The" + word, every page one click from the nav, 48px targets.
 
 ## Check (all required before you report)
-- `npm run build` clean and `npm test` green (add or update a test for any logic you touch).
+- `npm run build` clean, `npm test` green (add or update a test for any logic you touch), and `npm run a11y` passes (it also submits every form).
 - `npm run build && PORT=43NN node tools/serve.mjs` (NN = loop number, so ports never clash), then
   `MSYS_NO_PATHCONV=1 node tools/check-site.mjs http://localhost:43NN / /events/ /shop/ /sell/ /visit/ /privacy/ /nope` exits 0.
 - Screenshots of the pages you changed at 390x844 and 1280x800 (scripts in `.work/`), into `docs/review/loop-NN/`.

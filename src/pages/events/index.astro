@@ -6,7 +6,7 @@ import events from '../../data/events.json';
 import store from '../../data/store.json';
 import games from '../../data/games.json';
 import { DAYS, toWeek, fmtTime, byTime, zoned } from '../../lib/hours.js';
-import signup from '../../data/signup-events.json';
+import { seedEvents } from '../../lib/seed-events.js';
 import { gameId, isShown, isLikely, upcomingOneoffs, dateParts, signupLabel, upcomingSignup } from '../../lib/events.js';
 import '../../styles/events.css';
 
@@ -16,7 +16,8 @@ const order = [3, 4, 5, 6, 0, 1, 2];
 const weekly = events.weekly.filter(isShown);
 const days = order.map((d) => ({ d, name: DAYS[d], slug: DAYS[d].toLowerCase(), closed: !week[d], rows: weekly.filter((e) => e.day === d).sort(byTime) }));
 const special = upcomingOneoffs(events.oneoffs, zoned(store.timezone).date);
-const nights = upcomingSignup(signup.events, zoned(store.timezone).date);
+// Sign-up nights: four weeks from the build date, same rows and ids as the D1 seed (tools/seed-events.mjs).
+const nights = upcomingSignup(seedEvents(events.weekly, zoned(store.timezone).date), zoned(store.timezone).date);
 const likely = [...weekly, ...special].some(isLikely);
 const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
 const a = store.address;
@@ -135,7 +136,6 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
         <ul id="signup-err-list"></ul>
         <p id="signup-err-server">Nothing was sent. Please check the night, name and email and send it again. Already held a seat for that night? Then you are on the list.</p>
       </div>
-      <noscript><p class="muted">Scripts are off, so no message shows. If the address ends in sent=signup, your seat is held.</p></noscript>
 
       <p class="signup-empty" id="signup-empty" role="status" hidden={nights.length > 0}>Sign-ups for the next nights open soon. Just turn up, or ask at the counter.</p>
 

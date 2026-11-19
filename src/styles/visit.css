@@ -13,7 +13,7 @@
 .btn-wide { width: 100%; }
 @media (min-width: 480px) { .btn-wide { width: auto; } }
 
-.hours-table { width: 100%; max-width: 28rem; border-collapse: collapse; }
+.hours-table { width: 100%; border-collapse: collapse; }
 .hours-table th, .hours-table td { padding: .5rem var(--s-2); text-align: left; border-bottom: 1px solid var(--soft-line); }
 .hours-table thead th { background: var(--bg2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
 .hours-table thead th:last-child { text-align: right; }

@@ -1,7 +1,7 @@
 // npm run a11y [baseUrl]: accessibility and motion checks in real Chrome (CDP). Needs `npm run build` first.
 // Without a URL it serves dist/ itself on port 4399. Checks: 200% text zoom on all paths at 1280/390/320 (no sideways
 // scroll, no clipped text), tilted text stays within 3deg and nothing sits on top of text, drawn shapes are aria-hidden,
-// menu sheet (Enter, Esc returns focus, focus out and outside click close), motion off => 0 animations and no transitions.
+// menu sheet (Enter, Esc returns focus, focus out and outside click close), motion off => 0 animations and no transitions, forms: empty submit -> focused error summary, ?sent= -> success panel.
 import { spawn } from 'node:child_process';
 import { launch, sleep } from './cdp.mjs';
 
@@ -81,6 +81,18 @@ try {
     const r = await b.page({ w: 1280, h: 800, reduce: true });
     for (const p of PATHS) { await r.go(base + p); s = await r.ev(motionProbe); ok(s.dm === 'off' && s.anims === 0 && s.tr === 0 && s.disabled, `reduced motion ${p}: ${JSON.stringify(s)}`); }
     await r.close();
+  }
+  // 4. forms: an empty submit shows a focused error summary (no script error); ?sent= shows the focused success panel
+  for (const [p, name, fid] of [['/', 'request', 'request-form'], ['/events/', 'signup', 'signup-form'], ['/shop/', 'request', 'request-form'], ['/sell/', 'buylist', 'buylist-form'], ['/visit/', 'contact', 'contact-form']]) {
+    const t = await b.page({ w: 390, h: 844 }); await t.go(base + p);
+    await t.ev(`window.__errs = []; addEventListener('error', (e) => __errs.push(e.message)); const f = document.getElementById('${fid}'); for (const el of f.querySelectorAll('input:not([type=hidden]):not([type=radio]), textarea')) el.value = ''; const s = f.querySelector('#su-event'); if (s) s.value = ''; f.querySelector('button[type=submit]').click()`); await sleep(200);
+    let s = await t.ev(`(() => { const a = document.activeElement; return { errs: __errs, focus: a.id, panel: a.classList.contains('form-msg') && !a.hidden, links: a.querySelectorAll('a').length, url: location.pathname + location.search }; })()`);
+    ok(!s.errs.length && s.panel && s.links > 0 && s.url === p, `form ${p}: empty submit shows a focused error summary ${JSON.stringify(s)}`);
+    const sent = p === '/events/' ? 'signup' : name;
+    await t.go(`${base}${p}?sent=${sent}`); await sleep(100);
+    s = await t.ev(`({ focus: document.activeElement.id, hidden: document.getElementById('${fid}').hidden })`);
+    ok(s.focus === `${name}-ok` && s.hidden, `form ${p}: ?sent=${sent} focuses the success panel ${JSON.stringify(s)}`);
+    await t.close();
   }
 } finally { b.quit(); server?.kill(); }
 console.log(fails.length ? `a11y: ${fails.length} failure(s)` : 'a11y: all checks passed');

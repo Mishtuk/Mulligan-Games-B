@@ -13,7 +13,7 @@ export const isLikely = (e) => /^Likely/i.test(e.certainty ?? '');
 export const upcomingOneoffs = (oneoffs, today) =>
   oneoffs.filter((e) => e.date && isShown(e) && e.date >= today).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 
-// Sign-up nights that are not before `today` (YYYY-MM-DD, store zone). The seed is made by hand (tools/seed-events.mjs), so a stale
+// Sign-up nights that are not before `today` (YYYY-MM-DD, store zone). The list is made at build time, so a stale
 // build must never offer nights that have passed.
 export const upcomingSignup = (nights, today) => nights.filter((e) => e.date >= today);
 
@@ -74,7 +74,7 @@ export function dateParts(date) {
   return { dom: String(d), mon: t.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }), dow: DAY_SHORT[t.getUTCDay()] };
 }
 
-// Sign-up <option> text: "Draft FNM, Fri Nov 20, 7pm". Rows come from src/data/signup-events.json (tools/seed-events.mjs), same ids as the D1 seed.
+// Sign-up <option> text: "Draft FNM, Fri Nov 20, 7pm". Rows come from seedEvents (src/lib/seed-events.js), same ids as the D1 seed.
 export function signupLabel(e) {
   const p = dateParts(e.date);
   return `${e.title}, ${p.dow} ${p.mon} ${p.dom}, ${fmtTime(e.time)}`;

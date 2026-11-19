@@ -53,7 +53,7 @@ for (const f of FORMS) {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, f.valid);
     assert.equal(r.status, 303);
-    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}`);
+    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}-ok`);
     assert.equal(rows(env, `SELECT * FROM ${f.table}`).length, 1);
   });
 
@@ -61,14 +61,14 @@ for (const f of FORMS) {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, {});
     assert.equal(r.status, 303);
-    assert.equal(loc(r), `${f.home}?${f.form}=error#${f.form}`);
+    assert.equal(loc(r), `${f.home}?${f.form}=error#${f.form}-err`);
     assert.equal(rows(env, `SELECT * FROM ${f.table}`).length, 0);
   });
 
   test(`${f.path}: bad email is an error`, async () => {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, { ...f.valid, email: 'not-an-email' });
-    assert.equal(loc(r), `${f.home}?${f.form}=error#${f.form}`);
+    assert.equal(loc(r), `${f.home}?${f.form}=error#${f.form}-err`);
   });
 
   for (const hostile of [XSS, SQLI]) {
@@ -89,14 +89,14 @@ for (const f of FORMS) {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, { ...f.valid, website: 'http://spam.example' });
     assert.equal(r.status, 303);
-    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}`);
+    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}-ok`);
     assert.equal(rows(env, `SELECT * FROM ${f.table}`).length, 0);
   });
 
   test(`${f.path}: Referer from another origin falls back to ${f.home}`, async () => {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, f.valid, { referer: 'https://evil.example/phish/' });
-    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}`);
+    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}-ok`);
   });
 
   test(`${f.path}: GET is 405, never a page`, async () => {
@@ -126,26 +126,26 @@ test('buylist: bad condition, bad qty, no items, or more than 40 items are error
   ];
   for (const fields of bad) {
     const env = newEnv();
-    assert.equal(loc(await post(env, '/api/buylist', fields)), '/sell/?buylist=error#buylist');
+    assert.equal(loc(await post(env, '/api/buylist', fields)), '/sell/?buylist=error#buylist-err');
     assert.equal(rows(env, 'SELECT * FROM buylists').length, 0);
   }
   const env = newEnv();
   const forty = { ...base, 'item_name[]': Array(40).fill('Card'), 'item_set[]': Array(40).fill(''), 'item_cond[]': Array(40).fill('NM'), 'item_qty[]': Array(40).fill('1') };
-  assert.equal(loc(await post(env, '/api/buylist', forty)), '/sell/?sent=buylist#buylist');
+  assert.equal(loc(await post(env, '/api/buylist', forty)), '/sell/?sent=buylist#buylist-ok');
   assert.equal(rows(env, 'SELECT * FROM buylist_items').length, 40);
 });
 
 test('buylist: payout must be cash or credit', async () => {
   const env = newEnv();
-  assert.equal(loc(await post(env, '/api/buylist', { ...FORMS[1].valid, payout: 'bitcoin' })), '/sell/?buylist=error#buylist');
+  assert.equal(loc(await post(env, '/api/buylist', { ...FORMS[1].valid, payout: 'bitcoin' })), '/sell/?buylist=error#buylist-err');
 });
 
 test('signup: 2-seat event, third sign-up goes to the waitlist', async () => {
   const env = newEnv(); addEvent(env, 7, 2);
   const go = (email) => post(env, '/api/signup', { event_id: '7', name: 'P', email });
-  assert.equal(loc(await go('a@example.com')), '/events/?sent=signup#signup');
-  assert.equal(loc(await go('b@example.com')), '/events/?sent=signup#signup');
-  assert.equal(loc(await go('c@example.com')), '/events/?sent=waitlist#signup');
+  assert.equal(loc(await go('a@example.com')), '/events/?sent=signup#signup-ok');
+  assert.equal(loc(await go('b@example.com')), '/events/?sent=signup#signup-ok');
+  assert.equal(loc(await go('c@example.com')), '/events/?sent=waitlist#signup-wait');
   assert.deepEqual(rows(env, 'SELECT email, waitlist FROM registrations ORDER BY id'),
     [{ email: 'a@example.com', waitlist: 0 }, { email: 'b@example.com', waitlist: 0 }, { email: 'c@example.com', waitlist: 1 }]);
 });
@@ -154,7 +154,7 @@ test('signup: duplicate email makes no second row and is an error', async () => 
   const env = newEnv(); addEvent(env, 7, 5);
   await post(env, '/api/signup', { event_id: '7', name: 'P', email: 'a@example.com' });
   const r = await post(env, '/api/signup', { event_id: '7', name: 'P', email: 'A@Example.com' });
-  assert.equal(loc(r), '/events/?signup=error#signup');
+  assert.equal(loc(r), '/events/?signup=error#signup-err');
   assert.equal(rows(env, 'SELECT * FROM registrations').length, 1);
 });
 
@@ -162,7 +162,7 @@ test('signup: unknown, cancelled and past events are errors', async () => {
   const env = newEnv(); addEvent(env, 7, 5);
   env.DB.raw.exec("INSERT INTO events (id, title, starts_at, cancelled) VALUES (8, 'Off', '2999-01-01 10:00', 1), (9, 'Past', '2000-01-01 10:00', 0)");
   for (const id of ['99', '8', '9', 'abc']) {
-    assert.equal(loc(await post(env, '/api/signup', { event_id: id, name: 'P', email: 'a@example.com' })), '/events/?signup=error#signup');
+    assert.equal(loc(await post(env, '/api/signup', { event_id: id, name: 'P', email: 'a@example.com' })), '/events/?signup=error#signup-err');
   }
   assert.equal(rows(env, 'SELECT * FROM registrations').length, 0);
 });
@@ -203,9 +203,9 @@ test('rate limit: a blocked caller gets 429 and nothing is stored', async () => 
 
 test('turnstile: with a real secret and no token the post is refused; missing secret outside local fails closed', async () => {
   const env = { ...newEnv(), TURNSTILE_SECRET: 'other' };
-  assert.equal(loc(await post(env, '/api/contact', FORMS[3].valid)), '/visit/?contact=error#contact');
+  assert.equal(loc(await post(env, '/api/contact', FORMS[3].valid)), '/visit/?contact=error#contact-err');
   const prod = { ...newEnv(), LOCAL: undefined };
-  assert.equal(loc(await post(prod, '/api/contact', FORMS[3].valid)), '/visit/?contact=error#contact');
+  assert.equal(loc(await post(prod, '/api/contact', FORMS[3].valid)), '/visit/?contact=error#contact-err');
 });
 
 test('Origin: a post claiming another site is refused (403) and stores nothing; no Origin header still works', async () => {
@@ -243,15 +243,15 @@ function streamed(path, text, chunk = 4096) {
 test('body size: no Content-Length is read with a byte cap; over the cap (declared or streamed) goes back with an error', async () => {
   const env = newEnv();
   const ok = await post(env, '/api/contact', FORMS[3].valid, { 'content-length': '' });
-  assert.equal(loc(ok), '/visit/?sent=contact#contact');
+  assert.equal(loc(ok), '/visit/?sent=contact#contact-ok');
   const small = streamed('/api/contact', new URLSearchParams(FORMS[3].valid).toString(), 8);
-  assert.equal(loc(await worker.fetch(small.req, env)), '/visit/?sent=contact#contact');
+  assert.equal(loc(await worker.fetch(small.req, env)), '/visit/?sent=contact#contact-ok');
   assert.equal(rows(env, 'SELECT * FROM contacts').length, 2);
 
   const big = await post(env, '/api/contact', { ...FORMS[3].valid, message: 'x'.repeat(31000) });
-  assert.equal(loc(big), '/visit/?contact=error#contact');
+  assert.equal(loc(big), '/visit/?contact=error#contact-err');
   const huge = streamed('/api/contact', new URLSearchParams({ ...FORMS[3].valid, message: 'x'.repeat(5_000_000) }).toString());
-  assert.equal(loc(await worker.fetch(huge.req, env)), '/visit/?contact=error#contact');
+  assert.equal(loc(await worker.fetch(huge.req, env)), '/visit/?contact=error#contact-err');
   assert.ok(huge.state.cancelled, 'stream cancelled at the cap');
   assert.ok(huge.state.pulled < 20, `stopped reading early (pulled ${huge.state.pulled} of ~1200 chunks)`);
   assert.equal(rows(env, 'SELECT * FROM contacts').length, 2);
@@ -259,9 +259,9 @@ test('body size: no Content-Length is read with a byte cap; over the cap (declar
 
 test('Referer: only a page on that form own list is used (Home may send the want list); paths like // and ../ fall back', async () => {
   const env = newEnv();
-  assert.equal(loc(await post(env, '/api/request', FORMS[2].valid, { referer: ORIGIN + '/?x=1' })), '/?sent=request#request');
+  assert.equal(loc(await post(env, '/api/request', FORMS[2].valid, { referer: ORIGIN + '/?x=1' })), '/?sent=request#request-ok');
   for (const bad of ['//evil.example/', '/events/', '/shop/../x', '/a b/']) {
-    assert.equal(loc(await post(env, '/api/request', FORMS[2].valid, { referer: ORIGIN + bad })), '/shop/?sent=request#request', bad);
+    assert.equal(loc(await post(env, '/api/request', FORMS[2].valid, { referer: ORIGIN + bad })), '/shop/?sent=request#request-ok', bad);
   }
 });
 
