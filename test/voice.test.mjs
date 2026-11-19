@@ -25,3 +25,25 @@ test('built pages use only the two unknown phrases', { skip: !fs.existsSync(dist
   assert.deepEqual(bad, []);
   assert.ok(counter > 0 && store > 0);
 });
+
+// Loop 38: an unknown fee is shown by showing nothing (one quiet line on Visit). No "Fee: ask" text, no dash chip, in any page or the .ics.
+test('no unknown-fee chip or "Fee: ask" text anywhere in dist', { skip: !fs.existsSync(dist) }, () => {
+  const bad = [];
+  for (const f of walk(dist).filter((x) => /\.(html|js|json|ics)$/.test(x))) {
+    const raw = fs.readFileSync(f, 'utf8');
+    const t = f.endsWith('.html') ? text(raw) : raw;
+    if (/Fee: ask|Fee:\s*[–-]|fee[^<]{0,12}ask at the counter/i.test(t)) bad.push(path.relative(dist, f));
+    if (/<td[^>]*data-label="Fee"[^>]*>\s*(<span[^>]*>\s*)?[–-]/.test(raw)) bad.push(`${path.relative(dist, f)}: dash fee cell`);
+    if (/<span class="sticker">(?!\$\d)/.test(raw)) bad.push(`${path.relative(dist, f)}: non-dollar sticker`);
+  }
+  assert.deepEqual(bad, []);
+});
+
+test('Events play-room placeholder is hidden under 52rem page width; a real photo is never hidden', () => {
+  const css = fs.readFileSync(path.resolve(dist, '..', 'src', 'styles', 'events.css'), 'utf8');
+  assert.match(css, /@container page \(max-width: 51\.99rem\) \{ \.ph\.ev-photo \{ display: none; \} \}/);
+  assert.doesNotMatch(css, /[^h]\.ev-photo\s*\{\s*display:\s*none/);
+  const photo = fs.readFileSync(path.resolve(dist, '..', 'src', 'components', 'Photo.astro'), 'utf8');
+  assert.match(photo, /class:list=\{\['ph', cls\]\}/); // placeholder carries .ph
+  assert.match(photo, /class:list=\{\['photo', cls\]\}/); // real image carries .photo, not .ph
+});

@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 38 of 50 (Copy: one way to show an unknown fee, remove duplicate lines). Loops 1-37 done. Priorities: docs/review/loop-30/review.md (simplify and finish, no new objects).
+- RESUME HERE: loop 39 of 50 (Code: rename shop.css, tidy voice regex, dead-CSS sweep). Loops 1-38 done. Priorities: docs/review/loop-30/review.md.
 - [boss] refinement loop 31 (Home): see docs/review/loop-30/review.md priority list
 
 ## Waiting on the owner
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 38 (Copy, 25 -> 25.5 est.): unknown fee shows nothing site-wide (.ics too, dist test); duplicate lines varied; Shop shelf line cut; Events photo placeholder hidden under 52rem; DESIGN.md updated for loop 37. 137 tests, check-site, a11y pass.
 - Loop 37 (Identity, designer): subtract pass cut footer stripe, 16 ASK stickers, 4 tape pieces (inventory in docs/review/loop-37/inventory.md). 2 photo slots (Visit storefront, Events play room). 134 tests, check-site, a11y pass.
 - Loop 36 (A11y, 29.5 -> 30 est.): `npm run a11y` now checks no word is broken mid-word in pocket titles and short labels at 320/390/430 (Range rects per word); it found "Wednesday" (binder at 320, font .9 -> .8rem) and "(NM–DMG)" (cut from the guide summary). Waitlist panel copy shortened (one link line), so the JS-off panel check is strict again (fully in view at 200% x 390). Sell side column sticky only while the guide is folded (:has), tested at 1280x700 and 1280x800. Shots in docs/review/loop-36/.
 - Loop 35 (Visit + chrome): Open in Maps beside the placard at 1280; footer Visit us column dropped on /visit/ (Base footVisit prop); smaller gap under the Open-now strip at 390 (page-head); Sell right column (sign + guide) sticky at 1280, guide now sits before the slip in DOM/390 order; cut Visit lede 2nd sentence. Tests 133. Shots docs/review/loop-35/.

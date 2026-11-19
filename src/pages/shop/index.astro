@@ -2,16 +2,14 @@
 import Base from '../../layouts/Base.astro';
 import Pocket from '../../components/Pocket.astro';
 import ConditionGuide from '../../components/ConditionGuide.astro';
-import games from '../../data/games.json';
 import products from '../../data/products.json';
-import { splitProducts, joinNames } from '../../lib/shop.js';
+import { splitProducts } from '../../lib/shop.js';
 import '../../styles/shop.css';
 import '../../styles/shop-only.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
 const { sealed, preorders } = splitProducts(products);
-const gameNames = joinNames(games);
 const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbound"];
 const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the counter' : `$${n}`);
 ---
@@ -101,7 +99,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
       ) : (
         <div class="shelf">
           <div class="shelf-art" aria-hidden="true"><div class="box-sil"></div><div class="box-sil is-pack"></div></div>
-          <p>We carry {gameNames}. Ask at the counter for a box or a deck.</p>
+          <p>Ask at the counter for a box or a deck.</p>
           <a class="btn" href="/visit/#contact">Ask about stock</a>
         </div>
       )}

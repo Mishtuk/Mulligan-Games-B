@@ -175,3 +175,9 @@ test('seed generator is deterministic for a date', () => {
   assert.equal(seedSql(a, '2026-11-19'), seedSql(b, '2026-11-19'));
   assert.notDeepEqual(a.map((r) => r.date), seedEvents(events.weekly, '2026-12-03').map((r) => r.date));
 });
+
+test('.ics for an unknown fee has no fee line; a known fee keeps "Fee: $N."', () => {
+  const base = { id: 'x', date: '2026-12-01', time: '19:00', title: 'A', game: 'Magic', certainty: 'Confirmed' };
+  assert.doesNotMatch(unfold(eventIcs({ ...base, fee: null }, { now: NOW })), /Fee/);
+  assert.match(unfold(eventIcs({ ...base, fee: 5 }, { now: NOW })), /DESCRIPTION:Fee: \$5\./);
+});
