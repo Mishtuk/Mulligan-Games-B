@@ -26,7 +26,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
     </header>
 
     <section class="box" id="singles" aria-labelledby="singles-h">
-      <span class="tab">01 / Singles</span>
+      <span class="tab">Singles</span>
       <h2 id="singles-h">Singles</h2>
       <div class="singles-grid">
         <div class="request" id="request">
@@ -75,8 +75,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
       <ConditionGuide />
     </section>
 
-    <section class="box box-sky" id="sealed" aria-labelledby="sealed-h">
-      <span class="tab">02 / Sealed</span>
+    <section class="band band-crimp" id="sealed" aria-labelledby="sealed-h">
       <h2 id="sealed-h">Sealed product</h2>
       {sealed.length ? (
         <ul class="shop-grid">
@@ -97,8 +96,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
       )}
     </section>
 
-    <section class="box" id="preorders" aria-labelledby="preorders-h">
-      <span class="tab">03 / Preorders</span>
+    <section class="airy" id="preorders" aria-labelledby="preorders-h">
       <h2 id="preorders-h">Preorders</h2>
       {preorders.length ? (
         <ul class="shop-grid">

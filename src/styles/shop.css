@@ -7,10 +7,10 @@
 .shop-jump .chip { padding-inline: var(--s-3); }
 .shop > .box { margin-top: var(--section); }
 .shop > .page-head + .box { margin-top: 3rem; }
-.shop .box > h2 { margin-bottom: var(--s-2); }
+.shop .box > h2, .shop .band > h2, .shop .airy > h2 { margin-bottom: var(--s-2); }
 .shop .box > h2 + p { margin-bottom: var(--s-2); }
 /* chip anchors land below the sticky header */
-.shop .box { scroll-margin-top: 5.5rem; }
+.shop .box, .shop .band, .shop .airy { scroll-margin-top: 5.5rem; }
 .request { scroll-margin-top: 5.5rem; }
 .request .example { margin-bottom: var(--s-1); font-size: var(--step--1); color: var(--muted); }
 .mono-ex { font-family: var(--font-mono); color: var(--text); font-weight: 700; }

@@ -1,8 +1,13 @@
 /* Visit page. Tokens and components from global.css; page-head from shop.css. */
-.visit-grid { display: grid; gap: 0; margin-top: var(--s-2); align-items: start; }
+.visit-band { display: grid; gap: var(--s-2) var(--s-5); margin-top: var(--s-4); }
+.visit-band h2 { margin-bottom: 0; }
+.visit-band .btn-wide { margin-block: var(--s-2) 0; }
+.visit-grid { display: grid; gap: 0; margin-top: var(--s-5); align-items: start; }
 .visit-grid .box { margin-top: var(--section); }
-.visit-grid .box:first-child { margin-top: 3rem; }
-.visit .box > h2 { margin-bottom: var(--s-2); }
+.visit-grid .box:first-child { margin-top: .8rem; }
+.visit-main > .airy { margin-top: var(--section); }
+.sheet-box { box-shadow: var(--shadow); }
+.visit .box > h2, .visit .airy > h2 { margin-bottom: var(--s-2); }
 .visit .box p + p, .visit .box address + p { margin-top: var(--s-1); }
 .visit-actions { margin-block: var(--s-3); }
 .btn-wide { width: 100%; }
@@ -26,7 +31,8 @@
 .visit-form .hint { font-weight: 400; }
 
 @media (min-width: 400px) { .today-chip { display: inline-block; margin: 0 0 0 .4rem; } }
+@media (min-width: 700px) { .visit-band { grid-template-columns: 1fr auto; align-items: center; } .visit-band > h2, .visit-band > address, .visit-band > p:not(.visit-actions), .visit-band > .reach { grid-column: 1; } .visit-band .visit-actions { grid-column: 2; grid-row: 1 / span 3; margin: 0; } }
 @media (min-width: 1000px) {
   .visit-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-5); }
-  .visit-form { margin-top: 3rem !important; position: sticky; top: 6rem; }
+  .visit-form { margin-top: .8rem !important; position: sticky; top: 6rem; }
 }

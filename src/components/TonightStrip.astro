@@ -16,7 +16,7 @@ const bare = ({ certainty, source, ...e }: Record<string, unknown>) => e;
 const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certainty)).map(bare) }).replace(/</g, '\\u003c');
 ---
 <section class="box tonight" data-tonight aria-labelledby="tonight-h">
-  <span class="tab">01 / Tonight</span>
+  <span class="tab">Tonight</span>
   <h2 id="tonight-h">Tonight <span class="tonight-day mono" data-day-label hidden></span></h2>
   {none ? (
     <p>No nights booked yet. Check Discord or ask in store.</p>

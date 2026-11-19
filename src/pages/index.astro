@@ -33,7 +33,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
     </section>
 
     <section class="box request" id="request" aria-labelledby="request-h">
-      <span class="tab">02 / Find a card</span>
+      <span class="tab">Find a card</span>
       <h2 id="request-h">Looking for a card?</h2>
       <p>Want list: tell us what you are after and we will message you.</p>
       <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
@@ -72,8 +72,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
       </form>
     </section>
 
-    <section class="box" aria-labelledby="play-h">
-      <span class="tab">03 / What we play</span>
+    <section class="band band-mat" aria-labelledby="play-h">
       <h2 id="play-h">What we play</h2>
       <ul class="play-grid">
         {games.map((g) => <Pocket href={`/events/?game=${g.id}`} title={g.name} variant="mini" />)}
@@ -81,7 +80,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
     </section>
 
     <section class="box box-sky" aria-labelledby="sealed-h">
-      <span class="tab">04 / Sealed</span>
+      <span class="tab">Sealed</span>
       <h2 id="sealed-h">Sealed and preorders</h2>
       <ul class="sealed-grid">
         {products.length === 0 ? (
@@ -107,8 +106,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
       </ul>
     </section>
 
-    <section class="box sell" aria-labelledby="sell-h">
-      <span class="tab">05 / Sell to us</span>
+    <section class="airy sell" aria-labelledby="sell-h">
       <h2 id="sell-h">Sell to us</h2>
       <div class="slab">
         <span class="slab-name">Got cards to sell? Build a list, bring it in.</span>
@@ -119,7 +117,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
     </section>
 
     <section class="box" aria-labelledby="visit-h">
-      <span class="tab">06 / Visit</span>
+      <span class="tab">Visit</span>
       <h2 id="visit-h">Visit us</h2>
       <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
       <p class="visit-today"><strong data-today-hours>Hours: <a href="/visit/">see all hours</a></strong></p>

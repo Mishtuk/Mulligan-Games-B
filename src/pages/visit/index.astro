@@ -15,31 +15,29 @@ const L = store.links;
       <p class="page-lede">Come in, find a table, stay for a game.</p>
     </header>
 
+    <section class="band visit-band" id="find" aria-labelledby="find-h">
+        <h2 id="find-h">Address</h2>
+        <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
+        <p class="visit-actions"><a class="btn btn-secondary btn-wide" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
+        <p><strong>Parking:</strong> ask in store.</p>
+        {(store.phone || store.email || L.discord) && (
+          <ul class="reach">
+            {store.phone && <li>Phone: <a href={`tel:${store.phone}`}>{store.phone}</a></li>}
+            {store.email && <li>Email: <a href={`mailto:${store.email}`}>{store.email}</a></li>}
+            {L.discord && <li>Discord: <a href={L.discord} rel="noopener">Join the server<span class="vh"> (opens another site)</span></a></li>}
+          </ul>
+        )}
+      </section>
+
     <div class="visit-grid">
       <div class="visit-main">
-        <section class="box" id="hours" aria-labelledby="hours-h">
-          <span class="tab">01 / Hours</span>
+        <section class="box sheet-box" id="hours" aria-labelledby="hours-h">
+          <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
           <h2 id="hours-h">Hours</h2>
           <HoursTable />
         </section>
 
-        <section class="box box-sky" id="find" aria-labelledby="find-h">
-          <span class="tab">02 / Find us</span>
-          <h2 id="find-h">Address</h2>
-          <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
-          <p class="visit-actions"><a class="btn btn-secondary btn-wide" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
-          <p><strong>Parking:</strong> ask in store.</p>
-          {(store.phone || store.email || L.discord) && (
-            <ul class="reach">
-              {store.phone && <li>Phone: <a href={`tel:${store.phone}`}>{store.phone}</a></li>}
-              {store.email && <li>Email: <a href={`mailto:${store.email}`}>{store.email}</a></li>}
-              {L.discord && <li>Discord: <a href={L.discord} rel="noopener">Join the server<span class="vh"> (opens another site)</span></a></li>}
-            </ul>
-          )}
-        </section>
-
-        <section class="box" id="play" aria-labelledby="play-h">
-          <span class="tab">03 / Play space</span>
+        <section class="airy" id="play" aria-labelledby="play-h">
           <h2 id="play-h">Play space and house rules</h2>
           <p><strong>Bring:</strong> your deck, sleeves and dice. New to a game? Ask the counter.</p>
           <ul class="rules">
@@ -53,7 +51,7 @@ const L = store.links;
       </div>
 
       <section class="box visit-form" id="contact" aria-labelledby="contact-h">
-        <span class="tab">04 / Contact</span>
+        <span class="tab">Contact</span>
         <h2 id="contact-h">Ask us something</h2>
         <p>Questions about stock, preorders, events or your data. Send a message and we will answer by email.</p>
         <div class="form-msg ok" id="contact-ok" role="status" tabindex="-1" hidden>
