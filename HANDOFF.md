@@ -8,9 +8,9 @@
 - Team agents: `.claude/agents/`. Research: `docs/research/`. Reviews: `docs/review/`.
 
 ## Current task
-- **Task:** Stage 1 step 6: design directions | agent: designer (then advisor) | files allowed: `docs/review/directions.md`
-- **Done when:** 2-3 directions, each with a case and a risk, built on `docs/research/card-shop-look.md`; advisor critique appended; boss ruling in `DECISIONS.md`.
-- **Out of scope:** any site code.
+- **Task:** Phase 3 refinement loops (docs/refinement-plan.md, standing brief docs/loop-brief.md) | one agent per loop | boss commits + pushes per loop
+- **Done when:** 50 loops logged in docs/refinement-log.md, tests green, check-site exit 0 on all 7 paths.
+- **Out of scope:** deploy, contacting the store, editing the kit.
 
 ## Plan (roadmap)
 **Phase 1, early (gate G1)**
@@ -36,12 +36,12 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 **Phase 4, late (owner)** Real photos, phone/email, fees, hosted store, Discord; then preview deploy with the owner's OK.
 
 ## Status
-- Stage: 1 early. Last gate passed: none.
-- Last build: none. Last test run: none.
+- Stage: 3 refinement (first build done 2026-11-19). Gates: G1 passed (owner brief + D4/D5).
+- Last build: pass 2026-11-19. Last test run: 91/91. check-site: 7/7 paths pass.
 - Preview: none. Live: none.
 
 ## Now working on
-- [boss] `docs/review/directions.md` via designer, 2026-11-19
+- [boss] refinement loop 1
 
 ## Waiting on the owner
 - [ ] Phone/email to publish, photos, hosted store for singles, weekly fees, buylist rates, Discord invite (see CONTEXT open questions)
