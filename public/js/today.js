@@ -41,7 +41,7 @@ function run() {
       empty.hidden = rows.length > 0;
       if (!rows.length) {
         const n = nextEvent(eventsData, tz);
-        empty.querySelector('[data-next]').textContent = n ? `Next up: ${n.text}.` : 'Check Discord or ask in store.';
+        empty.querySelector('[data-next]').textContent = n ? `Next up: ${n.text}.` : 'Ask at the counter.';
       }
     }
     box.dataset.ready = '';

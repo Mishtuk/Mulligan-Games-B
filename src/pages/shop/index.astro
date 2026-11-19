@@ -11,13 +11,13 @@ import '../../styles/shop.css';
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
 const { sealed, preorders } = splitProducts(products);
 const gameNames = joinNames(games);
-const price = (n: number | null) => (n === null || n === undefined ? 'Ask in store' : `$${n}`);
+const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the counter' : `$${n}`);
 ---
 <Base title="Singles, sealed and preorders" description="Singles, sealed product and preorders for Magic, Pokemon, One Piece and more in Warminster, PA. Send a want list or ask at the counter.">
   <div class="wrap shop">
     <header class="page-head">
       <h1>Shop</h1>
-      <p class="page-lede">Stock moves daily. Ask at the counter or send a want list.</p>
+      <p class="page-lede">Ask at the counter or send a want list.</p>
       <nav class="shop-jump" aria-label="Shop sections">
         <a class="chip" href="#singles">Singles</a>
         <a class="chip" href="#sealed">Sealed</a>
@@ -42,19 +42,19 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
     <div class="shop-duo">
     <section class="box request" id="request" aria-labelledby="request-h">
       <h2 id="request-h">Not in the case? Ask for it.</h2>
-      <p>No online catalog yet. Tell us what you are after and we will email you if it turns up.</p>
+      <p>No online catalog yet. Send a want list and we will email you if it turns up.</p>
       <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
         <h3><strong>Got it.</strong> Want list sent.</h3>
-        <p>We will email you if it turns up. Nothing else gets sent.</p>
+        <p>We will email you if it turns up. Nothing else gets sent to you.</p>
         <p><a href="/events/">See this week</a></p>
       </div>
       <div class="form-msg error" id="request-err" role="alert" tabindex="-1" hidden>
         <h3><strong>Error:</strong> that did not send.</h3>
-        <p>Check each field and try again, or ask at the counter.</p>
+        <p>Nothing was sent. Please check the fields and send it again, or ask at the counter.</p>
       </div>
       <form id="request-form" method="post" action="/api/request" novalidate>
         <div class="field">
-          <label for="req-cards">Card or cards you want <span class="hint">(required, up to 50 lines)</span></label>
+          <label for="req-cards">Cards you want <span class="hint">(required, up to 50 lines)</span></label>
           <p class="example" id="req-cards-ex">One card per line: name, set, condition, how many. Example: <span class="mono-ex">Sol Ring, Commander Masters, NM, 1</span></p>
           <textarea id="req-cards" name="cards" required maxlength="2000" rows="6" aria-describedby="req-cards-ex"></textarea>
         </div>
@@ -69,7 +69,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
           <input type="text" id="req-name" name="name" required maxlength="80" autocomplete="given-name" />
         </div>
         <div class="field">
-          <label for="req-email">Email to reach you <span class="hint">(required)</span></label>
+          <label for="req-email">Email <span class="hint">(required)</span></label>
           <input type="email" id="req-email" name="email" required maxlength="120" autocomplete="email" />
         </div>
         <div class="hp" aria-hidden="true">
@@ -101,7 +101,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
       ) : (
         <div class="shelf">
           <h3>On the shelf</h3>
-          <p>We carry {gameNames}. Ask what is in.</p>
+          <p>We carry {gameNames}. Ask at the counter for a box or a deck.</p>
           <a class="btn" href="/visit/#contact">Ask about stock</a>
         </div>
       )}
@@ -120,7 +120,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
           ))}
         </ul>
       ) : (
-        <p>Nothing listed yet. <a href="/visit/#contact">Ask us</a> what is coming and when.</p>
+        <p>Nothing listed yet. Preorder at the counter, or <a href="/visit/#contact">ask us</a> what is coming and when.</p>
       )}
     </section>
   </div>

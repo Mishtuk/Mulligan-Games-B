@@ -52,7 +52,7 @@ if (typeof document !== 'undefined') {
       a.href = `#${id}`; a.textContent = msg; li.append(a); list.append(li);
     }
     const h = document.createElement(panel.querySelector('h2') ? 'h2' : 'h3'), s = document.createElement('strong');
-    s.textContent = 'Error:'; h.append(s, ` fix ${plural(bad.length)}.`);
+    s.textContent = 'Error:'; h.append(s, ` ${plural(bad.length)} to check.`);
     panel.replaceChildren(h, list);
     panel.hidden = false; panel.focus();
   }, true);

@@ -138,7 +138,7 @@ test('sign-up never offers past nights: filtered at build (America/New_York) and
   assert.deepEqual(upcomingSignup(nights, '2099-01-01'), []); // every seeded night stale: nothing offered
   const page = read('src/pages/events/index.astro'), js = read('public/js/events.js');
   assert.match(page, /upcomingSignup\(signup\.events, zoned\(store\.timezone\)\.date\)/);
-  assert.match(page, /Sign-ups for the next nights open soon\. Just turn up, or ask in store\./);
+  assert.match(page, /Sign-ups for the next nights open soon\. Just turn up, or ask at the counter\./);
   assert.match(page, /data-date=\{e\.date\}/);
   assert.match(js, /o\.dataset\.date < today/);
   assert.match(js, /zoned\(tz\)\.date/);

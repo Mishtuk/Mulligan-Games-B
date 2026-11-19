@@ -150,7 +150,17 @@ Sky address band (address, parking "ask in store", full-width "Open in Maps" but
 Facts flagged Likely: hours, address (445 vs 455), whole weekly schedule, fees. Confirmed: two one-offs. Unverified: Pokemon/One Piece/Hololive/Riftbound/D&D weekly nights, Discord invite.
 
 ## 7. Copy direction
-Friendly, short, local, a little dry. Words: binder, sleeve, pairings, playmat, prerelease, store credit, top 8, bulk, table, seat. Lines: H1 "Pull up a chair." CTAs say what happens: "Find a card", "This week", "Hold my seat", "Send my want list", "Build my buylist", "Send my buylist", "Open in Maps". Section heads: "Tonight", "Binder week", "Not in the binder?", "What we play", "Sell to us", "Stop in". Titles and descriptions unique per page (`test/meta.test.mjs`). Empty: "Nothing booked yet." 404: "Misprint." Refuse: "elevate", "seamless", "journey", "unleash", "world-class", "your one-stop shop", exclamation overload, headings starting "The" + a word, invented prices/rates/ratings/reviews, player names, publisher logos or card art.
+Friendly, short, local, a little dry. Words: binder, sleeve, pairings, playmat, prerelease, store credit, top 8, bulk, table, seat. Lines: H1 "Pull up a chair." CTAs say what happens: "Find a card", "This week", "Hold my seat", "Send my want list", "Build my buylist", "Send my buylist", "Send my message", "Open in Maps". Section heads: "Tonight", "Binder week", "Not in the binder?", "What we play", "Sell to us", "Stop in". Titles and descriptions unique per page (`test/meta.test.mjs`). Empty: "Nothing booked yet." 404: "Misprint." Refuse: "elevate", "seamless", "journey", "unleash", "world-class", "your one-stop shop", exclamation overload, headings starting "The" + a word, invented prices/rates/ratings/reviews, player names, publisher logos or card art.
+
+**Glossary (canonical words, loop 18).** One name per thing, one verb per action.
+- **want list** (Home and Shop form, privacy). Never "card request" or "wish list". Button: "Send my want list".
+- **buylist** (the list you send on /sell/); the page and nav are "Sell to us". Never "sell list". Button: "Send my buylist"; step: "Build your buylist".
+- **store credit** (never bare "credit"), with "cash". Rates: "Rates are set at the counter."
+- **at the counter** for asking in the shop ("Ask at the counter"); "Ask us" for the contact form. Never "ask in store".
+- **hold a seat** for every event sign-up button and link ("Hold my seat" on the form); the clipboard stays "Sign-up sheet". Table column: "Seat".
+- **game night** (page, h1), **pairings sheet** (weekly table), **special nights** (one-offs), **binder week** (Home), **tonight**.
+- **singles**, **sealed**, **preorders**, **condition guide** (NM to DMG), **sleeved**, **bulk**, **Commander**, **draft FNM**, **cEDH** (only where events.json has it).
+- Sends: "Send my ..." on every form button. Success: "**Got it.** X sent." plus what happens next. Error: "**Error:** that did not send." plus "Nothing was sent. Please check ... and send it again, or ask at the counter." Field-check summary: "**Error:** N things to check." No blame, no "you must".
 
 ## 8. Photos and media
 Needed from owner: storefront, play room, singles case, a shot of tables during a night. Until then `.ph` placeholders (4:3 hero card, 16:9 visit, 1:1 tiles). Real people only with consent, none staged. No video, no embed by default (maps is a link).

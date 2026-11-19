@@ -129,7 +129,7 @@ function formState() {
       }
       head.textContent = '';
       const s = document.createElement('strong'); s.textContent = 'Error:';
-      head.append(s, ` fix ${bad.length} ${bad.length === 1 ? 'thing' : 'things'}.`);
+      head.append(s, ` ${bad.length} ${bad.length === 1 ? 'thing' : 'things'} to check.`);
       server.hidden = true; err.hidden = false; err.focus();
       return;
     }

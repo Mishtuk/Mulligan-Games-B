@@ -19,7 +19,7 @@ const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.o
   <span class="tab">Tonight</span>
   <h2 id="tonight-h">Tonight <span class="tonight-day mono" data-day-label hidden></span></h2>
   {none ? (
-    <p>No nights booked yet. Check Discord or ask in store.</p>
+    <p>No nights booked yet. Ask at the counter.</p>
   ) : (
     <>
       <p class="tonight-empty" data-empty hidden>
@@ -37,7 +37,7 @@ const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.o
                   <span class="mono tonight-time">{fmtTime(e.time)}</span>
                   <span class="tonight-what"><strong>{e.format}</strong> <span class="muted">{e.game}</span></span>
                   <span class="sticker">{fee(e.fee)}</span>
-                  {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Sign up<span class="vh"> for {e.format}</span></a>}
+                  {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Hold a seat<span class="vh"> for {e.format}</span></a>}
                 </li>
               ))}
             </ul>
@@ -52,7 +52,7 @@ const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.o
                   <span class="mono tonight-time">{fmtTime(e.time)}</span>
                   <span class="tonight-what"><strong>{e.title}</strong> <span class="muted">{e.game}, {label(e.date)}</span></span>
                   <span class="sticker">{fee(e.fee)}</span>
-                  {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Sign up<span class="vh"> for {e.title}</span></a>}
+                  {e.cap !== null && <a class="btn btn-secondary tonight-join" href="/events/#signup">Hold a seat<span class="vh"> for {e.title}</span></a>}
                 </li>
               ))}
             </ul>

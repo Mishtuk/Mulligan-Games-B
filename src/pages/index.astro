@@ -9,13 +9,13 @@ import '../styles/home.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
-const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
+const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
 ---
 <Base title="Magic, Pokemon and One Piece nights" description="Local card and gaming shop at 445 York Road, Warminster, PA. Game nights, singles, sealed product and a buylist. Stop in and stay for a game.">
   <div class="wrap home">
     <section class="hero box" aria-labelledby="hero-h">
       <h1 id="hero-h">Pull up a chair.</h1>
-      <p class="hero-line">Singles, sealed and games most nights in Warminster. Stop in and stay for a game.</p>
+      <p class="hero-line">Singles, sealed, and Commander, draft and more most nights in Warminster. Stop in and stay for a game.</p>
       <p class="hero-cta">
         <a class="btn" href="/shop/">Find a card</a>
         <a class="btn btn-secondary" href="/events/">This week</a>
@@ -33,19 +33,19 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
     <section class="box request" id="request" aria-labelledby="request-h">
       <span class="tab">Find a card</span>
       <h2 id="request-h">Not in the binder?</h2>
-      <p>Leave a want list and we will email you if it turns up.</p>
+      <p>Send a want list and we will email you if it turns up.</p>
       <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
         <h3><strong>Got it.</strong> Want list sent.</h3>
-        <p>We will email you if it turns up. Nothing else gets sent.</p>
+        <p>We will email you if it turns up. Nothing else gets sent to you.</p>
         <p><a href="/shop/">Browse the shop</a></p>
       </div>
       <div class="form-msg error" id="request-err" role="alert" tabindex="-1" hidden>
         <h3><strong>Error:</strong> that did not send.</h3>
-        <p>Check each field and try again, or ask at the counter.</p>
+        <p>Nothing was sent. Please check the fields and send it again, or ask at the counter.</p>
       </div>
       <form id="request-form" method="post" action="/api/request" novalidate>
         <div class="field">
-          <label for="req-cards">Card or cards you want <span class="hint">(required, one per line)</span></label>
+          <label for="req-cards">Cards you want <span class="hint">(required, one per line)</span></label>
           <textarea id="req-cards" name="cards" required maxlength="2000" rows="3"></textarea>
         </div>
         <div class="field">
@@ -59,7 +59,7 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
           <input type="text" id="req-name" name="name" required maxlength="80" autocomplete="given-name" />
         </div>
         <div class="field">
-          <label for="req-email">Email to reach you <span class="hint">(required)</span></label>
+          <label for="req-email">Email <span class="hint">(required)</span></label>
           <input type="email" id="req-email" name="email" required maxlength="120" autocomplete="email" />
         </div>
         <div class="hp" aria-hidden="true">
@@ -82,15 +82,15 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
       <ul class="sealed-grid">
         {products.length === 0 ? (
           <>
-            <Pocket href="/shop/#sealed" title="Sealed product" variant="sealed">
+            <Pocket href="/visit/#contact" title="Sealed product" variant="sealed">
               <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
-              <p>Boxes, decks and more.</p>
-              <Fragment slot="foot"><span class="chip">Ask in store</span></Fragment>
+              <p>Want a box or a deck? Ask us to pull one.</p>
+              <Fragment slot="foot"><span class="chip">Ask about stock</span></Fragment>
             </Pocket>
-            <Pocket href="/shop/#preorders" title="Preorders" variant="preorder">
+            <Pocket href="/visit/#contact" title="Preorders" variant="preorder">
               <Fragment slot="art"><div class="box-sil is-pack" aria-hidden="true"></div></Fragment>
-              <p>Ask what is coming.</p>
-              <Fragment slot="foot"><span class="chip">Ask in store</span></Fragment>
+              <p>Preorder at the counter, or ask what is coming.</p>
+              <Fragment slot="foot"><span class="chip">Ask what is coming</span></Fragment>
             </Pocket>
           </>
         ) : products.slice(0, 3).map((p) => (
@@ -107,8 +107,8 @@ const fee = (n: number | null) => (n === null ? 'Ask in store' : `$${n}`);
       <h2 id="sell-h">Sell to us</h2>
       <div class="slab">
         <span class="slab-name">Your cards</span>
-        <span class="slab-cond">Cash or credit</span>
-        <span class="slab-id">Build a list, bring them in. Rates: ask in store.</span>
+        <span class="slab-cond">Cash or store credit</span>
+        <span class="slab-id">Build a buylist, then bring the cards in. Rates are set at the counter.</span>
       </div>
       <p class="sell-cta"><a class="btn" href="/sell/">Build my buylist</a></p>
     </section>

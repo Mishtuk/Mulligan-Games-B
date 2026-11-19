@@ -112,7 +112,7 @@ test('shop: pockets only when products.json has rows, otherwise one shelf panel 
   if (products.length === 0) {
     assert.doesNotMatch(shop, /class="shop-grid"/);
     assert.match(shop, /On the shelf/);
-    assert.equal((shop.match(/Ask (in store|about stock|us)<\/a>/g) ?? []).length >= 2, true);
+    assert.equal((shop.match(/[Aa]sk (about stock|us)<\/a>/g) ?? []).length >= 2, true);
   } else {
     assert.match(shop, /class="shop-grid"/);
     assert.doesNotMatch(shop, /On the shelf/);
