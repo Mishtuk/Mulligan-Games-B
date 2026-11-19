@@ -13,11 +13,11 @@ const { sealed, preorders } = splitProducts(products);
 const gameNames = joinNames(games);
 const price = (n: number | null) => (n === null || n === undefined ? 'Ask in store' : `$${n}`);
 ---
-<Base title="Shop singles, sealed and preorders" description="Singles, sealed product and preorders at Mulligan Games in Warminster, PA. Send a want list, check our condition guide, and ask in store for stock and prices.">
+<Base title="Singles, sealed and preorders" description="Singles, sealed product and preorders for Magic, Pokemon, One Piece and more in Warminster, PA. Send a want list or ask at the counter.">
   <div class="wrap shop">
     <header class="page-head">
       <h1>Shop</h1>
-      <p class="page-lede">Singles, sealed product and preorders. Stock changes daily, so ask at the counter or send a want list.</p>
+      <p class="page-lede">Stock moves daily. Ask at the counter or send a want list.</p>
       <nav class="shop-jump" aria-label="Shop sections">
         <a class="chip" href="#singles">Singles</a>
         <a class="chip" href="#sealed">Sealed</a>
@@ -30,12 +30,12 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
       <h2 id="singles-h">Singles</h2>
       <div class="singles-grid">
         <div class="request" id="request">
-          <h3>Looking for a card?</h3>
-          <p>No online catalog yet. Send a want list and we will message you if we find it.</p>
+          <h3>Want list</h3>
+          <p>No online catalog yet. Tell us what you are after and we will email you if it turns up.</p>
           <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
-            <h3><strong>Got it.</strong> Request sent.</h3>
-            <p>We will message you if we find it. Nothing else is sent to you.</p>
-            <p><a href="/events/">See this week's events</a></p>
+            <h3><strong>Got it.</strong> Want list sent.</h3>
+            <p>We will email you if it turns up. Nothing else gets sent.</p>
+            <p><a href="/events/">See this week</a></p>
           </div>
           <div class="form-msg error" id="request-err" role="alert" tabindex="-1" hidden>
             <h3><strong>Error:</strong> that did not send.</h3>
@@ -65,13 +65,13 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
               <label for="req-website">Leave this empty</label>
               <input type="text" id="req-website" name="website" tabindex="-1" autocomplete="off" />
             </div>
-            <button class="btn" type="submit">Send request</button>
+            <button class="btn" type="submit">Send my want list</button>
           </form>
         </div>
       </div>
 
       <h3 class="sub" id="condition">Condition guide</h3>
-      <p>How we describe a card. The same words are used when you sell to us.</p>
+      <p>Same grades whether you buy or sell.</p>
       <ConditionGuide />
     </section>
 
@@ -90,8 +90,8 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
       ) : (
         <div class="shelf">
           <h3>On the shelf</h3>
-          <p>We stock {gameNames}. Prices and stock change daily, so ask in store.</p>
-          <a class="btn" href="/visit/#contact">Ask in store</a>
+          <p>We carry {gameNames}. Ask what is in.</p>
+          <a class="btn" href="/visit/#contact">Ask about stock</a>
         </div>
       )}
     </section>
@@ -109,7 +109,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask in sto
           ))}
         </ul>
       ) : (
-        <p>No preorders listed here yet. <a href="/visit/#contact">Ask in store</a> about upcoming releases, dates and deposits.</p>
+        <p>Nothing listed yet. <a href="/visit/#contact">Ask us</a> what is coming and when.</p>
       )}
     </section>
   </div>

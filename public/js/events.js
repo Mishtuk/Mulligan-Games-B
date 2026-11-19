@@ -55,7 +55,7 @@ function filter() {
   const sn = $('#special-none');
   if (sn && tickets.length) {
     sn.hidden = specialShown > 0;
-    sn.textContent = g === 'all' ? 'No special nights booked. Check back soon.' : `No ${label} special nights booked.`;
+    sn.textContent = g === 'all' ? 'No special nights on the calendar yet.' : `No ${label} special nights booked.`;
   }
   const none = $('#ev-none');
   if (none) { none.hidden = weekly > 0 || g === 'all'; none.textContent = weekly > 0 || g === 'all' ? '' : `No ${label} nights this week.`; }

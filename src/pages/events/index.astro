@@ -23,11 +23,11 @@ const showCap = (n: number | null) => (n === null ? 'Ask' : String(n));
 // Chip ids from games.json; "other" is not a chip.
 const chips = games.map((g) => ({ id: g.id, name: g.name }));
 ---
-<Base title="Game nights" description="Weekly game nights at Mulligan Games in Warminster, PA: Magic, tabletop and more. See the pairings sheet by day, find special nights, sign up and add nights to your calendar.">
+<Base title="Game nights and pairings" description="Weekly game nights in Warminster, PA: Magic, Pokemon, One Piece and more. Check the pairings sheet, special nights and fees, then hold a seat.">
   <div class="wrap ev">
     <header class="ev-head">
       <h1>Game nights</h1>
-      <p class="ev-lead">What is on at the store, day by day.</p>
+      <p class="ev-lead">Find your night, then hold a seat.</p>
     </header>
 
     <div class="ev-layout">
@@ -42,7 +42,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       <div class="ev-main">
         <section class="sheet-wrap" aria-labelledby="sheet-h">
           <h2 id="sheet-h">Pairings sheet</h2>
-          <p class="muted sheet-sub">The same nights every week, starting from today. Tonight is marked.</p>
+          <p class="muted sheet-sub">Same nights every week. Tonight is marked.</p>
           <p class="ev-none" id="ev-none" role="status" hidden></p>
           <div class="sheet">
             <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
@@ -85,8 +85,8 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
 
         <section class="special" id="special" aria-labelledby="special-h">
           <h2 id="special-h">Special nights</h2>
-          <p class="ev-none" id="special-none" hidden>No special nights booked. Check back soon.</p>
-          {special.length === 0 ? <p>No special nights booked. Check back soon.</p> : (
+          <p class="ev-none" id="special-none" hidden>No special nights on the calendar yet.</p>
+          {special.length === 0 ? <p>No special nights on the calendar yet.</p> : (
             <ul class="tickets">
               {special.map((e) => {
                 const p = dateParts(e.date);
@@ -115,11 +115,11 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
     <section class="box box-sky signup" id="signup" aria-labelledby="signup-h">
       <span class="tab">Sign up</span>
       <h2 id="signup-h">Hold a seat</h2>
-      <p>Pick a night, tell us your first name and email. Under 13 with a grown-up (confirm with the store).</p>
+      <p>Pick a night, add your first name and email. Under 13? Bring a grown-up (confirm with the store).</p>
 
       <div class="form-msg ok" id="signup-ok" role="status" tabindex="-1" hidden>
         <h3><strong>You are in.</strong> Seat held.</h3>
-        <p>We have your name and email for that night. Nothing else is sent to you.</p>
+        <p>We have your name and email for that night. See you at the table.</p>
         <p><a href="/events/">Back to game nights</a></p>
       </div>
       <div class="form-msg ok" id="signup-wait" role="status" tabindex="-1" hidden>
@@ -130,9 +130,9 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       <div class="form-msg error" id="signup-err" role="alert" tabindex="-1" hidden>
         <h3 id="signup-err-h"><strong>Error:</strong> that did not send.</h3>
         <ul id="signup-err-list"></ul>
-        <p id="signup-err-server">Check the night, your name and your email. If you already signed up for that night, you are on the list. Or ask at the counter.</p>
+        <p id="signup-err-server">Check the night, name and email. Already signed up for that night? Then you are on the list.</p>
       </div>
-      <noscript><p class="muted">Without JavaScript no message appears here. After you send, the address bar shows sent=signup when it worked, or signup=error when it did not.</p></noscript>
+      <noscript><p class="muted">No JavaScript, no message here. If the address ends in sent=signup, it went through.</p></noscript>
 
       <form id="signup-form" method="post" action="/api/signup" novalidate>
         <div class="field">
@@ -158,7 +158,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
           <label for="su-website">Leave this empty</label>
           <input type="text" id="su-website" name="website" tabindex="-1" autocomplete="off" />
         </div>
-        <button class="btn" type="submit">Sign up</button>
+        <button class="btn" type="submit">Hold my seat</button>
       </form>
     </section>
   </div>

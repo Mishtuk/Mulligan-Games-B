@@ -7,18 +7,18 @@ import '../../styles/sell.css';
 const CONDS = [['NM', 'NM'], ['LP', 'LP'], ['MP', 'MP'], ['HP', 'HP'], ['DMG', 'DMG']];
 const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at one and "Add a row" adds more
 ---
-<Base title="Sell your cards to us" description="Sell cards to Mulligan Games in Warminster, PA. Build a list, choose cash or store credit, and send it to the shop. Rates: ask in store.">
+<Base title="Sell your cards" description="Sell cards to Mulligan Games in Warminster, PA. Build a buylist, pick cash or store credit, then bring the cards in. Rates: ask in store.">
   <div class="wrap sell">
     <header class="page-head">
       <h1>Sell to us</h1>
-      <p class="page-lede">Got cards to sell? Build a list, send it in, then bring the cards by.</p>
+      <p class="page-lede">Build a list, send it in, then bring the cards to the counter.</p>
     </header>
 
     <div class="sell-grid">
       <section class="slip-wrap" id="buylist" aria-labelledby="slip-h">
         <div class="form-msg ok" id="buylist-ok" role="status" tabindex="-1" hidden>
-          <h2 id="slip-ok-h"><strong>Got it.</strong> List sent.</h2>
-          <p>The shop has your list. Rates: ask in store. Bring the cards in so we can look them over.</p>
+          <h2 id="slip-ok-h"><strong>Got it.</strong> Buylist sent.</h2>
+          <p>We will reply by email. Bring the cards in and we will look them over. Rates: ask in store.</p>
           <p><a href="/visit/">Hours and directions</a></p>
         </div>
         <div class="form-msg error" id="buylist-err" role="alert" tabindex="-1" hidden>
@@ -78,7 +78,7 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
           </div>
           <div class="tear" aria-hidden="true"></div>
           <p class="slip-total mono" id="line-total" hidden>lines: <span id="line-count" aria-live="polite">0</span></p>
-          <button class="btn" type="submit">Send list</button>
+          <button class="btn" type="submit">Send my buylist</button>
         </form>
       </section>
 
@@ -86,7 +86,7 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
         <section class="box" aria-labelledby="pay-h">
           <span class="tab">How we pay</span>
           <h2 id="pay-h">How we pay</h2>
-          <p>Pick cash or store credit on the slip. Rates and store credit terms: ask at the counter.</p>
+          <p>Cash or store credit, your pick on the slip. Rates and credit terms: ask at the counter.</p>
         </section>
 
         <section class="box box-sky" aria-labelledby="cond-h">

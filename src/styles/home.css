@@ -75,3 +75,4 @@ html.js .tonight-nojs { display: none; }
   .home-binder > p { display: none; }
   .tonight-what .muted { display: none; }
 }
+.sell .slab-cond { font-size: var(--step-0); text-transform: uppercase; text-align: center; }
