@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 22 of 50 (Events). Loops 1-21 done; loop 20 not yet committed by the boss. Priorities: docs/review/loop-20/review.md.
+- RESUME HERE: loop 23 of 50 (Shop). Loops 1-22 done. Priorities: docs/review/loop-20/review.md.
 - [boss] refinement loop 21 (Home): see docs/review/loop-20/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 22 (Events): 1280 now chips on top, sheet left, special nights + clipboard stacked right (no gap); one Today marker per day (row Tonight chips cut); Home 320 Sell slab stacks, Preorders title no longer breaks; shots docs/review/loop-22.
 - Loop 21 (Home): want list one compact block at 1280; per-game card backs (.g-<id>) and .85rem labels; dead Home CSS cut; shots docs/review/loop-21. Open: 320 Sell slab and Preorders title wrap.
 - Loop 20 (boss review of 11-19): independent 22 -> 25/30. Fixed loop-19 regression (Events sign-up check threw ReferenceError `err`, no error summary); results now show with scripts off (Worker redirects to #form-ok|-wait|-err, CSS :target); no-JS header no longer sticky; seed ruling: no prebuild, positional ids replaced by stable ids, INSERT OR IGNORE, no seed in schema.sql, signup-events.json removed; `npm run a11y` now runs every form. 126 tests, check-site 0, a11y passed. Priorities 21-29 in docs/review/loop-20/review.md.
 - Loop 19 (code): prebuild seeds sign-up events from the build date; nested-interactive test over dist/; shared public/js/form-state.js; budget re-measured (gzip headroom 0.6%, trim before raising); dead CSS/tokens/functions cut. 125 tests, check-site 0, a11y passed.

@@ -44,7 +44,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       <div class="ev-main">
         <section class="sheet-wrap" aria-labelledby="sheet-h">
           <h2 id="sheet-h">Pairings sheet</h2>
-          <p class="muted sheet-sub">Same nights every week. Tonight is marked.</p>
+          <p class="muted sheet-sub">Same nights every week.</p>
           <p class="ev-none" id="ev-none" role="status" hidden></p>
           <div class="sheet">
             <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
@@ -63,7 +63,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                       <tbody role="rowgroup">
                         {x.rows.map((e) => (
                           <tr role="row" data-game={gameId(e.game)}>
-                            <td role="cell" data-label="Time"><span class="mono">{fmtTime(e.time)}</span> <span class="chip chip-tonight" data-tonight-chip hidden>Tonight</span></td>
+                            <td role="cell" data-label="Time"><span class="mono">{fmtTime(e.time)}</span></td>
                             <td role="cell" data-label="Game">{e.game}</td>
                             <th scope="row" role="rowheader" data-label="Format">{e.format}</th>
                             <td role="cell" data-label="Fee"><span class="sticker">{fee(e.fee)}</span></td>
@@ -85,88 +85,89 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
           {likely && <p class="ev-note">Nights and fees come from public listings. Confirm with the store.</p>}
         </section>
 
-        <section class="special" id="special" aria-labelledby="special-h">
-          <h2 id="special-h">Special nights</h2>
-          <p class="ev-none" id="special-none" hidden>No special nights on the calendar yet.</p>
-          {special.length === 0 ? <p>No special nights on the calendar yet.</p> : (
-            <ul class="tickets">
-              {special.map((e) => {
-                const p = dateParts(e.date);
-                return (
-                  <li class="ticket" data-game={gameId(e.game)} data-date={e.date}>
-                    <time class="stub" datetime={e.date}><span>{p.dow}</span><b>{p.dom}</b><span>{p.mon}</span></time>
-                    <div class="ticket-body">
-                      <h3>{e.title}</h3>
-                      <p class="muted">{e.game} · <span class="mono">{fmtTime(e.time)}</span> · {a.street}</p>
-                      <p class="ticket-act">
-                        <span class="sticker">{fee(e.fee)}</span>
-                        {e.cap !== null
-                          ? <a class="btn btn-secondary" href="#signup">Hold a seat<span class="vh"> for {e.title}</span></a>
-                          : <a class="btn btn-ghost" href={`/events/${e.id}.ics`}>Add to calendar<span class="vh">: {e.title}</span></a>}
-                      </p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
       </div>
+      <div class="ev-side">
+          <section class="special" id="special" aria-labelledby="special-h">
+            <h2 id="special-h">Special nights</h2>
+            <p class="ev-none" id="special-none" hidden>No special nights on the calendar yet.</p>
+            {special.length === 0 ? <p>No special nights on the calendar yet.</p> : (
+              <ul class="tickets">
+                {special.map((e) => {
+                  const p = dateParts(e.date);
+                  return (
+                    <li class="ticket" data-game={gameId(e.game)} data-date={e.date}>
+                      <time class="stub" datetime={e.date}><span>{p.dow}</span><b>{p.dom}</b><span>{p.mon}</span></time>
+                      <div class="ticket-body">
+                        <h3>{e.title}</h3>
+                        <p class="muted">{e.game} · <span class="mono">{fmtTime(e.time)}</span> · {a.street}</p>
+                        <p class="ticket-act">
+                          <span class="sticker">{fee(e.fee)}</span>
+                          {e.cap !== null
+                            ? <a class="btn btn-secondary" href="#signup">Hold a seat<span class="vh"> for {e.title}</span></a>
+                            : <a class="btn btn-ghost" href={`/events/${e.id}.ics`}>Add to calendar<span class="vh">: {e.title}</span></a>}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+      <section class="signup" id="signup" aria-labelledby="signup-h">
+        <span class="clip" aria-hidden="true"></span>
+        <div class="paper">
+        <p class="sheet-label mono">Sign-up sheet</p>
+        <h2 id="signup-h">Hold a seat</h2>
+        <p>Pick a night, add your first name and email. Under 13? Bring a grown-up (confirm with the store).</p>
+  
+        <div class="form-msg ok" id="signup-ok" role="status" tabindex="-1" hidden>
+          <h3><strong>Got it.</strong> Seat held.</h3>
+          <p>We have your name and email for that night. See you at the table.</p>
+          <p><a href="/events/">Back to game nights</a></p>
+        </div>
+        <div class="form-msg ok" id="signup-wait" role="status" tabindex="-1" hidden>
+          <h3><strong>You are on the waitlist.</strong> That night is full.</h3>
+          <p>Ask at the counter about open seats, or pick another night.</p>
+          <p><a href="/events/">Back to game nights</a></p>
+        </div>
+        <div class="form-msg error" id="signup-err" role="alert" tabindex="-1" hidden>
+          <h3 id="signup-err-h"><strong>Error:</strong> that did not send.</h3>
+          <ul id="signup-err-list"></ul>
+          <p id="signup-err-server">Nothing was sent. Please check the night, name and email and send it again. Already held a seat for that night? Then you are on the list.</p>
+        </div>
+  
+        <p class="signup-empty" id="signup-empty" role="status" hidden={nights.length > 0}>Sign-ups for the next nights open soon. Just turn up, or ask at the counter.</p>
+  
+        <form id="signup-form" method="post" action="/api/signup" novalidate hidden={nights.length === 0}>
+          <div class="field">
+            <label for="su-event">Night <span class="hint">(required)</span></label>
+            <select id="su-event" name="event_id" required>
+              {nights.map((e) => <option value={e.id} data-date={e.date}>{signupLabel(e)}</option>)}
+            </select>
+            <p class="hint seats" id="su-seats" aria-live="polite">Seats: ask</p>
+          </div>
+          <div class="field">
+            <label for="su-name">Your first name <span class="hint">(required)</span></label>
+            <input type="text" id="su-name" name="name" required maxlength="80" autocomplete="given-name" />
+          </div>
+          <div class="field">
+            <label for="su-email">Email <span class="hint">(required)</span></label>
+            <input type="email" id="su-email" name="email" required maxlength="120" autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="su-note">Anything we should know <span class="hint">(optional, 200 characters)</span></label>
+            <input type="text" id="su-note" name="players_note" maxlength="200" />
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="su-website">Leave this empty</label>
+            <input type="text" id="su-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+          <button class="btn" type="submit">Hold my seat</button>
+        </form>
+        </div>
+      </section>
+        </div>
     </div>
-
-    <section class="signup" id="signup" aria-labelledby="signup-h">
-      <span class="clip" aria-hidden="true"></span>
-      <div class="paper">
-      <p class="sheet-label mono">Sign-up sheet</p>
-      <h2 id="signup-h">Hold a seat</h2>
-      <p>Pick a night, add your first name and email. Under 13? Bring a grown-up (confirm with the store).</p>
-
-      <div class="form-msg ok" id="signup-ok" role="status" tabindex="-1" hidden>
-        <h3><strong>Got it.</strong> Seat held.</h3>
-        <p>We have your name and email for that night. See you at the table.</p>
-        <p><a href="/events/">Back to game nights</a></p>
-      </div>
-      <div class="form-msg ok" id="signup-wait" role="status" tabindex="-1" hidden>
-        <h3><strong>You are on the waitlist.</strong> That night is full.</h3>
-        <p>Ask at the counter about open seats, or pick another night.</p>
-        <p><a href="/events/">Back to game nights</a></p>
-      </div>
-      <div class="form-msg error" id="signup-err" role="alert" tabindex="-1" hidden>
-        <h3 id="signup-err-h"><strong>Error:</strong> that did not send.</h3>
-        <ul id="signup-err-list"></ul>
-        <p id="signup-err-server">Nothing was sent. Please check the night, name and email and send it again. Already held a seat for that night? Then you are on the list.</p>
-      </div>
-
-      <p class="signup-empty" id="signup-empty" role="status" hidden={nights.length > 0}>Sign-ups for the next nights open soon. Just turn up, or ask at the counter.</p>
-
-      <form id="signup-form" method="post" action="/api/signup" novalidate hidden={nights.length === 0}>
-        <div class="field">
-          <label for="su-event">Night <span class="hint">(required)</span></label>
-          <select id="su-event" name="event_id" required>
-            {nights.map((e) => <option value={e.id} data-date={e.date}>{signupLabel(e)}</option>)}
-          </select>
-          <p class="hint seats" id="su-seats" aria-live="polite">Seats: ask</p>
-        </div>
-        <div class="field">
-          <label for="su-name">Your first name <span class="hint">(required)</span></label>
-          <input type="text" id="su-name" name="name" required maxlength="80" autocomplete="given-name" />
-        </div>
-        <div class="field">
-          <label for="su-email">Email <span class="hint">(required)</span></label>
-          <input type="email" id="su-email" name="email" required maxlength="120" autocomplete="email" />
-        </div>
-        <div class="field">
-          <label for="su-note">Anything we should know <span class="hint">(optional, 200 characters)</span></label>
-          <input type="text" id="su-note" name="players_note" maxlength="200" />
-        </div>
-        <div class="hp" aria-hidden="true">
-          <label for="su-website">Leave this empty</label>
-          <input type="text" id="su-website" name="website" tabindex="-1" autocomplete="off" />
-        </div>
-        <button class="btn" type="submit">Hold my seat</button>
-      </form>
-      </div>
-    </section>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/events.js"></script>
 </Base>

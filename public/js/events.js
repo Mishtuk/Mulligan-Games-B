@@ -22,7 +22,7 @@ function dated() {
     sec.dataset.ahead = ahead;
     const today = ahead === 0;
     sec.toggleAttribute('data-today', today);
-    for (const tr of $$('tbody tr', sec)) { tr.toggleAttribute('data-today', today); $('[data-tonight-chip]', tr)?.toggleAttribute('hidden', !today); }
+    for (const tr of $$('tbody tr', sec)) { tr.toggleAttribute('data-today', today); }
   }
   // Time order from today: today first, then the next six days (the page ships Wed..Tue for no-JS)
   const sheet = $('.sheet');

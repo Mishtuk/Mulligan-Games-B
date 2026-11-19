@@ -63,6 +63,8 @@ html.js .tonight-nojs { display: none; }
 .play-grid .pocket:nth-child(odd) { rotate: -1deg; }
 .play-grid .pocket:nth-child(even) { rotate: 1deg; }
 .sealed-grid .pocket-body p { max-width: 20ch; }
+.sealed-grid .pocket-title { font-size: .95rem; }
+.sealed-grid .pocket-title a { overflow-wrap: normal; hyphens: none; }
 .sell .slab { margin-top: var(--s-3); max-width: 36rem; }
 .sell-cta { margin-top: var(--s-3); }
 .home .box { margin-top: var(--section); }
@@ -112,3 +114,4 @@ html.js .tonight-nojs { display: none; }
   .tonight-what .muted { display: none; }
 }
 .sell .slab-cond { font-size: var(--step-0); text-transform: uppercase; text-align: center; }
+@media (max-width: 26rem) { .sell .slab { grid-template-columns: minmax(0, 1fr); } .sell .slab-cond { border-left: 0; border-top: var(--border-w) solid var(--line); justify-content: flex-start; text-align: left; } }
