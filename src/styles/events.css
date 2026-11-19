@@ -1,0 +1,90 @@
+/* Events page: filter chips, pairings sheet (table), special-night tickets, sign-up. Tokens and components from global.css. */
+.ev { padding-top: var(--s-3); }
+.ev-head { margin-top: var(--s-2); }
+.ev-head h1 { font-size: var(--step-3); }
+.ev-lead { margin-top: var(--s-1); font-size: var(--step-1); line-height: 1.35; }
+.ev-layout { display: grid; gap: var(--s-4); margin-top: var(--s-3); }
+.ev-main { min-width: 0; }
+
+/* filter chips */
+.ev-filter .label { margin-bottom: var(--s-1); }
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-1); }
+.chip-filter { min-height: var(--tap); padding: .15em .8em; }
+.chip-filter[aria-current="page"] { background: var(--sky); }
+.chip-filter[aria-current="page"]::before { content: "\2713"; }
+.chip-filter:hover { text-decoration: underline; }
+.chip-closed { margin-left: var(--s-1); background: var(--bg3); vertical-align: middle; }
+.chip-tonight { min-height: 0; background: var(--accent); }
+
+/* pairings sheet: taped paper */
+.sheet-wrap > h2, .special > h2 { font-size: var(--step-2); }
+.sheet-sub { margin-top: .25rem; font-size: var(--step--1); }
+.sheet { position: relative; margin-top: 1.5rem; padding: var(--s-3); background: var(--card); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.tape { position: absolute; top: -.8rem; width: 4.5rem; height: 1.4rem; background: var(--sky); border: 2px solid var(--line); opacity: 1; pointer-events: none; }
+.tape-l { left: 1rem; rotate: -4deg; }
+.tape-r { right: 1rem; rotate: 3deg; }
+.day { padding-block: var(--s-3); border-top: 2px solid var(--soft-line); scroll-margin-top: 5.5rem; }
+.day:first-of-type { border-top: 0; padding-top: var(--s-1); }
+.day h3 { display: flex; align-items: center; flex-wrap: wrap; gap: .25rem var(--s-2); font-size: var(--step-1); }
+.day-date { padding: .1em .5em; background: var(--bg2); border: 2px solid var(--line); border-radius: 4px; }
+.day[data-today] { margin-inline: calc(var(--s-3) * -1); padding-inline: var(--s-3); background: var(--bg2); }
+.day[data-today] .day-date { background: var(--sky); }
+.day-note { margin-top: var(--s-1); color: var(--muted); }
+.ev-none { margin: var(--s-2) 0; padding: var(--s-2) var(--s-3); background: var(--bg2); border: 2px solid var(--line); border-radius: var(--radius); font-weight: 700; }
+.ev-note { margin-top: var(--s-3); color: var(--muted); font-size: var(--step--1); }
+
+.pairings { width: 100%; margin-top: var(--s-2); border-collapse: collapse; text-align: left; }
+.pairings thead th { padding: .4rem .5rem; border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+.pairings td, .pairings tbody th { padding: .55rem .5rem; border-bottom: 1px solid var(--soft-line); vertical-align: middle; font-weight: 400; }
+.pairings tbody th { font-weight: 700; }
+.pairings tbody tr[data-today] { background: var(--sky); }
+.act { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-1) var(--s-3); }
+.pairings { table-layout: fixed; }
+.pairings thead th:nth-child(1) { width: 13%; } .pairings thead th:nth-child(2) { width: 14%; } .pairings thead th:nth-child(3) { width: 27%; } .pairings thead th:nth-child(4) { width: 13%; } .pairings thead th:nth-child(5) { width: 7%; } .pairings thead th:nth-child(6) { width: 26%; }
+.btn-sm { min-height: var(--tap); padding: .25rem var(--s-3); box-shadow: var(--shadow-sm); }
+.cal { display: inline-flex; align-items: center; min-height: var(--tap); }
+
+/* stack at phone widths: each row a block, labels from data-label */
+@media (max-width: 819px) {
+  .pairings thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .pairings, .pairings tbody { display: block; }
+  .pairings { table-layout: auto; }
+  .pairings tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-3); margin-top: var(--s-2); padding: .25rem .6rem; background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); }
+  .pairings tbody tr[data-today] { background: var(--sky); }
+  .pairings td, .pairings tbody th { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); padding: .3rem 0; border-bottom: 1px solid var(--soft-line); text-align: right; }
+  .pairings td::before, .pairings tbody th::before { content: attr(data-label); flex: none; text-align: left; font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .pairings tr > :nth-child(3), .pairings tr > :nth-child(6) { grid-column: 1 / -1; }
+  .pairings tr > :nth-child(3) { order: -1; border-bottom: 0; font-size: var(--step-0); }
+  .pairings tr > :nth-child(3)::before { display: none; }
+  .pairings tr > :nth-child(3) { text-align: left; }
+  .pairings tr > :last-child { border-bottom: 0; }
+  .pairings td[data-label="Sign up"]::before { display: none; }
+  .pairings .act { margin-left: auto; }
+}
+
+/* special nights: tickets */
+.special { margin-top: var(--section); }
+.tickets { display: grid; gap: var(--s-3); margin-top: var(--s-3); }
+.ticket { display: grid; grid-template-columns: auto 1fr; background: var(--bg2); color: var(--text); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.ticket[data-today] { background: var(--sky); }
+.stub { display: grid; place-items: center; align-content: center; gap: .1rem; min-width: 5rem; padding: var(--s-3); border-right: var(--border-w) dashed var(--line); font: 700 var(--step--1)/1.1 var(--font-mono); text-transform: uppercase; }
+.stub b { font: var(--display-weight) var(--step-3)/1 var(--font-display); }
+.ticket-body { display: grid; gap: .35rem; padding: var(--s-3); min-width: 0; }
+.ticket-body h3 { font-size: var(--step-1); }
+.ticket-act { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3); margin-top: .25rem; }
+
+/* sign-up */
+.signup { margin-top: var(--section); scroll-margin-top: 7rem; }
+.signup form, .signup .form-msg { margin-top: var(--s-3); max-width: 36rem; }
+.signup .hint { font-weight: 400; }
+.signup .seats { color: var(--text); font-weight: 700; }
+.signup #signup-err-list { margin: .25rem 0 .5rem 1.25rem; list-style: disc; }
+.field-err { color: var(--error); font-weight: 700; font-size: var(--step--1); }
+[aria-invalid="true"] { border-color: var(--error); }
+
+@media (min-width: 1100px) {
+  .ev-layout { grid-template-columns: 13rem minmax(0, 1fr); gap: var(--s-5); align-items: start; }
+  .ev-filter { position: sticky; top: 6rem; }
+  .chips { flex-direction: column; align-items: flex-start; }
+  .tickets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

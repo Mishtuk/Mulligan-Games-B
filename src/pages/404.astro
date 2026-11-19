@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/pages.css';
+---
+<Base title="Page not found" description="That page is not here. Head back to the Mulligan Games home page, events or shop.">
+  <div class="wrap nf">
+    <section class="box nf-box" aria-labelledby="nf-h">
+      <h1 id="nf-h">Misprint.</h1>
+      <p class="page-lede">This page did not make it out of the pack. Try one of these instead.</p>
+      <p class="nf-cta">
+        <a class="btn" href="/">Home</a>
+        <a class="btn btn-secondary" href="/events/">Events</a>
+        <a class="btn btn-ghost" href="/shop/">Shop</a>
+      </p>
+    </section>
+    <ul class="nf-pocket">
+      <li class="pocket pocket-closed">
+        <h2 class="pocket-title">Page not found</h2>
+        <div class="pocket-body"><p>Error 404</p></div>
+      </li>
+    </ul>
+  </div>
+</Base>

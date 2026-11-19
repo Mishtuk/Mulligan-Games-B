@@ -1,0 +1,22 @@
+/* 404 and privacy. Tokens and components from global.css. */
+.nf { display: grid; gap: var(--s-5); padding-top: var(--s-4); align-items: start; }
+.nf-box { margin-top: 2.25rem; }
+.nf-box h1 { font-size: var(--step-3); }
+.page-lede { margin-top: var(--s-2); font-size: var(--step-1); line-height: 1.35; }
+.nf-cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-4); }
+.nf-pocket { width: 11rem; }
+.nf-pocket .pocket { aspect-ratio: 5 / 7; }
+.nf-pocket .pocket-body { justify-content: center; align-items: center; text-align: center; font-family: var(--font-mono); }
+@media (min-width: 820px) {
+  .nf { grid-template-columns: minmax(0, 1fr) 12rem; column-gap: var(--s-5); }
+  .nf-box { padding: var(--s-5); }
+}
+
+.prose { padding-top: var(--s-4); }
+.prose .page-head { padding-top: 0; }
+.prose h1 { font-size: var(--step-3); }
+.prose section { margin-top: var(--s-5); max-width: var(--measure); }
+.prose h2 { margin-bottom: var(--s-2); }
+.prose p + p, .prose ul { margin-top: var(--s-2); }
+.prose ul { display: grid; gap: var(--s-1); padding-left: 1.2rem; list-style: disc; }
+.prose .page-head p.muted { margin-top: var(--s-2); }

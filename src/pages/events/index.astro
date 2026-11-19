@@ -1,0 +1,167 @@
+---
+// Events: filter chips, weekly pairings sheet (by weekday), special nights, sign-up. Data: events.json, store.json, games.json.
+// Weekdays, not dates, so "this week" is right on the day it is viewed without a rebuild; public/js/events.js adds today's date and marks tonight.
+import Base from '../../layouts/Base.astro';
+import events from '../../data/events.json';
+import store from '../../data/store.json';
+import games from '../../data/games.json';
+import { DAYS, toWeek, fmtTime, byTime, zoned } from '../../lib/hours.js';
+import { gameId, isShown, isLikely, upcomingOneoffs, dateParts, SIGNUP_EVENTS } from '../../lib/events.js';
+import '../../styles/events.css';
+
+const week = toWeek(store.hours);
+const order = [1, 2, 3, 4, 5, 6, 0];
+const weekly = events.weekly.filter(isShown);
+const days = order.map((d) => ({ d, name: DAYS[d], slug: DAYS[d].toLowerCase(), closed: !week[d], rows: weekly.filter((e) => e.day === d).sort(byTime) }));
+const special = upcomingOneoffs(events.oneoffs, zoned(store.timezone).date);
+const likely = [...weekly, ...special].some(isLikely);
+const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
+const a = store.address;
+const showCap = (n: number | null) => (n === null ? 'Ask' : String(n));
+// Chip ids from games.json; "other" is not a chip.
+const chips = games.map((g) => ({ id: g.id, name: g.name }));
+---
+<Base title="Game nights" description="Weekly game nights at Mulligan Games in Warminster, PA: Magic, tabletop and more. See the pairings sheet by day, find special nights, sign up and add nights to your calendar.">
+  <div class="wrap ev">
+    <header class="ev-head">
+      <h1>Game nights</h1>
+      <p class="ev-lead">What is on at the store, day by day. Tap Sign up to hold a seat.</p>
+    </header>
+
+    <div class="ev-layout">
+      <nav class="ev-filter" aria-label="Filter by game">
+        <h2 class="label">Game</h2>
+        <ul class="chips">
+          <li><a class="chip chip-filter" href="/events/" data-filter="all" aria-current="page">All</a></li>
+          {chips.map((c) => <li><a class="chip chip-filter" href={`/events/?game=${c.id}`} data-filter={c.id}>{c.name}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="ev-main">
+        <section class="sheet-wrap" aria-labelledby="sheet-h">
+          <h2 id="sheet-h">Pairings sheet</h2>
+          <p class="muted sheet-sub">The same nights every week, Monday to Sunday. Tonight is marked for you.</p>
+          <p class="ev-none" id="ev-none" role="status" hidden></p>
+          <div class="sheet">
+            <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
+            {days.map((x) => (
+              <section class="day" id={x.slug} aria-labelledby={`h-${x.slug}`} data-day={x.d} data-closed={x.closed ? '' : undefined}>
+                <h3 id={`h-${x.slug}`}>{x.name} <span class="day-date mono" data-day-date hidden></span>{x.closed && <span class="chip chip-closed">Closed</span>}</h3>
+                {x.closed ? (
+                  <p class="day-note">Closed. Nothing booked.</p>
+                ) : x.rows.length === 0 ? (
+                  <p class="day-note">Nothing booked yet.</p>
+                ) : (
+                  <>
+                    <table class="pairings" role="table">
+                      <caption class="vh">{x.name} game nights</caption>
+                      <thead role="rowgroup">
+                        <tr role="row"><th scope="col" role="columnheader">Time</th><th scope="col" role="columnheader">Game</th><th scope="col" role="columnheader">Format</th><th scope="col" role="columnheader">Fee</th><th scope="col" role="columnheader">Cap</th><th scope="col" role="columnheader">Sign up</th></tr>
+                      </thead>
+                      <tbody role="rowgroup">
+                        {x.rows.map((e) => (
+                          <tr role="row" data-game={gameId(e.game)}>
+                            <td role="cell" data-label="Time"><span class="mono">{fmtTime(e.time)}</span> <span class="chip chip-tonight" data-tonight-chip hidden>Tonight</span></td>
+                            <td role="cell" data-label="Game">{e.game}</td>
+                            <th scope="row" role="rowheader" data-label="Format">{e.format}</th>
+                            <td role="cell" data-label="Fee"><span class="sticker">{fee(e.fee)}</span></td>
+                            <td role="cell" data-label="Cap">{showCap(e.cap)}</td>
+                            <td role="cell" data-label="Sign up" class="row-act"><div class="act">
+                              {e.cap !== null && <a class="btn btn-secondary btn-sm" href="#signup">Sign up<span class="vh"> for {e.format}, {x.name}</span></a>}
+                              <a class="cal" href={`/events/${e.id}.ics`}>Add to calendar<span class="vh">: {e.format}, {x.name}</span></a></div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <p class="day-note day-none" hidden>No nights for this game on {x.name}.</p>
+                  </>
+                )}
+              </section>
+            ))}
+          </div>
+          {likely && <p class="ev-note">Nights and fees come from public listings. Confirm with the store.</p>}
+        </section>
+
+        <section class="special" id="special" aria-labelledby="special-h">
+          <h2 id="special-h">Special nights</h2>
+          <p class="ev-none" id="special-none" hidden>No special nights booked. Check back soon.</p>
+          {special.length === 0 ? <p>No special nights booked. Check back soon.</p> : (
+            <ul class="tickets">
+              {special.map((e) => {
+                const p = dateParts(e.date);
+                return (
+                  <li class="ticket" data-game={gameId(e.game)} data-date={e.date}>
+                    <time class="stub" datetime={e.date}><span>{p.dow}</span><b>{p.dom}</b><span>{p.mon}</span></time>
+                    <div class="ticket-body">
+                      <h3>{e.title}</h3>
+                      <p class="muted">{e.game} · <span class="mono">{fmtTime(e.time)}</span> · {a.street}</p>
+                      <p class="ticket-act">
+                        <span class="sticker">{fee(e.fee)}</span>
+                        {e.cap !== null
+                          ? <a class="btn btn-secondary" href="#signup">Sign up<span class="vh"> for {e.title}</span></a>
+                          : <a class="btn btn-ghost" href={`/events/${e.id}.ics`}>Add to calendar<span class="vh">: {e.title}</span></a>}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      </div>
+    </div>
+
+    <section class="box box-sky signup" id="signup" aria-labelledby="signup-h">
+      <span class="tab">03 / Sign up</span>
+      <h2 id="signup-h">Hold a seat</h2>
+      <p>Pick a night, tell us your first name and email. Under 13 with a grown-up (confirm with the store).</p>
+      <p class="muted">These are placeholder nights while the owner sets up the real list. Dates and seat counts are test data.</p>
+
+      <div class="form-msg ok" id="signup-ok" role="status" tabindex="-1" hidden>
+        <h3><strong>You are in.</strong> Seat held.</h3>
+        <p>We have your name and email for that night. Nothing else is sent to you.</p>
+        <p><a href="/events/">Back to game nights</a></p>
+      </div>
+      <div class="form-msg ok" id="signup-wait" role="status" tabindex="-1" hidden>
+        <h3><strong>You are on the waitlist.</strong> That night is full.</h3>
+        <p>Ask at the counter about open seats.</p>
+        <p><a href="/events/">Back to game nights</a></p>
+      </div>
+      <div class="form-msg error" id="signup-err" role="alert" tabindex="-1" hidden>
+        <h3 id="signup-err-h"><strong>Error:</strong> that did not send.</h3>
+        <ul id="signup-err-list"></ul>
+        <p id="signup-err-server">Check the night, your name and your email. If you already signed up for that night, you are on the list. Or ask at the counter.</p>
+      </div>
+      <noscript><p class="muted">Without JavaScript no message appears here. After you send, the address bar shows sent=signup when it worked, or signup=error when it did not.</p></noscript>
+
+      <form id="signup-form" method="post" action="/api/signup" novalidate>
+        <div class="field">
+          <label for="su-event">Night <span class="hint">(required)</span></label>
+          <select id="su-event" name="event_id" required>
+            {SIGNUP_EVENTS.map((e) => <option value={e.id} data-limited={e.seats !== null ? '' : undefined}>{e.title}</option>)}
+          </select>
+          <p class="hint seats" id="su-seats" aria-live="polite">Seats: ask</p>
+        </div>
+        <div class="field">
+          <label for="su-name">Your first name <span class="hint">(required)</span></label>
+          <input type="text" id="su-name" name="name" required maxlength="80" autocomplete="given-name" />
+        </div>
+        <div class="field">
+          <label for="su-email">Email <span class="hint">(required)</span></label>
+          <input type="email" id="su-email" name="email" required maxlength="120" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="su-note">Anything we should know <span class="hint">(optional, 200 characters)</span></label>
+          <input type="text" id="su-note" name="players_note" maxlength="200" />
+        </div>
+        <div class="hp" aria-hidden="true">
+          <label for="su-website">Leave this empty</label>
+          <input type="text" id="su-website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+        <button class="btn" type="submit">Sign up</button>
+      </form>
+    </section>
+  </div>
+  <script is:inline slot="scripts" type="module" src="/js/events.js"></script>
+</Base>

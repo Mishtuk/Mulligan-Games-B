@@ -1,0 +1,45 @@
+/* Sell page: the buylist slip (receipt panel) and the rules column. Tokens and components come from global.css; page-head and guide from shop.css. */
+.sell-grid { display: grid; gap: var(--s-5); margin-top: var(--s-4); align-items: start; }
+.sell-rules .box { margin-top: var(--section); }
+.sell-rules .box:first-child { margin-top: 2.25rem; }
+.sell-rules .box > h2 { margin-bottom: var(--s-2); }
+.sell-rules .box > p + p { margin-top: var(--s-1); }
+.sell-rules .cond-table { margin-top: var(--s-3); }
+.sell-rules .cond-note { margin-top: var(--s-2); }
+
+.slip-wrap { max-width: 30rem; width: 100%; }
+.slip-wrap .form-msg { margin-bottom: var(--s-3); }
+.err-list { display: grid; gap: .25rem; margin-top: var(--s-1); padding-left: 1.2rem; list-style: disc; }
+.slip { padding: var(--s-4) var(--s-3); background: var(--card); color: var(--text); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); font-family: var(--font-mono); }
+.slip label, .slip legend, .slip .hint { font-family: var(--font-mono); }
+.slip label { font-weight: 700; }
+.slip .hint { font-weight: 400; }
+.slip-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--s-2); }
+.slip-head h2 { font-size: var(--step-1); }
+.tear { margin: var(--s-3) calc(var(--s-3) * -1); border-top: 3px dashed var(--soft-line); }
+.slip-rows { display: grid; gap: var(--s-3); }
+.slip-row { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem; gap: var(--s-2); padding-bottom: var(--s-3); border-bottom: 2px dashed var(--soft-line); }
+.slip-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.slip-row label { display: grid; gap: .25rem; align-content: start; min-width: 0; }
+.slip-row .row-top { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; max-width: none; }
+.f-name, .f-set, .f-cond { grid-column: 1 / -1; }
+.f-qty { grid-column: 1 / -1; }
+.row-remove { min-height: var(--tap); padding-inline: var(--s-3); box-shadow: none; font-family: var(--font-mono); }
+.add-wrap { margin-top: var(--s-3); }
+input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75rem; background: var(--card); color: var(--text); border: var(--border-w) solid var(--line); border-radius: var(--radius); font: inherit; }
+.payout { margin: 0 0 var(--s-3); padding: 0; border: 0; min-width: 0; }
+.payout legend { padding: 0; margin-bottom: var(--s-1); font-weight: 700; }
+.radio { display: flex; align-items: center; gap: var(--s-2); min-height: var(--tap); }
+.radio input { width: 1.5rem; height: 1.5rem; margin: 0; accent-color: var(--accent2); }
+.slip .field { margin-bottom: var(--s-3); }
+.slip-fine { margin-top: var(--s-3); color: var(--muted); font-size: var(--step--1); }
+.sell-rules .box { font-family: var(--font-body); }
+
+@media (min-width: 480px) {
+  .slip-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 5.5rem; }
+  .f-name { grid-column: 1 / -1; }
+  .f-set, .f-cond, .f-qty { grid-column: auto; }
+}
+@media (min-width: 1000px) {
+  .sell-grid { grid-template-columns: minmax(0, 30rem) minmax(0, 1fr); column-gap: var(--s-5); }
+}

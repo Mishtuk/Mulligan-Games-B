@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import ConditionGuide from '../../components/ConditionGuide.astro';
+import '../../styles/shop.css';
+import '../../styles/sell.css';
+
+const CONDS = [['NM', 'NM'], ['LP', 'LP'], ['MP', 'MP'], ['HP', 'HP'], ['DMG', 'DMG']];
+const ROWS = [1, 2, 3, 4, 5];
+---
+<Base title="Sell your cards to us" description="Sell cards to Mulligan Games in Warminster, PA. Build a list, choose cash or store credit, and send it to the shop. Rates: ask in store.">
+  <div class="wrap sell">
+    <header class="page-head">
+      <h1>Sell to us</h1>
+      <p class="page-lede">Got cards to sell? Build a list, send it in, then bring the cards by.</p>
+    </header>
+
+    <div class="sell-grid">
+      <section class="slip-wrap" id="buylist" aria-labelledby="slip-h">
+        <div class="form-msg ok" id="buylist-ok" role="status" tabindex="-1" hidden>
+          <h2 id="slip-ok-h"><strong>Got it.</strong> List sent.</h2>
+          <p>The shop has your list. Rates: ask in store. Bring the cards in so we can look them over.</p>
+          <p><a href="/visit/">Hours and directions</a></p>
+        </div>
+        <div class="form-msg error" id="buylist-err" role="alert" tabindex="-1" hidden>
+          <h2><strong>Error:</strong> that did not send.</h2>
+          <p>Fix these and try again:</p>
+          <ul class="err-list">
+            <li><a href="#card-1">At least one card with a name</a>, and a quantity from 1 to 99</li>
+            <li><a href="#slip-name">Your name</a> and <a href="#slip-email">a valid email</a></li>
+            <li><a href="#payout-cash">Cash or store credit</a></li>
+          </ul>
+        </div>
+        <form id="buylist-form" class="slip" method="post" action="/api/buylist">
+          <div class="slip-head">
+            <h2 id="slip-h">Buylist slip</h2>
+            <p class="mono">Count: <span id="line-count" aria-live="polite">0 lines</span></p>
+          </div>
+          <div class="tear" aria-hidden="true"></div>
+          <ol class="slip-rows">
+            {ROWS.map((n) => (
+              <li class="slip-row" role="group" aria-label={`Card ${n}`}>
+                <p class="row-top"><span class="mono">Card <span class="row-no">{n}</span></span>
+                  <button type="button" class="row-remove btn btn-ghost" hidden aria-label={`Remove card ${n}`}>Remove</button></p>
+                <label class="f-name"><span>Card name{n === 1 ? ' (required)' : ''}</span>
+                  <input type="text" id={n === 1 ? 'card-1' : undefined} name="item_name[]" maxlength="100" autocomplete="off" required={n === 1} /></label>
+                <label class="f-set"><span>Set <span class="hint">(optional)</span></span>
+                  <input type="text" name="item_set[]" maxlength="80" autocomplete="off" /></label>
+                <label class="f-cond"><span>Condition <span class="hint">(see guide)</span></span>
+                  <select name="item_cond[]">{CONDS.map(([v, l]) => <option value={v}>{l}</option>)}</select></label>
+                <label class="f-qty"><span>Quantity</span>
+                  <input type="number" name="item_qty[]" min="1" max="99" value="1" inputmode="numeric" /></label>
+              </li>
+            ))}
+          </ol>
+          <p class="add-wrap"><button type="button" id="add-row" class="btn btn-secondary" hidden>Add a row</button></p>
+          <div class="tear" aria-hidden="true"></div>
+
+          <fieldset class="payout">
+            <legend>Cash or store credit <span class="hint">(required)</span></legend>
+            <label class="radio"><input type="radio" id="payout-cash" name="payout" value="cash" required /> <span>Cash</span></label>
+            <label class="radio"><input type="radio" name="payout" value="credit" /> <span>Store credit</span></label>
+          </fieldset>
+
+          <div class="field">
+            <label for="slip-name">Your name <span class="hint">(required)</span></label>
+            <input type="text" id="slip-name" name="name" required maxlength="80" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="slip-email">Email <span class="hint">(required)</span></label>
+            <input type="email" id="slip-email" name="email" required maxlength="120" autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="slip-note">Anything else <span class="hint">(optional)</span></label>
+            <textarea id="slip-note" name="note" maxlength="500" rows="3"></textarea>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="slip-website">Leave this empty</label>
+            <input type="text" id="slip-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="tear" aria-hidden="true"></div>
+          <button class="btn" type="submit">Send list</button>
+          <p class="slip-fine">No prices here: rates are set in store.</p>
+        </form>
+      </section>
+
+      <div class="sell-rules">
+        <section class="box" aria-labelledby="pay-h">
+          <span class="tab">01 / How we pay</span>
+          <h2 id="pay-h">How we pay</h2>
+          <p>Pick cash or store credit on the slip. Rates: <span class="chip">Ask in store</span></p>
+          <p class="muted">We do not post a price list here yet. Bring your cards in and we will go through them with you.</p>
+        </section>
+
+        <section class="box box-sky" aria-labelledby="cond-h">
+          <span class="tab">02 / Condition</span>
+          <h2 id="cond-h">Condition rules</h2>
+          <p>Pick the closest grade for each row. We check every card at the counter.</p>
+          <ConditionGuide />
+        </section>
+
+        <section class="box" aria-labelledby="credit-h">
+          <span class="tab">03 / Store credit</span>
+          <h2 id="credit-h">Store credit rules</h2>
+          <p><span class="chip">Placeholder</span> Store credit terms are not set yet. Ask in store.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script is:inline slot="scripts" type="module" src="/js/sell-rows.js"></script>
+</Base>

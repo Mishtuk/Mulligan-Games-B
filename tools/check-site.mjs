@@ -6,6 +6,7 @@
 // Checks per page: no sideways overflow at 320-1600; getAnimations() 0 with Motion off and with reduced motion emulated;
 // no duplicate ids; no console errors or CSP violations; Tab reaches every control with a visible ring (390 and 1280);
 // rendered-ground contrast (4.5:1, 3:1 at 24px+) and `.ln` width, scrolled down the whole page (390 and 1280, Motion off).
+// Project copy (Mulligan-Games-B): radio groups count as one Tab stop; the deliberate 404 page status is not a console error.
 // Exit 0 = clean, 1 = failures (listed), 2 = could not run.
 import { spawn } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
@@ -53,7 +54,7 @@ try {
   b.on((m) => {
     if (m.method === 'Runtime.exceptionThrown') errs.add('script error: ' + (m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text).split('\n')[0]);
     if (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error') errs.add('console.error: ' + m.params.args.map((a) => a.value ?? a.description ?? '').join(' ').slice(0, 200));
-    if (m.method === 'Log.entryAdded' && m.params.entry.level === 'error') { const e = m.params.entry; if(/favicon.ico/.test(e.url||""))return; errs.add((/Content Security Policy/i.test(e.text) ? 'CSP violation: ' : 'console: ') + e.text.slice(0, 220) + (e.url ? ' (' + e.url + ')' : '')); }
+    if (m.method === 'Log.entryAdded' && m.params.entry.level === 'error') { const e = m.params.entry; if(/favicon.ico/.test(e.url||""))return; if(/ 404 \(Not Found\)/.test(e.text)&&/\/(nope|404)(\.html)?$/.test(e.url||""))return; errs.add((/Content Security Policy/i.test(e.text) ? 'CSP violation: ' : 'console: ') + e.text.slice(0, 220) + (e.url ? ' (' + e.url + ')' : '')); }
     if (m.method === 'Page.loadEventFired' && loaded) loaded();
   });
   for (const d of ['Page', 'Runtime', 'Log']) await cdp(d + '.enable');
@@ -102,7 +103,7 @@ try {
         if (first === null) first = r.key; else if (r.key === first) break;
         if (!r.ring) noRing.add(r.d);
       }
-      const missed = await ev(`[...document.querySelectorAll(${JSON.stringify(FOCUSABLE)})].filter(e=>window.__vis(e)&&!window.__seen.has(e)).map(window.__d)`);
+      const missed = await ev(`[...document.querySelectorAll(${JSON.stringify(FOCUSABLE)})].filter(e=>window.__vis(e)&&!window.__seen.has(e)&&!(e.type=='radio'&&e.name&&[...window.__seen].some(t=>t.type=='radio'&&t.name==e.name&&t.form==e.form))).map(window.__d)`);
       if (missed.length) bad(`keyboard @${w}`, `Tab never reached: ${missed.slice(0, 8).join('; ')}${missed.length > 8 ? ` (+${missed.length - 8} more)` : ''}`);
       if (noRing.size) bad(`focus ring @${w}`, `no visible ring on: ${[...noRing].slice(0, 8).join('; ')}`);
     }

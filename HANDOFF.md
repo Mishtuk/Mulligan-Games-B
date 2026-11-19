@@ -56,7 +56,13 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Tonight strip: all nights server-rendered inside a closed `<details>`; `public/js/today.js` opens it and shows only today (store zone). No-JS keeps the details plus a "This week" link.
 - Open chip, today highlights and request-form messages are plain external scripts reading `<script type="application/json">` blocks (CSP-safe).
 
+- Events build-time .ics endpoint (`src/pages/events/[id].ics.js`, helpers `src/lib/events.js`) from the kit ics-feed pattern adapted to static output: weekly rows use RRULE:FREQ=WEEKLY, no DTEND (data has no end times). Sign-up select hard-codes the D1 seed placeholders in `SIGNUP_EVENTS` (a test compares it to schema.sql). Events weekly sheet renders weekdays and JS adds dates/Tonight.
+
+- Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
+
 ## Log (newest first)
+- 2026-11-19 Slice C (coder): Shop, Sell, Visit, 404, Privacy built (pages, shop/sell/visit/pages.css, Slab/ConditionGuide/Toploader/HoursTable, sell-rows/visit-hours/visit-contact JS, test/pages-c.test.mjs). Not committed.
+- 2026-11-19 Slice B (coder): Events page (filter chips, pairings sheet, special nights, sign-up, .ics per night, events.js/events.css, test/events.test.mjs). Not committed.
 - 2026-11-19 Slice A (coder): foundation + Home built (layout, global/home CSS, Pocket/BinderWeek/TonightStrip/OpenChip, data JSON, fonts, logo, hours.js + tests). Not committed.- 2026-11-19 Setup from the kit; research files; plan.
 
 ## How to run

@@ -1,0 +1,10 @@
+---
+// Slab-style label strip: name left, big condition code right, optional id line. Generic look, no grading-company marks.
+interface Props { name: string; cond: string; id?: string; }
+const { name, cond, id } = Astro.props;
+---
+<div class="slab">
+  <span class="slab-name">{name}</span>
+  <span class="slab-cond">{cond}</span>
+  {id && <span class="slab-id">{id}</span>}
+</div>

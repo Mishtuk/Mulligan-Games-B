@@ -1,0 +1,27 @@
+---
+// Condition guide table NM/LP/MP/HP/DMG. Used on /shop/ and /sell/. Codes match the Worker's CONDS list.
+import Slab from './Slab.astro';
+const rows = [
+  ['Near Mint', 'NM', 'Looks fresh from the pack.', 'A faint touch on a corner or edge at most.'],
+  ['Lightly Played', 'LP', 'Light wear you notice on a close look.', 'Small edge whitening or a couple of tiny scuffs.'],
+  ['Moderately Played', 'MP', 'Clear wear, still flat and whole.', 'Edge whitening all round, scratches, a soft corner.'],
+  ['Heavily Played', 'HP', 'Heavy wear. Fine in a sleeve.', 'Creases that do not break the surface, rubbing, worn corners.'],
+  ['Damaged', 'DMG', 'Something is wrong with the card.', 'Tears, water damage, thin spots, ink or marker.'],
+];
+---
+<div class="cond-guide">
+  <table class="cond-table">
+    <caption class="vh">Card condition guide</caption>
+    <thead><tr><th scope="col">Condition</th><th scope="col">What it looks like</th><th scope="col">Example</th></tr></thead>
+    <tbody>
+      {rows.map(([name, code, look, ex]) => (
+        <tr>
+          <th scope="row"><Slab name={name} cond={code} /></th>
+          <td data-label="Looks like">{look}</td>
+          <td data-label="Example">{ex}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="muted cond-note">A guide, not a promise: the shop grades cards at the counter. Ask in store if you are unsure.</p>
+</div>

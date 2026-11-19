@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import HoursTable from '../../components/HoursTable.astro';
+import store from '../../data/store.json';
+import '../../styles/shop.css';
+import '../../styles/visit.css';
+
+const a = store.address;
+const L = store.links;
+---
+<Base title="Visit us: hours and directions" description="Hours, address and directions for Mulligan Games at 445 York Road in Warminster, PA. House rules and a contact form.">
+  <div class="wrap visit">
+    <header class="page-head">
+      <h1>Visit us</h1>
+      <p class="page-lede">Come in, find a table, stay for a game.</p>
+    </header>
+
+    <div class="visit-grid">
+      <div class="visit-main">
+        <section class="box" id="hours" aria-labelledby="hours-h">
+          <span class="tab">01 / Hours</span>
+          <h2 id="hours-h">Hours</h2>
+          <HoursTable />
+          <p class="muted hours-note">{store.hoursCertainty}: confirm hours with the store.</p>
+        </section>
+
+        <section class="box box-sky" id="find" aria-labelledby="find-h">
+          <span class="tab">02 / Find us</span>
+          <h2 id="find-h">Address</h2>
+          <address>{a.street}<br />{a.city}, {a.state} {a.zip}</address>
+          <p class="muted">Address: {a.certainty}. Confirm with the store.</p>
+          <p class="visit-actions"><a class="btn btn-ghost" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
+          <p><strong>Parking:</strong> ask in store. We have not confirmed the details yet.</p>
+          {(store.phone || store.email || L.discord) && (
+            <ul class="reach">
+              {store.phone && <li>Phone: <a href={`tel:${store.phone}`}>{store.phone}</a></li>}
+              {store.email && <li>Email: <a href={`mailto:${store.email}`}>{store.email}</a></li>}
+              {L.discord && <li>Discord: <a href={L.discord} rel="noopener">Join the server<span class="vh"> (opens another site)</span></a></li>}
+            </ul>
+          )}
+        </section>
+
+        <section class="box" id="play" aria-labelledby="play-h">
+          <span class="tab">03 / Play space</span>
+          <h2 id="play-h">Play space and house rules</h2>
+          <p>Tables are for playing. Sit down, shuffle up, and ask the counter if you need a hand finding a game.</p>
+          <ul class="rules">
+            <li>Be kind. Everyone here is trying to have a good night.</li>
+            <li>Ask before you touch someone else's cards.</li>
+            <li>Clean up your table when you leave.</li>
+            <li>Stay home if you are sick.</li>
+            <li>Ages and entry fees: <span class="chip">Ask in store</span></li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="box visit-form" id="contact" aria-labelledby="contact-h">
+        <span class="tab">04 / Contact</span>
+        <h2 id="contact-h">Ask us something</h2>
+        <p>Questions about stock, preorders, events or your data. Send a message and we will answer by email.</p>
+        <div class="form-msg ok" id="contact-ok" role="status" tabindex="-1" hidden>
+          <h3><strong>Got it.</strong> Message sent.</h3>
+          <p>We will reply to the email you gave. Nothing else is sent to you.</p>
+        </div>
+        <div class="form-msg error" id="contact-err" role="alert" tabindex="-1" hidden>
+          <h3><strong>Error:</strong> that did not send.</h3>
+          <p>Check each field and try again, or ask at the counter.</p>
+        </div>
+        <form id="contact-form" method="post" action="/api/contact">
+          <div class="field">
+            <label for="c-name">Your name <span class="hint">(required)</span></label>
+            <input type="text" id="c-name" name="name" required maxlength="80" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="c-email">Email <span class="hint">(required)</span></label>
+            <input type="email" id="c-email" name="email" required maxlength="120" autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="c-message">Message <span class="hint">(required)</span></label>
+            <textarea id="c-message" name="message" required maxlength="1000" rows="5"></textarea>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="c-website">Leave this empty</label>
+            <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+          <button class="btn" type="submit">Send message</button>
+        </form>
+      </section>
+    </div>
+  </div>
+  <script is:inline slot="scripts" type="module" src="/js/visit-hours.js"></script>
+  <script is:inline slot="scripts" src="/js/visit-contact.js" defer></script>
+</Base>

@@ -1,0 +1,19 @@
+---
+// Seven-row hours table from store.json, Monday first. public/js/visit-hours.js marks today (store time zone).
+import store from '../data/store.json';
+import { DAYS, toWeek, hoursText } from '../lib/hours.js';
+const week = toWeek(store.hours);
+const order = [1, 2, 3, 4, 5, 6, 0];
+---
+<table class="hours-table">
+  <caption class="vh">Opening hours</caption>
+  <thead><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead>
+  <tbody>
+    {order.map((d) => (
+      <tr data-day={d} class:list={{ 'is-closed': !week[d] }}>
+        <th scope="row">{DAYS[d]} <span class="today-chip" hidden>Today</span></th>
+        <td class="mono">{hoursText(week[d])}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
