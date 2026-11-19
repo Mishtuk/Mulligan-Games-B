@@ -98,15 +98,15 @@ a.chip { min-height: var(--tap); }
 .box-sky { background: var(--bg2); }
 .tab { position: absolute; left: calc(var(--border-w) * -1); top: 0; translate: 0 -100%; padding: .35em .9em; background: var(--line); color: var(--bg); }
 /* full-bleed bands and airy sections (rhythm: dense box, band, airy, never 3 alike) */
-main { overflow-x: clip; } /* bands bleed past the gutter; never a sideways scrollbar */
-.band { position: relative; isolation: isolate; clip-path: inset(0 -100vmax); padding-block: var(--s-5); margin-top: var(--section); }
-.band::before { content: ""; position: absolute; inset: 0 -100vmax; z-index: -1; background: var(--bg2); border-block: var(--border-w) solid var(--line); }
+main { container-type: inline-size; } /* 100cqw = the page width without the scrollbar, so bands can bleed with no clipping */
+.band { position: relative; isolation: isolate; padding-block: var(--s-5); margin-top: var(--section); }
+.band::before { content: ""; position: absolute; inset: 0 auto; left: 50%; width: 100cqw; translate: -50% 0; z-index: -1; background: var(--bg2); border-block: var(--border-w) solid var(--line); }
 .band-mat { color: var(--on-accent2); }
 .band-mat::before { background: var(--accent2); }
 .band-mat h2 { color: var(--on-accent2); }
 .band-mat .pocket { box-shadow: 3px 3px 0 var(--line); }
 .band-crimp { padding-top: calc(var(--s-5) + .9rem); }
-.band-crimp::after { content: ""; position: absolute; inset: 0 -100vmax auto; height: .9rem; background: repeating-linear-gradient(90deg, var(--line) 0 3px, transparent 3px 7px); border-bottom: var(--border-w) solid var(--line); }
+.band-crimp::after { content: ""; position: absolute; top: 0; left: 50%; width: 100cqw; translate: -50% 0; height: .9rem; background: repeating-linear-gradient(90deg, var(--line) 0 3px, transparent 3px 7px); border-bottom: var(--border-w) solid var(--line); }
 .airy { margin-top: var(--section); }
 .tape { position: absolute; top: -.8rem; width: 4.5rem; height: 1.4rem; background: var(--sky); border: 2px solid var(--line); pointer-events: none; }
 .tape-l { left: 1rem; rotate: -4deg; }

@@ -44,6 +44,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - [boss] refinement loop 1
 
 ## Waiting on the owner
+- **To set before launch:** `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
 - [ ] Phone/email to publish, photos, hosted store for singles, weekly fees, buylist rates, Discord invite (see CONTEXT open questions)
 - [ ] Preview deploy to Cloudflare (later)
 
@@ -61,6 +62,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 09 (code/security/SEO/perf): bands bleed with 100cqw (main is a size container), clip removed; sitemap.xml + robots.txt endpoints, canonical/OG/Twitter, JSON-LD openingHoursSpecification; page-weight budget test; CSP has no unsafe-inline (stylesheets no longer inlined); worker: Origin check, content-type 415, content-length 411, Referer allow-list per form. 119 tests green.
 - Loop 8 (copy and voice): bio line on Home, Home Visit box shrunk to one line, honest Sell slab, button and success wording, unique meta on all pages + test/meta.test.mjs. 104 tests green.
 - Loop 7 (Card-shop identity): .band/.band-mat/.band-crimp/.airy in global.css (main overflow-x:clip); Home playmat band + unboxed Sell; Shop crimp band + unboxed Preorders; Visit address band, taped hours sheet, unboxed rules; tab numbers cut. Review and shots in docs/review/loop-07/. Next: Home Visit box duplicates footer, 404 pocket, Sell right rail.
 - Loop 6 (Accessibility and motion): 200% text fixed on Events and Sell (container queries in rem), menu sheet closes on focus or click out, shared public/js/form-check.js (summary, aria-describedby, focus) on Home, Shop, Sell, Visit, pocket link names, role=group cut from buylist rows; test/a11y.test.mjs (+7, 103). CDP checks in .work/ (zoom, menu, motion, forms, landmarks). Shots in docs/review/loop-06. Not committed.

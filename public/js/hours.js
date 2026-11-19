@@ -4,7 +4,7 @@ export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fr
 export const DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export const mins = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+const mins = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
 
 // "14:00" -> "2pm", "22:30" -> "10:30pm", "24:00" -> "midnight", "12:00" -> "noon"
 export function fmtTime(t) {

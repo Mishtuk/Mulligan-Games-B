@@ -18,10 +18,15 @@ const future = (days) => `strftime('%Y-%m-%d %H:%M', 'now', '+${days} days')`;
 function addEvent(env, id, seats) {
   env.DB.raw.exec(`INSERT INTO events (id, title, game, starts_at, seats) VALUES (${id}, 'Test event', 'magic', ${future(2)}, ${seats ?? 'NULL'})`);
 }
-function post(env, path, fields, headers = {}) {
+const HOME = { '/api/signup': '/events/', '/api/buylist': '/sell/', '/api/request': '/shop/', '/api/contact': '/visit/' };
+// A browser sends Content-Length with a form post; a hand-built Request does not, so measure the encoded body here.
+async function post(env, path, fields, headers = {}) {
   const fd = new FormData();
   for (const [k, v] of Object.entries(fields)) for (const x of [].concat(v)) fd.append(k, x);
-  return worker.fetch(new Request(ORIGIN + path, { method: 'POST', body: fd, headers: { referer: ORIGIN + '/somewhere/?old=1', ...headers } }), env);
+  const enc = new Request(ORIGIN + path, { method: 'POST', body: fd });
+  const body = await enc.arrayBuffer();
+  return worker.fetch(new Request(ORIGIN + path, { method: 'POST', body, headers: { 'content-type': enc.headers.get('content-type'),
+    'content-length': String(body.byteLength), origin: ORIGIN, referer: ORIGIN + HOME[path] + '?old=1', ...headers } }), env);
 }
 const rows = (env, sql) => env.DB.raw.prepare(sql).all().map((r) => ({ ...r }));
 const loc = (r) => r.headers.get('location');
@@ -48,7 +53,7 @@ for (const f of FORMS) {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, f.valid);
     assert.equal(r.status, 303);
-    assert.equal(loc(r), `/somewhere/?sent=${f.form}#${f.form}`);
+    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}`);
     assert.equal(rows(env, `SELECT * FROM ${f.table}`).length, 1);
   });
 
@@ -56,14 +61,14 @@ for (const f of FORMS) {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, {});
     assert.equal(r.status, 303);
-    assert.equal(loc(r), `/somewhere/?${f.form}=error#${f.form}`);
+    assert.equal(loc(r), `${f.home}?${f.form}=error#${f.form}`);
     assert.equal(rows(env, `SELECT * FROM ${f.table}`).length, 0);
   });
 
   test(`${f.path}: bad email is an error`, async () => {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, { ...f.valid, email: 'not-an-email' });
-    assert.equal(loc(r), `/somewhere/?${f.form}=error#${f.form}`);
+    assert.equal(loc(r), `${f.home}?${f.form}=error#${f.form}`);
   });
 
   for (const hostile of [XSS, SQLI]) {
@@ -84,7 +89,7 @@ for (const f of FORMS) {
     const env = newEnv(); f.setup?.(env);
     const r = await post(env, f.path, { ...f.valid, website: 'http://spam.example' });
     assert.equal(r.status, 303);
-    assert.equal(loc(r), `/somewhere/?sent=${f.form}#${f.form}`);
+    assert.equal(loc(r), `${f.home}?sent=${f.form}#${f.form}`);
     assert.equal(rows(env, `SELECT * FROM ${f.table}`).length, 0);
   });
 
@@ -121,26 +126,26 @@ test('buylist: bad condition, bad qty, no items, or more than 40 items are error
   ];
   for (const fields of bad) {
     const env = newEnv();
-    assert.equal(loc(await post(env, '/api/buylist', fields)), '/somewhere/?buylist=error#buylist');
+    assert.equal(loc(await post(env, '/api/buylist', fields)), '/sell/?buylist=error#buylist');
     assert.equal(rows(env, 'SELECT * FROM buylists').length, 0);
   }
   const env = newEnv();
   const forty = { ...base, 'item_name[]': Array(40).fill('Card'), 'item_set[]': Array(40).fill(''), 'item_cond[]': Array(40).fill('NM'), 'item_qty[]': Array(40).fill('1') };
-  assert.equal(loc(await post(env, '/api/buylist', forty)), '/somewhere/?sent=buylist#buylist');
+  assert.equal(loc(await post(env, '/api/buylist', forty)), '/sell/?sent=buylist#buylist');
   assert.equal(rows(env, 'SELECT * FROM buylist_items').length, 40);
 });
 
 test('buylist: payout must be cash or credit', async () => {
   const env = newEnv();
-  assert.equal(loc(await post(env, '/api/buylist', { ...FORMS[1].valid, payout: 'bitcoin' })), '/somewhere/?buylist=error#buylist');
+  assert.equal(loc(await post(env, '/api/buylist', { ...FORMS[1].valid, payout: 'bitcoin' })), '/sell/?buylist=error#buylist');
 });
 
 test('signup: 2-seat event, third sign-up goes to the waitlist', async () => {
   const env = newEnv(); addEvent(env, 7, 2);
   const go = (email) => post(env, '/api/signup', { event_id: '7', name: 'P', email });
-  assert.equal(loc(await go('a@example.com')), '/somewhere/?sent=signup#signup');
-  assert.equal(loc(await go('b@example.com')), '/somewhere/?sent=signup#signup');
-  assert.equal(loc(await go('c@example.com')), '/somewhere/?sent=waitlist#signup');
+  assert.equal(loc(await go('a@example.com')), '/events/?sent=signup#signup');
+  assert.equal(loc(await go('b@example.com')), '/events/?sent=signup#signup');
+  assert.equal(loc(await go('c@example.com')), '/events/?sent=waitlist#signup');
   assert.deepEqual(rows(env, 'SELECT email, waitlist FROM registrations ORDER BY id'),
     [{ email: 'a@example.com', waitlist: 0 }, { email: 'b@example.com', waitlist: 0 }, { email: 'c@example.com', waitlist: 1 }]);
 });
@@ -149,7 +154,7 @@ test('signup: duplicate email makes no second row and is an error', async () => 
   const env = newEnv(); addEvent(env, 7, 5);
   await post(env, '/api/signup', { event_id: '7', name: 'P', email: 'a@example.com' });
   const r = await post(env, '/api/signup', { event_id: '7', name: 'P', email: 'A@Example.com' });
-  assert.equal(loc(r), '/somewhere/?signup=error#signup');
+  assert.equal(loc(r), '/events/?signup=error#signup');
   assert.equal(rows(env, 'SELECT * FROM registrations').length, 1);
 });
 
@@ -157,7 +162,7 @@ test('signup: unknown, cancelled and past events are errors', async () => {
   const env = newEnv(); addEvent(env, 7, 5);
   env.DB.raw.exec("INSERT INTO events (id, title, starts_at, cancelled) VALUES (8, 'Off', '2999-01-01 10:00', 1), (9, 'Past', '2000-01-01 10:00', 0)");
   for (const id of ['99', '8', '9', 'abc']) {
-    assert.equal(loc(await post(env, '/api/signup', { event_id: id, name: 'P', email: 'a@example.com' })), '/somewhere/?signup=error#signup');
+    assert.equal(loc(await post(env, '/api/signup', { event_id: id, name: 'P', email: 'a@example.com' })), '/events/?signup=error#signup');
   }
   assert.equal(rows(env, 'SELECT * FROM registrations').length, 0);
 });
@@ -198,7 +203,48 @@ test('rate limit: a blocked caller gets 429 and nothing is stored', async () => 
 
 test('turnstile: with a real secret and no token the post is refused; missing secret outside local fails closed', async () => {
   const env = { ...newEnv(), TURNSTILE_SECRET: 'other' };
-  assert.equal(loc(await post(env, '/api/contact', FORMS[3].valid)), '/somewhere/?contact=error#contact');
+  assert.equal(loc(await post(env, '/api/contact', FORMS[3].valid)), '/visit/?contact=error#contact');
   const prod = { ...newEnv(), LOCAL: undefined };
-  assert.equal(loc(await post(prod, '/api/contact', FORMS[3].valid)), '/somewhere/?contact=error#contact');
+  assert.equal(loc(await post(prod, '/api/contact', FORMS[3].valid)), '/visit/?contact=error#contact');
+});
+
+test('Origin: a post claiming another site is refused (403) and stores nothing; no Origin header still works', async () => {
+  const env = newEnv();
+  const r = await post(env, '/api/contact', FORMS[3].valid, { origin: 'https://evil.example' });
+  assert.equal(r.status, 403);
+  assert.equal(rows(env, 'SELECT * FROM contacts').length, 0);
+  const noOrigin = await post(env, '/api/contact', FORMS[3].valid, { origin: '' });
+  assert.equal(noOrigin.status, 303);
+});
+
+test('Content-Type: JSON or text bodies are refused with 415 and a plain message', async () => {
+  const env = newEnv();
+  for (const type of ['application/json', 'text/plain', '']) {
+    const r = await post(env, '/api/contact', FORMS[3].valid, { 'content-type': type });
+    assert.equal(r.status, 415);
+    assert.equal(await r.text(), 'Unsupported');
+  }
+  assert.equal(rows(env, 'SELECT * FROM contacts').length, 0);
+});
+
+test('Content-Length: missing is 411, over the cap goes back to the form with an error', async () => {
+  const env = newEnv();
+  assert.equal((await post(env, '/api/contact', FORMS[3].valid, { 'content-length': '' })).status, 411);
+  const big = await post(env, '/api/contact', { ...FORMS[3].valid, message: 'x'.repeat(31000) });
+  assert.equal(loc(big), '/visit/?contact=error#contact');
+  assert.equal(rows(env, 'SELECT * FROM contacts').length, 0);
+});
+
+test('Referer: only a page on that form own list is used (Home may send the want list); paths like // and ../ fall back', async () => {
+  const env = newEnv();
+  assert.equal(loc(await post(env, '/api/request', FORMS[2].valid, { referer: ORIGIN + '/?x=1' })), '/?sent=request#request');
+  for (const bad of ['//evil.example/', '/events/', '/shop/../x', '/a b/']) {
+    assert.equal(loc(await post(env, '/api/request', FORMS[2].valid, { referer: ORIGIN + bad })), '/shop/?sent=request#request', bad);
+  }
+});
+
+test('responses to a form post are never cached', async () => {
+  const env = newEnv();
+  assert.equal((await post(env, '/api/contact', FORMS[3].valid)).headers.get('cache-control'), 'no-store');
+  assert.equal((await worker.fetch(new Request(ORIGIN + '/api/contact'), env)).headers.get('cache-control'), 'no-store');
 });

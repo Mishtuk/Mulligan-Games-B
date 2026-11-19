@@ -55,7 +55,7 @@ test('public/_headers: strict CSP and standard headers', () => {
   assert.match(csp, /form-action 'self'/);
   assert.match(csp, /default-src 'self'/);
   assert.match(csp, /script-src 'self' https:\/\/challenges\.cloudflare\.com(;|$)/);
-  assert.doesNotMatch(csp, /script-src[^;]*'unsafe-inline'/);
+  assert.doesNotMatch(csp, /'unsafe-(inline|eval)'/); // scripts and styles both
   assert.doesNotMatch(csp, /\*(?!\.)/);
   for (const name of ['X-Content-Type-Options: nosniff', 'Referrer-Policy:', 'Permissions-Policy:']) assert.ok(h.includes(name), name);
 });

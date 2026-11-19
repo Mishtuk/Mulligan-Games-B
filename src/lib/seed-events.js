@@ -4,7 +4,7 @@ import { zoned } from './hours.js';
 import { gameId } from './events.js';
 
 export const TZ = 'America/New_York';
-export const WEEKS = 4;
+const WEEKS = 4;
 
 const plus = (date, n) => { const [y, m, d] = date.split('-').map(Number); return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10); };
 

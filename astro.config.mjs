@@ -4,5 +4,5 @@ export default defineConfig({
   output: 'static',
   outDir: './dist',
   trailingSlash: 'always',
-  build: { format: 'directory' },
+  build: { format: 'directory', inlineStylesheets: 'never' },
 });

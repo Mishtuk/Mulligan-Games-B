@@ -4,6 +4,7 @@ const TEST_SECRET = '1x0000000000000000000000000000000AA'; // Cloudflare's publi
 const CONDS = ['NM', 'LP', 'MP', 'HP', 'DMG'];
 const GAMES = ['magic', 'pokemon', 'one-piece', 'riftbound', 'hololive', 'tabletop', 'other'];
 const MAX_ITEMS = 40;
+const MAX_BODY = 30000;
 
 const UPCOMING = "starts_at > strftime('%Y-%m-%d %H:%M', 'now')";
 // One statement, so two people cannot take the last seat: seated while seats remain (no seats = no limit), else waitlist.
@@ -17,7 +18,7 @@ const FORMS = {
     event_id: { type: 'int', min: 1, max: 1e9 }, name: text(80), email: { type: 'email' }, players_note: text(200, 1) } },
   '/api/buylist': { form: 'buylist', home: '/sell/', save: saveBuylist, fields: {
     name: text(80), email: { type: 'email' }, payout: { type: 'pick', of: ['cash', 'credit'] }, note: text(500, 1) } },
-  '/api/request': { form: 'request', home: '/shop/', save: saveRequest, fields: {
+  '/api/request': { form: 'request', home: '/shop/', pages: ['/shop/', '/'], save: saveRequest, fields: {
     name: text(80), email: { type: 'email' }, game: { type: 'pick', of: GAMES }, cards: { type: 'lines', max: 50, line: 100 } } },
   '/api/contact': { form: 'contact', home: '/visit/', save: saveContact, fields: {
     name: text(80), email: { type: 'email' }, message: text(1000) } },
@@ -91,16 +92,19 @@ async function human(token, ip, env) {
   catch { return false; }
 }
 
-// Back to the page that sent the form, only when the Referer is same-origin; otherwise the form's home page.
-function pageOf(req, home) {
+// Back to the page that sent the form, but only a page from the form's own fixed list (never a raw Referer path).
+function pageOf(req, cfg) {
   try {
     const ref = new URL(req.headers.get('referer') ?? '');
-    if (ref.origin === new URL(req.url).origin && /^\/[\w\-/.]*$/.test(ref.pathname)) return ref.pathname;
+    if (ref.origin === new URL(req.url).origin && (cfg.pages ?? [cfg.home]).includes(ref.pathname)) return ref.pathname;
   } catch { /* no or bad Referer */ }
-  return home;
+  return cfg.home;
 }
 
-const json = (data, status = 200) => Response.json(data, { status, headers: { 'Cache-Control': 'no-store' } });
+const NO_STORE = { 'Cache-Control': 'no-store' };
+const json = (data, status = 200) => Response.json(data, { status, headers: NO_STORE });
+const plain = (text, status, headers = {}) => new Response(text, { status, headers: { ...NO_STORE, ...headers } });
+const FORM_TYPES = /^(application\/x-www-form-urlencoded|multipart\/form-data)\b/i;
 
 export default {
   async fetch(req, env) {
@@ -108,23 +112,34 @@ export default {
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(req);
 
     if (url.pathname === '/api/seats') {
-      if (req.method !== 'GET') return new Response('Method not allowed', { status: 405, headers: { Allow: 'GET' } });
-      const { results } = await env.DB.prepare(`SELECT id, seats - (SELECT count(*) FROM registrations WHERE event_id = e.id AND waitlist = 0) AS seats_left
-        FROM events e WHERE seats IS NOT NULL AND cancelled = 0 AND ${UPCOMING}`).all();
-      return json(Object.fromEntries(results.map((r) => [r.id, Math.max(0, r.seats_left)])));
+      if (req.method !== 'GET') return plain('Method not allowed', 405, { Allow: 'GET' });
+      try {
+        const { results } = await env.DB.prepare(`SELECT id, seats - (SELECT count(*) FROM registrations WHERE event_id = e.id AND waitlist = 0) AS seats_left
+          FROM events e WHERE seats IS NOT NULL AND cancelled = 0 AND ${UPCOMING}`).all();
+        return json(Object.fromEntries(results.map((r) => [r.id, Math.max(0, r.seats_left)])));
+      } catch (err) {
+        console.error('seats failed', err?.message);
+        return json({ error: 'Try again later' }, 500);
+      }
     }
 
     const cfg = FORMS[url.pathname];
     if (!cfg) return json({ error: 'Not found' }, 404);
-    if (req.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: { Allow: 'POST' } });
+    if (req.method !== 'POST') return plain('Method not allowed', 405, { Allow: 'POST' });
+    // A browser form post names its own origin; a different one is another site posting for the visitor.
+    const origin = req.headers.get('origin');
+    if (origin && origin !== url.origin) return plain('Forbidden', 403);
+    if (!FORM_TYPES.test(req.headers.get('content-type') ?? '')) return plain('Unsupported', 415);
 
-    const page = pageOf(req, cfg.home);
+    const page = pageOf(req, cfg);
     const done = (ok, sent = cfg.form) => new Response(null, { status: 303,
-      headers: { Location: `${page}?${ok ? `sent=${sent}` : `${cfg.form}=error`}#${cfg.form}` } });
+      headers: { ...NO_STORE, Location: `${page}?${ok ? `sent=${sent}` : `${cfg.form}=error`}#${cfg.form}` } });
 
     const ip = req.headers.get('CF-Connecting-IP') ?? '';
-    if (env.FORM_LIMIT && !(await env.FORM_LIMIT.limit({ key: ip + url.pathname })).success) return new Response('Slow down', { status: 429 });
-    if (Number(req.headers.get('content-length')) > 30000) return done(false);
+    if (env.FORM_LIMIT && !(await env.FORM_LIMIT.limit({ key: ip + url.pathname })).success) return plain('Slow down', 429);
+    const size = req.headers.get('content-length') ?? '';
+    if (!/^\d+$/.test(size)) return plain('Length required', 411); // a chunked body would skip the size cap
+    if (Number(size) > MAX_BODY) return done(false);
     const fd = await req.formData().catch(() => new FormData());
     const b = Object.fromEntries([...fd.entries()].map(([k, x]) => [k, typeof x === 'string' ? x : '']));
     if (b.website) return done(true); // honeypot: pretend success, store nothing
