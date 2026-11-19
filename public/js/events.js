@@ -72,7 +72,7 @@ async function seats() {
   try { const r = await fetch('/api/seats', { headers: { Accept: 'application/json' } }); if (r.ok) map = await r.json(); } catch { /* offline or no Worker */ }
   const say = () => {
     const left = map ? map[sel.value] : undefined;
-    status.textContent = left === undefined ? 'Seats: ask' : left === 0 ? 'Full. You will join the waitlist.' : `Seats left: ${left}`;
+    status.textContent = left === undefined ? 'Seats: ask at the counter' : left === 0 ? 'Full. You will join the waitlist.' : `Seats left: ${left}`;
   };
   sel.addEventListener('change', say);
   say();

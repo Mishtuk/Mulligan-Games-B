@@ -20,7 +20,7 @@ const days = order.map((d) => {
 const openPlay = events.weekly.filter(isOpenPlay);
 const openPlayDays = [...new Set(openPlay.map((e) => e.day))].sort((a, b) => ((a + 4) % 7) - ((b + 4) % 7));
 const openPlayGames = [...new Set(openPlay.map((e) => e.game))].join(' and ');
-const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
+const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
 ---
 <div class="binder">
   <ol class="binder-grid">
@@ -39,7 +39,7 @@ const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
       </Pocket>
     ))}
     <Pocket href="/events/#special" title="Monthly series">
-      <p>Monthly cEDH. Dates: ask at the counter.</p>
+      <p>Monthly cEDH. Dates: confirm with the store.</p>
       <Fragment slot="foot"><span class="mono">Monthly</span></Fragment>
     </Pocket>
     <Pocket href="/events/#sheet-h" title="Open play">

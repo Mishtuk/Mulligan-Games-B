@@ -19,9 +19,8 @@ const special = upcomingOneoffs(events.oneoffs, zoned(store.timezone).date);
 // Sign-up nights: four weeks from the build date, same rows and ids as the D1 seed (tools/seed-events.mjs).
 const nights = upcomingSignup(seedEvents(events.weekly, zoned(store.timezone).date), zoned(store.timezone).date);
 const likely = [...weekly, ...special].some(isLikely);
-const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
+const fee = (n: number | null) => (n === null ? 'Fee: ask at the counter' : `$${n}`);
 const a = store.address;
-const showCap = (n: number | null) => (n === null ? 'Ask' : String(n));
 // Chip ids from games.json; "other" is not a chip.
 const chips = games.map((g) => ({ id: g.id, name: g.name }));
 ---
@@ -58,17 +57,16 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                     <table class="pairings" role="table">
                       <caption class="vh">{x.name} game nights</caption>
                       <thead role="rowgroup">
-                        <tr role="row"><th scope="col" role="columnheader">Time</th><th scope="col" role="columnheader">Game</th><th scope="col" role="columnheader">Format</th><th scope="col" role="columnheader">Fee</th><th scope="col" role="columnheader">Cap</th><th scope="col" role="columnheader">Seat</th></tr>
+                        <tr role="row"><th scope="col" role="columnheader">Time</th><th scope="col" role="columnheader">Game</th><th scope="col" role="columnheader">Format</th><th scope="col" role="columnheader">Fee</th><th scope="col" role="columnheader">Seat</th></tr>
                       </thead>
                       <tbody role="rowgroup">
                         {x.rows.map((e) => (
                           <tr role="row" data-game={gameId(e.game)}>
                             <td role="cell" data-label="Time"><span class="mono">{fmtTime(e.time)}</span></td>
                             <td role="cell" data-label="Game">{e.game}</td>
-                            <th scope="row" role="rowheader" data-label="Format">{e.format}</th>
-                            <td role="cell" data-label="Fee"><span class="sticker">{fee(e.fee)}</span></td>
-                            <td role="cell" data-label="Cap">{showCap(e.cap)}</td>
-                            <td role="cell" data-label="Seat" class="row-act"><div class="act">
+                            <th scope="row" role="rowheader" data-label="Format">{e.format}{e.cap !== null && <span class="cap"> {e.cap} seats</span>}</th>
+                            <td role="cell" data-label="Fee"><span class="sticker">{e.fee === null ? <><span aria-hidden="true">–</span><span class="vh">{fee(null)}</span></> : fee(e.fee)}</span></td>
+                                                        <td role="cell" data-label="Seat" class="row-act"><div class="act">
                               {e.cap !== null && <a class="btn btn-secondary btn-sm" href="#signup">Hold a seat<span class="vh"> for {e.format}, {x.name}</span></a>}
                               <a class="cal" href={`/events/${e.id}.ics`}>Add to calendar<span class="vh">: {e.format}, {x.name}</span></a></div>
                             </td>
@@ -82,7 +80,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
               </section>
             ))}
           </div>
-          {likely && <p class="ev-note">Nights and fees come from public listings. Confirm with the store.</p>}
+          {likely && <p class="ev-note">Nights and fees come from public listings. Confirm with the store. A dash in Fee means ask at the counter.</p>}
         </section>
 
       </div>
@@ -133,7 +131,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
         <div class="form-msg error" id="signup-err" role="alert" tabindex="-1" hidden>
           <h3 id="signup-err-h"><strong>Error:</strong> that did not send.</h3>
           <ul id="signup-err-list"></ul>
-          <p id="signup-err-server">Nothing was sent. Please check the night, name and email and send it again. Already held a seat for that night? Then you are on the list.</p>
+          <p id="signup-err-server">Nothing was sent. Check the night, name and email and send it again. Already held that seat? You are on the list.</p>
         </div>
   
         <p class="signup-empty" id="signup-empty" role="status" hidden={nights.length > 0}>Sign-ups for the next nights open soon. Just turn up, or ask at the counter.</p>
@@ -144,7 +142,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
             <select id="su-event" name="event_id" required>
               {nights.map((e) => <option value={e.id} data-date={e.date}>{signupLabel(e)}</option>)}
             </select>
-            <p class="hint seats" id="su-seats" aria-live="polite">Seats: ask</p>
+            <p class="hint seats" id="su-seats" aria-live="polite">Seats: ask at the counter</p>
           </div>
           <div class="field">
             <label for="su-name">Your first name <span class="hint">(required)</span></label>
@@ -166,6 +164,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
         </form>
         </div>
       </section>
+      <p class="ev-ask">Want a night we do not list? <a href="/visit/#contact">Ask us</a></p>
         </div>
     </div>
   </div>

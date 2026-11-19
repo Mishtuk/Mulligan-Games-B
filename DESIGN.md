@@ -156,7 +156,7 @@ Friendly, short, local, a little dry. Words: binder, sleeve, pairings, playmat, 
 - **want list** (Home and Shop form, privacy). Never "card request" or "wish list". Button: "Send my want list".
 - **buylist** (the list you send on /sell/); the page and nav are "Sell to us". Never "sell list". Button: "Send my buylist"; step: "Build your buylist".
 - **store credit** (never bare "credit"), with "cash". Rates: "Rates are set at the counter."
-- **at the counter** for asking in the shop ("Ask at the counter"); "Ask us" for the contact form. Never "ask in store".
+- **Unknowns (loop 28), two phrases only.** "**Confirm with the store**" for a fact we might have wrong or do not have (nights, dates, hours, age rules, listed fees). "**Ask at the counter**" for what is settled in person (rates, prices, stock, bulk, preorders, open seats, grading, how a game is taught). A dash in a Fee or Cap cell means ask at the counter. "Ask us" stays for the contact form. Never "ask the store", "ask the counter", "ask in store", or a bare "Fee: ask" / "Seats: ask". Enforced by `test/voice.test.mjs` over dist/.
 - **hold a seat** for every event sign-up button and link ("Hold my seat" on the form); the clipboard stays "Sign-up sheet". Table column: "Seat".
 - **game night** (page, h1), **pairings sheet** (weekly table), **special nights** (one-offs), **binder week** (Home), **tonight**.
 - **singles**, **sealed**, **preorders**, **condition guide** (NM to DMG), **sleeved**, **bulk**, **Commander**, **draft FNM**, **cEDH** (only where events.json has it).

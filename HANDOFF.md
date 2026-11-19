@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 28 of 50 (Copy). Loops 1-27 done. Priorities: docs/review/loop-20/review.md.
+- RESUME HERE: loop 29 of 50 (Code). Loops 1-28 done. Priorities: docs/review/loop-20/review.md.
 - [boss] refinement loop 21 (Home): see docs/review/loop-20/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- 2026-11-19 loop 28 (Copy): unknowns rule in DESIGN.md glossary (confirm with the store = facts we may have wrong; ask at the counter = settled in person), applied site-wide, test/voice.test.mjs over dist/; Shop/Visit leads in shop words; Events rows pair Hold a seat + Add to calendar (Cap column folded into Format), 1280 end blank 470 -> 352px. Tests 127, a11y and check-site pass, Sell gzip 18,582.
 - Loop 27 (designer): 1280 dead space removed on Home, Shop, Visit (notes in docs/review/loop-27/notes.md); case light bar cut; Events end gap (470px) left.
 - Loop 26 (A11y, 25 -> 26 est.): no body text under .8rem on any path (check now in `npm run a11y`); JS-off panels at 200% land at 32px not 160px (`html:not(.js)` scroll-padding); Visit 1280 hours | contact, House rules full width in 2 columns; cut duplicate reply line in contact success panel. Shots: docs/review/loop-26/.
 - Loop 25 (Visit + chrome, 27 -> 28 est.): Address is a street-number placard (445 in Titan One, road and town beside it) with a primary Open in Maps button; contact box shorter (lede, 3-row textarea); Motion button hidden under html:not(.js); Sell fold summary "Show condition guide (NM–DMG)" one line. Cut the "Parking: ask us" line. Shots: docs/review/loop-25.

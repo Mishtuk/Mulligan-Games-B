@@ -58,7 +58,7 @@ export function eventIcs(e, { now = Date.now(), tz = TZID, place = '', host = 'm
   const weekly = e.day !== undefined && !e.date;
   const date = weekly ? nextWeekday(e.day, tz, now) : e.date;
   const title = weekly ? e.format : e.title;
-  const note = [e.fee === null || e.fee === undefined ? 'Fee: ask the store.' : `Fee: $${e.fee}.`,
+  const note = [e.fee === null || e.fee === undefined ? 'Fee: ask at the counter.' : `Fee: $${e.fee}.`,
     isLikely(e) ? 'Listed publicly, not yet confirmed. Confirm with the store.' : ''].filter(Boolean).join(' ');
   const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', `PRODID:-//${icsText(host)}//game nights//EN`, 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', ...VTIMEZONE,
     'BEGIN:VEVENT', `UID:${icsText(e.id)}@${host}`, `DTSTAMP:${stamp(now)}`, `DTSTART;TZID=${TZID}:${local(date, e.time)}`,

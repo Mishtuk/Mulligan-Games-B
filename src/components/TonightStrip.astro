@@ -10,7 +10,7 @@ const groups = order
   .filter((g) => g.rows.length);
 const once = events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certainty));
 const none = !groups.length && !once.length;
-const fee = (n: number | null) => (n === null ? 'Fee: ask' : `$${n}`);
+const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
 const label = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
 const bare = ({ certainty, source, ...e }: Record<string, unknown>) => e;
 const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.oneoffs.filter((e) => e.date && !/^Unverified/i.test(e.certainty)).map(bare) }).replace(/</g, '\\u003c');
@@ -19,7 +19,7 @@ const data = JSON.stringify({ weekly: events.weekly.map(bare), oneoffs: events.o
   <span class="tab">Tonight</span>
   <h2 id="tonight-h">Tonight <span class="tonight-day mono" data-day-label hidden></span></h2>
   {none ? (
-    <p>No nights booked yet. Ask at the counter.</p>
+    <p>No nights booked yet. Confirm with the store.</p>
   ) : (
     <>
       <p class="tonight-empty" data-empty hidden>
