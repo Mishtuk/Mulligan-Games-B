@@ -53,7 +53,6 @@
 
 /* Singles display case: glass shelf, light bar on top, two rows of sleeved cards and toploaders with blank ASK stickers (drawn, static) */
 .case { position: relative; margin-top: var(--s-3); padding-top: 1.6rem; font-size: .85rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.case::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .55; background: repeating-linear-gradient(115deg, transparent 0 2.4rem, var(--card) 2.4rem 2.9rem, transparent 2.9rem 5.6rem); } /* glass glare */
 .case-light { position: absolute; left: var(--s-2); right: var(--s-2); top: .45rem; height: .55rem; background: var(--card); border: 2px solid var(--line); border-radius: 4px; }
 /* one visible row of slots: extra slots drop into zero-height rows and are clipped */
 .case-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(4.4em, 1fr)); grid-template-rows: auto; grid-auto-rows: 0; overflow: hidden; justify-items: center; align-items: end; padding: var(--s-2) var(--s-2) .6rem; border-bottom: .4rem solid var(--accent2); }
@@ -64,11 +63,11 @@
 .slot { display: grid; justify-items: center; align-content: end; gap: .45em; height: 100%; padding-inline: .3em; overflow: hidden; } /* extra slots land in 0-height rows: hidden, not stacked on the visible ones */
 .slot:nth-child(3n+2) .cback { rotate: -1.5deg; }
 .slot.is-top { padding-top: 5px; }
-.slot.is-top .cback { outline: 2px solid var(--line); outline-offset: 3px; box-shadow: 4px 4px 0 var(--line); }
+.slot.is-top .cback { outline: 2px solid var(--line); outline-offset: 3px; box-shadow: var(--shadow-sm); }
 .price { padding: 0 .45em; background: var(--card); border: 2px solid var(--line); border-radius: 3px; font: 700 .7rem/1.4 var(--font-mono); letter-spacing: .04em; }
 .slot.is-top .price { margin-top: 5px; }
-@media (min-width: 600px) { .case { font-size: 1.1rem; } .case-shelf { padding-inline: var(--s-4); } .case-light { left: var(--s-4); right: var(--s-4); } }
-@media (min-width: 1000px) { .case { font-size: 1.3rem; } }
+@media (min-width: 600px) { .case { font-size: 1rem; } .case-shelf { padding-inline: var(--s-4); } .case-light { left: var(--s-4); right: var(--s-4); } }
+@media (min-width: 1000px) { .case { font-size: 1.05rem; } }
 
 /* want list + condition guide side by side on wide screens */
 .shop-duo { display: grid; gap: var(--section); align-items: start; }

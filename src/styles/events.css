@@ -74,7 +74,7 @@
 
 /* sign-up: a clipboard. Board, clip, ruled paper; all tokens, static */
 .signup { position: relative; max-width: 40rem; margin: calc(var(--section) + .9rem) auto 0; padding: 2rem var(--s-3) var(--s-3); background: var(--accent); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); scroll-margin-top: 1.5rem; }
-.clip { position: absolute; top: -.9rem; left: 50%; translate: -50% 0; width: 8rem; height: 2.4rem; background: var(--soft-line); border: var(--border-w) solid var(--line); border-radius: 6px; }
+.clip { position: absolute; top: -.9rem; left: 50%; translate: -50% 0; width: 8rem; height: 2.4rem; background: var(--soft-line); border: var(--border-w) solid var(--line); border-radius: var(--radius); }
 .clip::before { content: ""; position: absolute; inset: .35rem 1.1rem auto; height: .45rem; background: var(--line); border-radius: 3px; }
 .clip::after { content: ""; position: absolute; left: 50%; bottom: .3rem; translate: -50% 0; width: .7rem; height: .7rem; background: var(--card); border: 2px solid var(--line); border-radius: 50%; }
 .paper { padding: var(--s-3) var(--s-3) var(--s-2); background: var(--card) repeating-linear-gradient(to bottom, transparent 0 1.7rem, var(--bg2) 1.7rem 1.8rem); border: 2px solid var(--line); border-radius: 3px; }

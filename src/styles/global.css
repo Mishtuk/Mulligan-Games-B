@@ -98,6 +98,7 @@ a.chip { min-height: var(--tap); }
 .box-sky { background: var(--bg2); }
 .tab { position: absolute; left: calc(var(--border-w) * -1); top: 0; translate: 0 -100%; padding: .35em .9em; background: var(--line); color: var(--bg); }
 /* full-bleed bands and airy sections (rhythm: dense box, band, airy, never 3 alike) */
+body { container: page / inline-size; } /* header switches nav by page width in rem, so it follows text zoom */
 main { container-type: inline-size; } /* 100cqw = the page width without the scrollbar, so bands can bleed with no clipping */
 .band { position: relative; isolation: isolate; padding-block: var(--s-5); margin-top: var(--section); }
 .band::before { content: ""; position: absolute; inset: 0 auto; left: 50%; width: 100cqw; translate: -50% 0; z-index: -1; background: var(--bg2); border-block: var(--border-w) solid var(--line); }
@@ -149,15 +150,15 @@ main { container-type: inline-size; } /* 100cqw = the page width without the scr
 /* Drawn generic product shapes (rule 12: no publisher art). Default: sealed booster box, lid over body. .is-pack: one
    booster pack with crimped ends, tilted a little (static, no motion). */
 .box-sil { display: grid; place-items: center; aspect-ratio: 3 / 2; background: var(--bg2); border: 2px solid var(--line); border-radius: 4px; }
-.box-sil::before { content: ""; width: 68%; height: 52%; border: 3px solid var(--line); border-radius: 3px; box-shadow: 4px 4px 0 var(--accent2);
+.box-sil::before { content: ""; width: 68%; height: 52%; border: 3px solid var(--line); border-radius: 3px; box-shadow: var(--shadow-sm);
   background: linear-gradient(var(--sky) 0 32%, var(--line) 32% calc(32% + 3px), var(--accent) 0); }
-.box-sil.is-pack::before { width: 30%; height: 80%; rotate: -8deg; border-radius: 2px; box-shadow: 3px 3px 0 var(--line);
+.box-sil.is-pack::before { width: 30%; height: 80%; rotate: -8deg; border-radius: 2px; box-shadow: var(--shadow-sm);
   background: repeating-linear-gradient(90deg, var(--line) 0 2px, transparent 2px 5px) top / 100% 11% no-repeat,
     repeating-linear-gradient(90deg, var(--line) 0 2px, transparent 2px 5px) bottom / 100% 11% no-repeat,
     linear-gradient(var(--sky), var(--sky)) center / 100% 24% no-repeat, var(--accent2); }
 
 /* Generic sleeved card back (rule 12: no publisher art). Sized by font-size: 3.2em x 4.5em. Home hero hand and Shop case. */
-.cback { position: relative; display: block; flex: none; width: 3.2em; height: 4.5em; background: var(--card); border: 3px solid var(--line); border-radius: 4px; box-shadow: 2px 2px 0 var(--line); }
+.cback { position: relative; display: block; flex: none; width: 3.2em; height: 4.5em; background: var(--card); border: 3px solid var(--line); border-radius: 4px; box-shadow: var(--shadow-sm); }
 .cback::before { content: ""; position: absolute; inset: .3em; border: 2px solid var(--line); border-radius: 2px; background: repeating-linear-gradient(45deg, var(--sky) 0 .35em, var(--card) .35em .7em); }
 .cback::after { content: ""; position: absolute; left: 50%; top: 50%; width: 1em; height: 1em; translate: -50% -50%; rotate: 45deg; background: var(--accent); border: 2px solid var(--line); }
 .cback.v1::before { background: repeating-linear-gradient(45deg, var(--accent2) 0 .35em, var(--card) .35em .7em); }
@@ -197,7 +198,7 @@ textarea { min-height: 6.5rem; resize: vertical; }
 .brand { display: block; flex: none; width: 160px; margin-right: auto; line-height: 0; aspect-ratio: 340 / 98; overflow: hidden; } /* crop the file's bottom 18%: orange specks sit below the letters (rows 100+ of 120) */
 .brand img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; } /* the logo file has a white ground: multiply lets the page colour show through */
 .nav-desk { display: none; }
-.nav-desk a, .menu-sheet a { display: flex; align-items: center; min-height: var(--tap); color: var(--text); font-weight: 700; text-decoration: none; }
+.nav-desk a, .menu-sheet a { display: flex; white-space: nowrap; align-items: center; min-height: var(--tap); color: var(--text); font-weight: 700; text-decoration: none; }
 .nav-desk a { padding: 0 var(--s-2); border-bottom: 3px solid transparent; }
 .nav-desk a:hover { border-bottom-color: var(--soft-line); }
 .nav-desk a[aria-current], .menu-sheet a[aria-current] { border-bottom-color: var(--accent2); }
@@ -215,7 +216,7 @@ textarea { min-height: 6.5rem; resize: vertical; }
 html:not(.js) #menu-btn { display: none; }
 html:not(.js) .menu-sheet { display: block; position: static; box-shadow: none; }
 @media (max-width: 359px) { .site-header-in { flex-wrap: wrap; } }
-@media (min-width: 820px) {
+@container page (min-width: 52rem) {
   .brand img { width: 170px; }
   .nav-desk { display: flex; margin-right: var(--s-2); }
   .header-chip { display: inline-flex; }
