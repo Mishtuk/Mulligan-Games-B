@@ -21,7 +21,6 @@
   --accent2: #5B2A86;     /* secondary button fill, tab */
   --on-accent2: #FFFFFF;
   --link: #5B2A86;
-  --alt: #5B2A86;
   --sky: #7EC8F0;         /* FILL only */
   --error: #B3261E;
   --ok: #1E6B3A;
@@ -29,7 +28,6 @@
   --font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
   --display-weight: 400;  /* Titan One has one weight */
-  --tracking: 0; --display-case: none;
   --border-w: 3px; --radius: 5px;
   --shadow: 6px 6px 0 var(--accent2); --shadow-sm: 3px 3px 0 var(--accent2);
   --step--1: .875rem;
@@ -121,10 +119,8 @@ main { container-type: inline-size; } /* 100cqw = the page width without the scr
 .sign-note { margin-top: var(--s-3); font-size: var(--step--1); font-weight: 400; }
 .stripe { height: 1rem; background: repeating-linear-gradient(-45deg, var(--line) 0 14px, var(--accent) 14px 28px); border-block: var(--border-w) solid var(--line); }
 
-/* ---- placeholder photo ---- */
-.ph { margin: 0; aspect-ratio: var(--ratio, 4 / 3); display: grid; place-items: center; padding: var(--s-3); text-align: center; color: var(--text);
-  background: repeating-linear-gradient(135deg, var(--bg2) 0 14px, var(--bg) 14px 15px); border: 2px dashed var(--soft-line); border-radius: var(--radius); }
-.ph span { max-width: 28ch; padding: .25rem .6rem; background: var(--bg); border-radius: 4px; font: 700 var(--step--1)/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
+.page-lede { margin-top: var(--s-2); font-size: var(--step-1); line-height: 1.35; }
+.request form, .request .form-msg { margin-top: var(--s-3); max-width: 36rem; }
 
 /* ---- pocket (5:7) ---- */
 .pocket { position: relative; display: flex; flex-direction: column; aspect-ratio: 5 / 7; min-width: 0; background: var(--card); color: var(--text); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }

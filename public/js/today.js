@@ -1,8 +1,8 @@
 // "Today" in the store's time zone: Tonight strip, binder pocket, hours list, Visit block.
-import { toWeek, zoned, eventsToday, nextEvent, hoursText, fmtTime, DAYS } from '/js/hours.js';
+import { toWeek, zoned, eventsToday, nextEvent, hoursText, DAYS } from '/js/hours.js';
+import { readJson } from '/js/form-state.js';
 
-const read = (id) => { try { return JSON.parse(document.getElementById(id)?.textContent ?? 'null'); } catch { return null; } };
-const hoursData = read('hours-data'), eventsData = read('events-data');
+const hoursData = readJson('hours-data'), eventsData = readJson('events-data');
 
 function run() {
   if (!hoursData) return;

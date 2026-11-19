@@ -27,8 +27,6 @@ html.js .tonight-nojs { display: none; }
 .tonight-empty { margin-top: var(--s-1); }
 
 /* Request form */
-.request form { margin-top: var(--s-3); max-width: 36rem; }
-.request .form-msg { margin-top: var(--s-3); max-width: 36rem; }
 .request p + p { margin-top: .25rem; }
 .request .hint { font-weight: 400; }
 

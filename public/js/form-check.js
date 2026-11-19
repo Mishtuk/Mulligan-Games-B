@@ -2,8 +2,8 @@
 // Empty required fields or a bad email: no send; the form's error panel becomes a summary (links to each field),
 // each field gets its own message tied with aria-describedby and aria-invalid, and the panel takes focus.
 // Runs on document capture so it checks before the "Sending..." handlers on the form.
-export const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim());
-export const plural = (n) => `${n} ${n === 1 ? 'thing' : 'things'}`;
+import { emailOk, plural } from './form-state.js';
+export { emailOk, plural };
 
 if (typeof document !== 'undefined') {
   const labelOf = (el) => {

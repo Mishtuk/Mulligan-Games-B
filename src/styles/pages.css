@@ -2,7 +2,6 @@
 .nf { display: grid; gap: var(--s-5); padding-top: var(--s-4); align-items: start; }
 .nf-box { margin-top: 2.25rem; }
 .nf-box h1 { font-size: var(--step-3); }
-.page-lede { margin-top: var(--s-2); font-size: var(--step-1); line-height: 1.35; }
 .nf-cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-4); }
 /* misprinted card: generic sleeved card whose printed frame is off-centre and crooked (drawn, static) */
 .misprint { width: 11rem; aspect-ratio: 5 / 7; padding: .45rem; background: var(--bg2); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); rotate: 2deg; justify-self: center; }

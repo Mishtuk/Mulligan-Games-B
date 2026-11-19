@@ -1,21 +1,17 @@
 // Buylist slip: add / remove rows, live "N lines" count, success and error panels from ?sent=buylist / ?buylist=error.
 // The slip is server-rendered with 3 rows (JS trims it to 1) and works without this file. The Worker reads item_name[], item_set[], item_cond[], item_qty[].
+import { showResult, guardSend } from './form-state.js';
+
 export const MAX_ROWS = 40;
 
 // A line counts when the card name has text. Blank rows are skipped by the Worker too.
 export const countLines = (names) => names.filter((n) => String(n ?? '').trim() !== '').length;
-export const linesText = (n) => String(n);
 
 // Remove only shows when there is more than one row.
 export const showRemove = (rowCount) => rowCount > 1;
 
 // Which row gets focus after removing row `i` from a list that now has `remaining` rows: the one that took its place, else the last. -1 = none left.
 export const focusAfterRemove = (i, remaining) => (remaining === 0 ? -1 : Math.min(i, remaining - 1));
-
-export const stateFromQuery = (search) => {
-  const q = new URLSearchParams(search);
-  return q.get('sent') === 'buylist' ? 'sent' : q.get('buylist') === 'error' ? 'error' : null;
-};
 
 if (typeof document !== 'undefined') {
   const form = document.getElementById('buylist-form');
@@ -35,7 +31,7 @@ if (typeof document !== 'undefined') {
       add.disabled = full;
       add.textContent = full ? `Limit of ${MAX_ROWS} lines` : 'Add a row';
     };
-    const announce = () => { count.textContent = linesText(countLines(names())); };
+    const announce = () => { count.textContent = countLines(names()); };
 
     // JS starts the slip at one row; the extra server rows are only for no-JS use.
     rows().slice(1).forEach((r) => { if (!r.querySelector('[name="item_name[]"]').value.trim()) r.remove(); });
@@ -74,17 +70,7 @@ if (typeof document !== 'undefined') {
     });
     form.addEventListener('change', announce);
 
-    // Result panels
-    const state = stateFromQuery(location.search);
-    const ok = document.getElementById('buylist-ok'), err = document.getElementById('buylist-err');
-    if (state === 'sent' && ok) { form.hidden = true; ok.hidden = false; requestAnimationFrame(() => ok.focus()); }
-    if (state === 'error' && err) { err.hidden = false; requestAnimationFrame(() => err.focus()); }
-    if (state) { try { history.replaceState(null, '', location.pathname + '#buylist'); } catch { /* ignore */ } }
-
-    form.addEventListener('submit', (e) => {
-      const b = form.querySelector('button[type=submit]');
-      if (b?.getAttribute('aria-disabled')) { e.preventDefault(); return; }
-      if (b) { b.textContent = 'Sending...'; b.setAttribute('aria-disabled', 'true'); }
-    });
+    showResult(form, 'buylist');
+    guardSend(form);
   }
 }

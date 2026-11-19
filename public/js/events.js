@@ -1,11 +1,11 @@
 // Events page: game filter, today's marks, dates for each weekday, seats left, sign-up messages and checks.
 // Everything works without this file (all rows show, seats "ask"); this only improves it.
 import { zoned } from '/js/hours.js';
+import { emailOk, plural, showResult, startSending, readJson } from '/js/form-state.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-let tz = 'America/New_York';
-try { tz = JSON.parse(document.getElementById('hours-data').textContent).tz; } catch { /* keep default */ }
+const tz = readJson('hours-data')?.tz ?? 'America/New_York';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -93,16 +93,7 @@ function pruneNights() {
 function formState() {
   const form = $('#signup-form');
   if (!form) return;
-  const q = new URLSearchParams(location.search);
-  const sent = q.get('sent'), failed = q.get('signup') === 'error';
-  const ok = $('#signup-ok'), wait = $('#signup-wait'), err = $('#signup-err');
-  const panel = sent === 'signup' ? ok : sent === 'waitlist' ? wait : failed ? err : null;
-  if (panel) {
-    if (panel !== err) form.hidden = true;
-    panel.hidden = false;
-    requestAnimationFrame(() => panel.focus()); // after first layout, or the browser drops the focus
-    try { history.replaceState(null, '', location.pathname + '#signup'); } catch { /* ignore */ }
-  }
+  showResult(form, 'signup', { signup: 'ok', waitlist: 'wait' });
 
   const list = $('#signup-err-list'), server = $('#signup-err-server'), head = $('#signup-err-h');
   const rules = [
@@ -113,8 +104,6 @@ function formState() {
   const clear = () => { for (const f of $$('.field-err', form)) f.remove(); for (const el of $$('[aria-invalid]', form)) { el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); } };
 
   form.addEventListener('submit', (e) => {
-    const btn = $('button[type=submit]', form);
-    if (btn.classList.contains('is-loading')) { e.preventDefault(); return; }
     clear();
     const bad = rules.filter(([id, , ok2]) => !ok2(document.getElementById(id)));
     if (bad.length) {
@@ -129,11 +118,11 @@ function formState() {
       }
       head.textContent = '';
       const s = document.createElement('strong'); s.textContent = 'Error:';
-      head.append(s, ` ${bad.length} ${bad.length === 1 ? 'thing' : 'things'} to check.`);
+      head.append(s, ` ${plural(bad.length)} to check.`);
       server.hidden = true; err.hidden = false; err.focus();
       return;
     }
-    btn.textContent = 'Sending...'; btn.setAttribute('aria-disabled', 'true'); btn.classList.add('is-loading');
+    if (!startSending(form)) e.preventDefault();
   });
   $('#signup-err-list').addEventListener('click', (e) => {
     const a = e.target.closest('a');

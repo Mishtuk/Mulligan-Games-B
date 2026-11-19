@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 19 of 50 (lens 9 Code, security, performance, SEO). Loops 1-18 done; loops 15-18 not yet committed by the boss.
+- RESUME HERE: loop 20 of 50 (lens 10 boss review). Loops 1-19 done; loops 15-19 not yet committed by the boss.
 - [boss] refinement loop 11 (Home): see docs/review/loop-10/review.md priority list
 
 ## Waiting on the owner
@@ -63,6 +63,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 19 (code): prebuild seeds sign-up events from the build date; nested-interactive test over dist/; shared public/js/form-state.js; budget re-measured (gzip headroom 0.6%, trim before raising); dead CSS/tokens/functions cut. 125 tests, check-site 0, a11y passed.
 - Loop 18 (copy and voice): glossary in DESIGN.md s7; one name per thing across 7 paths; "ask at the counter", "Hold a seat", store credit; form success/error copy unified; Sell guide summary has a Show/Hide + affordance; Home sealed pockets link to contact. 123 tests, check-site 0, a11y passed.
 - Loop 17 (identity + craft): design review docs/review/loop-17/. Header switches to Menu by `@container page (min-width: 52rem)` (body is the container); hero hand bigger; object family unified (sleeve stripes, --shadow-sm, radii); Home Sealed + Sell side by side at 1100px+; cut Shop case glare. 123 tests, check-site and a11y pass.
 - Loop 16 (a11y + motion): `npm run a11y` (tools/a11y-check.mjs, tools/cdp.mjs) added; fixed 200% overflow of the condition guide slab, stacked duplicate slots in the Shop case, Events pairings stack now a rem container query. Screenshots in docs/review/loop-16/.
@@ -87,4 +88,5 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 
 ## How to run
 - Install: `npm install` · Dev: `npm run dev` · Build: `npm run build` · Test: `npm test`
+- `npm run build` first runs `tools/seed-events.mjs` (npm `prebuild`): it rewrites `src/data/signup-events.json` and the seed block in `schema.sql` from `events.json`, 4 weeks from the build date in the store zone (`node tools/seed-events.mjs YYYY-MM-DD` for a fixed date; same date = same output). That does NOT touch the real D1: the owner still has to run `wrangler d1 execute <db> --file=schema.sql` (or just the seed block) after a build to put the new nights in the live database. Rebuild and re-seed at least every 3 weeks.
 - Browser check: `npm run build && npm run serve` then `node tools/check-site.mjs http://localhost:4321 / /events/ ...`

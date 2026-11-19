@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { countLines, linesText, showRemove, focusAfterRemove, stateFromQuery, MAX_ROWS } from '../public/js/sell-rows.js';
+import { countLines, showRemove, focusAfterRemove, MAX_ROWS } from '../public/js/sell-rows.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
@@ -11,8 +11,6 @@ const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
 test('buylist rows: line count ignores blank names', () => {
   assert.equal(countLines(['', '  ', 'Lightning Bolt', undefined, 'Goblin']), 2);
   assert.equal(countLines([]), 0);
-  assert.equal(linesText(0), '0');
-  assert.equal(linesText(3), '3');
   assert.equal(showRemove(1), false, 'no Remove on a single row');
   assert.equal(showRemove(2), true);
   assert.equal(MAX_ROWS, 40); // the Worker's MAX_ITEMS
@@ -22,13 +20,6 @@ test('buylist rows: focus after removing a row', () => {
   assert.equal(focusAfterRemove(0, 3), 0);
   assert.equal(focusAfterRemove(2, 2), 1); // removed the last row: focus the new last row
   assert.equal(focusAfterRemove(0, 0), -1);
-});
-
-test('buylist rows: result state from the query string', () => {
-  assert.equal(stateFromQuery('?sent=buylist'), 'sent');
-  assert.equal(stateFromQuery('?buylist=error'), 'error');
-  assert.equal(stateFromQuery('?sent=request'), null);
-  assert.equal(stateFromQuery(''), null);
 });
 
 // ---- build output (needs `npm run build`) ----

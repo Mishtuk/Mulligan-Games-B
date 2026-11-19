@@ -113,6 +113,6 @@ const fee = (n: number | null) => (n === null ? 'Ask at the counter' : `$${n}`);
       <p class="sell-cta"><a class="btn" href="/sell/">Build my buylist</a></p>
     </section>
   </div>
-  <script is:inline slot="scripts" src="/js/request-form.js" defer></script>
+  <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/form-check.js"></script>
 </Base>
