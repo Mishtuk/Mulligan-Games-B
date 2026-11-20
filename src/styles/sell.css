@@ -64,3 +64,5 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
 .stub p { font-size: var(--step--1); margin-top: .15rem; }
 
 .cond-wrap { margin-top: var(--s-4); }
+/* under the two-column width the slip fills the page like the boxes above it (loop 64: ragged right edge at 768) */
+@container sell (max-width: 69.99rem) { .slip-wrap { max-width: none; } }

@@ -22,10 +22,13 @@ Kit `C:\Users\alexm\projects\Base-Website-Design-Template` is READ-ONLY referenc
 5. Never cut the store's own words or owner-requested content to fit the page budget (D8): trim code instead.
 
 ## Check (all required before you report)
-- `npm run build` clean, `npm test` green (add or update a test for any logic you touch), and `npm run a11y` passes (it also submits every form).
+- `npm run build` clean, `npm test` green (add or update a test for any logic you touch).
 - `npm run build && PORT=43NN node tools/serve.mjs` (NN = loop number, so ports never clash), then
-  `MSYS_NO_PATHCONV=1 node tools/check-site.mjs http://localhost:43NN / /events/ /shop/ /sell/ /visit/ /privacy/ /nope` exits 0.
-- `npm run gaps -- / /events/ /shop/ /sell/ /visit/ /privacy/ /nope` exits 0 (no blank run over 120px inside main at 390/768/1024/1280/1600; needs a fresh `npm run build`; stop your own server first, it starts its own on 4398). Part of the boss gate since loop 55.
+  `MSYS_NO_PATHCONV=1 node tools/check-site.mjs http://localhost:43NN <only the paths you changed>` exits 0, and
+  `npm run gaps -- <the paths you changed> --base=http://localhost:43NN` exits 0.
+- Since loop 64 the boss runs the full gate before each commit (check-site on all 7 paths, `npm run a11y`, gaps on all
+  7 paths). Run `npm run a11y` yourself only if you touched forms, menus, motion or the release/Instagram sections,
+  with your server stopped first. Never leave a server, check or Chrome process running when you report.
 - Screenshots of the pages you changed at 390x844 and 1280x800 (scripts in `.work/`), into `docs/review/loop-NN/`.
   LOOK at them before and after. Stop the server (kill only your own PID).
 - Append one row to `docs/refinement-log.md`: `| NN | lens | before -> after /30 | what changed (1-2 lines) | handed on (1 line) |`.
