@@ -43,19 +43,20 @@ function filter() {
   const g = known ? game : 'all';
   for (const c of $$('[data-filter]')) { if (c.dataset.filter === g) c.setAttribute('aria-current', 'page'); else c.removeAttribute('aria-current'); }
   const label = $(`[data-filter="${g}"]`)?.textContent ?? '';
+  // A game with no weekly night shows the whole sheet instead (what is on), with a line above saying so.
+  const rows = $$('tbody tr[data-game]');
+  const empty = g !== 'all' && !rows.some((r) => r.dataset.game === g && !r.hasAttribute('data-past'));
+  const eff = empty ? 'all' : g;
   for (const r of $$('tbody tr[data-game], .ticket[data-game]')) {
-    const out = g !== 'all' && r.dataset.game !== g;
-    r.hidden = out || r.hasAttribute('data-past');
+    r.hidden = (eff !== 'all' && r.dataset.game !== eff) || r.hasAttribute('data-past');
   }
-  // Filtered: a day with no shown rows is hidden (closed days too); no rows at all hides the whole sheet and its header row.
+  // Filtered: a day with no shown rows is hidden (closed days too).
   let weekly = 0;
   for (const sec of $$('.day')) {
     const shown = $$('tbody tr', sec).filter((r) => !r.hidden).length;
     weekly += shown;
-    sec.hidden = g !== 'all' && shown === 0;
+    sec.hidden = eff !== 'all' && shown === 0;
   }
-  const sheet = $('.sheet');
-  if (sheet) sheet.hidden = g !== 'all' && weekly === 0;
   const tickets = $$('.ticket[data-game]');
   const specialShown = tickets.filter((t) => !t.hidden).length;
   const sn = $('#special-none');
@@ -63,11 +64,22 @@ function filter() {
     sn.hidden = specialShown > 0;
     sn.textContent = g === 'all' ? 'No special nights on the calendar yet.' : `No ${label} special nights booked.`;
   }
+  const on = [...new Set(rows.map((r) => r.dataset.game))].map((id) => $(`[data-filter="${id}"]`)?.textContent).filter(Boolean).join(', ');
   const none = $('#ev-none');
-  if (none) { none.hidden = weekly > 0 || g === 'all'; none.textContent = weekly > 0 || g === 'all' ? '' : `No ${label} nights listed.`; }
+  if (none) {
+    none.hidden = !empty;
+    none.textContent = '';
+    if (empty) {
+      none.append(`No ${label} nights listed. On instead: ${on}. `);
+      const ask = document.createElement('a'), vh = document.createElement('span');
+      ask.href = '/visit/#contact'; ask.textContent = 'Ask us';
+      vh.className = 'vh'; vh.textContent = ` about ${label}`;
+      ask.append(vh); none.append(ask);
+    }
+  }
   // Spoken result: a live region that is always in the page; filled a beat after load so it is announced.
   const say = $('#ev-status');
-  if (say) { const msg = g === 'all' ? '' : weekly > 0 ? `${weekly} ${label} ${weekly === 1 ? 'night' : 'nights'} this week` : `No ${label} nights listed`; setTimeout(() => { say.textContent = msg; }, 250); }
+  if (say) { const msg = g === 'all' ? '' : empty ? `No ${label} nights listed. Showing what is on instead: ${on}. Ask us about ${label}.` : `${weekly} ${label} ${weekly === 1 ? 'night' : 'nights'} this week`; setTimeout(() => { say.textContent = msg; }, 250); }
 }
 
 async function seats() {

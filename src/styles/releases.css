@@ -53,3 +53,5 @@
 .rel-ask, .home-ig > p { margin-top: var(--s-3); }
 @media (min-width: 720px) { .ig-grid { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); } .ig-grid:has(iframe) { align-items: start; } .ig-card { align-content: stretch; } .ig-card .rel-body { display: flex; flex-direction: column; } .ig-card .sticker { align-self: start; } .ig-card .rel-body > div { margin-top: auto; } }
 @media (min-width: 960px) { .rel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* wide Home: the Follow button joins the heading row (right), so no half-empty row under the cards */
+@media (min-width: 960px) { .home-ig { display: grid; grid-template-columns: 1fr auto; align-items: end; column-gap: var(--s-3); } .home-ig > ul { grid-column: 1 / -1; margin-top: var(--s-3); } .home-ig > p { grid-row: 1; grid-column: 2; margin-top: 0; } }

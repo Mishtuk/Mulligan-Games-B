@@ -132,3 +132,5 @@
   .ev-side .ev-room { grid-column: 1; grid-row: 2 / span 2; margin-top: 0; align-content: start; }
 }
 .ticket-rel a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 700; }
+/* empty game chip: the line says what is on instead; the Ask us link keeps a 48px target */
+.ev-none a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 700; }

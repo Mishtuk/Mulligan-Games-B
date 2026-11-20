@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 72 of 80 (Events, lens 2; priorities in docs/review/loop-70/review.md "Priorities 71-79").
+- RESUME HERE: loop 73 of 80 (Shop; priorities in docs/review/loop-70/review.md "Priorities 71-79").
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 72 (Events): empty game chips show the full sheet plus "On instead: ..." and an Ask us link (events.js, events.css, test); Home Instagram Follow joins the heading row at 960+ (releases.css). Shots docs/review/loop-72/.
 - Loop 71 (Home): want-list button one line at 1024 via column widths; Sell box one row at 1280/1600 (button shares the slab row). home.css only. Shots docs/review/loop-71/.
 - Loop 70 (boss review of 61-69): independent 28.5/30 (self-scores up to 29.5 not adopted). Shop pockets had no title bar/padding since loop 63 (pocket core CSS was Home-only): moved to pocket.css + test; Shop pocket buttons/rows even, 768 three across; Star Trek headline clears the product inset at 390; featured CTA "Get Star Trek: hold one for me". Hold CTAs 15/15 stored (JS on); JS off loses the set (loop 73). 178 tests. Review: docs/review/loop-70/review.md. Not committed.
 - Loop 69 (code): Home gzip 22,319 -> 22,283, budget test 22,700 (D9); gaps nested-row check + `npm run gaps:selftest`; fake-DOM test for stale New releases; hold prefill no-HTML-sink test; dead `.pocket-mini` cut; audit 0; 177 tests.

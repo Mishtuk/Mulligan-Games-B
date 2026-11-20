@@ -141,10 +141,13 @@ try {
         days: [...document.querySelectorAll('.day')].map((d) => ({ h: d.querySelector('h3').firstChild.textContent.trim(), hidden: !!d.closest('[hidden]') })),
         tickets: [...document.querySelectorAll('.ticket[data-game]')].map((r) => ({ game: r.dataset.game, h: r.querySelector('h3').textContent.trim(), hidden: r.hidden })) })`);
       const shown = dom.rows.filter((r) => !r.hidden).length;
-      const want = shown ? `${shown} ${g.name} ${shown === 1 ? 'night' : 'nights'} this week` : `No ${g.name} nights listed`;
+      // A game with zero listed nights shows every row (what is on instead) with its own status line and an Ask us link.
+      const empty = !dom.rows.some((r) => r.game === g.id);
+      const want = empty ? `No ${g.name} nights listed. Showing what is on instead: ` : `${shown} ${g.name} ${shown === 1 ? 'night' : 'nights'} this week`;
       const st = nodes.filter((n) => live(n) && n.role?.value === 'status' && n.name?.value !== undefined).map((n) => n.childIds && nodes.filter((c) => n.childIds.includes(c.nodeId)).map((c) => c.name?.value).join(''));
-      ok(st.includes(want), `events filter ${g.id}: status line "${want}" in the AX tree, got ${JSON.stringify(st)}`);
-      ok(dom.rows.every((r) => r.hidden === (r.game !== g.id)), `events filter ${g.id}: only ${g.id} rows left unhidden`);
+      ok(empty ? st.some((x) => x.startsWith(want) && x.endsWith(`Ask us about ${g.name}.`)) : st.includes(want), `events filter ${g.id}: status line "${want}" in the AX tree, got ${JSON.stringify(st)}`);
+      ok(dom.rows.every((r) => r.hidden === (!empty && r.game !== g.id)), `events filter ${g.id}: ${empty ? 'all rows stay unhidden' : 'only ' + g.id + ' rows left unhidden'}`);
+      if (empty) ok(nodes.some((n) => live(n) && n.role?.value === 'link' && n.name?.value === `Ask us about ${g.name}`), `events filter ${g.id}: "Ask us about ${g.name}" link in the AX tree`);
       const heads = names('heading'), rowheads = names('rowheader');
       for (const d of dom.days) ok(d.hidden === !heads.some((h) => h.startsWith(d.h)), `events filter ${g.id}: ${d.h} ${d.hidden ? 'hidden day still in' : 'shown day missing from'} the AX tree`);
       ok(rowheads.length === shown, `events filter ${g.id}: ${rowheads.length} row headers in the AX tree, ${shown} rows shown`);
