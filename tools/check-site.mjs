@@ -54,7 +54,7 @@ try {
   b.on((m) => {
     if (m.method === 'Runtime.exceptionThrown') errs.add('script error: ' + (m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text).split('\n')[0]);
     if (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error') errs.add('console.error: ' + m.params.args.map((a) => a.value ?? a.description ?? '').join(' ').slice(0, 200));
-    if (m.method === 'Log.entryAdded' && m.params.entry.level === 'error') { const e = m.params.entry; if(/favicon.ico/.test(e.url||""))return; if(/ 404 \(Not Found\)/.test(e.text)&&/\/(nope|404)(\.html)?$/.test(e.url||""))return; errs.add((/Content Security Policy/i.test(e.text) ? 'CSP violation: ' : 'console: ') + e.text.slice(0, 220) + (e.url ? ' (' + e.url + ')' : '')); }
+    if (m.method === 'Log.entryAdded' && m.params.entry.level === 'error') { const e = m.params.entry; if(/favicon.ico/.test(e.url||""))return; if(/ 404 \(/.test(e.text)&&/\/(nope|404)(\.html)?$/.test(e.url||""))return; errs.add((/Content Security Policy/i.test(e.text) ? 'CSP violation: ' : 'console: ') + e.text.slice(0, 220) + (e.url ? ' (' + e.url + ')' : '')); }
     if (m.method === 'Page.loadEventFired' && loaded) loaded();
   });
   for (const d of ['Page', 'Runtime', 'Log']) await cdp(d + '.enable');

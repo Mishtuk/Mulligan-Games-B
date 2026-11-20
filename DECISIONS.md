@@ -41,6 +41,11 @@ used in two rounds gets deleted.
   https://mishtuk.github.io/Mulligan-Games-B; noindex meta on every page (the real protection); _headers dropped from
   dist-pages. (e) Publish from a gh-pages branch, pushed by the boss; author rules as CONTEXT.md. **Why:** owner asked to
   see it on Pages; lowest-risk route per the advisor; never present the concept as the store's real site.
+- **D11** (2026-11-20, boss after the team meeting; mediator + advisor input in docs/meeting/): (A) Instagram strip
+  gets CSS-drawn thumbnails, no post words cut; a budget raise is allowed by a new entry, never a copy cut. (B) New
+  releases above the want-list form on Home. (C) Amends D10(c): on the Pages build form fields lose their name
+  attributes so nothing typed reaches a URL; the normal build is unchanged. **Why:** owner-requested sections must
+  look as good as the ads; privacy (hard rule 5); owner wants the releases advertised high on Home.
 
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.
