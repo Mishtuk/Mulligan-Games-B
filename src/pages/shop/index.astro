@@ -19,6 +19,8 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
 const today = zoned(store.timezone).date;
 const rows = shownReleases(all.filter((r) => r.certainty === 'Confirmed'), today);
 const out = rows.filter((r) => isOut(r.releaseDate, today)), soon = rows.filter((r) => !isOut(r.releaseDate, today));
+// One credit line for every product shot shown (publisher art needs it; pockets stay small)
+const credits = [...new Set(rows.filter((r) => r.product).map((r) => r.product.credit.replace(/^Image: /, '').replace(/\.$/, '')))];
 const shelfGames = [[''], ['g-pokemon', 'g-one-piece', 'g-riftbound']];
 const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbound"];
 ---
@@ -106,7 +108,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
                 {list.map((r) => (
                   <Pocket href={holdHref(r.id)} title={r.name} variant={id === 'sealed' ? 'sealed' : 'preorder'}>
                     <Fragment slot="art">{r.product ? (<div class="box-shot"><picture><source type="image/webp" srcset={srcset(r.product)} sizes="(min-width: 1000px) 15rem, 40vw" /><img src={r.product.jpg} width={r.product.width} height={r.product.height} alt={r.product.alt} loading="lazy" /></picture></div>) : (<div class={`box-sil${id === 'sealed' ? '' : ' is-pack'}`} aria-hidden="true"></div>)}</Fragment>
-                    <p>{r.game}</p>{r.product && <p class="credit">{r.product.credit}</p>}
+                    <p>{r.game}</p>
                     <Fragment slot="foot"><span class="mono">{dateLine(r.releaseDate, today)}</span><a class="btn hold" href={holdHref(r.id)} data-hold={r.id} data-name={r.name} data-game={r.gameId} data-line={holdLine(r, id === 'sealed')}>Hold one for me<span class="vh">, {r.name}</span></a></Fragment>
                   </Pocket>
                 ))}
@@ -115,6 +117,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
           </section>
         ))}
       </div>
+      {credits.length > 0 && <p class="credit">Images: {credits.join("; ")}.</p>}
     </section>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>
