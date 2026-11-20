@@ -15,7 +15,7 @@ if (process.env.DEPLOY) {
 
 export default defineConfig({
   output: 'static',
-  outDir: './dist',
+  outDir: process.env.PAGES ? './dist-pages' : './dist',
   trailingSlash: 'always',
   build: { format: 'directory', inlineStylesheets: 'never' },
 });

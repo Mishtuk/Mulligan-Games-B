@@ -33,6 +33,14 @@ used in two rounds gets deleted.
   budgets must never remove client copy. Trim code, not the store's voice.
 
 - **D9** (2026-11-20, boss, loop 69): The D8 +300 is no longer needed. **Ruling:** gzip budget back to the D7 line, 22,700 (Home 22,3xx). **Why:** loops 61-68 cut Home; the store's words stayed.
+- **D10** (2026-11-20, boss after advisor): GitHub Pages preview approach? **Ruling:** (a) `npm run build:pages` =
+  Astro build with PAGES=1 into dist-pages/, then one post-build pass rewriting only internal root paths (HTML, CSS,
+  JS, XML, JSON-sourced media) to /Mulligan-Games-B/; source stays clean. (b) The normal build stays byte-identical
+  (hash compare). (c) No-JS forms on Pages: method=get to a static preview-form page; JS-on: capture-phase intercept
+  shows "Forms don't send in this preview", never a fake success. (d) SITE_URL on Pages =
+  https://mishtuk.github.io/Mulligan-Games-B; noindex meta on every page (the real protection); _headers dropped from
+  dist-pages. (e) Publish from a gh-pages branch, pushed by the boss; author rules as CONTEXT.md. **Why:** owner asked to
+  see it on Pages; lowest-risk route per the advisor; never present the concept as the store's real site.
 
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.

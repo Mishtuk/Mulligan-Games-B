@@ -1,5 +1,6 @@
 // The one place the public origin lives. TO SET before launch (see HANDOFF "To set"): the real domain, no trailing slash.
-export const SITE_URL = 'https://mulligangames.example';
+// PAGES=1 (npm run build:pages, the noindex GitHub Pages preview) uses the Pages origin incl. sub-path; the normal build is unchanged.
+export const SITE_URL = process.env.PAGES ? 'https://mishtuk.github.io/Mulligan-Games-B' : 'https://mulligangames.example';
 export const LOGO = { path: '/img/logo/mulligan-games-340.png', width: 340, height: 120 };
 // True for an origin that must not ship: not https, localhost, or a reserved test name (.example, .test, .invalid, .localhost).
 export const isPlaceholderOrigin = (url) => {

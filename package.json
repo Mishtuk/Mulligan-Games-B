@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:pages": "node tools/build-pages.mjs",
     "build:deploy": "node tools/build-deploy.mjs",
     "test": "node --test \"test/*.test.mjs\"",
     "serve": "node tools/serve.mjs",
