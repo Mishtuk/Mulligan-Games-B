@@ -65,3 +65,5 @@
   .visit-grid > .sign .sign-list { grid-column: 2; grid-row: 1 / span 2; }
   .visit-grid > .sign .sign-note { grid-column: 1; margin-top: var(--s-2); }
 }
+/* loop 80: from 1000px the storefront fills the band beside the placard (a 330px empty gap sat between them at 1280) */
+@media (min-width: 1000px) { .visit-front { justify-self: stretch; width: auto; } }

@@ -117,7 +117,9 @@ test('shop: Sealed and Preorders come from releases.json (confirmed rows, out = 
   for (const id of ids) {
     assert.ok(rels.some((r) => r.id === id && r.certainty === 'Confirmed'), id);
     assert.ok(shop.includes(`href="/shop/?hold=${id}#hold-${id}"`), `link ${id}`);
-    assert.match(shop, new RegExp(`<p class="hold-line" id="hold-${id}">Holding [^<]+\\? Write "Hold: [^<]+" in the cards box below\.</p>`), `scripts-off line ${id}`);
+    assert.match(shop, new RegExp(`<p class="hold-line" id="hold-${id}">Holding [^<]+\\? Write "Hold: [^<]+" in the cards box below(?: and choose [A-Za-z ]+ as the game)?\.</p>`), `scripts-off line ${id}`);
+    // loop 80: scripts off, a non-Magic set names its game (the select starts on Magic)
+    if (rels.find((r) => r.id === id).gameId !== 'magic') assert.match(shop, new RegExp(`id="hold-${id}">[^<]+ and choose [A-Za-z ]+ as the game\\.</p>`), `game ${id}`);
   }
   const home = html('index.html');
   for (const m of home.matchAll(/id="rel-([a-z0-9]+-[^"]+)"/g)) assert.ok(home.includes(`href="/shop/?hold=${m[1]}#hold-${m[1]}"`), `home ${m[1]}`);
@@ -135,4 +137,13 @@ test('every page with a pocket loads the pocket core styles', { skip: !fs.exists
     const css = [...html.matchAll(/href="(\/_astro\/[^"]+\.css)"/g)].map((m) => read(`dist${m[1]}`)).join('\n');
     for (const sel of ['.pocket-title{', '.pocket-body{', '.pocket-foot{']) assert.ok(css.includes(sel), `${f} loads ${sel}`);
   }
+});
+
+// Loop 80: Shop pockets in a row share title/art/text/foot rows (a 3-line title pushed its art 40px below the neighbour's),
+// and drawn and photographed art windows have one shape. Measured in Chrome at 320-1600: every row's art and foot tops equal.
+test('shop pockets: subgrid rows and one art-window shape', () => {
+  const shop = read('src/styles/shop-only.css'), pocket = read('src/styles/pocket.css');
+  assert.match(shop, /\.shop-grid \.pocket \{[^}]*grid-row: span 4;[^}]*grid-template-rows: subgrid;/);
+  assert.match(pocket, /\.box-sil, \.box-shot \{[^}]*aspect-ratio: 4 \/ 3;/);
+  assert.doesNotMatch(shop, /\.box-shot \{[^}]*aspect-ratio/);
 });

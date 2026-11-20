@@ -31,7 +31,7 @@ Home New releases, Shop Sealed (out) and Shop Preorders (coming) all read this o
 Image: use the publisher's own art or product shot only. Save widths to `public/media/releases/` as WebP plus a JPEG fallback (key art 480 and 960 wide, a product shot 240 to 480; keep each file under about 30 KB; `sharp` is already in `node_modules`: `node -e "require('sharp')('in.png').resize(960).webp({quality:78}).toFile('public/media/releases/x-960.webp')"`). In the row, `image` / `product` take `webp: [[url, width], ...]`, `jpg`, `width`, `height` and an `alt`; `credit` is shown once under the Shop pockets. Then `npm run build && npm test` (tests check credit, sizes, lazy loading and the one-image-per-ad rules).
 
 ## Stale builds and data
-Nothing is fetched at run time except Cloudflare's Turnstile script and, after a tap, one Instagram post. Sets, nights and the sign-up seed are baked in at build: a site that is not rebuilt keeps its last list (Home's New releases still flips Coming to Out now and hides sets 90 days after release in the browser, and the nights sheet rotates to today; Shop pockets do not, so a stale Shop can list a set in the wrong column), and Events sign-ups stop matching D1 after about 3 weeks, so re-run the seed (above) when you rebuild.
+Nothing is fetched at run time except Cloudflare's Turnstile script and, after a tap, one Instagram post. Sets, nights and the sign-up seed are baked in at build: a site that is not rebuilt keeps its last list (in the browser, Home's New releases and the Shop pockets still flip Coming to Out now, a Shop pocket moves from Preorders to Sealed, and sets hide 90 days after release; the nights sheet rotates to today), and Events sign-ups stop matching D1 after about 3 weeks, so re-run the seed (above) when you rebuild.
 
 ## Docs
 `CONTEXT.md` (rules, owner instructions), `DECISIONS.md`, `DESIGN.md` (tokens, components, pages),
@@ -51,4 +51,4 @@ None of these can be guessed; the build never invents them. Data first, deploy l
 - [ ] **Hold requests**: a hold on Shop or Home arrives as a want-list row in D1 ("Hold: <set> (...)"). Who reads these and how fast? The page promises "We will email you back".
 - [ ] **Releases upkeep (monthly)**: see below. Rebuild and redeploy at least monthly; new sets appear only after you add them and rebuild.
 - [ ] **Who reads sign-ups and messages** (D1 rows) and how; deleting data on request (the privacy page promises it).
-- [ ] **Build and deploy**: `npm run build:deploy`, then `npm test` and `npm run a11y`, then a preview deploy and the live site, each only with the owner's OK.
+- [ ] **Build and deploy**: `npm run check:all` (build, tests, check-site, a11y, gaps; it rebuilds `dist/`, so run it first), then `npm run build:deploy`, then a preview deploy and the live site, each only with the owner's OK.

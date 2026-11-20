@@ -1,15 +1,15 @@
 ---
 import '../styles/pocket.css';
 // One 5:7 pocket: title bar, optional art window, text box, foot line. The title link is stretched over the whole pocket.
-// variant: binder | sealed | preorder | mini. closed: dashed "Closed" look (still a list item).
-interface Props { href: string; title: string; variant?: 'binder' | 'sealed' | 'preorder' | 'mini'; closed?: boolean; day?: number; flag?: boolean; }
-const { href, title, variant = 'binder', closed = false, day, flag = false } = Astro.props;
+// variant: binder | sealed | preorder | mini. release: YYYY-MM-DD for shop-live.js. closed: dashed "Closed" look (still a list item).
+interface Props { href: string; title: string; variant?: 'binder' | 'sealed' | 'preorder' | 'mini'; closed?: boolean; day?: number; flag?: boolean; release?: string; }
+const { href, title, variant = 'binder', closed = false, day, flag = false, release } = Astro.props;
 const has = (n: string) => Astro.slots.has(n);
 // The link's name is its day or title plus the pocket's text (main night, time, fee), so a screen-reader list reads like the pocket.
 const pid = `pk-${variant}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 const named = [`${pid}-t`, variant !== 'mini' && `${pid}-b`, has('foot') && `${pid}-f`].filter(Boolean).join(' ');
 ---
-<li class:list={['pocket', `pocket-${variant}`, { 'pocket-closed': closed }]} data-pocket-day={day}>
+<li class:list={['pocket', `pocket-${variant}`, { 'pocket-closed': closed }]} data-pocket-day={day} data-release={release}>
   <h3 class="pocket-title"><a href={href} id={`${pid}-t`} aria-labelledby={named}>{title}</a></h3>
   {has('art') && <div class="pocket-art"><slot name="art" /></div>}
   {variant !== 'mini' && <div class="pocket-body" id={`${pid}-b`}>{flag && <span class="pocket-flag" hidden>Today</span>}<slot /></div>}

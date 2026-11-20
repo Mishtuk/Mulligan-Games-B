@@ -8,8 +8,8 @@
 - Team agents: `.claude/agents/`. Research: `docs/research/`. Reviews: `docs/review/`.
 
 ## Current task
-- **Task:** 50 loops complete; waiting on owner (see README launch checklist). Final review: docs/review/loop-50/final-review.md (27/30).
-- **Done when:** 50 loops logged in docs/refinement-log.md, tests green, check-site exit 0 on all 7 paths.
+- **Task:** 80 loops complete; waiting on owner (README launch checklist). Final review: docs/review/loop-80/final-review.md (29.5/30, owner target met; 30 needs real photos).
+- **Done when:** 80 loops logged in docs/refinement-log.md, `npm run check:all` 5/5 PASS.
 - **Out of scope:** deploy, contacting the store, editing the kit.
 
 ## Plan (roadmap)
@@ -36,12 +36,12 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 **Phase 4, late (owner)** Real photos, phone/email, fees, hosted store, Discord; then preview deploy with the owner's OK.
 
 ## Status
-- Stage: 3 refinement done (50 loops); phase 4 waits on the owner. Gates: G1 passed (owner brief + D4/D5).
-- Last build: pass 2026-11-19 (loop 50). Last test run: 147/147. check-site: 7/7 paths pass. npm run a11y: pass. build:deploy: refuses (placeholder SITE_URL, empty Turnstile key) as designed.
+- Stage: 3 refinement done (80 loops); phase 4 waits on the owner. Gates: G1 passed (owner brief + D4/D5).
+- Last build: pass 2026-11-20 (loop 80). npm run check:all 5/5: tests 183/183, check-site 7/7 paths, a11y pass, gaps 0 on 7 paths. build:deploy: refuses (placeholder SITE_URL, empty Turnstile key) as designed.
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 80 of 80 (final review; see docs/review/loop-70/review.md "Loop 80 (final) must check"; one command: npm run check:all)
+- RESUME HERE: Refinement complete (80 loops). Next: the owner's answers to the README launch checklist; nothing else is queued.
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 80 (final boss review of 71-79): independent 28.5 -> 29.5/30 (identity 4.5, actions 5, truth 5, a11y 5, craft 5, code 5). check:all 5/5 as found and after. Fixed: Shop pockets now follow today in the browser (shop-live.js reuses Home's release logic: out-now sets move Preorders -> Sealed with date and hold line, 90-day-old sets hide; proved with a Nov 1 build in Chrome + 3 fake-DOM tests); JS-off hold line names the game; Shop pocket rows aligned by subgrid + one 4:3 art window; Visit storefront fills the band at 1000+ (330px gap gone). Hold CTAs 15/15 JS on + 15/15 JS off stored. 183 tests. Review: docs/review/loop-80/final-review.md. Not committed.
 - Loop 79 (Code): DESIGN.md duplicate copy cut and stale sections fixed; README launch checklist, releases upkeep and check commands; tools/check-all.mjs + npm run check:all; sweep clean, audit 0.
 - Loop 78 (Copy): final read of 7 paths, no drift; Shop pocket credits now one "Images: ..." line under Sealed and preorders; privacy line cut; copy sheet final; voice test added (179 tests).
 - Loop 77 Identity (designer): Pokemon ETB and One Piece ST-37 publisher box shots on Shop pockets (credited, < 30 KB); Riftbound Legacy and Hololive have no publisher product shot, drawn pack kept; Privacy house-policy sheet with binder clip; Shop crimp strip cut; box-shot images now absolutely contained. Shots docs/review/loop-77/.

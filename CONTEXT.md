@@ -87,3 +87,7 @@ Researchers run on cheaper models. Process: kit `process/`. Refinement loops: `d
 - [ ] Entry fees for weekly nights; buylist rates and store-credit bonus
 - [ ] Discord invite to publish (two different invites found in past research)
 - [ ] Domain, Cloudflare account (D1 database, Turnstile site key + secret), who reads form rows, and the OK to deploy (README "Owner launch checklist", 2026-11-19 loop 50)
+- [ ] Weekly nights for Pokemon, One Piece, Riftbound, Hololive, if they run (loop 70)
+- [ ] OK to show the publisher images on the site, and which sets the store stocks and takes holds / preorders on (loop 70; README checklist)
+- [ ] Instagram card facts: $15 / $30 championship fees and cEDH dates (Dec 6, Jan 3, Feb 7, Mar 7) (loop 70)
+- [ ] Who reads hold requests (want-list rows) and how fast; the site promises "We will email you back" (loop 70)

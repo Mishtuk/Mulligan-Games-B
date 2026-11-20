@@ -15,8 +15,9 @@ import '../../styles/shop-only.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer and tabletop'], ['other', 'Something else']];
+const gameName = (id) => requestGames.find(([v]) => v === id)?.[1] ?? 'Something else';
 // Same rows as Home's New releases: confirmed sets only. Out now = Sealed, coming = Preorders.
-const today = zoned(store.timezone).date;
+const today = zoned(store.timezone, process.env.SITE_NOW ? new Date(process.env.SITE_NOW) : undefined).date; // SITE_NOW: fixed-date build check (as NewReleases)
 const rows = shownReleases(all.filter((r) => r.certainty === 'Confirmed'), today);
 const out = rows.filter((r) => isOut(r.releaseDate, today)), soon = rows.filter((r) => !isOut(r.releaseDate, today));
 // One credit line for every product shot shown (publisher art needs it; pockets stay small)
@@ -57,7 +58,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
     <section class="box request" id="request" aria-labelledby="request-h">
       <h2 id="request-h">Not in the case? Ask for it.</h2>
       <p>No online catalog yet. Send a want list and we will email you if it turns up.</p>
-      {rows.map((r) => <p class="hold-line" id={`hold-${r.id}`}>Holding {r.name}? Write "Hold: {r.name}" in the cards box below.</p>)}
+      {rows.map((r) => <p class="hold-line" id={`hold-${r.id}`}>Holding {r.name}? Write "Hold: {r.name}" in the cards box below{r.gameId !== 'magic' && ` and choose ${gameName(r.gameId)} as the game`}.</p>)}
       {all.filter((r) => !rows.includes(r)).map((r) => <p class="hold-line" id={`hold-${r.id}`}>Write the set you want held in the cards box below.</p>)}
       <p class="hold-note" id="req-hold" role="status" hidden></p>
       <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
@@ -103,17 +104,16 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
         {[['sealed', 'Sealed', out, 'Nothing out yet. Ask at the counter.'], ['preorders', 'Preorders', soon, 'Nothing announced yet. Ask at the counter.']].map(([id, h, list, none]) => (
           <section id={id} aria-labelledby={`${id}-h`}>
             <h2 id={`${id}-h`}>{h}</h2>
-            {list.length ? (
-              <ul class="shop-grid">
-                {list.map((r) => (
-                  <Pocket href={holdHref(r.id)} title={r.name} variant={id === 'sealed' ? 'sealed' : 'preorder'}>
-                    <Fragment slot="art">{r.product ? (<div class="box-shot"><picture><source type="image/webp" srcset={srcset(r.product)} sizes="(min-width: 1000px) 15rem, 40vw" /><img src={r.product.jpg} width={r.product.width} height={r.product.height} alt={r.product.alt} loading="lazy" /></picture></div>) : (<div class={`box-sil${id === 'sealed' ? '' : ' is-pack'}`} aria-hidden="true"></div>)}</Fragment>
-                    <p>{r.game}</p>
-                    <Fragment slot="foot"><span class="mono">{dateLine(r.releaseDate, today)}</span><a class="btn hold" href={holdHref(r.id)} data-hold={r.id} data-name={r.name} data-game={r.gameId} data-line={holdLine(r, id === 'sealed')}>Hold one for me<span class="vh">, {r.name}</span></a></Fragment>
-                  </Pocket>
-                ))}
-              </ul>
-            ) : (<p>{none}</p>)}
+            <ul class="shop-grid" hidden={!list.length}>
+              {list.map((r) => (
+                <Pocket href={holdHref(r.id)} title={r.name} variant={id === 'sealed' ? 'sealed' : 'preorder'} release={r.releaseDate}>
+                  <Fragment slot="art">{r.product ? (<div class="box-shot"><picture><source type="image/webp" srcset={srcset(r.product)} sizes="(min-width: 1000px) 15rem, 40vw" /><img src={r.product.jpg} width={r.product.width} height={r.product.height} alt={r.product.alt} loading="lazy" /></picture></div>) : (<div class={`box-sil${id === 'sealed' ? '' : ' is-pack'}`} aria-hidden="true"></div>)}</Fragment>
+                  <p>{r.game}</p>
+                  <Fragment slot="foot"><span class="mono" data-when>{dateLine(r.releaseDate, today)}</span><a class="btn hold" href={holdHref(r.id)} data-hold={r.id} data-name={r.name} data-game={r.gameId} data-line={holdLine(r, id === 'sealed')} data-line-out={holdLine(r, true)} data-line-soon={holdLine(r, false)}>Hold one for me<span class="vh">, {r.name}</span></a></Fragment>
+                </Pocket>
+              ))}
+            </ul>
+            <p hidden={list.length > 0}>{none}</p>
           </section>
         ))}
       </div>
@@ -121,6 +121,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
     </section>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>
+  <script is:inline slot="scripts" type="module" src="/js/shop-live.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/hold.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/form-check.js"></script>
 </Base>

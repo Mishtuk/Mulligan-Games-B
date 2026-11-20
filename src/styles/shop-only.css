@@ -16,19 +16,21 @@
 html.js .request .hold-line { display: none !important; }
 
 /* Sealed and preorder pockets */
-.shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-3); }
-.shop-grid .pocket { aspect-ratio: auto; } /* rows end together (5:7 kept rows ragged by up to 55px) */
+.shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--s-3); margin-top: var(--s-3); }
+/* rows end together (5:7 kept rows ragged by up to 55px); title, art, text and foot share rows across a row of pockets (subgrid), so a 3-line title no longer pushes its art below the neighbour's */
+.shop-grid .pocket { aspect-ratio: auto; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; margin-bottom: var(--s-3); }
 .shop-grid .pocket-title { font-size: 1.05rem; }
+.shop-grid .pocket-art { margin-top: .5rem; }
 .shop-grid .pocket-body p { max-width: 20ch; }
 .shop-grid .pocket-foot { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; gap: .3rem; }
 .shop-grid .pocket-foot .btn { position: relative; z-index: 1; justify-self: stretch; padding-inline: .4rem; text-align: center; }
-#stock .credit { font-size: .75rem; text-align: center; margin-top: var(--s-4); }
+#stock .credit { font-size: .75rem; text-align: center; margin: var(--s-4) auto 0; }
 /* Drawn generic product shapes (rule 12): booster box, lid over body; .is-pack a tilted pack with a band. A publisher product shot replaces the drawing. */
 .box-sil::before { content: ""; width: 68%; height: 52%; border: 3px solid var(--line); border-radius: 3px; box-shadow: var(--shadow-sm);
   background: linear-gradient(var(--sky) 0 32%, var(--line) 32% calc(32% + 3px), var(--accent) 0); }
 .box-sil.is-pack::before { width: 30%; height: 80%; rotate: -8deg; border-radius: 2px; box-shadow: var(--shadow-sm);
   background: linear-gradient(var(--sky), var(--sky)) center / 100% 24% no-repeat, var(--accent2); }
-.box-shot { position: relative; aspect-ratio: 4 / 3; }
+.box-shot { position: relative; }
 .box-shot picture { display: contents; }
 .box-shot img { position: absolute; inset: .35rem; width: calc(100% - .7rem); height: calc(100% - .7rem); object-fit: contain; }
 @media (min-width: 1000px) { .shop-grid .pocket-title { font-size: var(--step-1); } }
