@@ -19,6 +19,7 @@ Kit `C:\Users\alexm\projects\Base-Website-Design-Template` is READ-ONLY referenc
    ("Likely", "Unverified", "455 on Wizards"); uncertain facts get one quiet "Confirm with the store" line.
 4. Keep: hard rules, tokens only (no colour literals outside `:root`), motion gated by the switch and reduced motion,
    no inline scripts (CSP), headings never "The" + word, every page one click from the nav, 48px targets.
+5. Never cut the store's own words or owner-requested content to fit the page budget (D8): trim code instead.
 
 ## Check (all required before you report)
 - `npm run build` clean, `npm test` green (add or update a test for any logic you touch), and `npm run a11y` passes (it also submits every form).

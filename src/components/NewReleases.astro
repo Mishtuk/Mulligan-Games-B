@@ -9,7 +9,7 @@ const today = zoned(store.timezone).date;
 const rows = shownReleases(all.filter((r) => /^(Confirmed|Likely)/.test(r.certainty)), today);
 const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows[0];
 const rest = rows.filter((r) => r !== feat);
-const ask = ['Hold a box now', 'Preorder at the counter'];
+const ask = ['Hold a box for me', 'Ask us about preorders'];
 const pic = (r, sizes, lazy) => {
   const { image: i } = r;
   return { srcset: i.webp.map(([u, w]) => `${u} ${w}w`).join(', '), sizes, loading: lazy ? 'lazy' : undefined, ...i };
@@ -26,9 +26,10 @@ const pic = (r, sizes, lazy) => {
     </picture>
     <div class="rel-body">
       <p class="rel-game">{r.game} · {r.name}</p>
-      <h3>New frontier. New cards.</h3>
+      <h3>{r.ad ?? 'New in the case'}</h3>
+      {r.types && <p class="rel-name">{r.types}</p>}
       <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span> · <span data-when>{dateLine(r.releaseDate, today)}</span></p>
-      <p><a class="btn" href="/visit/#contact">Shop {r.name} in store</a></p>
+      <p><a class="btn" href="/visit/#contact">Pick up {r.name} at the counter</a></p>
       <p class="rel-credit">{r.credit}</p>
     </div>
   </article>); })}
@@ -41,7 +42,7 @@ const pic = (r, sizes, lazy) => {
       </picture>) : (<div class="rel-art" aria-hidden="true"></div>)}
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
-        <h3><a class="rel-link" href="/visit/#contact"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span><span class="vh">, {r.name}</span></a></h3>
+        <h3><a class="rel-link" href="/visit/#contact"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Stop in and grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span><span class="vh">, {r.name}</span></a></h3>
         <p class="rel-name">{r.name}</p>
         <p class="rel-date" data-when>{dateLine(r.releaseDate, today)}</p>
         <span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span>

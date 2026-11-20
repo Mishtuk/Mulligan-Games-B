@@ -49,10 +49,11 @@ test('releases.json: only Confirmed or Likely rows; every image row has width, h
 
 test('built Home: New releases cards are complete pictures and the featured one is Star Trek', { skip: !built }, () => {
   const h = home();
-  assert.match(h, /<h3>New frontier\. New cards\.<\/h3>/);
+  assert.match(h, /<h3>Star Trek has landed at Mulligan\.<\/h3>/);
+  assert.match(h, /Main set \(TRK\) and Commander decks \(TRC\)/); // owner-requested products line (rule 5)
   assert.match(h, /class="rel-date"/);
-  assert.match(h, /Grab a pack/);
-  assert.match(h, /Shop Star Trek in store/);
+  assert.match(h, /Stop in and grab a pack/);
+  assert.match(h, /Pick up Star Trek at the counter/);
   const all = [...h.matchAll(/<(?:article|li) class="rel[^"]*"[\s\S]*?<\/(?:article|li)>/g)].map((m) => m[0]);
   const cards = all.filter((c) => /<img/.test(c));
   assert.ok(cards.length >= 3);
@@ -92,7 +93,7 @@ test('CSP: frame-src allows instagram.com and script-src does not change', () =>
 });
 
 test('footer and privacy lines', { skip: !built }, () => {
-  assert.match(home(), /Set images belong to their publishers\./);
+  assert.match(home(), /Game names and set images belong to their publishers\./);
   assert.match(fs.readFileSync(path.join(dist, 'privacy/index.html'), 'utf8'), /Instagram posts on the home page load from Instagram only after you tap/);
 });
 

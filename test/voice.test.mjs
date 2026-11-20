@@ -71,3 +71,25 @@ test('copy: Pokemon spelling, no exclamation marks, Visit footer has no Hours he
   assert.doesNotMatch(foot, /<h2[^>]*>Hours<\/h2>/);
   assert.doesNotMatch(foot, /opening hours are above|class="hours"/); // the page shows the hours; the footer adds no stub
 });
+
+// Loop 58: release ads and Instagram cards stay in shop voice. No online checkout is implied, no price appears in an ad,
+// and the only fees shown are the two stated in docs/research/instagram.md.
+test('release ads and Instagram cards: shop voice, no checkout language, no invented prices', { skip: !fs.existsSync(dist) }, () => {
+  const html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+  const sec = (cls) => text(html.match(new RegExp(`<section class="${cls}"[^>]*>[\\s\\S]*?</section>`))[0]);
+  const rel = sec('home-releases'), ig = sec('home-ig');
+  const NO = /buy (?:it )?online|add to cart|order now|buy now|shop now|checkout|check out|free shipping|\bshipping\b|in stock|sold out|limited (?:time|stock)|hurry|don'?t miss|\d+% off/i;
+  for (const [name, t] of [['releases', rel], ['instagram', ig]]) {
+    assert.doesNotMatch(t, NO, name);
+    assert.doesNotMatch(t, /ask (?:in|at the) (?:store|shop)|in-store/i, name);
+  }
+  assert.doesNotMatch(rel, /\$\s?\d/); // no prices on a release ad
+  assert.deepEqual([...new Set(ig.match(/\$\d+/g))].sort(), ['$15', '$30']); // the two fees as stated, nothing else
+  assert.match(rel, /Pick up Star Trek at the counter/);
+  assert.match(rel, /Main set \(TRK\) and Commander decks \(TRC\)/);
+  assert.match(ig, /Date: confirm with the store/);
+  assert.match(ig, /Dates: confirm with the store/);
+  // Browser-built strings in home-live.js follow the same rules.
+  const js = fs.readFileSync(path.resolve(dist, '..', 'public', 'js', 'home-live.js'), 'utf8');
+  assert.doesNotMatch(js, NO);
+});
