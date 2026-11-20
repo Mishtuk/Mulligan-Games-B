@@ -15,6 +15,11 @@ if (!base) {
 const fails = [];
 const ok = (c, m) => { if (!c) { fails.push(m); console.log('FAIL', m); } };
 
+// Bounded waits for the real condition (never a fixed sleep that measures layout or focus): until() polls an expression, settle()
+// waits for fonts loaded and page height and scroll position unchanged for 3 reads in a row (max 3s).
+const until = async (t, expr, ms = 3000) => { for (const end = Date.now() + ms; Date.now() < end; ) { if (await t.ev(expr).catch(() => false)) return true; await sleep(50); } return false; };
+const settle = async (t, ms = 3000) => { let last = '', same = 0; for (const end = Date.now() + ms; Date.now() < end && same < 3; ) { const v = await t.ev(`document.fonts.status + '|' + document.documentElement.scrollHeight + '|' + scrollY`).catch(() => ''); same = v === last ? same + 1 : 0; last = v; await sleep(40); } };
+
 // Sideways scroll, anything past the right edge outside a scroller, clipped text.
 const zoomProbe = `(() => { const out = [], de = document.documentElement;
  if (de.scrollWidth > innerWidth + 1) out.push('sideways scroll ' + de.scrollWidth + ' > ' + innerWidth);
@@ -70,14 +75,14 @@ try {
   for (const w of [1280, 390, 320]) for (const p of PATHS) {
     const t = await b.page({ w, h: 800 });
     await t.go(base + p);
-    await t.ev(`document.documentElement.style.fontSize='200%'`); await sleep(300);
+    await t.ev(`document.documentElement.style.fontSize='200%'`); await settle(t);
     const r = await t.ev(zoomProbe); if (r.length) ok(false, `zoom 200% ${w} ${p}: ${r.join('; ')}`);
     if (w !== 320) {
       await t.ev(`document.querySelectorAll('details').forEach((d) => (d.open = true))`);
       const sm = await t.ev(smallProbe); if (sm.length) ok(false, `small text (<.8rem) ${w} ${p}: ${sm.join('; ')}`);
-      await t.ev(`document.documentElement.style.fontSize=''`); await sleep(100);
+      await t.ev(`document.documentElement.style.fontSize=''`); await settle(t);
       const h = await t.ev(`document.documentElement.scrollHeight`);
-      await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await sleep(200);
+      await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await settle(t);
       const s = await t.ev(shapeProbe); if (s.length) ok(false, `shapes ${w} ${p}: ${s.join('; ')}`);
     }
     await t.close();
@@ -85,9 +90,9 @@ try {
   // 1d. scrim/panel contrast behind text in the Home ads and Instagram cards (4.5:1, 3:1 at 24px+), 390 and 1280, Motion off
   for (const w of [390, 1280]) {
     const t = await b.page({ w, h: 800 }); await t.go(base + '/');
-    await t.ev(`document.documentElement.dataset.motion = 'off'; document.querySelectorAll('.rel img').forEach((i) => (i.loading = 'eager')); document.querySelectorAll('.rel *').forEach((e) => { e.style.setProperty('color', 'transparent', 'important'); e.style.setProperty('text-shadow', 'none', 'important'); })`); await sleep(400);
+    await t.ev(`document.documentElement.dataset.motion = 'off'; document.querySelectorAll('.rel img').forEach((i) => (i.loading = 'eager')); document.querySelectorAll('.rel *').forEach((e) => { e.style.setProperty('color', 'transparent', 'important'); e.style.setProperty('text-shadow', 'none', 'important'); })`); await until(t, `[...document.querySelectorAll('.rel img')].every((i) => i.complete)`); await settle(t);
     const h = await t.ev(`document.documentElement.scrollHeight`);
-    await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await sleep(600);
+    await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await settle(t);
     await t.ev(`document.documentElement.scrollTop = 0`);
     const shot = await t.cdp('Page.captureScreenshot', { format: 'png' }); if (process.env.SCRIM_SHOT) (await import('node:fs')).writeFileSync(process.env.SCRIM_SHOT + w + '.png', Buffer.from(shot.data, 'base64'));
     // colours come from the live page, so restore them for reading getComputedStyle while the screenshot holds the pixels
@@ -114,6 +119,15 @@ try {
     }
     await t.close();
   }
+  // 1e. Visit: the address placard and the storefront (drawn or photo) start level (within 4px) wherever they sit side by side (768-1600)
+  for (const w of [768, 1024, 1280, 1600]) {
+    const t = await b.page({ w, h: 900 }); await t.go(base + '/visit/'); await settle(t);
+    const r = await t.ev(`(() => { const p = document.querySelector('.placard').getBoundingClientRect(), f = [...document.querySelectorAll('.storefront, .visit-photo')].find((e) => e.getClientRects().length)?.getBoundingClientRect();
+      return { placard: Math.round(p.top), front: f ? Math.round(f.top) : null, sideBySide: !!f && f.left > p.right - 2 }; })()`);
+    ok(r.front !== null, `visit @${w}: a storefront is visible`);
+    if (r.sideBySide) ok(Math.abs(r.placard - r.front) <= 4, `visit @${w}: placard and storefront top edges level (4px) ${JSON.stringify(r)}`);
+    await t.close();
+  }
   // 2. menu sheet
   {
     const t = await b.page({ w: 390, h: 844 }); await t.go(base + '/events/');
@@ -134,7 +148,7 @@ try {
   {
     const games = JSON.parse((await import('node:fs')).readFileSync('src/data/games.json', 'utf8'));
     for (const g of games) {
-      const t = await b.page({ w: 1280, h: 900 }); await t.go(base + '/events/?game=' + g.id); await sleep(500);
+      const t = await b.page({ w: 1280, h: 900 }); await t.go(base + '/events/?game=' + g.id); await until(t, `!!document.getElementById('ev-status')?.textContent.trim()`);
       await t.cdp('Accessibility.enable');
       const { nodes } = await t.cdp('Accessibility.getFullAXTree');
       const live = (n) => !n.ignored;
@@ -163,7 +177,7 @@ try {
   {
     const t = await b.page({ w: 1280, h: 800 }); await t.go(base + '/');
     let s = await t.ev(motionProbe); ok(s.dm === 'on' && s.pressed === 'true', 'motion: default on ' + JSON.stringify(s));
-    await t.ev(`document.getElementById('motion').click()`); await sleep(80);
+    await t.ev(`document.getElementById('motion').click()`); await until(t, `document.documentElement.dataset.motion === 'off'`, 1500);
     for (const p of PATHS) { if (p !== '/') await t.go(base + p); s = await t.ev(motionProbe); ok(s.dm === 'off' && s.pressed === 'false' && s.anims === 0 && s.tr === 0, `motion off ${p}: ${JSON.stringify(s)}`); }
     await t.go(base + '/'); await t.ev(`document.getElementById('motion').focus()`); await t.enter(); s = await t.ev(motionProbe); ok(s.dm === 'on', 'motion: Enter toggles back on');
     await t.close();
@@ -174,11 +188,11 @@ try {
   // 4. forms: an empty submit shows a focused error summary (no script error); ?sent= shows the focused success panel
   for (const [p, name, fid] of [['/', 'request', 'request-form'], ['/events/', 'signup', 'signup-form'], ['/shop/', 'request', 'request-form'], ['/sell/', 'buylist', 'buylist-form'], ['/visit/', 'contact', 'contact-form']]) {
     const t = await b.page({ w: 390, h: 844 }); await t.go(base + p);
-    await t.ev(`window.__errs = []; addEventListener('error', (e) => __errs.push(e.message)); const f = document.getElementById('${fid}'); for (const el of f.querySelectorAll('input:not([type=hidden]):not([type=radio]), textarea')) el.value = ''; const s = f.querySelector('#su-event'); if (s) s.value = ''; f.querySelector('button[type=submit]').click()`); await sleep(200);
+    await t.ev(`window.__errs = []; addEventListener('error', (e) => __errs.push(e.message)); const f = document.getElementById('${fid}'); for (const el of f.querySelectorAll('input:not([type=hidden]):not([type=radio]), textarea')) el.value = ''; const s = f.querySelector('#su-event'); if (s) s.value = ''; f.querySelector('button[type=submit]').click()`); await until(t, `document.activeElement.classList.contains('form-msg')`, 1500);
     let s = await t.ev(`(() => { const a = document.activeElement; return { errs: __errs, focus: a.id, panel: a.classList.contains('form-msg') && !a.hidden, links: a.querySelectorAll('a').length, url: location.pathname + location.search }; })()`);
     ok(!s.errs.length && s.panel && s.links > 0 && s.url === p, `form ${p}: empty submit shows a focused error summary ${JSON.stringify(s)}`);
     const sent = p === '/events/' ? 'signup' : name;
-    await t.go(`${base}${p}?sent=${sent}`); await sleep(100);
+    await t.go(`${base}${p}?sent=${sent}`); await until(t, `document.activeElement.id === '${name}-ok'`, 1500);
     s = await t.ev(`({ focus: document.activeElement.id, hidden: document.getElementById('${fid}').hidden })`);
     ok(s.focus === `${name}-ok` && s.hidden, `form ${p}: ?sent=${sent} focuses the success panel ${JSON.stringify(s)}`);
     await t.close();
@@ -200,20 +214,20 @@ try {
       const pay = f.querySelector('[name=payout][value=cash]'); if (pay) pay.checked = true;
       const ev = f.querySelector('[name=event_id]'); if (ev) ev.selectedIndex = 0;
       f.querySelector('button[type=submit]').click(); return 0; })()`);
-    await sleep(800);
+    
     // wait (max 6s) for the result page to finish loading and its fonts to settle, so the fragment scroll is final
     for (let i = 0; i < 60 && !(await t.ev(`document.readyState === 'complete' && document.fonts.status === 'loaded' && !!document.querySelector(':target')`).catch(() => false)); i++) await sleep(100);
-    await sleep(200);
+    await settle(t);
     const want = bad ? /-err$/ : /-(ok|wait)$/, tag = `${bad ? 'bad email' : 'good'} ${p}`;
     let r = await t.ev(panelProbe); ok(panelOk(r, want), `no-JS post, ${tag}: result panel ${JSON.stringify(r)}`);
-    await t.ev(`document.documentElement.style.fontSize='200%'`); await t.ev(refocus); await sleep(300);
+    await t.ev(`document.documentElement.style.fontSize='200%'`); await t.ev(refocus); await settle(t);
     r = await t.ev(panelProbe); ok(panelOk(r, want), `no-JS post, ${tag}, 200% text: result panel ${JSON.stringify(r)}`);
     await t.close();
   }
   const RESULTS = ['/?sent=request#request-ok', '/?request=error#request-err', '/shop/?sent=request#request-ok', '/shop/?request=error#request-err', '/events/?sent=signup#signup-ok', '/events/?sent=waitlist#signup-wait', '/events/?signup=error#signup-err', '/sell/?sent=buylist#buylist-ok', '/sell/?buylist=error#buylist-err', '/visit/?sent=contact#contact-ok', '/visit/?contact=error#contact-err'];
   for (const [w, zooms] of [[390, ['', '200%']], [1280, ['200%']]]) for (const u of RESULTS) for (const z of zooms) {
     const t = await noJs(w); await t.go(base + u);
-    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(refocus); await sleep(300); }
+    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(refocus); await settle(t); }
     const r = await t.ev(panelProbe); ok(panelOk(r, /./), `no-JS result ${u} @${w} ${z || '100%'}: ${JSON.stringify(r)}`);
     await t.close();
   }
@@ -225,16 +239,32 @@ try {
   const inView = `(() => { const e = document.activeElement, r = e.getBoundingClientRect(), h = document.querySelector('header')?.getBoundingClientRect().bottom ?? 0; return { id: e.id, top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight, hdr: Math.round(h), val: e.value, note: document.getElementById('req-hold')?.textContent, desc: e.getAttribute('aria-describedby') }; })()`;
   for (const [w, z] of [[390, ''], [390, '200%'], [1280, '']]) {
     const t = await b.page({ w, h: 844 }); await t.go(holdUrl);
-    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(`document.getElementById('req-cards').blur(); document.getElementById('req-cards').focus()`); await sleep(300); }
+    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(`document.getElementById('req-cards').blur(); document.getElementById('req-cards').focus()`); await settle(t); }
     // hold.js focuses on the next animation frame: wait (max 3s) for it before measuring, so the check is not a race
     for (let i = 0; i < 30 && !(await t.ev(`document.activeElement && document.activeElement.id === 'req-cards'`)); i++) await sleep(100);
     const r = await t.ev(inView);
     ok(r.id === 'req-cards' && /^Hold: /.test(r.val) && /^Hold for .+ filled in. Add your name and email.$/.test(r.note) && /^req-hold /.test(r.desc) && r.top >= r.hdr && r.bottom <= r.vh, `hold flow @${w} ${z || '100%'}: focus on the filled request field, status line, in view ${JSON.stringify(r)}`);
     await t.close();
   }
+  // a set no longer shown (old bookmark): generic line, cursor on the cards box, nothing prefilled, scripts on
+  for (const w of [390, 1280]) {
+    const t = await b.page({ w, h: 844 }); await t.go(base + '/shop/?hold=gone-set#hold-gone-set');
+    await until(t, `document.activeElement && document.activeElement.id === 'req-cards'`);
+    const r = await t.ev(inView);
+    ok(r.id === 'req-cards' && r.val === '' && r.note === 'Write the set you want held in the cards box below.' && /^req-hold /.test(r.desc) && r.top >= r.hdr && r.bottom <= r.vh, `stale hold @${w}: generic line, focus on the empty cards box, in view ${JSON.stringify(r)}`);
+    await t.close();
+  }
+  // scripts off, a release that is in releases.json but not shown (build date): its anchor shows the generic line and Tab reaches the cards box
+  const goneId = (await (await fetch(base + '/shop/')).text()).match(/<p class="hold-line" id="(hold-[^"]+)">Write the set you want held/)?.[1];
+  if (goneId) {
+    const t = await noJs(390); await t.go(base + '/shop/?hold=' + goneId.slice(5) + '#' + goneId); await settle(t);
+    let r = await t.ev(panelProbe); ok(r.id === goneId && r.disp !== 'none' && r.top >= 0 && r.bottom <= r.vh && r.txt === 'Write the set you want held in the cards box below.', `stale hold, scripts off: generic line is the target and in view ${JSON.stringify(r)}`);
+    await t.tab(); r = await t.ev(`document.activeElement.id`); ok(r === 'req-cards', `stale hold, scripts off: Tab lands on the cards box (${r})`);
+    await t.close();
+  }
   for (const z of ['', '200%']) {
     const t = await noJs(390); await t.go(holdUrl);
-    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(refocus); await sleep(300); }
+    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(refocus); await settle(t); }
     let r = await t.ev(panelProbe); ok(r.id === 'hold-' + holdId && r.disp !== 'none' && r.top >= 0 && r.bottom <= r.vh && /^Holding .+? Write "Hold: .+" in the cards box below.$/.test(r.txt), `hold flow, scripts off, ${z || '100%'}: the set's own line is the target, shown and in view ${JSON.stringify(r)}`);
     await t.tab(); r = await t.ev(`({ id: document.activeElement.id, inReq: !!document.activeElement.closest('#request') })`);
     ok(r.inReq && r.id === 'req-cards', `hold flow, scripts off, ${z || '100%'}: first Tab after the jump lands on the cards box ${JSON.stringify(r)}`);

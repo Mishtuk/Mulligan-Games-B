@@ -56,3 +56,11 @@ test('hold prefill: query text never reaches the page as markup (text and value 
   assert.match(js, /note\.textContent = /); assert.match(js, /cards\.value = h\.dataset\.line/);
   assert.doesNotMatch(js, /location\.search[^;]*(?:textContent|value|innerHTML)/); // the query only selects a key
 });
+
+test('stale hold: every id in releases.json has a #hold-<id> line on Shop (generic when the set is not shown); hold.js says the same line', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { GENERIC } = await import('../public/js/hold.js');
+  assert.equal(GENERIC, 'Write the set you want held in the cards box below.');
+  const shop = readFileSync('dist/shop/index.html', 'utf8'), all = JSON.parse(readFileSync('src/data/releases.json', 'utf8'));
+  for (const r of all) assert.match(shop, new RegExp(`class="hold-line" id="hold-${r.id}"`), r.id);
+});

@@ -55,7 +55,8 @@ html.js .request .hold-line { display: none !important; }
 
 /* Sealed over Preorders at every width; from 600px the pockets sit in rows of up to 14rem (side by side, 3 preorders against 2 sealed left a 350px hole) */
 .stock { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
-@media (min-width: 600px) { .shop-grid { grid-template-columns: repeat(auto-fill, minmax(11rem, 14rem)); } }
+/* the rows centre under centred headings, so 1280 has no empty right half */
+@media (min-width: 600px) { .shop-grid { grid-template-columns: repeat(auto-fit, minmax(11rem, 14rem)); justify-content: center; } .stock h2 { text-align: center; } }
 .airy > .cond-fold { margin-top: var(--s-3); }
 .request { max-width: 46rem; }
 .request form { max-width: none; }
