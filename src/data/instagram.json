@@ -8,6 +8,7 @@
       "Old Heads Legacy Championship: $30 entry, up to 6 rounds plus Top 8.",
       "Pre-register on TopDeck."
     ],
+    "kind": "champ",
     "tag": "Magic event",
     "ad": "Sign up for a championship",
     "date": null,
@@ -20,6 +21,7 @@
     "lines": [
       "Circuit points count toward next year's invitational."
     ],
+    "kind": "series",
     "tag": "Magic: cEDH",
     "ad": "First Sunday is cEDH",
     "date": "Dec 6 · Jan 3 · Feb 7 · Mar 7",

@@ -33,3 +33,11 @@ Words never cut (D8). Budget (22,700 gzip Home, D9): if a batch passes it, STOP 
 - test/releases.test.mjs:164 wording change ("Date: confirm with the store" -> "Confirm with the store") approved.
 - open-chip.js 3-line edit approved only if the header pill overflows at 600-831px.
 - Shop shelf: one row per shelf (6/4/3 slots) approved as settled; no further cut.
+
+## T2 check (mediator)
+- Met: (a) order at all widths, New releases at about 30% of page height at 390. (b) art first, 16/9, CSS only, no request before tap, cards equal height at 768/1280, "Confirm with the store" muted 14px. (c) pill in the header row at 768, one row, nothing above the H1, 1280 header unchanged. (d) hero 1100+ rule, binder time/price 14px, no pocket clipping.
+- 1280 hero/binder: RULED MET. The 80px test assumed the hero stood alone; with Tonight stacked under it, the left column (hero + Tonight) ends within about 40px of the binder foot and the hero has no empty band. The designer's intent (no tall empty hero) is met; read the done-when as "left column ends within 80px of the binder". No change.
+- Not met 1, series art: the two pairing bars (::before top 22%, ::after top 62%) sit on rows 2 and 4, right over two of the three filled cells, so only one orange cell reads (all widths). Cause: bar rows equal filled-cell rows.
+- Not met 2, series card gap: `.ig-card .muted:not(.ig-confirm){margin-top:auto}` pushes "Dates: confirm with the store." away from its lines, leaving an empty band of about 100-130px mid-card at 768/1280/1600. Cause: the old `.rel-body > div` (button row) auto margin was replaced; the spec put auto on the button row.
+- Not looked at: 1024 (under the 1100 rule) binder time/price is still about 11px and the price chip wraps under the time in narrow pockets; readable, not a T2 target, log it for later. 390 and 1600: no problems found.
+- Recommend: accept after two one-line fixes in releases.css: (1) `.ig-art[data-kind=series]::before{top:3%}` and `::after{top:82%}` (bars on rows 1 and 5, clear of the cells); (2) change the selector `.ig-card .sticker, .ig-card .muted:not(.ig-confirm)` to `.ig-card .rel-body > div` (gap goes above the button, note stays with its lines). Re-shoot 390/768/1280, then commit T2.

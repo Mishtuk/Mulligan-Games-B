@@ -10,10 +10,11 @@ const ok = posts.filter((p) => /^[\w-]{6,20}$/.test(p.code));
   <ul class="ig-grid">
     {ok.map((p) => (
       <li class="rel ig-card">
+        <div class="ig-art" data-kind={p.kind ?? 'series'} aria-hidden="true"></div>
         <div class="rel-body">
           <p class="rel-game">{p.tag}</p>
           <h3>{p.ad}</h3>
-          <p class="rel-date">{p.date ?? 'Date: confirm with the store'}</p>
+          {p.date ? <p class="rel-date">{p.date}</p> : <p class="muted ig-confirm">Confirm with the store</p>}
           {p.lines.map((l) => <p>{l}</p>)}
           {p.fee && <span class="sticker">{p.fee}</span>}
           {p.note && <p class="muted">{p.note}</p>}

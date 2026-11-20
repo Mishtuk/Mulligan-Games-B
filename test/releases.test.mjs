@@ -160,8 +160,8 @@ test('One Piece ad: drawn aria-hidden panel in place of a publisher image; sets 
 test('Instagram promo cards use the ad language and keep the click-to-load link', { skip: !built }, () => {
   const cards = [...home().matchAll(/<li class="rel ig-card"[\s\S]*?<\/li>/g)].map((m) => m[0]);
   assert.ok(cards.length >= 2);
-  for (const c of cards) { assert.match(c, /class="rel-date"/); assert.match(c, /data-ig="/); }
-  assert.match(cards[0], /Date: confirm with the store/); assert.match(cards[0], /[$]15 or [$]30 entry/);
+  for (const c of cards) { assert.match(c, /data-ig="/); }
+  assert.match(cards[0], /Confirm with the store/); assert.match(cards[0], /[$]15 or [$]30 entry/);
 });
 
 test('release ads: one link per ad whose name says the set; publisher images are decorative (alt=""); art panel hidden from AT', { skip: !built }, () => {

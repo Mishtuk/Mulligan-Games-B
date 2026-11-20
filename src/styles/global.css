@@ -220,3 +220,5 @@ html:not(.js) .site-header { position: static; }
   html:not([data-motion="off"])::view-transition-group(site-header), html:not([data-motion="off"])::view-transition-old(site-header), html:not([data-motion="off"])::view-transition-new(site-header) { animation: none; }
 }
 html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; }
+/* 600-831px: the Open now pill rides in the header row, not above the page */
+@container page (min-width: 37.5rem) and (max-width: 51.99rem) { .header-chip { display: inline-flex; white-space: nowrap; min-height: var(--tap); margin-left: auto; } .chip-strip { display: none; } .site-header-in { gap: var(--s-2); } }

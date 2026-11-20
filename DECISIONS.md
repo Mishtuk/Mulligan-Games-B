@@ -47,6 +47,7 @@ used in two rounds gets deleted.
   attributes so nothing typed reaches a URL; the normal build is unchanged. **Why:** owner-requested sections must
   look as good as the ads; privacy (hard rule 5); owner wants the releases advertised high on Home.
 
+- **D12** (2026-11-20, boss pre-ruling, applied in T2): Home gzip budget raised from 22,700 to 23,200 (measured 23,104 after the Instagram CSS art and header pill; measured +2% exceeds the +500 cap, so the cap applies). No copy cut. test/budget.test.mjs updated.
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.
 - Hard rules in `CONTEXT.md` are never traded away.

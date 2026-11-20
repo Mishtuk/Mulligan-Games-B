@@ -87,7 +87,7 @@ test('release ads and Instagram cards: shop voice, no checkout language, no inve
   assert.deepEqual([...new Set(ig.match(/\$\d+/g))].sort(), ['$15', '$30']); // the two fees as stated, nothing else
   assert.match(rel, /Get Star Trek: hold one for me/);
   assert.match(rel, /Main set \(TRK\) and Commander decks \(TRC\)/);
-  assert.match(ig, /Date: confirm with the store/);
+  assert.match(ig, /Confirm with the store/);
   assert.match(ig, /Dates: confirm with the store/);
   // Browser-built strings in home-live.js follow the same rules.
   const js = fs.readFileSync(path.resolve(dist, '..', 'public', 'js', 'home-live.js'), 'utf8');

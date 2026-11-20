@@ -55,3 +55,15 @@
 @media (min-width: 960px) { .rel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 /* wide Home: the Follow button joins the heading row (right), so no half-empty row under the cards */
 @media (min-width: 960px) { .home-ig { display: grid; grid-template-columns: 1fr auto; align-items: end; column-gap: var(--s-3); } .home-ig > ul { grid-column: 1 / -1; margin-top: var(--s-3); } .home-ig > p { grid-row: 1; grid-column: 2; margin-top: 0; } }
+
+/* Instagram cards: CSS-drawn thumbnail by kind, no image and no request (rule 13) */
+.ig-card { grid-template-rows: auto 1fr; }
+.ig-confirm { font-size: var(--step--1); }
+.ig-art { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: var(--border-w) solid var(--line); background: var(--bg2); }
+.ig-art::before, .ig-art::after { content: ""; position: absolute; }
+.ig-art[data-kind=champ] { --b: linear-gradient(var(--card), var(--card)); background: var(--b) 50% 67%/6% 16% no-repeat, var(--b) 50% 78%/22% 8% no-repeat, var(--b) 8% 30%/26% 3px no-repeat, var(--b) 92% 30%/26% 3px no-repeat, var(--b) 8% 70%/26% 3px no-repeat, var(--b) 92% 70%/26% 3px no-repeat, var(--accent2); }
+.ig-art[data-kind=champ]::before { left: 36%; top: 12%; width: 28%; aspect-ratio: 1 / .9; background: var(--accent); border: var(--border-w) solid var(--line); border-radius: 0 0 50% 50% / 0 0 100% 100%; }
+.ig-art[data-kind=series] { --f: linear-gradient(var(--accent), var(--accent)); background: var(--f) 16.7% 25%/calc(100% / 7) 20% no-repeat, var(--f) 66.7% 75%/calc(100% / 7) 20% no-repeat, var(--f) 100% 50%/calc(100% / 7) 20% no-repeat, linear-gradient(90deg, transparent calc(100% - 2px), var(--soft-line) 0) 0 0/calc(100% / 7) 100%, linear-gradient(transparent calc(100% - 2px), var(--soft-line) 0) 0 0/100% 20%, var(--bg2); }
+.ig-art[data-kind=series]::before, .ig-art[data-kind=series]::after { width: 44%; height: 14%; background: var(--card); border: var(--border-w) solid var(--line); }
+.ig-art[data-kind=series]::before { left: 12%; top: 3%; }
+.ig-art[data-kind=series]::after { left: 44%; top: 82%; }
