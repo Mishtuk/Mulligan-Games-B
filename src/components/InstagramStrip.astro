@@ -17,7 +17,7 @@ const ok = posts.filter((p) => /^[\w-]{6,20}$/.test(p.code));
           {p.lines.map((l) => <p>{l}</p>)}
           {p.fee && <span class="sticker">{p.fee}</span>}
           {p.note && <p class="muted">{p.note}</p>}
-        <div><a class="btn btn-secondary" href={`https://www.instagram.com/p/${p.code}/`} data-ig={p.code}>Show this post from Instagram</a></div>
+        <div><a class="btn btn-secondary" href={`https://www.instagram.com/p/${p.code}/`} data-ig={p.code}>Show post from Instagram</a></div>
         </div>
       </li>
     ))}

@@ -77,7 +77,7 @@ test('Instagram facade: built pages make no request to Instagram before a tap', 
   const links = [...h.matchAll(/<a [^>]*data-ig="([\w-]+)"[^>]*>/g)];
   assert.ok(links.length >= 2);
   for (const [a, code] of links) { assert.ok(a.includes(`href="https://www.instagram.com/p/${code}/"`)); } // no JS: a plain link
-  assert.match(h, /Show this post from Instagram/);
+  assert.match(h, /Show post from Instagram/);
   assert.match(h, /Follow @mulligangames/);
   const js = fs.readFileSync(path.join(dist, 'js/home-live.js'), 'utf8');
   assert.match(js, /instagram\.com\/p\/\$\{a\.dataset\.ig\}\/embed/);
@@ -155,5 +155,5 @@ test('release ads and Instagram: releases.css has no animation or transition; th
   const css = fs.readFileSync(path.join(root, 'src/styles/releases.css'), 'utf8');
   assert.doesNotMatch(css, /animation|transition|@keyframes/);
   const js = fs.readFileSync(path.join(root, 'public/js/home-live.js'), 'utf8');
-  assert.match(js, /f\.title = /); assert.match(js, /f\.focus\(\)/); assert.match(js, /Hide this post/); assert.match(js, /b\.focus\(\)/);
+  assert.match(js, /f\.title = /); assert.match(js, /x\.focus\(\)/); assert.match(js, /Escape/); assert.match(js, /Hide this post/); assert.match(js, /b\.focus\(\)/);
 });

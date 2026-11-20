@@ -11,7 +11,9 @@ import { TURNSTILE_SITE_KEY } from '../../lib/site.js';
       <p class="muted">Last updated: November 19, 2026</p>
     </header>
 
-    <section aria-labelledby="forms-h">
+    <div class="priv-grid">
+    <section class="box" aria-labelledby="forms-h">
+      <span class="tab" aria-hidden="true">Kept</span>
       <h2 id="forms-h">What each form stores</h2>
       <p>Each form saves one row (or a few) in the shop's database. Nothing else about you is saved with it.</p>
       <ul>
@@ -23,7 +25,8 @@ import { TURNSTILE_SITE_KEY } from '../../lib/site.js';
       <p>Each row also gets the time it was sent. Rows stay until the store deletes them.</p>
     </section>
 
-    <section aria-labelledby="track-h">
+    <section class="box" aria-labelledby="track-h">
+      <span class="tab" aria-hidden="true">Never</span>
       <h2 id="track-h">What we do not do</h2>
       <ul>
         <li>No analytics and no advertising trackers.</li>
@@ -36,9 +39,11 @@ import { TURNSTILE_SITE_KEY } from '../../lib/site.js';
       <p>Links to Google Maps, Instagram, X, Patreon, TopDeck and Wizards open other sites with their own rules.</p>
     </section>
 
-    <section aria-labelledby="del-h">
+    <section class="box box-sky priv-del" aria-labelledby="del-h">
+      <span class="tab" aria-hidden="true">Yours</span>
       <h2 id="del-h">Ask us to delete your data</h2>
       <p>Use the <a href="/visit/#contact">contact form</a>: give the email you used and what to remove. We will delete those rows.</p>
     </section>
+    </div>
   </div>
 </Base>

@@ -22,8 +22,9 @@
 .prose { padding-top: var(--s-4); }
 .prose .page-head { padding-top: 0; }
 .prose h1 { font-size: var(--step-3); }
-.prose section { margin-top: var(--s-5); padding-top: var(--s-4); max-width: var(--measure); border-top: 2px solid var(--soft-line); }
-.prose .page-head + section { margin-top: var(--s-4); }
+.priv-grid { display: grid; gap: var(--s-2) var(--s-4); align-items: start; margin-top: var(--s-2); }
+.prose .box h2 { font-size: var(--step-1); }
+@media (min-width: 900px) { .priv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .priv-del { grid-column: 1 / -1; } }
 .prose h2 { margin-bottom: var(--s-2); font-size: var(--step-2); }
 .prose p + p, .prose ul { margin-top: var(--s-2); }
 .prose ul + p { margin-top: var(--s-3); }

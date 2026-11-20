@@ -15,7 +15,8 @@ const read = (f) => fs.readFileSync(path.join(dist, f));
 // Budget is about 5% above the heaviest page. Before adding CSS, put it in the page file, not global.css; trim before raising.
 // D7 (loop 52): owner-requested New releases + Instagram sections on Home cost ~3.3k gzip; budget set ~5% above
 // Home's measured 21,651 gzip / 136,116 raw. Do not raise again without a DECISIONS.md entry.
-const BUDGET = { raw: 143000, gzip: 22700 };
+// D8 (loop 57): +300 gzip so the store's own bio line is never cut to fit the budget.
+const BUDGET = { raw: 143000, gzip: 23000 };
 
 // Every CSS and JS file the page loads: linked files plus the modules they import.
 function assets(html) {

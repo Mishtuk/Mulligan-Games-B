@@ -28,6 +28,9 @@ used in two rounds gets deleted.
 - **D7** (2026-11-20, boss, loop 52): Page-weight budget after the owner-requested New releases and Instagram
   sections? **Ruling:** raise to 143,000 raw / 22,700 gzip (about 5% above Home at 21,651 gzip). **Why:** an owner
   feature, measured cost (~3.3k gzip), no slack left to trim. Future raises need a new entry here.
+- **D8** (2026-11-20, boss, loop 57): Cut the client's own bio line to fit the budget? **Ruling:** no. Restored
+  "Stop in and stay for a game." and set the gzip budget to 23,000. **Why:** the client's real words outrank 77 bytes;
+  budgets must never remove client copy. Trim code, not the store's voice.
 
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.
