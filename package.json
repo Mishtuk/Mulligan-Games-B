@@ -10,7 +10,8 @@
     "test": "node --test \"test/*.test.mjs\"",
     "serve": "node tools/serve.mjs",
     "a11y": "node tools/a11y-check.mjs",
-    "gaps": "node tools/gaps.mjs"
+    "gaps": "node tools/gaps.mjs",
+    "gaps:selftest": "node tools/gaps.mjs --selftest"
   },
   "dependencies": {
     "astro": "^7.4.13"

@@ -32,6 +32,8 @@ used in two rounds gets deleted.
   "Stop in and stay for a game." and set the gzip budget to 23,000. **Why:** the client's real words outrank 77 bytes;
   budgets must never remove client copy. Trim code, not the store's voice.
 
+- **D9** (2026-11-20, boss, loop 69): The D8 +300 is no longer needed. **Ruling:** gzip budget back to the D7 line, 22,700 (Home 22,3xx). **Why:** loops 61-68 cut Home; the store's words stayed.
+
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.
 - Hard rules in `CONTEXT.md` are never traded away.
