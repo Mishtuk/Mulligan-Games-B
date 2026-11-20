@@ -189,3 +189,13 @@ test('.ics for an unknown fee has no fee line; a known fee keeps "Fee: $N."', ()
   assert.doesNotMatch(unfold(eventIcs({ ...base, fee: null }, { now: NOW })), /Fee/);
   assert.match(unfold(eventIcs({ ...base, fee: 5 }, { now: NOW })), /DESCRIPTION:Fee: \$5\./);
 });
+
+test('special nights link to a release by id that exists in releases.json (data-driven)', () => {
+  const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const ev = JSON.parse(fs.readFileSync(path.join(root, 'src/data/events.json'), 'utf8'));
+  const rel = JSON.parse(fs.readFileSync(path.join(root, 'src/data/releases.json'), 'utf8'));
+  const linked = ev.oneoffs.filter((e) => e.release);
+  assert.ok(linked.some((e) => e.release === 'mtg-star-trek'));
+  for (const e of linked) assert.ok(rel.some((r) => r.id === e.release), e.id);
+  assert.match(fs.readFileSync(path.join(root, 'src/components/NewReleases.astro'), 'utf8'), /id=\{`rel-\$\{r\.id\}`\}/);
+});

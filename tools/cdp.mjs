@@ -9,7 +9,7 @@ export async function launch() {
   const exe = [process.env.CHROME, 'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe', '/usr/bin/google-chrome', '/usr/bin/chromium', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'].find((p) => p && existsSync(p));
   if (!exe) throw new Error('Chrome not found: set CHROME to its path');
   const proc = spawn(exe, ['--headless=new', '--remote-debugging-port=0', `--user-data-dir=${mkdtempSync(join(tmpdir(), 'a11y-'))}`, '--no-first-run', 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
-  const wsUrl = await new Promise((res, rej) => { let log = ''; proc.stderr.on('data', (d) => { log += d; const m = log.match(/ws:\/\/\S+/); if (m) res(m[0]); }); setTimeout(() => rej(new Error('no ws')), 15000); });
+  const wsUrl = await new Promise((res, rej) => { let log = ''; proc.stderr.on('data', (d) => { log += d; const m = log.match(/ws:\/\/\S+/); if (m) res(m[0]); }); setTimeout(() => rej(new Error('no ws')), 45000); });
   const ws = new WebSocket(wsUrl); await new Promise((r) => (ws.onopen = r));
   let id = 0; const pend = new Map(), hs = [];
   ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.id && pend.has(m.id)) { const { res, rej } = pend.get(m.id); pend.delete(m.id); m.error ? rej(new Error(JSON.stringify(m.error))) : res(m.result); } else hs.forEach((h) => h(m)); };

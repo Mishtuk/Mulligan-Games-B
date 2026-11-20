@@ -19,7 +19,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
 <section class="home-releases" aria-labelledby="rel-h">
   <h2 id="rel-h">New releases</h2>
   {[feat].map((r) => { const p = r.image; return (
-  <article class="rel rel-feat" data-release={r.releaseDate} data-theme={r.theme}>
+  <article class="rel rel-feat" id={`rel-${r.id}`} data-release={r.releaseDate} data-theme={r.theme}>
     <picture>
       <source type="image/webp" srcset={p.webp[0][0]} />
       <img src={p.jpg} width={p.width} height={p.height} alt="" loading="lazy" />
@@ -35,7 +35,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
   </article>); })}
   <ul class="rel-grid">
     {rest.map((r, n) => { const p = r.image; return (
-    <li class="rel" data-release={r.releaseDate} data-theme={r.theme}>
+    <li class="rel" id={`rel-${r.id}`} data-release={r.releaseDate} data-theme={r.theme}>
       {p ? (<picture>
         <source type="image/webp" srcset={srcset(p)} sizes={GRID} />
         <img src={p.jpg} width={p.width} height={p.height} alt="" loading="lazy" />
