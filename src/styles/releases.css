@@ -10,6 +10,9 @@
 .rel-date { text-wrap: balance; font: 700 var(--step--1)/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--t-hi); }
 .rel .sticker { justify-self: start; }
 .rel-credit { font-size: .75rem; line-height: 1.3; }
+.rel-link { color: inherit; text-decoration: none; }
+.rel-link::after { content: ""; position: absolute; inset: 0; }
+.rel:has(.rel-link:focus-visible) { outline: 3px solid var(--link); outline-offset: 3px; }
 .rel-grid h3 { font-size: var(--step-0); }
 .rel[data-theme=pokemon] { --t-bg: var(--pk-bg); --t-hi: var(--pk-hi); --t-bar: var(--pk-red); }
 .rel:is([data-theme=pokemon], [data-theme=hololive]) picture { border-bottom: 0; padding-bottom: 8px; }
@@ -40,7 +43,6 @@
 .rel-grid, .ig-grid { display: grid; gap: var(--s-3) var(--s-2); margin-top: var(--s-3); }
 .rel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .ig-card { --t-bar: var(--accent); }
-.ig-slot { margin-top: var(--s-2); }
 .ig-frame { display: block; width: 100%; height: 34rem; border: 2px solid var(--line); background: var(--card); }
 .home-ig > p { margin-top: var(--s-3); }
 @media (min-width: 720px) { .ig-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; } }

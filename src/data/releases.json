@@ -19,8 +19,7 @@
       ],
       "jpg": "/media/releases/star-trek-960.jpg",
       "width": 960,
-      "height": 425,
-      "alt": "Borg cubes drifting in a green nebula, Star Trek key art"
+      "height": 425
     },
     "credit": "Image: Wizards of the Coast. Star Trek is a trademark of CBS Studios / Paramount.",
     "sourceUrl": "https://magic.wizards.com/en/products/star-trek",
@@ -47,8 +46,7 @@
       ],
       "jpg": "/media/releases/pokemon-delta-reign-578.jpg",
       "width": 578,
-      "height": 325,
-      "alt": "Pokemon TCG Mega Evolution: Delta Reign artwork"
+      "height": 325
     },
     "credit": "Image: The Pokemon Company International",
     "sourceUrl": "https://www.pokemon.com/us/pokemon-tcg/",
@@ -75,8 +73,7 @@
       ],
       "jpg": "/media/releases/riftbound-roadmap-960.jpg",
       "width": 960,
-      "height": 540,
-      "alt": "Riftbound art: a cat in a brass diving pod"
+      "height": 540
     },
     "credit": "Image: Riot Games",
     "sourceUrl": "https://playriftbound.com/en-us/news/announcements/riftbounds-latest-2026-roadmap/",
@@ -103,8 +100,7 @@
       ],
       "jpg": "/media/releases/hololive-volume-vortex-960.jpg",
       "width": 960,
-      "height": 540,
-      "alt": "hololive card game Volume Vortex booster key art"
+      "height": 540
     },
     "credit": "Image: COVER Corp. / Bushiroad",
     "sourceUrl": "https://en.hololive-official-cardgame.com/products/",
@@ -119,7 +115,7 @@
     "releaseDate": "2026-12-18",
     "prereleaseDate": null,
     "image": null,
-    "credit": "Panel drawn by us.",
+    "credit": "",
     "sourceUrl": "https://en.onepiece-cardgame.com/products/",
     "certainty": "Confirmed",
     "theme": "one-piece",

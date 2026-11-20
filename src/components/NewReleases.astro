@@ -21,8 +21,8 @@ const pic = (r, sizes, lazy) => {
   {[feat].map((r) => { const p = pic(r, '100vw', false); return (
   <article class="rel rel-feat" data-release={r.releaseDate} data-theme={r.theme}>
     <picture>
-      <source type="image/webp" srcset={p.srcset} sizes={p.sizes} />
-      <img src={p.jpg} width={p.width} height={p.height} alt={p.alt} />
+      <source type="image/webp" srcset={p.srcset} />
+      <img src={p.jpg} width={p.width} height={p.height} alt="" />
     </picture>
     <div class="rel-body">
       <p class="rel-game">{r.game} · {r.name}</p>
@@ -37,15 +37,15 @@ const pic = (r, sizes, lazy) => {
     <li class="rel" data-release={r.releaseDate} data-theme={r.theme}>
       {p ? (<picture>
         <source type="image/webp" srcset={p.webp[0][0]} />
-        <img src={p.jpg} width={p.width} height={p.height} alt={p.alt} loading="lazy" />
+        <img src={p.jpg} width={p.width} height={p.height} alt="" loading="lazy" />
       </picture>) : (<div class="rel-art" aria-hidden="true"></div>)}
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
-        <h3><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span></h3>
+        <h3><a class="rel-link" href="/visit/#contact"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span><span class="vh">, {r.name}</span></a></h3>
         <p class="rel-name">{r.name}</p>
         <p class="rel-date" data-when>{dateLine(r.releaseDate, today)}</p>
         <span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span>
-        <p class="rel-credit">{r.credit}</p>
+        {r.credit && <p class="rel-credit">{r.credit}</p>}
       </div>
     </li>); })}
   </ul>

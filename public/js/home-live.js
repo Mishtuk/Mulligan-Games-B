@@ -18,10 +18,13 @@ for (const a of document.querySelectorAll('a[data-ig]')) {
   b.type = 'button'; b.className = a.className; b.textContent = a.textContent;
   b.onclick = () => {
     const f = document.createElement('iframe');
-    f.src = `https://www.instagram.com/p/${a.dataset.ig}/embed`; f.loading = 'lazy'; f.className = 'ig-frame';
+    f.src = `https://www.instagram.com/p/${a.dataset.ig}/embed`; f.className = 'ig-frame';
     f.title = `${a.closest('li').querySelector('h3').textContent}, Instagram post`;
     f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
-    b.replaceWith(f); f.focus();
+    const x = document.createElement('button');
+    x.type = 'button'; x.className = 'btn btn-ghost'; x.textContent = 'Hide this post';
+    x.onclick = () => { f.remove(); x.remove(); b.hidden = false; b.focus(); };
+    b.hidden = true; b.after(f, x); f.focus();
   };
   a.replaceWith(b);
 }

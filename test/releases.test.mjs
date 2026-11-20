@@ -36,13 +36,13 @@ test('status: "today" is the New York day, not UTC', () => {
   assert.equal(releaseLabel('2026-11-14', zoned(TZ, new Date('2026-11-14T05:00:00Z')).date), 'Out now');
 });
 
-test('releases.json: only Confirmed or Likely rows; every image row has width, height, alt, credit and a JPEG fallback', () => {
+test('releases.json: only Confirmed or Likely rows; every image row has width, height, credit and a JPEG fallback', () => {
   assert.ok(rel.length >= 4);
   for (const r of rel) {
     assert.match(r.certainty, /^(Confirmed|Likely)/, r.id);
     const i = r.image;
     if (!i) { assert.equal(r.id, 'one-piece-st37-38'); continue; } // drawn panel, no publisher image
-    assert.ok(i.width > 0 && i.height > 0 && i.alt.length > 15 && /^Image: /.test(r.credit), r.id);
+    assert.ok(i.width > 0 && i.height > 0 && /^Image: /.test(r.credit), r.id);
     for (const f of [i.jpg, ...i.webp.map((w) => w[0])]) assert.ok(fs.existsSync(path.join(root, 'public', f)), f);
   }
 });
@@ -59,7 +59,7 @@ test('built Home: New releases cards are complete pictures and the featured one 
   for (const c of cards) {
     assert.match(c, /<source type="image\/webp" srcset="[^"]+-(480|578|960)\.webp/);
     const img = c.match(/<img\b[^>]*>/)[0];
-    assert.match(img, /\swidth="\d+"/); assert.match(img, /\sheight="\d+"/); assert.match(img, /\salt="[^"]{15,}"/);
+    assert.match(img, /\swidth="\d+"/); assert.match(img, /\sheight="\d+"/); assert.match(img, /\salt=""/); // decorative: the card text names the set
     assert.match(c, /class="rel-credit">Image: /);
     assert.match(c, /data-status>(Out now|Coming soon)</);
   }
@@ -134,6 +134,26 @@ test('One Piece ad: drawn aria-hidden panel in place of a publisher image; sets 
 test('Instagram promo cards use the ad language and keep the click-to-load link', { skip: !built }, () => {
   const cards = [...home().matchAll(/<li class="rel ig-card"[\s\S]*?<\/li>/g)].map((m) => m[0]);
   assert.ok(cards.length >= 2);
-  for (const c of cards) { assert.match(c, /class="rel-date"/); assert.match(c, /From @mulligangames/); assert.match(c, /data-ig="/); }
+  for (const c of cards) { assert.match(c, /class="rel-date"/); assert.match(c, /data-ig="/); }
   assert.match(cards[0], /Date: confirm with the store/); assert.match(cards[0], /[$]15 or [$]30 entry/);
+});
+
+test('release ads: one link per ad whose name says the set; publisher images are decorative (alt=""); art panel hidden from AT', { skip: !built }, () => {
+  const h = home();
+  const ads = [...h.matchAll(/<(?:article|li) class="rel[^"]*"[^>]*data-release[\s\S]*?<\/(?:article|li)>/g)].map((m) => m[0]).filter((c) => !/ig-card/.test(c));
+  assert.ok(ads.length >= 5);
+  for (const c of ads) {
+    const links = [...c.matchAll(/<a [^>]*href="\/visit\/#contact"[^>]*>([\s\S]*?)<\/a>/g)].map((m) => m[1].replace(/<[^>]+>/g, ''));
+    assert.equal(links.length, 1, c.slice(0, 90));
+    const set = c.includes('rel-feat') ? 'Star Trek' : c.match(/<p class="rel-name">([^<]+)/)[1];
+    assert.ok(links[0].includes(set), `${links[0]} names ${set}`);
+    assert.doesNotMatch(c, /<img(?![^>]*\salt="")/);
+  }
+});
+
+test('release ads and Instagram: releases.css has no animation or transition; the facade has a title, moves focus and has a Hide button', () => {
+  const css = fs.readFileSync(path.join(root, 'src/styles/releases.css'), 'utf8');
+  assert.doesNotMatch(css, /animation|transition|@keyframes/);
+  const js = fs.readFileSync(path.join(root, 'public/js/home-live.js'), 'utf8');
+  assert.match(js, /f\.title = /); assert.match(js, /f\.focus\(\)/); assert.match(js, /Hide this post/); assert.match(js, /b\.focus\(\)/);
 });

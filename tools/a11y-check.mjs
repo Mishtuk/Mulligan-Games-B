@@ -49,6 +49,21 @@ const wordProbe = `(() => { const out = [], sel = '.pocket-title, .chip, .btn, b
    const tops = new Set([...r.getClientRects()].filter((q) => q.width).map((q) => Math.round(q.top / 4))); if (tops.size > 1 && getComputedStyle(n.parentElement).visibility !== 'hidden') out.push(m[0] + ' in ' + e.tagName + '.' + e.className); } } }
  return [...new Set(out)].slice(0, 8); })()`;
 
+// Scrim/panel contrast: text inside .rel ads and Instagram cards is made transparent, the page is screenshotted, and every sample
+// of the pixels behind each text element (5x3 grid + corners, worst one counts) must reach 4.5:1 (3:1 at 24px+). Unlike check-site's
+// GROUND this does not skip text on boxes, so the Star Trek scrim and the themed panels are measured.
+const scrimProbe = `async (p) => { const f = [], im = await createImageBitmap(new Blob([Uint8Array.from(atob(p), (c) => c.charCodeAt())])),
+ c = new OffscreenCanvas(im.width, im.height).getContext('2d'), k = im.width / innerWidth; c.drawImage(im, 0, 0);
+ const Y = (a) => { const [r, g, b] = a.map((v) => ((v /= 255) <= .04 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4)); return .2126 * r + .7152 * g + .0722 * b; };
+ let n = 0;
+ for (const e of document.querySelectorAll('.rel *')) { if (![...e.childNodes].some((x) => x.nodeType === 3 && x.textContent.trim()) || e.closest('[hidden],.vh,[aria-hidden=true]')) continue;
+  const r = e.getBoundingClientRect(), s = getComputedStyle(e); if (!r.width || !r.height) continue; n++;
+  const m = s.color.match(/[\\d.]+/g).map(Number), al = m[3] ?? 1; let worst = 99;
+  const rot = s.rotate !== 'none' || !!e.closest('.sticker'); for (const fy of rot ? [.5] : [0, .5, 1]) for (const fx of rot ? [.2, .5, .8] : [0, .25, .5, .75, 1]) { const px = c.getImageData(Math.min(im.width - 1, (r.left + Math.min(5, r.width / 2) + (r.width - 2 * Math.min(5, r.width / 2)) * fx) * k), Math.min(im.height - 1, (r.top + Math.min(5, r.height / 2) + (r.height - 2 * Math.min(5, r.height / 2)) * fy) * k), 1, 1).data;
+   const t = Y([0, 1, 2].map((i) => m[i] * al + px[i] * (1 - al))), g = Y([px[0], px[1], px[2]]); worst = Math.min(worst, (Math.max(g, t) + .05) / (Math.min(g, t) + .05)); }
+  if (worst < (parseFloat(s.fontSize) >= 24 ? 3 : 4.5)) f.push('contrast ' + worst.toFixed(2) + ' ' + e.tagName + '.' + e.className + ' ' + e.textContent.trim().slice(0, 24)); }
+ return { n, f: [...new Set(f)].slice(0, 8) }; }`;
+
 const b = await launch();
 try {
   // 1. zoom 200% (root font-size only, like browser text zoom); then shapes at 100% with a tall viewport so elementFromPoint sees all
@@ -65,6 +80,21 @@ try {
       await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await sleep(200);
       const s = await t.ev(shapeProbe); if (s.length) ok(false, `shapes ${w} ${p}: ${s.join('; ')}`);
     }
+    await t.close();
+  }
+  // 1d. scrim/panel contrast behind text in the Home ads and Instagram cards (4.5:1, 3:1 at 24px+), 390 and 1280, Motion off
+  for (const w of [390, 1280]) {
+    const t = await b.page({ w, h: 800 }); await t.go(base + '/');
+    await t.ev(`document.documentElement.dataset.motion = 'off'; document.querySelectorAll('.rel img').forEach((i) => (i.loading = 'eager')); document.querySelectorAll('.rel *').forEach((e) => { e.style.setProperty('color', 'transparent', 'important'); e.style.setProperty('text-shadow', 'none', 'important'); })`); await sleep(400);
+    const h = await t.ev(`document.documentElement.scrollHeight`);
+    await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await sleep(600);
+    await t.ev(`document.documentElement.scrollTop = 0`);
+    const shot = await t.cdp('Page.captureScreenshot', { format: 'png' }); if (process.env.SCRIM_SHOT) (await import('node:fs')).writeFileSync(process.env.SCRIM_SHOT + w + '.png', Buffer.from(shot.data, 'base64'));
+    // colours come from the live page, so restore them for reading getComputedStyle while the screenshot holds the pixels
+    await t.ev(`document.querySelectorAll('.rel *').forEach((e) => { e.style.removeProperty('color'); e.style.removeProperty('text-shadow'); })`);
+    const r = await t.ev(`(${scrimProbe})("${shot.data}")`);
+    ok(r.n >= 20, `scrim contrast @${w}: only ${r.n} text nodes found in .rel`);
+    for (const m of r.f) ok(false, `scrim contrast @${w}: ${m}`);
     await t.close();
   }
   // 1b. no word broken mid-word in pocket titles and short labels at 320, 390 and 430
