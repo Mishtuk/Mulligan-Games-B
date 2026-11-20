@@ -104,17 +104,17 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
             {store.email && <p><a href={`mailto:${store.email}`}>{store.email}</a></p>}
           </div>}
           <div>
-            <h2>Hours</h2>
             {footHours === 'link' ? (
-              <p class="foot-hours-link"><a href="#hours">Opening hours, in the table above</a></p>
+              <p class="foot-hours-link"><a href="#hours">Opening hours are above</a></p>
             ) : (
               <>
+                <h2>Hours</h2>
                 <dl class="hours">
                   {order.map((d) => (
                     <div data-day={d}><dt>{DAYS[d]}</dt><dd>{hoursText(week[d])}</dd></div>
                   ))}
                 </dl>
-                <p class="foot-note">Hours and nights can change, so check before a long trip.</p>
+                <p class="foot-note">Hours and nights can change. Confirm with the store.</p>
               </>
             )}
           </div>

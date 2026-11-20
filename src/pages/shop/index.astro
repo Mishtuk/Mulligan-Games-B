@@ -9,7 +9,7 @@ import '../../styles/sleeve.css';
 import '../../styles/shop-only.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
-const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
+const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer and tabletop'], ['other', 'Something else']];
 const { sealed, preorders } = splitProducts(products);
 const shelfGames = [[''], ['g-pokemon', 'g-one-piece', 'g-riftbound']];
 const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbound"];
@@ -19,7 +19,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
   <div class="wrap shop">
     <header class="page-head">
       <h1>Shop</h1>
-      <p class="page-lede">Singles from the case, sealed on the shelf, preorders at the counter. Not here? Send a want list.</p>
+      <p class="page-lede">Not here? Send a want list.</p>
       <nav class="shop-jump" aria-label="Shop sections">
         <a class="chip" href="#singles">Singles</a>
         <a class="chip" href="#sealed">Sealed</a>
@@ -122,8 +122,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
         <div class="slip">
           <p class="slip-head">Preorders at the counter</p>
           <ul>
-            <li>Ask for the release date</li>
-            <li>Ask what deposit it takes</li>
+            <li>Ask for the release date and price</li>
           </ul>
           <a href="/visit/#contact">Ask us</a>
         </div>

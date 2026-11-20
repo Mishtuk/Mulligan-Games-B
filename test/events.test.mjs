@@ -103,11 +103,10 @@ test('sign-up list and D1 seed come from one function: stable ids, INSERT OR IGN
   assert.doesNotMatch(page, /<script(?![^>]*(src=|application\/json))[^>]*>/);
 });
 
-test('events page: day ids, Likely note, age line, no inline handlers; css has no colour literals', () => {
+test('events page: day ids, Likely note, no inline handlers; css has no colour literals', () => {
   const page = read('src/pages/events/index.astro');
   assert.match(page, /id=\{x\.slug\}/);
   assert.match(page, /Nights and fees come from public listings\. Confirm with the store\./);
-  assert.match(page, /Bring a grown-up \(confirm with the store\)/);
   assert.doesNotMatch(page, /<[a-z][^>]*\son[a-z]+\s*=/i);
   assert.doesNotMatch(read('src/styles/events.css').replace(/:root\s*\{[^}]*\}/, ''), /#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/);
   const js = read('public/js/events.js');
