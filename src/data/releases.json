@@ -74,7 +74,25 @@
     "sourceUrl": "https://www.pokemon.com/us/pokemon-tcg/",
     "certainty": "Confirmed",
     "theme": "pokemon",
-    "gameId": "pokemon"
+    "gameId": "pokemon",
+    "product": {
+      "webp": [
+        [
+          "/media/releases/pokemon-delta-reign-box-240.webp",
+          240
+        ],
+        [
+          "/media/releases/pokemon-delta-reign-box-360.webp",
+          360
+        ]
+      ],
+      "jpg": "/media/releases/pokemon-delta-reign-box-360.jpg",
+      "width": 360,
+      "height": 319,
+      "alt": "Mega Evolution: Delta Reign Elite Trainer Box, green dragon on the lid",
+      "credit": "Image: The Pokemon Company International",
+      "sourceUrl": "https://www.pokemon.com/us/news/pokemon-tcg-mega-evolution-delta-reign-product-showcase"
+    }
   },
   {
     "id": "riftbound-legacy",
@@ -152,6 +170,24 @@
     "sourceUrl": "https://en.onepiece-cardgame.com/products/",
     "certainty": "Confirmed",
     "theme": "one-piece",
-    "gameId": "one-piece"
+    "gameId": "one-piece",
+    "product": {
+      "webp": [
+        [
+          "/media/releases/one-piece-st37-box-100.webp",
+          100
+        ],
+        [
+          "/media/releases/one-piece-st37-box-160.webp",
+          160
+        ]
+      ],
+      "jpg": "/media/releases/one-piece-st37-box-160.jpg",
+      "width": 160,
+      "height": 297,
+      "alt": "One Piece Card Game Starter Deck ST-37 box, purple, with the straw-hat crew on the front",
+      "credit": "Image: Bandai / ONE PIECE CARD GAME",
+      "sourceUrl": "https://en.onepiece-cardgame.com/products/st37.html"
+    }
   }
 ]

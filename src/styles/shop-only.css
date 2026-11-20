@@ -1,5 +1,3 @@
-.band-crimp { padding-top: calc(var(--s-5) + .9rem); }
-.band-crimp::after { content: ""; position: absolute; top: 0; left: 50%; width: 100cqw; translate: -50% 0; height: .9rem; background: repeating-linear-gradient(90deg, var(--line) 0 3px, transparent 3px 7px); border-bottom: var(--border-w) solid var(--line); }
 /* Shop page only (split from shared.css so Sell and Visit do not carry it). */
 /* Page rules: jump chips, section spacing, want-list hints */
 .shop-jump { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
@@ -30,7 +28,9 @@ html.js .request .hold-line { display: none !important; }
   background: linear-gradient(var(--sky) 0 32%, var(--line) 32% calc(32% + 3px), var(--accent) 0); }
 .box-sil.is-pack::before { width: 30%; height: 80%; rotate: -8deg; border-radius: 2px; box-shadow: var(--shadow-sm);
   background: linear-gradient(var(--sky), var(--sky)) center / 100% 24% no-repeat, var(--accent2); }
-.box-shot img { width: 100%; height: 100%; object-fit: contain; }
+.box-shot { position: relative; aspect-ratio: 4 / 3; }
+.box-shot picture { display: contents; }
+.box-shot img { position: absolute; inset: .35rem; width: calc(100% - .7rem); height: calc(100% - .7rem); object-fit: contain; }
 @media (min-width: 1000px) { .shop-grid .pocket-title { font-size: var(--step-1); } }
 
 /* Singles display case: glass shelf, light bar on top, two rows of sleeved cards and toploaders with blank ASK stickers (drawn, static) */
@@ -77,4 +77,4 @@ html.js .request .hold-line { display: none !important; }
 main:has(.shop > .band:last-child) + .site-footer { margin-top: 0; border-top: 0; }
 
 /* the sealed band follows the form: no 6rem gap plus band padding (dead space at 768/1024) */
-.shop > .band-crimp { margin-top: var(--s-5); padding-top: calc(var(--s-4) + .9rem); }
+.shop > .band { margin-top: var(--s-5); }

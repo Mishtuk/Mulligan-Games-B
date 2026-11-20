@@ -96,7 +96,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
       </form>
     </section>
 
-    <section class="band band-crimp" id="stock" aria-label="Sealed and preorders">
+    <section class="band" id="stock" aria-label="Sealed and preorders">
       <div class="stock">
         {[['sealed', 'Sealed', out, 'Nothing out yet. Ask at the counter.'], ['preorders', 'Preorders', soon, 'Nothing announced yet. Ask at the counter.']].map(([id, h, list, none]) => (
           <section id={id} aria-labelledby={`${id}-h`}>

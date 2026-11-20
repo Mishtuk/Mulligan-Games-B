@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 77 of 80 (was 76 of 80 (A11y; priorities in docs/review/loop-70/review.md "Priorities 71-79"; the gaps column check is already done in 75)
+- RESUME HERE: loop 78 of 80 (Copy; priorities in docs/review/loop-70/review.md "Priorities 71-79")
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 77 Identity (designer): Pokemon ETB and One Piece ST-37 publisher box shots on Shop pockets (credited, < 30 KB); Riftbound Legacy and Hololive have no publisher product shot, drawn pack kept; Privacy house-policy sheet with binder clip; Shop crimp strip cut; box-shot images now absolutely contained. Shots docs/review/loop-77/.
 - Loop 76 (A11y): stale/unknown hold id lands on the request form with 'Write the set you want held in the cards box below.' (hold.js generic note + focus; Shop emits a generic #hold-<id> line for every releases.json id not shown, so JS-off works for those; a truly unknown id with JS off cannot scroll, static page). a11y gate: stale hold JS on, JS-off generic line, Visit placard/storefront within 4px 768-1600, fixed sleeps replaced by until()/settle() bounded waits (run 2m50, green). Shop Sealed/Preorders rows and headings centred (1280 lopsided fixed). 179 tests. Shots docs/review/loop-76/.
 - Loop 75 (Visit + chrome): 404 card 24px higher at 390 (no top padding/margin under 820); Visit hero placard stretches and tops align with the storefront at 700+; tools/gaps.mjs one-column-hole check (1024+, any two big blocks in a grid, lone h/p/.tab cells exempt) with selftest; it found Shop Sealed/Preorders 350px hole, fixed by stacking them (shop-only.css). Tests 178, check-site 7 paths, gaps 0 on 7 paths. Shots docs/review/loop-75/.
 - Loop 74 (Sell): stubs moved into the aside under "We buy cards" (1280+), columns end 64px apart; sticky aside rule dropped. Tests 178, check-site + gaps /sell/ green. Shots docs/review/loop-74/.
