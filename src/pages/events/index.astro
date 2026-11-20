@@ -44,7 +44,8 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
       <div class="ev-main">
         <section class="sheet-wrap" aria-labelledby="sheet-h">
           <h2 id="sheet-h">Pairings sheet</h2>
-          <p class="ev-none" id="ev-none" role="status" hidden></p>
+          <p class="vh" id="ev-status" role="status"></p>
+          <p class="ev-none" id="ev-none" hidden></p>
           <div class="sheet">
             <span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span>
             <div class="sheet-head mono" aria-hidden="true"><span>Time</span><span>Game</span><span>Format</span><span>Fee</span><span>Seat</span></div>
@@ -54,7 +55,6 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                 {x.closed ? null : x.rows.length === 0 ? (
                   <p class="day-note">Nothing booked yet.</p>
                 ) : (
-                  <>
                     <table class="pairings" role="table">
                       <caption class="vh">{x.name} game nights</caption>
                       <colgroup aria-hidden="true"><col /><col /><col /><col /><col /></colgroup>
@@ -76,7 +76,6 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                         ))}
                       </tbody>
                     </table>
-                  </>
                 )}
               </section>
             ))}

@@ -64,7 +64,10 @@ function filter() {
     sn.textContent = g === 'all' ? 'No special nights on the calendar yet.' : `No ${label} special nights booked.`;
   }
   const none = $('#ev-none');
-  if (none) { none.hidden = weekly > 0 || g === 'all'; none.textContent = weekly > 0 || g === 'all' ? '' : `No ${label} nights on our list yet.`; }
+  if (none) { none.hidden = weekly > 0 || g === 'all'; none.textContent = weekly > 0 || g === 'all' ? '' : `No ${label} nights listed.`; }
+  // Spoken result: a live region that is always in the page; filled a beat after load so it is announced.
+  const say = $('#ev-status');
+  if (say) { const msg = g === 'all' ? '' : weekly > 0 ? `${weekly} ${label} ${weekly === 1 ? 'night' : 'nights'} this week` : `No ${label} nights listed`; setTimeout(() => { say.textContent = msg; }, 250); }
 }
 
 async function seats() {

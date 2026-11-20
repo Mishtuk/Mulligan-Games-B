@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 46 of 50 (A11y). Loops 1-45 done.
+- RESUME HERE: loop 47 of 50. Loops 1-46 done.
 - [boss] refinement loop 41 (Home): see docs/review/loop-40/review.md priority list (41-49 aimed at launch quality) and its owner launch checklist
 
 ## Waiting on the owner
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 46 (A11y): Events filter now speaks: always-present `#ev-status` (role=status, .vh) says "3 Magic nights this week" / "No Riftbound nights listed" (filled 250ms after load); a11y-check asserts, per game, the status text and that hidden days, rows and tickets are absent from the AX tree. 200% at 1280 on Events and Sell looked at, clean. Cut: role=status on the visible no-results box and an empty fragment. 138 tests, check-site and a11y pass. Shots docs/review/loop-46/.
 - Loop 45 (Visit + chrome): Visit band 900+ = placard + Maps left, 2:1 photo slot right (30rem); 404 loses Shop button; header/footer identical on 7 paths except Visit props. Shots docs/review/loop-45/. 138 tests, check-site PASS, a11y PASS.
 - Loop 44 (Sell): LINES total empty until a card has a name (tested `totalText`, aria-live on the `<p>`); Shop Sealed shelf art tightened at 1280; no other page needs the footer-after-band rule. 138 tests, check-site and a11y pass. Shots `docs/review/loop-44/`.
 - Loop 43 (Shop): case rows patterned by shelf-tag games (sleeve.css g-* on cback), Sealed/Preorders two equal columns at 1280, footer gap after the last band removed, cut cback v2. Shots docs/review/loop-43/.

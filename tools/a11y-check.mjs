@@ -96,6 +96,31 @@ try {
     s = await st(); ok(s.exp === 'false', 'menu: click outside closes ' + JSON.stringify(s));
     await t.close();
   }
+  // 2b. Events filter in the accessibility tree: every game filter => a status line with the count (or "No X nights listed"),
+  // and hidden days/rows/tickets are gone from the tree (not just painted away).
+  {
+    const games = JSON.parse((await import('node:fs')).readFileSync('src/data/games.json', 'utf8'));
+    for (const g of games) {
+      const t = await b.page({ w: 1280, h: 900 }); await t.go(base + '/events/?game=' + g.id); await sleep(500);
+      await t.cdp('Accessibility.enable');
+      const { nodes } = await t.cdp('Accessibility.getFullAXTree');
+      const live = (n) => !n.ignored;
+      const names = (role) => nodes.filter((n) => live(n) && n.role?.value === role).map((n) => n.name?.value || '');
+      const dom = await t.ev(`({ rows: [...document.querySelectorAll('tbody tr[data-game]')].map((r) => ({ game: r.dataset.game, fmt: r.querySelector('th')?.textContent.trim().slice(0, 20), hidden: r.hidden || !!r.closest('[hidden]') })),
+        days: [...document.querySelectorAll('.day')].map((d) => ({ h: d.querySelector('h3').firstChild.textContent.trim(), hidden: !!d.closest('[hidden]') })),
+        tickets: [...document.querySelectorAll('.ticket[data-game]')].map((r) => ({ game: r.dataset.game, h: r.querySelector('h3').textContent.trim(), hidden: r.hidden })) })`);
+      const shown = dom.rows.filter((r) => !r.hidden).length;
+      const want = shown ? `${shown} ${g.name} ${shown === 1 ? 'night' : 'nights'} this week` : `No ${g.name} nights listed`;
+      const st = nodes.filter((n) => live(n) && n.role?.value === 'status' && n.name?.value !== undefined).map((n) => n.childIds && nodes.filter((c) => n.childIds.includes(c.nodeId)).map((c) => c.name?.value).join(''));
+      ok(st.includes(want), `events filter ${g.id}: status line "${want}" in the AX tree, got ${JSON.stringify(st)}`);
+      ok(dom.rows.every((r) => r.hidden === (r.game !== g.id)), `events filter ${g.id}: only ${g.id} rows left unhidden`);
+      const heads = names('heading'), rowheads = names('rowheader');
+      for (const d of dom.days) ok(d.hidden === !heads.some((h) => h.startsWith(d.h)), `events filter ${g.id}: ${d.h} ${d.hidden ? 'hidden day still in' : 'shown day missing from'} the AX tree`);
+      ok(rowheads.length === shown, `events filter ${g.id}: ${rowheads.length} row headers in the AX tree, ${shown} rows shown`);
+      for (const k of dom.tickets) ok(k.hidden === !heads.includes(k.h), `events filter ${g.id}: ticket "${k.h}" ${k.hidden ? 'hidden but in' : 'shown but not in'} the AX tree`);
+      await t.close();
+    }
+  }
   // 3. motion: off => no animations, no transitions, on every path; reduced motion starts off with the switch disabled
   const motionProbe = `(() => { let tr = 0; for (const e of document.querySelectorAll('body *')) { const d = getComputedStyle(e).transitionDuration; if (d.split(',').some((x) => parseFloat(x) > 0)) tr++; }
     const m = document.getElementById('motion'); return { dm: document.documentElement.dataset.motion, pressed: m.getAttribute('aria-pressed'), disabled: m.disabled, anims: document.getAnimations().length, tr }; })()`;
