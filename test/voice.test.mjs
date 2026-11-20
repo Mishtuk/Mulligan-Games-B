@@ -85,11 +85,34 @@ test('release ads and Instagram cards: shop voice, no checkout language, no inve
   }
   assert.doesNotMatch(rel, /\$\s?\d/); // no prices on a release ad
   assert.deepEqual([...new Set(ig.match(/\$\d+/g))].sort(), ['$15', '$30']); // the two fees as stated, nothing else
-  assert.match(rel, /Pick up Star Trek at the counter/);
+  assert.match(rel, /Hold one for me/);
   assert.match(rel, /Main set \(TRK\) and Commander decks \(TRC\)/);
   assert.match(ig, /Date: confirm with the store/);
   assert.match(ig, /Dates: confirm with the store/);
   // Browser-built strings in home-live.js follow the same rules.
   const js = fs.readFileSync(path.resolve(dist, '..', 'public', 'js', 'home-live.js'), 'utf8');
   assert.doesNotMatch(js, NO);
+});
+
+// Loop 68: hold-request CTA bank (DESIGN.md glossary) and the decks-not-packs rule from docs/research/releases.md.
+// Release ads name the unit: a box for booster sets, a deck for One Piece starter decks. Hold buttons use one verb family.
+test('hold CTAs use one verb family and One Piece starter decks are never packs', { skip: !fs.existsSync(dist) }, () => {
+  const home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+  const rel = text(home.match(/<section class="home-releases"[^>]*>[\s\S]*?<\/section>/)[0]);
+  const shop = text(fs.readFileSync(path.join(dist, 'shop', 'index.html'), 'utf8'));
+  for (const t of [rel, shop]) {
+    assert.doesNotMatch(t, /grab a pack|pick up .{0,20} at the counter|ask us about preorders|reserve|pre-?order it/i);
+    for (const m of t.matchAll(/\bhold (?:one|an? \w+)(?: [\w:]+)* for me/gi)) assert.match(m[0], /^Hold (?:one|a box|a deck) for me$/);
+  }
+  assert.match(rel, /Hold a deck for me/);
+  assert.match(rel, /Hold a box for me/);
+  assert.match(shop, /Hold one for me/);
+  // the One Piece card: starter decks (releases.md), so no "pack" or "booster" anywhere in its ad
+  const op = text(home.match(/<li class="rel"[^>]*data-theme="one-piece"[\s\S]*?<\/li>/)[0]);
+  assert.match(op, /Starter Decks/);
+  assert.doesNotMatch(op, /\b(?:pack|packs|booster|box)\b/i);
+  // data: every release states its unit through releases.json, and One Piece is a deck
+  const rows = JSON.parse(fs.readFileSync(path.resolve(dist, '..', 'src', 'data', 'releases.json'), 'utf8'));
+  for (const r of rows.filter((x) => x.gameId === 'one-piece')) assert.equal(r.unit, 'deck', r.id);
+  for (const r of rows.filter((x) => x.unit)) assert.match(r.unit, /^(?:box|deck)$/);
 });

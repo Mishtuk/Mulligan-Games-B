@@ -219,7 +219,7 @@ try {
     const t = await b.page({ w, h: 844 }); await t.go(holdUrl);
     if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(`document.getElementById('req-cards').blur(); document.getElementById('req-cards').focus()`); await sleep(300); }
     const r = await t.ev(inView);
-    ok(r.id === 'req-cards' && /^Hold: /.test(r.val) && /^Hold request for .+ filled in. Add your name and email.$/.test(r.note) && /^req-hold /.test(r.desc) && r.top >= r.hdr && r.bottom <= r.vh, `hold flow @${w} ${z || '100%'}: focus on the filled request field, status line, in view ${JSON.stringify(r)}`);
+    ok(r.id === 'req-cards' && /^Hold: /.test(r.val) && /^Hold for .+ filled in. Add your name and email.$/.test(r.note) && /^req-hold /.test(r.desc) && r.top >= r.hdr && r.bottom <= r.vh, `hold flow @${w} ${z || '100%'}: focus on the filled request field, status line, in view ${JSON.stringify(r)}`);
     await t.close();
   }
   for (const z of ['', '200%']) {

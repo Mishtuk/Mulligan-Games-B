@@ -1,6 +1,7 @@
 [
   {
     "id": "mtg-star-trek",
+    "short": "Magic",
     "game": "Magic: The Gathering",
     "name": "Star Trek",
     "releaseDate": "2026-11-13",
@@ -44,6 +45,7 @@
   },
   {
     "id": "pokemon-delta-reign",
+    "unit": "box",
     "game": "Pokemon TCG",
     "name": "Mega Evolution: Delta Reign",
     "releaseDate": "2026-11-06",
@@ -75,6 +77,7 @@
   },
   {
     "id": "riftbound-legacy",
+    "unit": "box",
     "game": "Riftbound",
     "name": "Legacy (Set 6)",
     "releaseDate": "2027-01-29",
@@ -106,6 +109,7 @@
   },
   {
     "id": "hololive-volume-vortex",
+    "unit": "box",
     "game": "Hololive OCG",
     "name": "Booster Pack: Volume Vortex",
     "releaseDate": "2027-03-19",
@@ -137,6 +141,7 @@
   },
   {
     "id": "one-piece-st37-38",
+    "unit": "deck",
     "game": "One Piece Card Game",
     "name": "Starter Decks ST‑37 and ST‑38",
     "releaseDate": "2026-12-18",

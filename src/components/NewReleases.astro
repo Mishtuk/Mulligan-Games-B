@@ -11,7 +11,6 @@ const rows = shownReleases(all.filter((r) => /^Confirmed/.test(r.certainty)), to
 // Star Trek leads while it is under 90 days old; after that the newest set with a publisher image does (never the drawn One Piece panel).
 const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows.find((r) => r.image);
 const rest = rows.filter((r) => r !== feat);
-const ask = ['Hold a box for me', 'Ask us about preorders'];
 // Grid sizes match the laid-out slot (measured in Chrome: 2 / 4 columns). The featured image is object-fit: cover in a box at least 31rem tall, so it always shows at 926-1120px wide: one 960 file, no srcset. Every image is lazy: even the featured one starts below the fold (top 1792 / 1331 / 922px at 390 / 768 / 1280). Test: test/images.test.mjs.
 const GRID = '(min-width: 1200px) 266px, (min-width: 960px) 22vw, calc(50vw - 2rem)';
 const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
@@ -29,16 +28,16 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       <img src={feat.product.jpg} width={feat.product.width} height={feat.product.height} alt="" loading="lazy" />
     </picture>)}
     <div class="rel-body">
-      <p class="rel-game">{feat.game} · {feat.name}</p>
+      <p class="rel-game">{feat.short ?? feat.game} · {feat.name}</p>
       <h3>{feat.ad ?? 'New in the case'}</h3>
       {feat.types && <p class="rel-name">{feat.types}</p>}
       <p class="rel-date"><span data-status>{releaseLabel(feat.releaseDate, today)}</span> · <span data-when>{dateLine(feat.releaseDate, today)}</span></p>
-      <p><a class="btn" href={holdHref(feat.id)}>Pick up {feat.name} at the counter</a></p>
+      <p><a class="btn" href={holdHref(feat.id)}>Hold one for me<span class="vh">, {feat.name}</span></a></p>
       <p class="rel-credit">{feat.credit}</p>
     </div>
   </article>
   <ul class="rel-grid">
-    {rest.map((r, n) => { const p = r.image; return (
+    {rest.map((r) => { const p = r.image; return (
     <li class="rel" id={`rel-${r.id}`} data-release={r.releaseDate} data-theme={r.theme}>
       {p ? (<picture>
         <source type="image/webp" srcset={srcset(p)} sizes={GRID} />
@@ -46,7 +45,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       </picture>) : (<div class="rel-art" aria-hidden="true"></div>)}
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
-        <h3><a class="rel-link" href={holdHref(r.id)}><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Stop in and grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span><span class="vh">, {r.name}</span></a></h3>
+        <h3><a class="rel-link" href={holdHref(r.id)}>Hold a {r.unit ?? 'box'} for me<span class="vh">, {r.name}</span></a></h3>
         <p class="rel-name">{r.name}</p>
         <p class="rel-date" data-when>{dateLine(r.releaseDate, today)}</p>
         <span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span>
@@ -54,6 +53,6 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       </div>
     </li>); })}
   </ul>
-  <p class="rel-ask">Want a box or a deck? <a href="/visit/#contact">Ask us</a>, or ask what is coming.</p>
+  <p class="rel-ask">Want a box or a deck? <a href="/visit/#contact">Ask us</a>.</p>
 </section>
 )}

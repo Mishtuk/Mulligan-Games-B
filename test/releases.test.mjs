@@ -71,8 +71,9 @@ test('built Home: New releases cards are complete pictures and the featured one 
   assert.match(h, /<h3>Star Trek has landed at Mulligan\.<\/h3>/);
   assert.match(h, /Main set \(TRK\) and Commander decks \(TRC\)/); // owner-requested products line (rule 5)
   assert.match(h, /class="rel-date"/);
-  assert.match(h, /Stop in and grab a pack/);
-  assert.match(h, /Pick up Star Trek at the counter/);
+  assert.match(h, /Hold a box for me/);
+  assert.match(h, /Hold a deck for me/);
+  assert.match(h, /Hold one for me/);
   const all = [...h.matchAll(/<(?:article|li) class="rel[^"]*"[\s\S]*?<\/(?:article|li)>/g)].map((m) => m[0]);
   const cards = all.filter((c) => /<img/.test(c));
   assert.ok(cards.length >= 3);
