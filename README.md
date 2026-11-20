@@ -29,6 +29,6 @@ node tools/check-site.mjs http://localhost:PORT / /events/ /shop/ /sell/ /visit/
 
 ## Owner to-dos before launch
 - Set `SITE_URL` in `src/lib/site.js` (now the placeholder `https://mulligangames.example`; used by canonical, sitemap, robots, og:image, JSON-LD).
-- Send real photos (two marked slots: Visit storefront, Events play room; see "Photo slots" in `HANDOFF.md`).
+- Send real photos (two marked slots: Visit storefront, Events play room; see [docs/photo-swap.md](docs/photo-swap.md)).
 - Give the phone number and email to publish, weekly fees, buylist rates, Discord invite.
 - Seeding D1 (`tools/seed-events.mjs`) and any Cloudflare deploy need the owner's OK first.

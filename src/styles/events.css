@@ -31,16 +31,18 @@
 .ev-note { margin-top: var(--s-3); color: var(--muted); font-size: var(--step--1); }
 
 /* one visible header row for the whole sheet (aria-hidden); each day's table keeps a visually hidden thead so every table stays valid for screen readers */
-.sheet-head { display: grid; grid-template-columns: 8% 12% 30% 9% 41%; margin-top: var(--s-2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+.sheet-head { display: grid; grid-template-columns: 8% 15% 30% 9% 38%; margin-top: var(--s-2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
 .sheet-head span { padding: .4rem .5rem; }
 .pairings { width: 100%; margin-top: var(--s-2); border-collapse: collapse; table-layout: fixed; text-align: left; }
 .pairings td, .pairings tbody th { padding: .55rem .5rem; border-bottom: 1px solid var(--soft-line); vertical-align: middle; font-weight: 400; }
 .pairings tbody th { font-weight: 700; }
 .pairings tbody tr[data-today] { background: var(--sky); }
 .act { display: flex; align-items: center; flex-wrap: wrap; gap: 0 var(--s-2); }
-.pairings col:nth-child(1) { width: 8%; } .pairings col:nth-child(2) { width: 12%; } .pairings col:nth-child(3) { width: 30%; } .pairings col:nth-child(4) { width: 9%; } .pairings col:nth-child(5) { width: 41%; }
+.pairings col:nth-child(1) { width: 8%; } .pairings col:nth-child(2) { width: 15%; } .pairings col:nth-child(3) { width: 30%; } .pairings col:nth-child(4) { width: 9%; } .pairings col:nth-child(5) { width: 38%; }
 .cap { display: block; color: var(--muted); font-size: var(--step--1); font-weight: 400; }
 .btn-sm { min-height: var(--tap); padding: .25rem var(--s-2); box-shadow: var(--shadow-sm); }
+/* wide sheet: Hold a seat gets its own column so every Add to calendar link lines up, seat or no seat */
+@container sheet (min-width: 42.51rem) { .act { display: grid; grid-template-columns: max-content auto; justify-content: start; } .act .btn { white-space: nowrap; } .act .cal:only-child { grid-column: 2; } }
 .cal { display: inline-flex; align-items: center; min-height: var(--tap); font-size: var(--step--1); }
 /* game swatch: fixed 1rem x 1.4rem sleeve (5:7) beside the name, so nothing shifts */
 .gm { display: inline-flex; align-items: center; gap: .4rem; }

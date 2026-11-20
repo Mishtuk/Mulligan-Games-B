@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 47 of 50. Loops 1-46 done.
+- RESUME HERE: loop 48 of 50. Loops 1-47 done.
 - [boss] refinement loop 41 (Home): see docs/review/loop-40/review.md priority list (41-49 aimed at launch quality) and its owner launch checklist
 
 ## Waiting on the owner
@@ -50,6 +50,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - [ ] Preview deploy to Cloudflare (later)
 
 ## Photo slots (swap steps)
+Full shot list, sizes, file names and exact JSON: [docs/photo-swap.md](docs/photo-swap.md).
 Two marked placeholders show "Photo coming: ..." until the owner sends photos. To swap one: put the file in `public/img/` (real photo, no people unless they consented), then in `src/data/store.json` set `photos.storefront` (Visit) or `photos.playRoom` (Events) from `null` to `{ "src": "/img/x-800.jpg", "alt": "what is in it", "width": 800, "height": 400, "srcset": "/img/x-400.jpg 400w, /img/x-800.jpg 800w", "sizes": "(min-width: 700px) 16rem, 100vw" }`. Use a 2:1 crop. Rebuild; `npm test` checks width, height and alt are set. Before launch no `class="ph"` may remain (grep dist). Placeholder CSS: `.ph` in global.css; component `src/components/Photo.astro`.
 
 ## Built without a pattern
@@ -66,6 +67,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 47 (Identity, designer): all 7 paths x 2 widths + Home Motion off looked at. 3 fixes: Events Game col 15% (Tabletop no longer touches Format), Hold a seat column so Add to calendar links align, Home 1280 request band 3rem below Tonight. docs/photo-swap.md written (linked from README, HANDOFF). Shots docs/review/loop-47/. 138 tests, check-site PASS, a11y PASS.
 - Loop 46 (A11y): Events filter now speaks: always-present `#ev-status` (role=status, .vh) says "3 Magic nights this week" / "No Riftbound nights listed" (filled 250ms after load); a11y-check asserts, per game, the status text and that hidden days, rows and tickets are absent from the AX tree. 200% at 1280 on Events and Sell looked at, clean. Cut: role=status on the visible no-results box and an empty fragment. 138 tests, check-site and a11y pass. Shots docs/review/loop-46/.
 - Loop 45 (Visit + chrome): Visit band 900+ = placard + Maps left, 2:1 photo slot right (30rem); 404 loses Shop button; header/footer identical on 7 paths except Visit props. Shots docs/review/loop-45/. 138 tests, check-site PASS, a11y PASS.
 - Loop 44 (Sell): LINES total empty until a card has a name (tested `totalText`, aria-live on the `<p>`); Shop Sealed shelf art tightened at 1280; no other page needs the footer-after-band rule. 138 tests, check-site and a11y pass. Shots `docs/review/loop-44/`.
