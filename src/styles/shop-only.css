@@ -53,13 +53,9 @@ html.js .request .hold-line { display: none !important; }
 @media (min-width: 600px) { .case { font-size: 1rem; } .case-shelf { padding-inline: var(--s-4); } }
 @media (min-width: 1000px) { .case { font-size: 1.05rem; } }
 
-/* Sealed and Preorders share one band row on wide screens */
+/* Sealed over Preorders at every width; from 600px the pockets sit in rows of up to 14rem (side by side, 3 preorders against 2 sealed left a 350px hole) */
 .stock { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
-/* 768: stacked, three pockets a row (side by side the pockets were 125px wide and the buttons wrapped) */
-@media (min-width: 600px) and (max-width: 959px) { .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 960px) {
-  .stock { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6, 4rem); align-items: start; }
-}
+@media (min-width: 600px) { .shop-grid { grid-template-columns: repeat(auto-fill, minmax(11rem, 14rem)); } }
 .airy > .cond-fold { margin-top: var(--s-3); }
 .request { max-width: 46rem; }
 .request form { max-width: none; }

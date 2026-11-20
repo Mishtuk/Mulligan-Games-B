@@ -1,4 +1,5 @@
 /* Sell page: the buylist slip (receipt panel) and the rules column. Tokens and components come from global.css; page-head and guide from shared.css. */
+.sell-side { display: grid; gap: var(--s-4); }
 .sell-grid { display: grid; gap: var(--s-5); margin-top: var(--s-4); align-items: start; }
 
 .sell { container: sell / inline-size; }
@@ -46,23 +47,21 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
   .sell-grid { grid-template-columns: minmax(0, 42rem) minmax(0, 1fr); column-gap: var(--s-5); }
   .slip-wrap { grid-column: 1; grid-row: 1; }
   .sell-side { grid-column: 2; grid-row: 1; }
-  /* sticky only while it fits: 5.5rem top + ~30rem column needs a window at least 38rem tall (loop 40) */
-  @media (min-height: 38rem) { .sell-side:has(details:not([open])) { position: sticky; top: 5.5rem; } }
 }
-@container sell (min-width: 40rem) {
+@container sell (min-width: 40rem) and (max-width: 69.99rem) {
   .stubs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .stubs .stub { border-top-style: solid; border-right: 3px dashed var(--soft-line); }
   .stubs .stub:last-child { border-right: var(--border-w) solid var(--line); }
 }
 
 /* how it works: three receipt stubs */
-.stubs { display: grid; gap: 0; margin-top: var(--s-4); }
+.stubs { display: grid; gap: 0; order: -1; }
+@container sell (min-width: 70rem) { .stubs { order: 0; } }
 .stub { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-3); align-items: center; padding: var(--s-3); background: var(--card); border: var(--border-w) solid var(--line); border-top-style: dashed; }
 .stub:first-child { border-top-style: solid; }
 .stub-no { font: var(--display-weight) var(--step-3)/1 var(--font-display); color: var(--accent2); min-width: 1.5ch; text-align: center; }
 .stub h2 { font-size: var(--step-1); }
 .stub p { font-size: var(--step--1); margin-top: .15rem; }
 
-.cond-wrap { margin-top: var(--s-4); }
 /* under the two-column width the slip fills the page like the boxes above it (loop 64: ragged right edge at 768) */
 @container sell (max-width: 69.99rem) { .slip-wrap { max-width: none; } }

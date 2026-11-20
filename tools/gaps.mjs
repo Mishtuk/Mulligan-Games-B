@@ -55,12 +55,16 @@ const probe = `(() => {
     // only a page title block (header with the h1 and lede) may be left-aligned and short; every other block counts
     if (!(k.matches('header') && k.querySelector('h1')) && (rt - l) / kr.width < 0.55 && kr.width < innerWidth * .9 || sib) thin.push((k.className || k.tagName) + ' w' + Math.round(kr.width) + ' h' + Math.round(kr.height) + ' content ' + Math.round((rt - l) / kr.width * 100) + '% wide' + (sib ? ', unequal sibling height' : ''));
   }
-  // nested rows: inside any grid row (at any depth) one column's content ends > LIMIT px above its sibling column's
+  // nested rows (and, at 1024+, two-column holes): inside any grid row (at any depth) one column's content ends > LIMIT px above its sibling column's
   const nested = [];
   for (const g of main.querySelectorAll('*')) {
     if (skip(g) || getComputedStyle(g).display !== 'grid' || g.closest('form')) continue;
-    // narrow: only repeated cards (same tag and a real class), not a form, its fields or a classless section pair
-    const cells = [...g.children].filter((c) => !skip(c) && c.getBoundingClientRect().width > 120 && c.className && [...g.children].filter((o) => o.tagName === c.tagName && o.className === c.className).length > 1);
+    // narrow: repeated cards (same tag and a real class) at any width; at 1024+ also any two big blocks side by side (the
+    // one-column hole: Sell 1280 had an aside ending 385px above the form). Never a form or its fields. Exempt (deliberate, listed): a lone heading,
+    // paragraph or tab cell is a title/note column beside a form or list (Home and Shop request boxes, Visit notice board).
+    const big = innerWidth >= 1024;
+    const same = (c) => c.className && [...g.children].filter((o) => o.tagName === c.tagName && o.className === c.className).length > 1;
+    const cells = [...g.children].filter((c) => { const cr = c.getBoundingClientRect(); return !skip(c) && !c.matches("h1,h2,h3,h4,p,.tab") && cr.width > 120 && (same(c) || (big && cr.width > 200)); });
     const rows = new Map(); for (const c of cells) { const k = Math.round(c.getBoundingClientRect().top / 8); rows.set(k, [...(rows.get(k) || []), c]); }
     for (const row of rows.values()) {
       if (row.length < 2 || new Set(row.map((c) => Math.round(c.getBoundingClientRect().left))).size < 2) continue;
@@ -80,6 +84,12 @@ if (args.includes('--selftest')) {
   for (const [right, want] of [[3, true], [13, false]]) {
     const t = await b.page({ w: 1280, h: 900 }); await t.go(page(right)); const r = await t.ev(probe); await t.close();
     const got = r.nested.length > 0; console.log('selftest ragged=' + want + ': ' + (got === want ? 'ok' : 'WRONG ' + JSON.stringify(r.nested))); if (got !== want) fail++;
+  }
+  // two different blocks side by side (no shared class): the one-column hole at 1280 must be flagged, an even pair not
+  const pair = (right) => 'data:text/html,' + encodeURIComponent('<style>body{margin:0;font:16px sans-serif}.g{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}p{margin:0 0 8px}</style><main><div class="wrap"><section class="g"><div class="main-col">' + '<p>form line</p>'.repeat(30) + '</div><aside class="side-col">' + '<p>aside line</p>'.repeat(right) + '</aside></section></div></main>');
+  for (const [right, want] of [[5, true], [28, false]]) {
+    const t = await b.page({ w: 1280, h: 900 }); await t.go(pair(right)); const r = await t.ev(probe); await t.close();
+    const got = r.nested.length > 0; console.log('selftest column hole=' + want + ': ' + (got === want ? 'ok' : 'WRONG ' + JSON.stringify(r.nested))); if (got !== want) fail++;
   }
   b.quit(); server?.kill(); process.exit(fail ? 1 : 0);
 }

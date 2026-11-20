@@ -104,12 +104,14 @@ try {
     const r = await t.ev(wordProbe); if (r.length) ok(false, `word broken mid-word ${w} ${p}: ${r.join('; ')}`);
     await t.close();
   }
-  // 1c. Sell side column: sticky only while it fits the window (guide folded); open guide => not sticky
+  // 1c. Sell side column: if it is ever sticky it must fit the window (loop 74 made it static, ending level with the slip)
   for (const h of [500, 700, 800]) {
     const t = await b.page({ w: 1280, h }); await t.go(base + '/sell/');
     const q = (open) => t.ev(`(() => { document.querySelectorAll('.sell-side details').forEach((d) => (d.open = ${open})); const e = document.querySelector('.sell-side'); return { pos: getComputedStyle(e).position, tall: Math.round(e.getBoundingClientRect().height) }; })()`);
-    let r = await q(false); ok(h < 608 ? r.pos !== 'sticky' : r.pos === 'sticky' && r.tall + 88 <= h, `sell side folded @1280x${h}: sticky only when it fits ${JSON.stringify(r)}`);
-    r = await q(true); ok(r.pos !== 'sticky' || r.tall + 88 <= h, `sell side guide open @1280x${h}: not sticky when taller than the window ${JSON.stringify(r)}`);
+    for (const open of [false, true]) {
+      const r = await q(open);
+      ok(r.pos !== 'sticky' || r.tall + 88 <= h, `sell side ${open ? 'guide open' : 'folded'} @1280x${h}: never sticky when taller than the window ${JSON.stringify(r)}`);
+    }
     await t.close();
   }
   // 2. menu sheet
@@ -198,7 +200,10 @@ try {
       const pay = f.querySelector('[name=payout][value=cash]'); if (pay) pay.checked = true;
       const ev = f.querySelector('[name=event_id]'); if (ev) ev.selectedIndex = 0;
       f.querySelector('button[type=submit]').click(); return 0; })()`);
-    await sleep(1500);
+    await sleep(800);
+    // wait (max 6s) for the result page to finish loading and its fonts to settle, so the fragment scroll is final
+    for (let i = 0; i < 60 && !(await t.ev(`document.readyState === 'complete' && document.fonts.status === 'loaded' && !!document.querySelector(':target')`).catch(() => false)); i++) await sleep(100);
+    await sleep(200);
     const want = bad ? /-err$/ : /-(ok|wait)$/, tag = `${bad ? 'bad email' : 'good'} ${p}`;
     let r = await t.ev(panelProbe); ok(panelOk(r, want), `no-JS post, ${tag}: result panel ${JSON.stringify(r)}`);
     await t.ev(`document.documentElement.style.fontSize='200%'`); await t.ev(refocus); await sleep(300);
@@ -221,6 +226,8 @@ try {
   for (const [w, z] of [[390, ''], [390, '200%'], [1280, '']]) {
     const t = await b.page({ w, h: 844 }); await t.go(holdUrl);
     if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(`document.getElementById('req-cards').blur(); document.getElementById('req-cards').focus()`); await sleep(300); }
+    // hold.js focuses on the next animation frame: wait (max 3s) for it before measuring, so the check is not a race
+    for (let i = 0; i < 30 && !(await t.ev(`document.activeElement && document.activeElement.id === 'req-cards'`)); i++) await sleep(100);
     const r = await t.ev(inView);
     ok(r.id === 'req-cards' && /^Hold: /.test(r.val) && /^Hold for .+ filled in. Add your name and email.$/.test(r.note) && /^req-hold /.test(r.desc) && r.top >= r.hdr && r.bottom <= r.vh, `hold flow @${w} ${z || '100%'}: focus on the filled request field, status line, in view ${JSON.stringify(r)}`);
     await t.close();

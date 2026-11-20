@@ -47,7 +47,7 @@
 .visit-form .hint { font-weight: 400; }
 
 @media (min-width: 400px) { .today-chip { display: inline-block; margin: 0 0 0 .4rem; } }
-@media (min-width: 700px) { .visit-band { grid-template-columns: auto minmax(0, 1fr); align-items: center; } .visit-band > address { grid-column: 1; grid-row: 1; align-self: end; } .visit-band .visit-actions { grid-column: 1; grid-row: 2; margin: 0; align-self: start; } .visit-front { grid-column: 2; grid-row: 1 / span 2; justify-self: end; width: min(100%, 24rem); } .visit-band > .reach { grid-column: 1 / -1; } }
+@media (min-width: 700px) { .visit-band { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: 1fr auto; align-items: start; } .visit-band > address { grid-column: 1; grid-row: 1; align-self: stretch; } .visit-band .visit-actions { grid-column: 1; grid-row: 2; margin: var(--s-2) 0 0; align-self: start; } .visit-front { grid-column: 2; grid-row: 1 / span 2; justify-self: end; width: min(100%, 24rem); } .visit-band > .reach { grid-column: 1 / -1; } }
 @media (min-width: 1000px) {
   .visit-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-5); }
   .visit-form { margin-top: .8rem !important; }
