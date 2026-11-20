@@ -3,18 +3,23 @@ import Base from '../../layouts/Base.astro';
 import Turnstile from '../../components/Turnstile.astro';
 import Pocket from '../../components/Pocket.astro';
 import ConditionGuide from '../../components/ConditionGuide.astro';
-import products from '../../data/products.json';
-import { splitProducts } from '../../lib/shop.js';
+import all from '../../data/releases.json';
+import store from '../../data/store.json';
+import { zoned } from '../../lib/hours.js';
+import { shownReleases, dateLine, isOut } from '../../lib/releases.js';
+import { holdHref, holdLine } from '../../lib/shop.js';
 import '../../styles/shared.css';
 import '../../styles/sleeve.css';
 import '../../styles/shop-only.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer and tabletop'], ['other', 'Something else']];
-const { sealed, preorders } = splitProducts(products);
+// Same rows as Home's New releases: confirmed sets only. Out now = Sealed, coming = Preorders.
+const today = zoned(store.timezone).date;
+const rows = shownReleases(all.filter((r) => r.certainty === 'Confirmed'), today);
+const out = rows.filter((r) => isOut(r.releaseDate, today)), soon = rows.filter((r) => !isOut(r.releaseDate, today));
 const shelfGames = [[''], ['g-pokemon', 'g-one-piece', 'g-riftbound']];
 const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbound"];
-const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the counter' : `$${n}`);
 ---
 <Base title="Singles, sealed and preorders" description="Singles, sealed product and preorders for Magic, Pokemon, One Piece and more in Warminster, PA. Send a want list or ask at the counter.">
   <div class="wrap shop">
@@ -87,52 +92,28 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
       </form>
     </section>
 
-    <section class="band band-crimp" id="sealed" aria-labelledby="sealed-h">
-      <div class="stock"><div class="stock-sealed">
-      <h2 id="sealed-h">Sealed</h2>
-      {sealed.length ? (
-        <ul class="shop-grid">
-          {sealed.map((p) => (
-            <Pocket href="/visit/#contact" title={p.name} variant="sealed">
-              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
-              <p>{p.game}</p>
-              <Fragment slot="foot"><span class="sticker">{price(p.price)}</span></Fragment>
-            </Pocket>
-          ))}
-        </ul>
-      ) : (
-        <div class="shelf">
-          <div class="shelf-art" aria-hidden="true"><div class="box-sil"></div><div class="box-sil is-pack"></div></div>
-          <p>Ask at the counter for a box or a deck.</p>
-          <a class="btn" href="/visit/#contact">Ask about stock</a>
-        </div>
-      )}
+    <section class="band band-crimp" id="stock" aria-label="Sealed and preorders">
+      <div class="stock">
+        {[['sealed', 'Sealed', out, 'Nothing out yet. Ask at the counter.'], ['preorders', 'Preorders', soon, 'Nothing announced yet. Ask at the counter.']].map(([id, h, list, none]) => (
+          <section id={id} aria-labelledby={`${id}-h`}>
+            <h2 id={`${id}-h`}>{h}</h2>
+            {list.length ? (
+              <ul class="shop-grid">
+                {list.map((r) => (
+                  <Pocket href={holdHref(r.id)} title={r.name} variant={id === 'sealed' ? 'sealed' : 'preorder'}>
+                    <Fragment slot="art"><div class={`box-sil${id === 'sealed' ? '' : ' is-pack'}`} aria-hidden="true"></div></Fragment>
+                    <p>{r.game}</p>
+                    <Fragment slot="foot"><span class="mono">{dateLine(r.releaseDate, today)}</span><span class="hold" data-hold={r.id} data-game={r.gameId} data-line={holdLine(r, id === 'sealed')}>Hold one for me</span></Fragment>
+                  </Pocket>
+                ))}
+              </ul>
+            ) : (<p>{none}</p>)}
+          </section>
+        ))}
       </div>
-    <section class="airy" id="preorders" aria-labelledby="preorders-h">
-      <h2 id="preorders-h">Preorders</h2>
-      {preorders.length ? (
-        <ul class="shop-grid">
-          {preorders.map((p) => (
-            <Pocket href="/visit/#contact" title={p.name} variant="preorder">
-              <Fragment slot="art"><div class="box-sil is-pack" aria-hidden="true"></div></Fragment>
-              <p>{p.game}</p>
-              <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}<span class="sticker">{price(p.price)}</span></Fragment>
-            </Pocket>
-          ))}
-        </ul>
-      ) : (
-        <div class="slip">
-          <p class="slip-head">Preorders at the counter</p>
-          <ul>
-            <li>Ask for the release date and price</li>
-          </ul>
-          <a href="/visit/#contact">Ask us</a>
-        </div>
-      )}
-    </section>
-    </div>
     </section>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>
+  <script is:inline slot="scripts" type="module" src="/js/hold.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/form-check.js"></script>
 </Base>

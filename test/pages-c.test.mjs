@@ -105,24 +105,22 @@ test('page scripts have no inline handlers and page CSS has no colour literals',
   for (const f of ['shared', 'shop-only', 'sell', 'visit', 'pages']) assert.doesNotMatch(read(`src/styles/${f}.css`), /#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/, f);
 });
 
-test('shop: pockets only when products.json has rows, otherwise one shelf panel and a preorder note', { skip: !built && 'run npm run build first' }, async () => {
-  const { splitProducts } = await import('../src/lib/shop.js');
-  const rows = [{ name: 'Box A', game: 'Magic', kind: 'sealed', price: null }, { name: 'Set B', game: 'Pokemon', kind: 'preorder', price: null }];
-  const some = splitProducts(rows);
-  assert.equal(some.sealed.length, 1);
-  assert.equal(some.preorders.length, 1);
-  assert.deepEqual(splitProducts([]), { sealed: [], preorders: [] });
-  const products = JSON.parse(fs.readFileSync(path.join(root, 'src/data/products.json'), 'utf8'));
+test('shop: Sealed and Preorders come from releases.json (confirmed rows, out = sealed, coming = preorders) with a hold link each', { skip: !built && 'run npm run build first' }, async () => {
+  const { holdHref, holdLine } = await import('../src/lib/shop.js');
+  const rels = JSON.parse(fs.readFileSync(path.join(root, 'src/data/releases.json'), 'utf8'));
+  assert.equal(holdHref('mtg-star-trek'), '/shop/?hold=mtg-star-trek#request');
+  assert.equal(holdLine({ name: 'Star Trek', types: 'Main set' }, true), 'Hold: Star Trek (Main set)');
+  assert.equal(holdLine({ name: 'X' }, false), 'Hold: X (preorder)');
   const shop = html('shop/index.html');
-  if (products.length === 0) {
-    assert.doesNotMatch(shop, /class="shop-grid"/);
-    assert.match(shop, /class="shelf-art"/);
-    assert.match(shop, /Preorders at the counter/);
-    assert.equal((shop.match(/[Aa]sk (about stock|us)<\/a>/g) ?? []).length >= 2, true);
-  } else {
-    assert.match(shop, /class="shop-grid"/);
-    assert.doesNotMatch(shop, /shelf-art/);
+  const ids = [...shop.matchAll(/data-hold="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(ids.length > 0);
+  for (const id of ids) {
+    assert.ok(rels.some((r) => r.id === id && r.certainty === 'Confirmed'), id);
+    assert.ok(shop.includes(`href="/shop/?hold=${id}#request"`), `link ${id}`);
   }
+  const home = html('index.html');
+  for (const m of home.matchAll(/id="rel-([a-z0-9]+-[^"]+)"/g)) assert.ok(home.includes(`href="/shop/?hold=${m[1]}#request"`), `home ${m[1]}`);
+  assert.doesNotMatch(shop, /Preorders at the counter|shelf-art/);
   assert.match(shop, /Sol Ring, Commander Masters, NM, 1/);
   assert.doesNotMatch(shop, /Photo coming/);
 });

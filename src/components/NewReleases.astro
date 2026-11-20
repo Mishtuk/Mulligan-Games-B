@@ -3,6 +3,7 @@
 import all from '../data/releases.json';
 import store from '../data/store.json';
 import { zoned } from '../lib/hours.js';
+import { holdHref } from '../lib/shop.js';
 import { shownReleases, releaseLabel, dateLine, isOut } from '../lib/releases.js';
 
 const today = zoned(store.timezone).date;
@@ -29,7 +30,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       <h3>{r.ad ?? 'New in the case'}</h3>
       {r.types && <p class="rel-name">{r.types}</p>}
       <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span> · <span data-when>{dateLine(r.releaseDate, today)}</span></p>
-      <p><a class="btn" href="/visit/#contact">Pick up {r.name} at the counter</a></p>
+      <p><a class="btn" href={holdHref(r.id)}>Pick up {r.name} at the counter</a></p>
       <p class="rel-credit">{r.credit}</p>
     </div>
   </article>); })}
@@ -42,7 +43,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       </picture>) : (<div class="rel-art" aria-hidden="true"></div>)}
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
-        <h3><a class="rel-link" href="/visit/#contact"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Stop in and grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span><span class="vh">, {r.name}</span></a></h3>
+        <h3><a class="rel-link" href={holdHref(r.id)}><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Stop in and grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span><span class="vh">, {r.name}</span></a></h3>
         <p class="rel-name">{r.name}</p>
         <p class="rel-date" data-when>{dateLine(r.releaseDate, today)}</p>
         <span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span>

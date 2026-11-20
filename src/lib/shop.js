@@ -1,4 +1,3 @@
-// Shop data helpers: split products.json into sealed and preorders.
-export function splitProducts(products) {
-  return { sealed: products.filter((p) => p.kind !== 'preorder'), preorders: products.filter((p) => p.kind === 'preorder') };
-}
+// Hold requests: the link every release ad uses, and the line it prefills in the want list (Shop, public/js/hold.js).
+export const holdHref = (id) => `/shop/?hold=${id}#request`;
+export const holdLine = (r, out) => `Hold: ${r.name} (${r.types ?? (out ? 'sealed product' : 'preorder')})`;

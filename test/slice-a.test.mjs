@@ -19,7 +19,6 @@ test('data files: ids unique, store facts present, nothing invented', () => {
   assert.equal(store.email, null);
   assert.equal(store.links.discord, null);
   assert.match(store.mapsUrl, /^https:\/\//);
-  assert.deepEqual(json('src/data/products.json'), []);
 });
 
 test('CSS: colour literals only inside :root', () => {

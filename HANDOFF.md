@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 63 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-60/review.md (63 Shop: Sealed + Preorders from releases.json, each "Hold one for me").
+- RESUME HERE: loop 64 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-60/review.md (64 Sell: 768 buylist edge; Home Sell slab look at 768/1024).
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 63 (Shop): Sealed (out) and Preorders (coming) now built from releases.json, confirmed rows only, same rows as Home; each pocket and every Home release CTA links `/shop/?hold=<id>#request` (`holdHref` in src/lib/shop.js). public/js/hold.js fills the want list ("Hold: <set> (<type>)" + game) only when the id matches a pocket on the page; text comes from build-time data attributes, never the query. products.json, splitProducts, shelf/slip CSS cut. 172 tests. Home gzip 22,259. Shots docs/review/loop-63/.
 - Loop 62 (Events): oneoffs take `release` (id in releases.json) -> "See the set on Home" -> `/#rel-<id>`; rel ads have ids; 1024 hole closed; ev-lead cut. 170 tests.
 - Loop 61 (Home): 390 height 6,712 -> 5,539, 1280 3,957 -> 3,583. Sealed box folded into New releases ask line, want list after Binder week, Look-what-showed-up card and What we play band cut, 1024 want-list labels no longer wrap. Gzip 22,191. Shots docs/review/loop-61/.
 - Loop 60 (review of 51-59): independent 28/30 (identity 4.5, craft 4.5). Fixed Home Sell slab letter-stack at 768, ragged Instagram row, Delta Reign verified (ads ship Confirmed only), gaps exemption narrowed; a11y word probe covers slabs at 768/1024. 169 tests, check-site, gaps, a11y pass. Home gzip 22,919/23,000. Priorities 61-69: docs/review/loop-60/review.md.
