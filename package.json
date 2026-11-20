@@ -9,7 +9,8 @@
     "build:deploy": "node tools/build-deploy.mjs",
     "test": "node --test \"test/*.test.mjs\"",
     "serve": "node tools/serve.mjs",
-    "a11y": "node tools/a11y-check.mjs"
+    "a11y": "node tools/a11y-check.mjs",
+    "gaps": "node tools/gaps.mjs"
   },
   "dependencies": {
     "astro": "^7.4.13"

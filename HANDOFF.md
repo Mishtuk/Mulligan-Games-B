@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 51 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-50/final-review.md.
+- RESUME HERE: loop 52 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-50/final-review.md.
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 51 (Home): 27 -> 28/30 self (craft 4 -> 4.5, identity at 1024 fixed). New `npm run gaps` (tools/gaps.mjs: blank runs >120px in main at 390/768/1024/1280/1600 + unequal boxed siblings; Home was 4-6 runs at 768/1024/1280, now 0). Sealed and Sell are one `.duo` row (7fr/5fr from 600px, equal heights, Sell is a box); Home section gap tightened; binder two-column layout from 960px so 1024 shows the binder above the fold; hero h1 smaller 960-1199. Cut the sealed 20ch rule. 147 tests, a11y pass. Gaps script only covers paths you pass (default /): run it on other pages in their loops.
 - Loop 50 (final review): independent 26 -> 27/30. Turnstile launch blocker fixed (src/components/Turnstile.astro in all 5 forms when TURNSTILE_SITE_KEY is set; nothing locally; build:deploy refuses empty/test key; live test-key run: 0 CSP violations, token posted; privacy line only with a key; test/turnstile.test.mjs). Loop 40 checks run: forms 20/20, header 42/42 aligned, accretion lower. DESIGN.md pages section updated, CONTEXT open question for domain/Cloudflare/Turnstile/deploy OK. 147 tests, check-site and a11y pass. docs/review/loop-50/final-review.md.
 - Loop 49 (code): `src/lib/photo.js` photoMode: null photo = marked placeholder on `npm run build`, NOTHING on `build:deploy` (DEPLOY=1; verified by a temp deploy build: no figure, no "Photo coming"). Gzip max 18,988 (Events) under 19,200; dead-CSS/JS sweep clean; npm audit --omit=dev 0 vulnerabilities. README launch checklist rewritten. FLAG: pages carry no Turnstile widget/site key, so production form posts would fail the Worker check until it is added. 141 tests.
 - Loop 48 (copy): all pages read; Visit footer bare hours link; footer note uses "Confirm with the store"; cut unsourced age/deposit lines, Shop lede, hero "in Warminster"; voice test added (139). Owner skim sheet: docs/review/loop-48/copy-sheet.md.

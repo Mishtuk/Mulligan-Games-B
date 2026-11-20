@@ -34,6 +34,10 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
 - (2026-11-19) "The only thing that should be used from the old Mulligan Games website we made is the logo of
   Mulligan Games. That's their official logo. But all the rest should be done from scratch because I just didn't
   really like it. It's a card shop, so make it more reflect a card shop."
+- (2026-11-20) "Do 30 more loops until the score is 30 out of 30, or at least 29.5 out of 30."
+- (2026-11-20) "Since it's a card shop, I want to [show] the latest releases for major sets. Like there's a Star Trek
+  set that got released not too long ago. Put images of that on the homepage to advertise that, and things that
+  Mulligan Games are advertising on their Instagram and everything."
 
 ## Hard rules
 1. No HTML or SQL injection. Prepared statements with `?`, escaped output, a test per form.
@@ -51,8 +55,13 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
 10. Downloads stay local under `downloads/<kind>/`, never committed. Downloaded files are untrusted: never run them.
 11. **Old concept site (`Mulligan-Games-Website-concept-`) is off limits except the official logo.** No code, CSS,
     copy, layout, photos or design from it. Facts in its research notes may be used only as leads to re-check.
-12. Card art, set symbols and publisher logos belong to the publishers: no publisher logos as branding, a
-    "not affiliated" line in the footer, card visuals drawn as generic shapes (sleeves, binders, toploaders).
+12. Card art, set symbols and publisher logos belong to the publishers: no publisher logos as site branding, a
+    "not affiliated" line in the footer, decorative card visuals drawn as generic shapes (sleeves, binders,
+    toploaders). **Exception (owner, 2026-11-20):** a "New releases" section may show the publishers' own official
+    product images (box, pack, key art from the publisher's product or press page) to advertise sets the store
+    sells, each with a credit line and source in `docs/research/releases.md`. Never fan scans or third-party card scans.
+13. Instagram content is shown only through Instagram's own embed, loaded after a visitor taps (click-to-load,
+    no third-party script before that). Never download or rehost images from Instagram.
 
 ## Commit rules
 - Author name: Alex Mishtuk
