@@ -1,6 +1,6 @@
 ---
 name: advisor
-description: Read-only second opinion for the website team. Use before a big or hard-to-undo call (a page layout, palette or type change, host or provider choice, a security-sensitive feature) to get an independent critique and a recommendation, not a build.
+description: Read-only second opinion for the website team. Pairs with the coder or designer on every task where the boss is briefing or reviewing them (see the pairing rule in boss.md). Also use before a big or hard-to-undo call (a page layout, palette or type change, host or provider choice, a security-sensitive feature) to get an independent critique and a recommendation, not a build.
 tools: Read, Glob, Grep, Bash, WebFetch, WebSearch
 model: sonnet
 effort: high

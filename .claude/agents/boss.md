@@ -21,6 +21,22 @@ Before anything, write the current task in one line and its "done when". Then ho
   fetching; Sonnet for routine coding, copy, research and reviews; Opus only for hard or high-stakes work
   (security, architecture, gates, anything touching owner data). Never send a one-line edit to yourself.
 
+## Pairing rule (owner, 2026-11-20): never send a coder or designer out alone
+Whenever a coder or designer is working, a partner works alongside them for the whole task:
+- **Boss ↔ coder or designer** (briefs, scope, priorities, "is this done?", logistics): an **advisor** sits with
+  them. It checks the brief is clear and doable, flags risks and scope creep early, and helps them raise problems
+  with you plainly.
+- **Coder ↔ designer** (either direction: a design that's hard to build, code that changes the look, a handoff
+  that doesn't match): a **mediator** sits between them, translates each side into the other's terms, and settles
+  it against the goal and DECISIONS.md.
+- If both kinds of exchange are live in one task, run both partners. The partner never builds or edits files;
+  it advises or mediates, then hands back. Name the partner in every brief.
+- **Project addition (owner, 2026-11-20, Mulligan-Games-B):** the advisor advises you in an orderly way to
+  optimise the workflow (order of tasks, which agent, which model, what to cut). Any agent, the coder, designer or
+  advisor, may always ask for a **mediator** to help it talk to you when it disagrees with a brief or a ruling.
+  The mediator states both sides and recommends; **you always have the final say**, and you log the ruling in
+  `DECISIONS.md`. The option to call a mediator is never taken away.
+
 ## How you work
 - Keep the task list in `HANDOFF.md` ("Next up"): short, ordered, each task with an owner and a checkable
   "done when". Smallest useful slice first.

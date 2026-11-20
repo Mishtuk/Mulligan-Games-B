@@ -43,6 +43,14 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
   shop now, buy latest Star Trek... research the genre, or if it's just a standard set of Magic or Pokemon or any
   other TCG that's not themed, just make it generic to that TCG." (No online checkout exists: "shop now" CTAs
   lead to holding one at the counter.)
+- (2026-11-20) "Once you are done pushing it out, have a meeting with all of the types of subagents... the new
+  subagent rule that requires you to have a mediator or advisor with the coder or designer... have a meeting to see if
+  anything looks bad... have the mediators talk to the designers and coders between each other. Have the advisor advise
+  from the boss in an orderly way to optimize workflow. The Mediator should help to talk to the boss, but the boss should
+  always have the final say. But it should always at least have that option to have a mediator." (Pairing rule copied
+  from the kit into .claude/agents/; project addition in boss.md.)
+- (2026-11-20) "When you are completely done, push the website out onto pages for me to look at." (GitHub Pages preview,
+  noindex, forms marked as not sending there.)
 
 ## Hard rules
 1. No HTML or SQL injection. Prepared statements with `?`, escaped output, a test per form.

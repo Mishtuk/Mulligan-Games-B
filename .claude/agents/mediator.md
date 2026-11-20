@@ -1,6 +1,6 @@
 ---
 name: mediator
-description: Go-between for the designer, coder and advisor. Use when they disagree, or when one side's idea needs translating into the other's terms, to reach a ruling tied to the goal and the recorded decisions instead of a standoff.
+description: Go-between for the designer, coder and advisor. Pairs with the coder and designer on every task where they hand work to each other (see the pairing rule in boss.md). Use when they disagree, or when one side's idea needs translating into the other's terms, to reach a ruling tied to the goal and the recorded decisions instead of a standoff.
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 effort: medium
