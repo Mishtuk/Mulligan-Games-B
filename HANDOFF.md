@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 49 of 50. Loops 1-48 done.
+- RESUME HERE: loop 50 of 50 (final review). Loops 1-49 done.
 - [boss] refinement loop 41 (Home): see docs/review/loop-40/review.md priority list (41-49 aimed at launch quality) and its owner launch checklist
 
 ## Waiting on the owner
@@ -67,6 +67,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 49 (code): `src/lib/photo.js` photoMode: null photo = marked placeholder on `npm run build`, NOTHING on `build:deploy` (DEPLOY=1; verified by a temp deploy build: no figure, no "Photo coming"). Gzip max 18,988 (Events) under 19,200; dead-CSS/JS sweep clean; npm audit --omit=dev 0 vulnerabilities. README launch checklist rewritten. FLAG: pages carry no Turnstile widget/site key, so production form posts would fail the Worker check until it is added. 141 tests.
 - Loop 48 (copy): all pages read; Visit footer bare hours link; footer note uses "Confirm with the store"; cut unsourced age/deposit lines, Shop lede, hero "in Warminster"; voice test added (139). Owner skim sheet: docs/review/loop-48/copy-sheet.md.
 - Loop 47 (Identity, designer): all 7 paths x 2 widths + Home Motion off looked at. 3 fixes: Events Game col 15% (Tabletop no longer touches Format), Hold a seat column so Add to calendar links align, Home 1280 request band 3rem below Tonight. docs/photo-swap.md written (linked from README, HANDOFF). Shots docs/review/loop-47/. 138 tests, check-site PASS, a11y PASS.
 - Loop 46 (A11y): Events filter now speaks: always-present `#ev-status` (role=status, .vh) says "3 Magic nights this week" / "No Riftbound nights listed" (filled 250ms after load); a11y-check asserts, per game, the status text and that hidden days, rows and tickets are absent from the AX tree. 200% at 1280 on Events and Sell looked at, clean. Cut: role=status on the visible no-results box and an empty fragment. 138 tests, check-site and a11y pass. Shots docs/review/loop-46/.

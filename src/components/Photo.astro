@@ -1,14 +1,16 @@
 ---
-// One photo slot. photo = null in src/data/store.json renders a marked placeholder; fill the field to swap in the real <img>.
+// One photo slot. photo = null in src/data/store.json: marked placeholder on a normal build, nothing on build:deploy (src/lib/photo.js).
 // photo shape: { src, alt, width, height, srcset?, sizes? }. Never a person (HANDOFF "Photo slots").
+import { photoMode } from '../lib/photo.js';
 const { photo = null, label, class: cls = '' } = Astro.props;
+const mode = photoMode(photo);
 ---
-{photo ? (
+{mode === 'img' ? (
   <figure class:list={['photo', cls]}>
     <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} srcset={photo.srcset} sizes={photo.sizes} loading="lazy" decoding="async" />
   </figure>
-) : (
+) : mode === 'placeholder' ? (
   <figure class:list={['ph', cls]}>
     <figcaption><b>Photo coming:</b> {label}</figcaption>
   </figure>
-)}
+) : null}
