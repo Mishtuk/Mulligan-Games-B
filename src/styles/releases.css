@@ -1,26 +1,28 @@
 /* Home: New releases (ads) and From our Instagram. Release ads: image on top, themed panel below; Star Trek is a full-bleed deep-space banner. Colours are :root tokens (DESIGN.md pairs). */
 .home-releases, .home-ig { margin-top: var(--section); grid-column: 1 / -1; }
-.rel-lede { margin-top: .25rem; }
 .rel { --t-bg: var(--card); --t-ink: var(--text); --t-hi: var(--accent2); --t-bar: var(--accent2); position: relative; display: grid; align-content: start; background: var(--t-bg); color: var(--t-ink); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: 3px 3px 0 var(--t-bar); overflow: hidden; }
 .rel picture { display: block; border-bottom: 6px solid var(--t-bar); }
 .rel img { display: block; width: 100%; height: auto; }
 .rel-body { display: grid; gap: .35rem; align-content: start; min-width: 0; padding: var(--s-2); }
 .rel-game { font: 700 var(--step--1)/1.2 var(--font-mono); text-transform: uppercase; }
 .rel h3 { font-size: var(--step-1); line-height: 1.1; }
-.rel-name, .rel-ad { font-weight: 700; }
-.rel-date { font: 700 var(--step--1)/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--t-hi); }
-.rel-when { display: flex; }
+.rel-name { font-weight: 700; }
+.rel-date { text-wrap: balance; font: 700 var(--step--1)/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--t-hi); }
+.rel .sticker { justify-self: start; }
 .rel-credit { font-size: .75rem; line-height: 1.3; }
-.rel-grid .rel-body { gap: .3rem; }
-.rel-grid .rel h3 { font-size: var(--step-0); }
-.rel-grid .rel-credit { margin-top: .15rem; }
+.rel-grid h3 { font-size: var(--step-0); }
 .rel[data-theme=pokemon] { --t-bg: var(--pk-bg); --t-hi: var(--pk-hi); --t-bar: var(--pk-red); }
-.rel[data-theme=pokemon] picture { border-bottom: 0; border-image: none; padding-bottom: 8px; background: linear-gradient(90deg, var(--pk-red) 33.3%, var(--pk-blue) 33.3% 66.6%, var(--pk-yellow) 66.6%); }
+.rel:is([data-theme=pokemon], [data-theme=hololive]) picture { border-bottom: 0; padding-bottom: 8px; }
+.rel[data-theme=pokemon] picture { background: linear-gradient(90deg, var(--pk-red) 33.3%, var(--pk-blue) 33.3% 66.6%, var(--pk-yellow) 66.6%); }
 .rel[data-theme=riftbound] { --t-bg: var(--rift-bg); --t-ink: var(--rift-ink); --t-hi: var(--rift-gold); --t-bar: var(--rift-gold); }
-.rel[data-theme=riftbound] .rel-game, .rel[data-theme=riftbound] h3 { letter-spacing: .04em; text-transform: uppercase; }
+.rel:is([data-theme=riftbound], [data-theme=one-piece]) :is(.rel-game, h3) { letter-spacing: .04em; text-transform: uppercase; }
 .rel[data-theme=hololive] { --t-bg: var(--holo-bg); --t-ink: var(--holo-ink); --t-hi: var(--holo-hi); --t-bar: var(--holo-lav); }
-.rel[data-theme=hololive] picture { background: linear-gradient(90deg, var(--holo-sky), var(--holo-lav)); border-bottom: 0; padding-bottom: 8px; }
-.rel[data-theme=magic] picture { border-bottom: 0; padding-bottom: 8px; background: linear-gradient(90deg, var(--mana-w) 20%, var(--mana-u) 20% 40%, var(--mana-b) 40% 60%, var(--mana-r) 60% 80%, var(--mana-g) 80%); }
+.rel[data-theme=hololive] picture { background: linear-gradient(90deg, var(--holo-sky), var(--holo-lav)); }
+.rel[data-theme=one-piece] { --t-bg: var(--op-bg); --t-ink: var(--op-ink); --t-hi: var(--op-hi); --t-bar: var(--op-rope); }
+/* One Piece: no publisher image, so a generic treasure-map panel drawn here (aria-hidden): parchment, dotted trail to an X, compass rose, rope edge */
+.rel-art { position: relative; aspect-ratio: 2 / 1; overflow: hidden; background: linear-gradient(45deg, transparent 44%, var(--op-sea) 44% 56%, transparent 56%) 14% 54% / 18px 18px no-repeat, linear-gradient(-45deg, transparent 44%, var(--op-sea) 44% 56%, transparent 56%) 14% 54% / 18px 18px no-repeat, repeating-linear-gradient(-45deg, var(--op-rope) 0 5px, var(--op-parch) 5px 8px) bottom / 100% 10px no-repeat; background-color: var(--op-parch); }
+.rel-art::before { content: ""; position: absolute; right: 12%; top: 50%; width: 5.5rem; aspect-ratio: 1; transform: translateY(-50%) rotate(45deg) scale(.8); background: radial-gradient(circle, var(--op-parch) 0 12%, var(--op-rope) 13%); clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
+.rel-art::after { content: ""; position: absolute; left: 20%; top: 52%; width: 38%; border-top: 3px dotted var(--op-rope); transform: rotate(-8deg); transform-origin: left; }
 /* Star Trek banner: key art full-bleed, scrim for contrast, text stays HTML */
 .rel-feat { --t-bg: var(--trek-bg); --t-ink: var(--trek-text); --t-hi: var(--trek-glow); --t-bar: var(--trek-glow); grid-template-columns: minmax(0, 1fr); align-content: end; min-height: 31rem; margin-top: var(--s-3); box-shadow: 6px 6px 0 var(--t-bar); }
 .rel-feat picture { position: absolute; inset: 0; border: 0; }
@@ -30,21 +32,16 @@
 .rel-feat .rel-game { letter-spacing: .2em; color: var(--t-hi); }
 .rel-feat h3 { font-size: var(--step-3); line-height: 1.02; text-transform: uppercase; letter-spacing: .08em; }
 .rel-feat .rel-date { font-size: var(--step-0); letter-spacing: .16em; }
-.rel-feat .rel-ad { font-size: var(--step-1); line-height: 1.25; }
-.rel-feat .rel-body p { margin: 0; }
 @media (min-width: 720px) {
   .rel-feat { min-height: 26rem; align-content: center; }
   .rel-feat::before { background: linear-gradient(to right, color-mix(in srgb, var(--trek-bg) 96%, transparent) 0, color-mix(in srgb, var(--trek-bg) 90%, transparent) 46%, color-mix(in srgb, var(--trek-bg) 0%, transparent) 100%); }
   .rel-feat .rel-body { max-width: 34rem; padding: var(--s-5) var(--s-5); }
 }
-.rel-grid, .ig-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3) var(--s-2); margin-top: var(--s-3); }
-.ig-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
-.ig-card { display: grid; align-content: start; gap: .35rem; padding: var(--s-3); background: var(--card); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-.ig-card h3 { font-size: var(--step-1); line-height: 1.15; }
-.ig-card p { font-size: var(--step--1); }
+.rel-grid, .ig-grid { display: grid; gap: var(--s-3) var(--s-2); margin-top: var(--s-3); }
+.rel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ig-card { --t-bar: var(--accent); }
 .ig-slot { margin-top: var(--s-2); }
-.ig-slot .btn { box-shadow: var(--shadow-sm); }
-.ig-frame { display: block; width: 100%; height: 34rem; border: 2px solid var(--line); border-radius: 2px; background: var(--card); }
+.ig-frame { display: block; width: 100%; height: 34rem; border: 2px solid var(--line); background: var(--card); }
 .home-ig > p { margin-top: var(--s-3); }
 @media (min-width: 720px) { .ig-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; } }
 @media (min-width: 960px) { .rel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

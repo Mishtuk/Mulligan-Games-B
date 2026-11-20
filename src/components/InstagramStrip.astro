@@ -9,11 +9,17 @@ const ok = posts.filter((p) => /^[\w-]{6,20}$/.test(p.code));
   <h2 id="ig-h">From our Instagram</h2>
   <ul class="ig-grid">
     {ok.map((p) => (
-      <li class="ig-card">
-        <h3>{p.title}</h3>
-        {p.lines.map((l) => <p>{l}</p>)}
-        {p.note && <p class="muted">{p.note}</p>}
-        <div class="ig-slot"><a class="btn btn-secondary" href={`https://www.instagram.com/p/${p.code}/`} data-ig={p.code} data-title={p.title} rel="noopener">Show this post from Instagram</a></div>
+      <li class="rel ig-card">
+        <div class="rel-body">
+          <p class="rel-game">{p.tag}</p>
+          <h3>{p.ad}</h3>
+          <p class="rel-date">{p.date ?? 'Date: confirm with the store'}</p>
+          {p.lines.map((l) => <p>{l}</p>)}
+          {p.fee && <span class="sticker">{p.fee}</span>}
+          {p.note && <p class="muted">{p.note}</p>}
+          <p class="rel-credit">From @mulligangames</p>
+        <div class="ig-slot"><a class="btn btn-secondary" href={`https://www.instagram.com/p/${p.code}/`} data-ig={p.code} rel="noopener">Show this post from Instagram</a></div>
+        </div>
       </li>
     ))}
   </ul>

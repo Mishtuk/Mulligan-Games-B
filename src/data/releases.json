@@ -1,143 +1,128 @@
 [
- {
-  "id": "mtg-star-trek",
-  "game": "Magic: The Gathering",
-  "name": "Star Trek",
-  "releaseDate": "2026-11-13",
-  "prereleaseDate": "2026-11-06",
-  "types": "Main set (TRK) and Commander decks (TRC)",
-  "image": {
-   "webp": [
-    [
-     "/media/releases/star-trek-480.webp",
-     480
-    ],
-    [
-     "/media/releases/star-trek-960.webp",
-     960
-    ]
-   ],
-   "jpg": "/media/releases/star-trek-960.jpg",
-   "width": 960,
-   "height": 425,
-   "alt": "Borg cubes drifting in a green nebula, key art for the Magic: The Gathering Star Trek set"
+  {
+    "id": "mtg-star-trek",
+    "game": "Magic: The Gathering",
+    "name": "Star Trek",
+    "releaseDate": "2026-11-13",
+    "prereleaseDate": "2026-11-06",
+    "types": "Main set (TRK) and Commander decks (TRC)",
+    "image": {
+      "webp": [
+        [
+          "/media/releases/star-trek-480.webp",
+          480
+        ],
+        [
+          "/media/releases/star-trek-960.webp",
+          960
+        ]
+      ],
+      "jpg": "/media/releases/star-trek-960.jpg",
+      "width": 960,
+      "height": 425,
+      "alt": "Borg cubes drifting in a green nebula, Star Trek key art"
+    },
+    "credit": "Image: Wizards of the Coast. Star Trek is a trademark of CBS Studios / Paramount.",
+    "sourceUrl": "https://magic.wizards.com/en/products/star-trek",
+    "certainty": "Confirmed",
+    "theme": "star-trek",
+    "gameId": "magic"
   },
-  "credit": "Image: Wizards of the Coast. Star Trek is a trademark of CBS Studios / Paramount.",
-  "sourceUrl": "https://magic.wizards.com/en/products/star-trek",
-  "certainty": "Confirmed",
-  "theme": "star-trek",
-  "gameId": "magic"
- },
- {
-  "id": "pokemon-delta-reign",
-  "game": "Pokemon TCG",
-  "name": "Mega Evolution: Delta Reign",
-  "releaseDate": "2026-11-06",
-  "prereleaseDate": "2026-10-24",
-  "image": {
-   "webp": [
-    [
-     "/media/releases/pokemon-delta-reign-480.webp",
-     480
-    ],
-    [
-     "/media/releases/pokemon-delta-reign-578.webp",
-     578
-    ]
-   ],
-   "jpg": "/media/releases/pokemon-delta-reign-578.jpg",
-   "width": 578,
-   "height": 325,
-   "alt": "Promotional artwork for the Pokemon TCG Mega Evolution: Delta Reign expansion"
+  {
+    "id": "pokemon-delta-reign",
+    "game": "Pokemon TCG",
+    "name": "Mega Evolution: Delta Reign",
+    "releaseDate": "2026-11-06",
+    "prereleaseDate": "2026-10-24",
+    "image": {
+      "webp": [
+        [
+          "/media/releases/pokemon-delta-reign-480.webp",
+          480
+        ],
+        [
+          "/media/releases/pokemon-delta-reign-578.webp",
+          578
+        ]
+      ],
+      "jpg": "/media/releases/pokemon-delta-reign-578.jpg",
+      "width": 578,
+      "height": 325,
+      "alt": "Pokemon TCG Mega Evolution: Delta Reign artwork"
+    },
+    "credit": "Image: The Pokemon Company International",
+    "sourceUrl": "https://www.pokemon.com/us/pokemon-tcg/",
+    "certainty": "Likely",
+    "theme": "pokemon",
+    "gameId": "pokemon"
   },
-  "credit": "Image: The Pokemon Company International",
-  "sourceUrl": "https://www.pokemon.com/us/pokemon-tcg/",
-  "certainty": "Likely",
-  "theme": "pokemon",
-  "gameId": "pokemon"
- },
- {
-  "id": "pokemon-flowing-fists",
-  "game": "Pokemon TCG",
-  "name": "Mega Evolution: Flowing Fists",
-  "releaseDate": "2027-02-06",
-  "prereleaseDate": null,
-  "image": {
-   "webp": [
-    [
-     "/media/releases/pokemon-flowing-fists-480.webp",
-     480
-    ],
-    [
-     "/media/releases/pokemon-flowing-fists-578.webp",
-     578
-    ]
-   ],
-   "jpg": "/media/releases/pokemon-flowing-fists-578.jpg",
-   "width": 578,
-   "height": 325,
-   "alt": "Promotional artwork for the Pokemon TCG Mega Evolution: Flowing Fists expansion"
+  {
+    "id": "riftbound-legacy",
+    "game": "Riftbound",
+    "name": "Legacy (Set 6)",
+    "releaseDate": "2027-01-29",
+    "prereleaseDate": "2027-01-22",
+    "image": {
+      "webp": [
+        [
+          "/media/releases/riftbound-roadmap-480.webp",
+          480
+        ],
+        [
+          "/media/releases/riftbound-roadmap-960.webp",
+          960
+        ]
+      ],
+      "jpg": "/media/releases/riftbound-roadmap-960.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "Riftbound art: a cat in a brass diving pod"
+    },
+    "credit": "Image: Riot Games",
+    "sourceUrl": "https://playriftbound.com/en-us/news/announcements/riftbounds-latest-2026-roadmap/",
+    "certainty": "Confirmed",
+    "theme": "riftbound",
+    "gameId": "riftbound"
   },
-  "credit": "Image: The Pokemon Company International",
-  "sourceUrl": "https://www.pokemon.com/us/pokemon-tcg/",
-  "certainty": "Likely",
-  "theme": "pokemon",
-  "gameId": "pokemon"
- },
- {
-  "id": "riftbound-legacy",
-  "game": "Riftbound",
-  "name": "Legacy (Set 6)",
-  "releaseDate": "2027-01-29",
-  "prereleaseDate": "2027-01-22",
-  "image": {
-   "webp": [
-    [
-     "/media/releases/riftbound-roadmap-480.webp",
-     480
-    ],
-    [
-     "/media/releases/riftbound-roadmap-960.webp",
-     960
-    ]
-   ],
-   "jpg": "/media/releases/riftbound-roadmap-960.jpg",
-   "width": 960,
-   "height": 540,
-   "alt": "Riftbound artwork of a cat inside a brass diving pod"
+  {
+    "id": "hololive-volume-vortex",
+    "game": "Hololive OCG",
+    "name": "Booster Pack: Volume Vortex",
+    "releaseDate": "2027-03-19",
+    "prereleaseDate": null,
+    "image": {
+      "webp": [
+        [
+          "/media/releases/hololive-volume-vortex-480.webp",
+          480
+        ],
+        [
+          "/media/releases/hololive-volume-vortex-960.webp",
+          960
+        ]
+      ],
+      "jpg": "/media/releases/hololive-volume-vortex-960.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "hololive card game Volume Vortex booster key art"
+    },
+    "credit": "Image: COVER Corp. / Bushiroad",
+    "sourceUrl": "https://en.hololive-official-cardgame.com/products/",
+    "certainty": "Confirmed",
+    "theme": "hololive",
+    "gameId": "hololive"
   },
-  "credit": "Image: Riot Games",
-  "sourceUrl": "https://playriftbound.com/en-us/news/announcements/riftbounds-latest-2026-roadmap/",
-  "certainty": "Confirmed",
-  "theme": "riftbound",
-  "gameId": "riftbound"
- },
- {
-  "id": "hololive-volume-vortex",
-  "game": "Hololive OCG",
-  "name": "Booster Pack: Volume Vortex",
-  "releaseDate": "2027-03-19",
-  "prereleaseDate": null,
-  "image": {
-   "webp": [
-    [
-     "/media/releases/hololive-volume-vortex-480.webp",
-     480
-    ],
-    [
-     "/media/releases/hololive-volume-vortex-960.webp",
-     960
-    ]
-   ],
-   "jpg": "/media/releases/hololive-volume-vortex-960.jpg",
-   "width": 960,
-   "height": 540,
-   "alt": "Key art for the hololive OFFICIAL CARD GAME Volume Vortex booster pack"
-  },
-  "credit": "Image: COVER Corp. / Bushiroad",
-  "sourceUrl": "https://en.hololive-official-cardgame.com/products/",
-  "certainty": "Confirmed",
-  "theme": "hololive",
-  "gameId": "hololive"
- }
+  {
+    "id": "one-piece-st37-38",
+    "game": "One Piece Card Game",
+    "name": "Starter Decks ST‑37 and ST‑38",
+    "releaseDate": "2026-12-18",
+    "prereleaseDate": null,
+    "image": null,
+    "credit": "Panel drawn by us.",
+    "sourceUrl": "https://en.onepiece-cardgame.com/products/",
+    "certainty": "Confirmed",
+    "theme": "one-piece",
+    "gameId": "one-piece"
+  }
 ]

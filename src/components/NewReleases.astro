@@ -3,12 +3,13 @@
 import all from '../data/releases.json';
 import store from '../data/store.json';
 import { zoned } from '../lib/hours.js';
-import { shownReleases, releaseLabel, isOut, fmtDate } from '../lib/releases.js';
+import { shownReleases, releaseLabel, dateLine, isOut } from '../lib/releases.js';
 
 const today = zoned(store.timezone).date;
 const rows = shownReleases(all.filter((r) => /^(Confirmed|Likely)/.test(r.certainty)), today);
 const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows[0];
 const rest = rows.filter((r) => r !== feat);
+const ask = ['Hold a box now', 'Preorder at the counter'];
 const pic = (r, sizes, lazy) => {
   const { image: i } = r;
   return { srcset: i.webp.map(([u, w]) => `${u} ${w}w`).join(', '), sizes, loading: lazy ? 'lazy' : undefined, ...i };
@@ -17,7 +18,6 @@ const pic = (r, sizes, lazy) => {
 {feat && (
 <section class="home-releases" aria-labelledby="rel-h">
   <h2 id="rel-h">New releases</h2>
-  <p class="rel-lede">Big sets, out now and coming soon. Ask us at the counter.</p>
   {[feat].map((r) => { const p = pic(r, '100vw', false); return (
   <article class="rel rel-feat" data-release={r.releaseDate} data-theme={r.theme}>
     <picture>
@@ -27,26 +27,24 @@ const pic = (r, sizes, lazy) => {
     <div class="rel-body">
       <p class="rel-game">{r.game} · {r.name}</p>
       <h3>New frontier. New cards.</h3>
-      <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span><span data-when hidden={!isOut(r.releaseDate, today)}> · Released {fmtDate(r.releaseDate, today)}</span></p>
-      <p class="rel-ad"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>{r.name} has landed at Mulligan.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{r.name} is almost here. Ask us to hold one.</span></p>
-      {r.types && <p>{r.types}</p>}
+      <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span> · <span data-when>{dateLine(r.releaseDate, today)}</span></p>
       <p><a class="btn" href="/visit/#contact">Shop {r.name} in store</a></p>
       <p class="rel-credit">{r.credit}</p>
     </div>
   </article>); })}
   <ul class="rel-grid">
-    {rest.map((r) => { const p = pic(r, '(min-width: 960px) 280px, 50vw', true); return (
+    {rest.map((r, n) => { const p = r.image && pic(r, '', true); return (
     <li class="rel" data-release={r.releaseDate} data-theme={r.theme}>
-      <picture>
-        <source type="image/webp" srcset={p.srcset} sizes={p.sizes} />
+      {p ? (<picture>
+        <source type="image/webp" srcset={p.webp[0][0]} />
         <img src={p.jpg} width={p.width} height={p.height} alt={p.alt} loading="lazy" />
-      </picture>
+      </picture>) : (<div class="rel-art" aria-hidden="true"></div>)}
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
-        <h3><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Out now. Grab a pack.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>Hold a box for {fmtDate(r.releaseDate, today).replace(/, d{4}$/, '')}</span></h3>
+        <h3><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Grab a pack</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{ask[n % 2]}</span></h3>
         <p class="rel-name">{r.name}</p>
-        <p class="rel-date"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Released {fmtDate(r.releaseDate, today)}</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>In store {fmtDate(r.releaseDate, today)}</span></p>
-        <p class="rel-when"><span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span></p>
+        <p class="rel-date" data-when>{dateLine(r.releaseDate, today)}</p>
+        <span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span>
         <p class="rel-credit">{r.credit}</p>
       </div>
     </li>); })}
