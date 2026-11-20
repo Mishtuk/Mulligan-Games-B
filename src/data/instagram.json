@@ -25,16 +25,5 @@
     "date": "Dec 6 · Jan 3 · Feb 7 · Mar 7",
     "fee": null,
     "note": "Dates: confirm with the store."
-  },
-  {
-    "id": "ig-arrivals",
-    "code": "Dfp0g0IDanZ",
-    "title": "Look what showed up",
-    "lines": [],
-    "note": "Ask at the counter what is on the shelf.",
-    "tag": "Shelf news",
-    "ad": "Look what showed up",
-    "date": "Posted this month",
-    "fee": null
   }
 ]

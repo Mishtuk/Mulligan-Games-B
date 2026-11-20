@@ -5,9 +5,6 @@ import BinderWeek from '../components/BinderWeek.astro';
 import TonightStrip from '../components/TonightStrip.astro';
 import NewReleases from '../components/NewReleases.astro';
 import InstagramStrip from '../components/InstagramStrip.astro';
-import Pocket from '../components/Pocket.astro';
-import games from '../data/games.json';
-import products from '../data/products.json';
 import '../styles/sleeve.css';
 import '../styles/home.css';
 import '../styles/releases.css';
@@ -34,9 +31,6 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
       <BinderWeek />
     </section>
 
-    <NewReleases />
-    <InstagramStrip />
-
     <section class="box request" id="request" aria-labelledby="request-h">
       <span class="tab">Find a card</span>
       <h2 id="request-h">Not in the binder?</h2>
@@ -53,7 +47,7 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
       <form id="request-form" method="post" action="/api/request" novalidate>
         <div class="field">
           <label for="req-cards">Cards you want <span class="hint">(required, one per line)</span></label>
-          <textarea id="req-cards" name="cards" required maxlength="2000" rows="3"></textarea>
+          <textarea id="req-cards" name="cards" required maxlength="2000" rows="2"></textarea>
         </div>
         <div class="field">
           <label for="req-game">Game <span class="hint">(required)</span></label>
@@ -78,37 +72,8 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
       </form>
     </section>
 
-    <section class="band band-mat" aria-labelledby="play-h">
-      <h2 id="play-h">What we play</h2>
-      <ul class="play-grid">
-        {games.map((g) => <Pocket href={`/events/?game=${g.id}`} title={g.name} variant="mini"><Fragment slot="art"><div class={`sleeve g-${g.id}`} aria-hidden="true"></div></Fragment></Pocket>)}
-      </ul>
-    </section>
-
-    <div class="duo">
-    <section class="box box-sky" aria-labelledby="sealed-h">
-      <h2 id="sealed-h">Sealed and preorders</h2>
-      <ul class="sealed-grid">
-        {products.length === 0 ? (
-          <>
-            <Pocket href="/visit/#contact" title="Sealed product" variant="sealed">
-              <Fragment slot="art"><div class="box-sil" aria-hidden="true"></div></Fragment>
-              <p>Want a box or a deck? Ask us.</p>
-            </Pocket>
-            <Pocket href="/visit/#contact" title="Preorders" variant="preorder">
-              <Fragment slot="art"><div class="box-sil is-pack" aria-hidden="true"></div></Fragment>
-              <p>Preorder at the counter, or ask what is coming.</p>
-            </Pocket>
-          </>
-        ) : products.slice(0, 3).map((p) => (
-          <Pocket href={p.kind === 'preorder' ? '/shop/#preorders' : '/shop/#sealed'} title={p.name} variant={p.kind === 'preorder' ? 'preorder' : 'sealed'}>
-            <Fragment slot="art"><div class:list={['box-sil', { 'is-pack': p.kind === 'preorder' }]} aria-hidden="true"></div></Fragment>
-            <p>{p.game}</p>
-            <Fragment slot="foot">{p.releaseDate && <span class="mono">{p.releaseDate}</span>}{p.price !== null && <span class="sticker">${p.price}</span>}</Fragment>
-          </Pocket>
-        ))}
-      </ul>
-    </section>
+    <NewReleases />
+    <InstagramStrip />
 
     <section class="box sell" aria-labelledby="sell-h">
       <h2 id="sell-h">Sell to us</h2>
@@ -119,7 +84,6 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
       </div>
       <p class="sell-cta"><a class="btn" href="/sell/">Build my buylist</a></p>
     </section>
-    </div>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/home-live.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>
