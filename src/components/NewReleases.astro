@@ -24,6 +24,10 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       <source type="image/webp" srcset={feat.image.webp[0][0]} />
       <img src={feat.image.jpg} width={feat.image.width} height={feat.image.height} alt="" loading="lazy" />
     </picture>
+    {feat.product && (<picture class="rel-product">
+      <source type="image/webp" srcset={srcset(feat.product)} sizes="(min-width: 720px) 26vw, 7rem" />
+      <img src={feat.product.jpg} width={feat.product.width} height={feat.product.height} alt="" loading="lazy" />
+    </picture>)}
     <div class="rel-body">
       <p class="rel-game">{feat.game} · {feat.name}</p>
       <h3>{feat.ad ?? 'New in the case'}</h3>

@@ -19,7 +19,14 @@
 .shop-grid .pocket-title { font-size: 1.05rem; }
 .shop-grid .pocket-body p { max-width: 20ch; }
 .shop-grid .pocket-foot { display: grid; justify-items: start; gap: .3rem; }
-.hold { font-weight: 700; text-decoration: underline; }
+.shop-grid .pocket-foot .btn { position: relative; z-index: 1; justify-self: stretch; padding-inline: .4rem; text-align: center; }
+.shop-grid .credit { font-size: .75rem; }
+/* Drawn generic product shapes (rule 12): booster box, lid over body; .is-pack a tilted pack with a band. A publisher product shot replaces the drawing. */
+.box-sil::before { content: ""; width: 68%; height: 52%; border: 3px solid var(--line); border-radius: 3px; box-shadow: var(--shadow-sm);
+  background: linear-gradient(var(--sky) 0 32%, var(--line) 32% calc(32% + 3px), var(--accent) 0); }
+.box-sil.is-pack::before { width: 30%; height: 80%; rotate: -8deg; border-radius: 2px; box-shadow: var(--shadow-sm);
+  background: linear-gradient(var(--sky), var(--sky)) center / 100% 24% no-repeat, var(--accent2); }
+.box-shot img { width: 100%; height: 100%; object-fit: contain; }
 @media (min-width: 1000px) { .shop-grid .pocket-title { font-size: var(--step-1); } }
 
 /* Singles display case: glass shelf, light bar on top, two rows of sleeved cards and toploaders with blank ASK stickers (drawn, static) */

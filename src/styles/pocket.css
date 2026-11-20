@@ -1,6 +1,6 @@
 .box-sky { background: var(--bg2); }
 .airy { margin-top: var(--section); }
-.box-sil { display: grid; place-items: center; aspect-ratio: 3 / 2; background: var(--bg2); border: 2px solid var(--line); border-radius: 4px; }
+.box-sil, .box-shot { display: grid; place-items: center; aspect-ratio: 3 / 2; background: var(--bg2); border: 2px solid var(--line); border-radius: 4px; }
 .cback { position: relative; display: block; flex: none; width: 3.2em; height: 4.5em; background: var(--card); border: 3px solid var(--line); border-radius: 4px; box-shadow: var(--shadow-sm); }
 .cback::before { content: ""; position: absolute; inset: .3em; border: 2px solid var(--line); border-radius: 2px; background: repeating-linear-gradient(45deg, var(--sky) 0 .35em, var(--card) .35em .7em); }
 .cback::after { content: ""; position: absolute; left: 50%; top: 50%; width: 1em; height: 1em; translate: -50% -50%; rotate: 45deg; background: var(--accent); border: 2px solid var(--line); }

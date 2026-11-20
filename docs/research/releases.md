@@ -10,6 +10,13 @@ Sources: publisher pages only for dates and images. Fetch tools summarise pages,
 | Riftbound | Legacy (Set 6, draft-focused); Radiance (Set 5) out since 2026-10-23; Proving Grounds 2nd Ed. 2027-02-19 | 2027-01-29 (Pre-Rift 01-22 to 01-28) | Coming | riftbound-roadmap-960.webp 960x540, -480, -960.jpg (generic roadmap art, not Legacy product art) | https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/b309f9a6ad1eaffdd7cf54d53530c804dfb48d5d-1920x1080.jpg | Riot Games | none stated | Confirmed | Home, New releases (loop 52) |
 | Hololive OCG | Booster Pack: Volume Vortex (5 Live Start Decks out 2026-10-23) | 2027-03-19 | Coming (outside window) | hololive-volume-vortex-960.webp 960x540, -480, -960.jpg | en.hololive-official-cardgame.com/wp-content/uploads/2026/10/img_volume-voltex_main.jpg | COVER / Bushiroad | none stated | Confirmed | Home, New releases (loop 52) |
 
+## Product shot (loop 67)
+| Game | Product | Image | Source | Credit | Used on site |
+|---|---|---|---|---|---|
+| Magic | Star Trek Bundle (box, two dice) | star-trek-bundle-320.webp 320x252, -480.webp 480x378, -480.jpg (13.9 / 24.0 / 28.4 KB; transparent, from the 548x432 PNG) | https://images.ctfassets.net/s5n2t79q9icq/2dI7aOlaUYS9JUsFwLh6tG/a23e9fad389eb1148f8ecee82af2ea66/Bundle_548x432.png (page: magic.wizards.com/en/products/star-trek) | Image: Wizards of the Coast | Home Star Trek ad inset, Shop Sealed pocket |
+
+Choice: the Play Booster box, Commander decks, Arena store pack and Beam Me Up Bundle shots all print character portraits on the packaging; the Bundle shows the smallest, stylised figures, so it was taken (no actor likeness reads at 320 px). Riftbound Legacy product art: not checked this loop (still the roadmap art). Raw originals in downloads/media/releases/p67/ (not committed).
+
 ## No image taken (dates only)
 - One Piece (en.onepiece-cardgame.com/products/): ST-37 and ST-38 Starter Decks 2026-12-18; EB-06 East Blue 2027-01-29; OP-19 Come In, World 2027-03-05; PEB-01 2027-04-23; EB-05 2026-10-30 (out). All product pages use a placeholder thumbnail, so no official product image exists yet. Confirmed. OP-18 date not confirmed.
 - Lorcana: Attack of the Vine (Set 13) reported Oct 23 2026 (June press release, conflicting earlier July dates) and a Hyperia City set (Pixar, Q4 2026) on disneylorcana.com; no firm date seen. Likely/unverified.

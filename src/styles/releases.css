@@ -28,9 +28,12 @@
 .rel-art::after { content: ""; position: absolute; left: 20%; top: 52%; width: 38%; border-top: 3px dotted var(--op-rope); transform: rotate(-8deg); transform-origin: left; }
 /* Star Trek banner: key art full-bleed, scrim for contrast, text stays HTML */
 .rel-feat { --t-bg: var(--trek-bg); --t-ink: var(--trek-text); --t-hi: var(--trek-glow); --t-bar: var(--trek-glow); grid-template-columns: minmax(0, 1fr); align-content: end; min-height: 24rem; margin-top: var(--s-3); box-shadow: var(--shadow); }
-.rel-feat picture { position: absolute; inset: 0; border: 0; }
+.rel-feat > picture { position: absolute; inset: 0; border: 0; }
+.rel-feat > .rel-product { inset: var(--s-3) var(--s-3) auto auto; width: 7rem; z-index: 2; filter: drop-shadow(0 .3rem .6rem var(--trek-bg)); }
+.rel-feat .rel-product img { height: auto; object-fit: contain; }
 .rel-feat img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; }
 .rel-feat::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, color-mix(in srgb, var(--trek-bg) 96%, transparent) 65%, color-mix(in srgb, var(--trek-bg) 70%, transparent)); }
+.rel-feat .rel-game { margin-right: 7rem; }
 .rel-feat .rel-body { position: relative; z-index: 2; gap: .6rem; padding: var(--s-4) var(--s-3) var(--s-3); }
 .rel-feat .rel-game { letter-spacing: .2em; color: var(--t-hi); }
 .rel-feat h3 { font-size: var(--step-3); line-height: 1.02; text-transform: uppercase; letter-spacing: .08em; }
@@ -39,6 +42,8 @@
   .rel-feat { min-height: 26rem; align-content: center; }
   .rel-feat::before { background: linear-gradient(to right, color-mix(in srgb, var(--trek-bg) 96%, transparent) 40%, transparent); }
   .rel-feat .rel-body { max-width: 34rem; padding: var(--s-5) var(--s-5); }
+  .rel-feat .rel-game { margin-right: 0; }
+  .rel-feat > .rel-product { inset: 50% var(--s-5) auto auto; translate: 0 -50%; width: clamp(11rem, 26vw, 22rem); }
 }
 .rel-grid, .ig-grid { display: grid; gap: var(--s-3) var(--s-2); margin-top: var(--s-3); }
 .rel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

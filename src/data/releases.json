@@ -22,7 +22,25 @@
     "sourceUrl": "https://magic.wizards.com/en/products/star-trek",
     "certainty": "Confirmed",
     "theme": "star-trek",
-    "gameId": "magic"
+    "gameId": "magic",
+    "product": {
+      "webp": [
+        [
+          "/media/releases/star-trek-bundle-320.webp",
+          320
+        ],
+        [
+          "/media/releases/star-trek-bundle-480.webp",
+          480
+        ]
+      ],
+      "jpg": "/media/releases/star-trek-bundle-480.jpg",
+      "width": 480,
+      "height": 378,
+      "alt": "Star Trek Bundle box for Magic: The Gathering, with two dice",
+      "credit": "Image: Wizards of the Coast",
+      "sourceUrl": "https://magic.wizards.com/en/products/star-trek"
+    }
   },
   {
     "id": "pokemon-delta-reign",

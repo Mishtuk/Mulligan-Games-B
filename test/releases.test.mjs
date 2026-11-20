@@ -84,7 +84,7 @@ test('built Home: New releases cards are complete pictures and the featured one 
     assert.match(c, /data-status>(Out now|Coming soon)</);
   }
   assert.doesNotMatch(cards.join(''), /fetchpriority/); // the whole section is below the fold (see test/images.test.mjs)
-  assert.equal([...cards.join('').matchAll(/<img\b[^>]*loading="lazy"/g)].length, cards.length);
+  assert.equal([...cards.join('').matchAll(/<img\b[^>]*loading="lazy"/g)].length, cards.length + 1); // + the Star Trek product inset
 });
 
 test('Instagram facade: built pages make no request to Instagram before a tap', { skip: !built }, () => {
@@ -181,4 +181,14 @@ test('release ads and Instagram: releases.css has no animation or transition; th
   assert.doesNotMatch(css, /animation|transition|@keyframes/);
   const js = fs.readFileSync(path.join(root, 'public/js/home-live.js'), 'utf8');
   assert.match(js, /f\.title = /); assert.match(js, /x\.focus\(\)/); assert.match(js, /Escape/); assert.match(js, /Hide this post/); assert.match(js, /b\.focus\(\)/);
+});
+
+test('Star Trek product shot: official box on Home (inset) and Shop (Sealed pocket), sized, credited; Hold is a button-shaped link', { skip: !built }, () => {
+  const p = JSON.parse(fs.readFileSync(path.join(root, 'src/data/releases.json'), 'utf8')).find((r) => r.id === 'mtg-star-trek').product;
+  assert.ok(p.width > 0 && p.height > 0 && p.alt && /^Image: /.test(p.credit) && /^https:\/\/magic\.wizards\.com\//.test(p.sourceUrl));
+  for (const [u] of p.webp) assert.ok(fs.statSync(path.join(dist, u)).size < 120000);
+  assert.match(home(), /class="rel-product"/);
+  const shop = fs.readFileSync(path.join(dist, 'shop/index.html'), 'utf8');
+  assert.match(shop, /<img src="\/media\/releases\/star-trek-bundle-480\.jpg"[^>]*alt="[^"]+"/);
+  assert.match(shop, /<a class="btn hold" href="\/shop\/\?hold=[^"]+" data-hold=/);
 });
