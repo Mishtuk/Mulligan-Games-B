@@ -5,11 +5,13 @@ import ConditionGuide from '../../components/ConditionGuide.astro';
 import products from '../../data/products.json';
 import { splitProducts } from '../../lib/shop.js';
 import '../../styles/shared.css';
+import '../../styles/sleeve.css';
 import '../../styles/shop-only.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer or tabletop'], ['other', 'Something else']];
 const { sealed, preorders } = splitProducts(products);
+const shelfGames = [[''], ['g-pokemon', 'g-one-piece', 'g-riftbound']];
 const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbound"];
 const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the counter' : `$${n}`);
 ---
@@ -34,7 +36,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
             <p class="shelf-tag">{shelfTags[r]}</p>
             <div class="slots" aria-hidden="true">
             {Array.from({ length: 8 }, (_, i) => (
-              <span class={`slot${(i + r * 3) % 4 === 1 ? ' is-top' : ''}`}><i class={`cback v${(i + r) % 3}`}></i></span>
+              <span class={`slot${(i + r * 3) % 4 === 1 ? ' is-top' : ''}`}><i class={`cback ${shelfGames[r][i % shelfGames[r].length]}`}></i></span>
             ))}
             </div>
           </div>

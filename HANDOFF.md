@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 43 of 50 (Shop). Loops 1-42 done.
+- RESUME HERE: loop 44 of 50 (Sell). Loops 1-43 done.
 - [boss] refinement loop 41 (Home): see docs/review/loop-40/review.md priority list (41-49 aimed at launch quality) and its owner launch checklist
 
 ## Waiting on the owner
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 43 (Shop): case rows patterned by shelf-tag games (sleeve.css g-* on cback), Sealed/Preorders two equal columns at 1280, footer gap after the last band removed, cut cback v2. Shots docs/review/loop-43/.
 - Loop 42 (Events): Game cell sleeve swatch via shared `src/styles/sleeve.css` (Home + Events); 390 sheet 2103 -> 1905px (lone Add to calendar on the game line, smaller; closed days tighter); cut Events lead 2nd sentence. Budget unchanged (Events gz 18,816). 138 tests, check-site and a11y pass. Shots `docs/review/loop-42/`.
 - Loop 41 (Home): Binder week is an even 3x3 page at 1280 (equal 206px pockets, 12px gaps, closed Mon/Tue full size); 390 hero 44px higher (stale margin override fixed); cut dead flex rules. 138 tests, check-site and a11y pass. Next: loop 42 Events.
 - Loop 40 (Review of 31-39): independent 25 found -> 26/30. Forms 5 x 4 modes pass; header row aligned 800-1600 in all filters; photo <img> branch proven with a fake store.json (restored). Fixed: game filters with no nights (Pokemon etc.) hide the sheet and say so, empty days hide; Events columns 8/12/30/9/41 + stack at 42.5rem (no Seat or fee-sticker wrap); Sell sticky only in windows >= 38rem tall; gzip budget back to 19,200; dead thead CSS cut. 138 tests. Priorities 41-49 + owner launch checklist in docs/review/loop-40/review.md.
