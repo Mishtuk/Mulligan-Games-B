@@ -57,8 +57,7 @@
 .band .stock .airy { margin-top: 0; }
 @media (min-width: 1000px) {
   .stock { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6, 4rem); align-items: start; }
-  .stock .shelf, .stock .shelf-art, .stock .slip { max-width: none; width: 100%; }
-  .shelf-art { justify-content: space-around; padding-inline: 0; }
+  .stock .shelf, .stock .slip { max-width: none; width: 100%; }
 }
 .airy > .cond-fold { margin-top: var(--s-3); }
 .request { max-width: 46rem; }

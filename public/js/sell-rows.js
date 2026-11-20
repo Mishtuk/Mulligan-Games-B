@@ -7,6 +7,9 @@ export const MAX_ROWS = 40;
 // A line counts when the card name has text. Blank rows are skipped by the Worker too.
 export const countLines = (names) => names.filter((n) => String(n ?? '').trim() !== '').length;
 
+// The total text: nothing until at least one card has a name.
+export const totalText = (names) => { const n = countLines(names); return n ? `lines: ${n}` : ''; };
+
 // Remove only shows when there is more than one row.
 export const showRemove = (rowCount) => rowCount > 1;
 
@@ -16,7 +19,7 @@ export const focusAfterRemove = (i, remaining) => (remaining === 0 ? -1 : Math.m
 if (typeof document !== 'undefined') {
   const form = document.getElementById('buylist-form');
   if (form) {
-    const list = form.querySelector('.slip-rows'), add = document.getElementById('add-row'), count = document.getElementById('line-count');
+    const list = form.querySelector('.slip-rows'), add = document.getElementById('add-row'), total = document.getElementById('line-total');
     const rows = () => [...list.children];
     const names = () => rows().map((r) => r.querySelector('[name="item_name[]"]').value);
     const refresh = () => {
@@ -31,11 +34,10 @@ if (typeof document !== 'undefined') {
       add.disabled = full;
       add.textContent = full ? `Limit of ${MAX_ROWS} lines` : 'Add a row';
     };
-    const announce = () => { count.textContent = countLines(names()); };
+    const announce = () => { total.textContent = totalText(names()); };
 
     // JS starts the slip at one row; the extra server rows are only for no-JS use.
     rows().slice(1).forEach((r) => { if (!r.querySelector('[name="item_name[]"]').value.trim()) r.remove(); });
-    document.getElementById('line-total').hidden = false;
     add.hidden = false;
     refresh();
     announce();

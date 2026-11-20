@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { countLines, showRemove, focusAfterRemove, MAX_ROWS } from '../public/js/sell-rows.js';
+import { countLines, totalText, showRemove, focusAfterRemove, MAX_ROWS } from '../public/js/sell-rows.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
@@ -11,6 +11,8 @@ const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
 test('buylist rows: line count ignores blank names', () => {
   assert.equal(countLines(['', '  ', 'Lightning Bolt', undefined, 'Goblin']), 2);
   assert.equal(countLines([]), 0);
+  assert.equal(totalText(['', '  ']), '', 'no total until a card has a name');
+  assert.equal(totalText(['', 'Bolt']), 'lines: 1');
   assert.equal(showRemove(1), false, 'no Remove on a single row');
   assert.equal(showRemove(2), true);
   assert.equal(MAX_ROWS, 40); // the Worker's MAX_ITEMS

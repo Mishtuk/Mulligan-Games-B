@@ -11,6 +11,7 @@
 .slip-head { text-align: center; }
 .slip-head h2 { font: 700 var(--step-0)/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .slip-total { max-width: none; margin: var(--s-3) 0; font-weight: 700; text-align: right; }
+.slip-total:empty { margin: 0; }
 .tear { margin: var(--s-3) calc(var(--s-3) * -1); border-top: 3px dashed var(--soft-line); }
 .slip-rows { display: grid; gap: var(--s-3); }
 .slip-row { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem; gap: var(--s-2); padding-bottom: var(--s-3); border-bottom: 2px dashed var(--soft-line); }
