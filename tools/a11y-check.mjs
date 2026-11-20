@@ -43,7 +43,7 @@ const smallProbe = `(() => { const out = []; for (const e of document.querySelec
  if (parseFloat(cs.fontSize) < 12.79) out.push(cs.fontSize + ' ' + e.tagName + '.' + e.className + ' ' + e.textContent.trim().slice(0, 24)); } return [...new Set(out)].slice(0, 8); })()`;
 
 // A word split across two lines (Range rects per word) in pocket titles and short labels (chips, buttons, summaries, nav).
-const wordProbe = `(() => { const out = [], sel = '.pocket-title, .chip, .btn, button, summary, nav a, label, th, .sign *';
+const wordProbe = `(() => { const out = [], sel = '.pocket-title, .chip, .btn, button, summary, nav a, label, th, .sign *, .slab > *';
  for (const e of document.querySelectorAll(sel)) { if (!e.getBoundingClientRect().width || e.closest('[hidden],.vh,.hp,thead,details:not([open]) > :not(summary)')) continue;
   const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT); for (let n; (n = w.nextNode()); ) { const re = /\\S+/g; for (let m; (m = re.exec(n.data)); ) { const r = document.createRange(); r.setStart(n, m.index); r.setEnd(n, m.index + m[0].length);
    const tops = new Set([...r.getClientRects()].filter((q) => q.width).map((q) => Math.round(q.top / 4))); if (tops.size > 1 && getComputedStyle(n.parentElement).visibility !== 'hidden') out.push(m[0] + ' in ' + e.tagName + '.' + e.className); } } }
@@ -97,8 +97,9 @@ try {
     for (const m of r.f) ok(false, `scrim contrast @${w}: ${m}`);
     await t.close();
   }
-  // 1b. no word broken mid-word in pocket titles and short labels at 320, 390 and 430
-  for (const w of [320, 390, 430]) for (const p of PATHS) {
+  // 1b. no word broken mid-word in pocket titles, slabs and short labels at 320, 390, 430 and the two-column 768 and 1024
+  // (loop 60: the Home Sell slab stacked "Your cards" one letter per line at 768)
+  for (const w of [320, 390, 430, 768, 1024]) for (const p of PATHS) {
     const t = await b.page({ w, h: 800 }); await t.go(base + p);
     const r = await t.ev(wordProbe); if (r.length) ok(false, `word broken mid-word ${w} ${p}: ${r.join('; ')}`);
     await t.close();

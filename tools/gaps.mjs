@@ -52,8 +52,8 @@ const probe = `(() => {
     const l = Math.min(...mine.map((r) => r[2])), rt = Math.max(...mine.map((r) => r[3]));
     const boxed = (e) => parseFloat(getComputedStyle(e).borderTopWidth) > 0;
     const sib = boxed(k) && kids.some((o) => o !== k && boxed(o) && Math.abs(o.getBoundingClientRect().top - kr.top) < 40 && Math.abs(o.getBoundingClientRect().height - kr.height) > 8);
-    // an unboxed block (page title + lede) is allowed to be left-aligned; only a drawn box with an empty side counts
-    if ((boxed(k) || getComputedStyle(k).backgroundColor !== 'rgba(0, 0, 0, 0)') && (rt - l) / kr.width < 0.55 && kr.width < innerWidth * .9 || sib) thin.push((k.className || k.tagName) + ' w' + Math.round(kr.width) + ' h' + Math.round(kr.height) + ' content ' + Math.round((rt - l) / kr.width * 100) + '% wide' + (sib ? ', unequal sibling height' : ''));
+    // only a page title block (header with the h1 and lede) may be left-aligned and short; every other block counts
+    if (!(k.matches('header') && k.querySelector('h1')) && (rt - l) / kr.width < 0.55 && kr.width < innerWidth * .9 || sib) thin.push((k.className || k.tagName) + ' w' + Math.round(kr.width) + ' h' + Math.round(kr.height) + ' content ' + Math.round((rt - l) / kr.width * 100) + '% wide' + (sib ? ', unequal sibling height' : ''));
   }
   return { runs, thin, h: Math.round(bot0 - top0) };
 })()`;

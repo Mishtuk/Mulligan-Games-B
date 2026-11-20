@@ -55,10 +55,10 @@ test('status: "today" is the New York day, not UTC', () => {
   assert.equal(releaseLabel('2026-11-14', zoned(TZ, new Date('2026-11-14T05:00:00Z')).date), 'Out now');
 });
 
-test('releases.json: only Confirmed or Likely rows; every image row has width, height, credit and a JPEG fallback', () => {
+test('releases.json: only Confirmed rows (an ad states its date as fact, so a Likely date never ships); every image row has width, height, credit and a JPEG fallback', () => {
   assert.ok(rel.length >= 4);
   for (const r of rel) {
-    assert.match(r.certainty, /^(Confirmed|Likely)/, r.id);
+    assert.match(r.certainty, /^Confirmed/, r.id);
     const i = r.image;
     if (!i) { assert.equal(r.id, 'one-piece-st37-38'); continue; } // drawn panel, no publisher image
     assert.ok(i.width > 0 && i.height > 0 && /^Image: /.test(r.credit), r.id);

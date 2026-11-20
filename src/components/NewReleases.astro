@@ -6,7 +6,7 @@ import { zoned } from '../lib/hours.js';
 import { shownReleases, releaseLabel, dateLine, isOut } from '../lib/releases.js';
 
 const today = zoned(store.timezone).date;
-const rows = shownReleases(all.filter((r) => /^(Confirmed|Likely)/.test(r.certainty)), today);
+const rows = shownReleases(all.filter((r) => /^Confirmed/.test(r.certainty)), today);
 // Star Trek leads while it is under 90 days old; after that the newest set with a publisher image does (never the drawn One Piece panel).
 const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows.find((r) => r.image);
 const rest = rows.filter((r) => r !== feat);

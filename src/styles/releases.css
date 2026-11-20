@@ -44,5 +44,5 @@
 .rel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .ig-frame { display: block; width: 100%; height: 34rem; border: 2px solid var(--line); background: var(--card); }
 .home-ig > p { margin-top: var(--s-3); }
-@media (min-width: 720px) { .ig-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; } }
+@media (min-width: 720px) { .ig-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .ig-grid:has(iframe) { align-items: start; } .ig-card { align-content: stretch; } .ig-card .rel-body { display: flex; flex-direction: column; } .ig-card .sticker { align-self: start; } .ig-card .rel-body > div { margin-top: auto; } }
 @media (min-width: 960px) { .rel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

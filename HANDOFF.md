@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 60 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-50/final-review.md.
+- RESUME HERE: loop 61 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-60/review.md (61 Home: cut to <= 5,600px at 390, want list higher, 1024 want-list wrap).
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 60 (review of 51-59): independent 28/30 (identity 4.5, craft 4.5). Fixed Home Sell slab letter-stack at 768, ragged Instagram row, Delta Reign verified (ads ship Confirmed only), gaps exemption narrowed; a11y word probe covers slabs at 768/1024. 169 tests, check-site, gaps, a11y pass. Home gzip 22,919/23,000. Priorities 61-69: docs/review/loop-60/review.md.
 - Loop 59 (code/security/perf, releases + Instagram): image sizes/srcset/lazy fixed and tested (test/images.test.mjs); iframe referrerpolicy; voice.test.mjs word-boundary bug fixed (literal backspaces); release date-boundary tests; 169 tests, check-site 0, a11y passed, gaps 0. Home gzip 22,863/23,000.
 - Loop 58 (copy and voice): owner words restored on the Star Trek ad (headline + products line); release/Instagram strings aligned to the glossary and CTA bank; voice test extended; copy sheet (docs/review/loop-48/copy-sheet.md) rewritten for the current pages. 163 tests, check-site, gaps, a11y pass.
 - 2026-11-20 loop 57: identity review (docs/review/loop-57/identity.md, 35 shots). Ads/Instagram use --shadow-sm/--shadow (Mulligan frame); Privacy = .box + .tab x3 (.priv-grid); Instagram button "Show post from Instagram", Escape hides an open post (focus to Show), focus on Hide at open. Home hero line and request-ok line shortened to stay in D7 (gzip 22700). 162 tests, a11y, check-site, gaps all green.

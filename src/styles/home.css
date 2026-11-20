@@ -143,4 +143,5 @@ html.js .tonight-nojs { display: none; }
   .tonight-what .muted { display: none; }
 }
 .sell .slab-cond { font-size: var(--step-0); text-transform: uppercase; text-align: center; }
-@media (max-width: 26rem) { .sell .slab { grid-template-columns: minmax(0, 1fr); } .sell .slab-cond { border-left: 0; border-top: var(--border-w) solid var(--line); justify-content: flex-start; text-align: left; } }
+.sell { container-type: inline-size; }
+@container (max-width: 22rem) { .sell .slab { grid-template-columns: minmax(0, 1fr); } .sell .slab-cond { border-left: 0; border-top: var(--border-w) solid var(--line); justify-content: flex-start; text-align: left; } }
