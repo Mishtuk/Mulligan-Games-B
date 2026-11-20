@@ -103,10 +103,7 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
             {store.phone && <p><a href={`tel:${store.phone}`}>{store.phone}</a></p>}
             {store.email && <p><a href={`mailto:${store.email}`}>{store.email}</a></p>}
           </div>}
-          <div>
-            {footHours === 'link' ? (
-              <p class="foot-hours-link"><a href="#hours">Opening hours are above</a></p>
-            ) : (
+          {footHours !== 'link' && <div>
               <>
                 <h2>Hours</h2>
                 <dl class="hours">
@@ -116,8 +113,7 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
                 </dl>
                 <p class="foot-note">Hours and nights can change. Confirm with the store.</p>
               </>
-            )}
-          </div>
+          </div>}
           <nav aria-label="Footer: find us online">
             <h2>Find us online</h2>
             <ul class="foot-links">

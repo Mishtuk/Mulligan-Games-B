@@ -9,7 +9,8 @@ import { launch, sleep } from './cdp.mjs';
 
 const args = process.argv.slice(2);
 const baseArg = args.find((a) => a.startsWith('--base='));
-const paths = args.filter((a) => !a.startsWith('--'));
+// Git Bash rewrites a leading / into C:/Program Files/Git/: undo that so the gate works without MSYS_NO_PATHCONV
+const paths = args.filter((a) => !a.startsWith('--')).map((a) => a.replace(/^[A-Za-z]:[\/]Program Files[\/]Git/i, '') || '/');
 if (!paths.length) paths.push('/');
 const WIDTHS = [390, 768, 1024, 1280, 1600];
 const LIMIT = 120;
@@ -51,7 +52,8 @@ const probe = `(() => {
     const l = Math.min(...mine.map((r) => r[2])), rt = Math.max(...mine.map((r) => r[3]));
     const boxed = (e) => parseFloat(getComputedStyle(e).borderTopWidth) > 0;
     const sib = boxed(k) && kids.some((o) => o !== k && boxed(o) && Math.abs(o.getBoundingClientRect().top - kr.top) < 40 && Math.abs(o.getBoundingClientRect().height - kr.height) > 8);
-    if ((rt - l) / kr.width < 0.55 && kr.width < innerWidth * .9 || sib) thin.push((k.className || k.tagName) + ' w' + Math.round(kr.width) + ' h' + Math.round(kr.height) + ' content ' + Math.round((rt - l) / kr.width * 100) + '% wide' + (sib ? ', unequal sibling height' : ''));
+    // an unboxed block (page title + lede) is allowed to be left-aligned; only a drawn box with an empty side counts
+    if ((boxed(k) || getComputedStyle(k).backgroundColor !== 'rgba(0, 0, 0, 0)') && (rt - l) / kr.width < 0.55 && kr.width < innerWidth * .9 || sib) thin.push((k.className || k.tagName) + ' w' + Math.round(kr.width) + ' h' + Math.round(kr.height) + ' content ' + Math.round((rt - l) / kr.width * 100) + '% wide' + (sib ? ', unequal sibling height' : ''));
   }
   return { runs, thin, h: Math.round(bot0 - top0) };
 })()`;

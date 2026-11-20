@@ -24,6 +24,7 @@ Kit `C:\Users\alexm\projects\Base-Website-Design-Template` is READ-ONLY referenc
 - `npm run build` clean, `npm test` green (add or update a test for any logic you touch), and `npm run a11y` passes (it also submits every form).
 - `npm run build && PORT=43NN node tools/serve.mjs` (NN = loop number, so ports never clash), then
   `MSYS_NO_PATHCONV=1 node tools/check-site.mjs http://localhost:43NN / /events/ /shop/ /sell/ /visit/ /privacy/ /nope` exits 0.
+- `npm run gaps -- / /events/ /shop/ /sell/ /visit/ /privacy/ /nope` exits 0 (no blank run over 120px inside main at 390/768/1024/1280/1600; needs a fresh `npm run build`; stop your own server first, it starts its own on 4398). Part of the boss gate since loop 55.
 - Screenshots of the pages you changed at 390x844 and 1280x800 (scripts in `.work/`), into `docs/review/loop-NN/`.
   LOOK at them before and after. Stop the server (kill only your own PID).
 - Append one row to `docs/refinement-log.md`: `| NN | lens | before -> after /30 | what changed (1-2 lines) | handed on (1 line) |`.

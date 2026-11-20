@@ -57,7 +57,7 @@ test('Events play-room placeholder is hidden under 52rem page width; a real phot
   assert.match(photo, /class:list=\{\['photo', cls\]\}/); // real image carries .photo, not .ph
 });
 
-// Loop 48: one spelling (Pokemon) outside the legal line; no exclamation marks; Visit footer is a bare link, no "Hours" heading above it.
+// Loop 48: one spelling (Pokemon) outside the legal line; no exclamation marks; Visit footer has no Hours block or stub link.
 test('copy: Pokemon spelling, no exclamation marks, Visit footer has no Hours heading', { skip: !fs.existsSync(dist) }, () => {
   const bad = [];
   for (const f of walk(dist).filter((x) => x.endsWith('.html'))) {
@@ -69,5 +69,5 @@ test('copy: Pokemon spelling, no exclamation marks, Visit footer has no Hours he
   const visit = fs.readFileSync(path.join(dist, 'visit', 'index.html'), 'utf8');
   const foot = visit.slice(visit.indexOf('<footer'));
   assert.doesNotMatch(foot, /<h2[^>]*>Hours<\/h2>/);
-  assert.match(foot, /foot-hours-link/);
+  assert.doesNotMatch(foot, /opening hours are above|class="hours"/); // the page shows the hours; the footer adds no stub
 });

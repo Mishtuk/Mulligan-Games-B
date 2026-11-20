@@ -67,11 +67,11 @@ test('JSON-LD is valid Store data: address, opening hours specification, sameAs,
   }
 });
 
-test('hours are listed once per page: Visit has the table and its footer only links to it; other pages keep the footer list', { skip }, () => {
+test('hours are listed once per page: Visit has the table and its footer adds no second copy; other pages keep the footer list', { skip }, () => {
   const visit = read('visit/index.html');
   assert.equal((visit.match(/class="hours-table"/g) || []).length, 1);
   assert.ok(!/<dl class="hours"/.test(visit));
-  assert.match(visit, /<footer[\s\S]*href="#hours"/);
+  assert.doesNotMatch(visit.slice(visit.indexOf("<footer")), /Hours<\/h2>|opening hours are above/i); // no stub link either
   for (const f of ['index.html', 'events/index.html', 'shop/index.html', 'sell/index.html', 'privacy/index.html']) {
     assert.match(read(f), /<dl class="hours"/, f);
   }
