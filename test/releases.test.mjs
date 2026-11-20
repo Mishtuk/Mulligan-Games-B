@@ -27,6 +27,25 @@ test('status: too old after 90 days, kept at exactly 90', () => {
   assert.deepEqual(shownReleases([{ releaseDate: '2026-01-01' }, { releaseDate: '2027-01-01' }, { releaseDate: '2026-11-13' }], '2026-11-20').map((r) => r.releaseDate), ['2026-11-13', '2027-01-01']);
 });
 
+test('status: real data, fixed build days: Star Trek is shown through Feb 11 2027 (day 90) and gone from Feb 12', () => {
+  const ids = (t) => shownReleases(rel, t).map((r) => r.id);
+  assert.ok(ids('2026-11-20').includes('mtg-star-trek'));
+  assert.ok(ids('2027-02-11').includes('mtg-star-trek'));
+  assert.ok(!ids('2027-02-12').includes('mtg-star-trek'));
+  assert.ok(!ids('2027-02-20').includes('mtg-star-trek')); // a build on 2027-02-20 does not advertise Star Trek as new
+  assert.equal(releaseLabel('2026-11-13', '2027-02-20'), 'Out now');
+  assert.deepEqual(ids('2027-02-20'), ['riftbound-legacy', 'one-piece-st37-38', 'hololive-volume-vortex']); // out first, then coming by date
+  assert.equal(ids('2027-08-01').length, 0); // everything old: the section hides, no crash
+});
+
+test('status: any build day leaves a featured set with a publisher image (the component never indexes a drawn panel)', () => {
+  for (let d = Date.UTC(2026, 10, 1); d < Date.UTC(2027, 8, 1); d += 864e5) {
+    const t = new Date(d).toISOString().slice(0, 10), rows = shownReleases(rel, t);
+    const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows.find((r) => r.image);
+    if (rows.some((r) => r.image)) assert.ok(feat?.image, t);
+  }
+});
+
 test('status: "today" is the New York day, not UTC', () => {
   // 2026-11-14 03:00 UTC is still Nov 13, 10pm in New York: a Nov 14 release is not out yet.
   const today = zoned(TZ, new Date('2026-11-14T03:00:00Z')).date;
@@ -64,8 +83,8 @@ test('built Home: New releases cards are complete pictures and the featured one 
     assert.match(c, /class="rel-credit">Image: /);
     assert.match(c, /data-status>(Out now|Coming soon)</);
   }
-  assert.doesNotMatch(cards.slice(1).join(''), /fetchpriority/); // only lazy below the featured one
-  assert.equal([...cards.slice(1).join('').matchAll(/<img\b[^>]*loading="lazy"/g)].length, cards.length - 1);
+  assert.doesNotMatch(cards.join(''), /fetchpriority/); // the whole section is below the fold (see test/images.test.mjs)
+  assert.equal([...cards.join('').matchAll(/<img\b[^>]*loading="lazy"/g)].length, cards.length);
 });
 
 test('Instagram facade: built pages make no request to Instagram before a tap', { skip: !built }, () => {
@@ -82,6 +101,9 @@ test('Instagram facade: built pages make no request to Instagram before a tap', 
   assert.match(h, /Follow @mulligangames/);
   const js = fs.readFileSync(path.join(dist, 'js/home-live.js'), 'utf8');
   assert.match(js, /instagram\.com\/p\/\$\{a\.dataset\.ig\}\/embed/);
+  // Chrome-verified 2026-11-20: the /embed page renders with exactly this sandbox and a strict-origin referrer
+  assert.match(js, /sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox'/);
+  assert.match(js, /referrerPolicy = 'strict-origin'/);
   assert.match(js, /onclick/); // the iframe is created inside the click handler only
 });
 
@@ -90,6 +112,8 @@ test('CSP: frame-src allows instagram.com and script-src does not change', () =>
   assert.match(csp, /frame-src [^;]*https:\/\/www\.instagram\.com/);
   assert.match(csp, /script-src 'self' https:\/\/challenges\.cloudflare\.com;/);
   assert.doesNotMatch(csp.match(/script-src[^;]*/)[0], /instagram/);
+  assert.equal(csp.match(/frame-src ([^;]*)/)[1], 'https://challenges.cloudflare.com https://www.instagram.com'); // no wildcard, no extra host
+  assert.doesNotMatch(csp.replace(/frame-src [^;]*/, ''), /instagram/); // not in connect-src, img-src or default-src either
 });
 
 test('footer and privacy lines', { skip: !built }, () => {

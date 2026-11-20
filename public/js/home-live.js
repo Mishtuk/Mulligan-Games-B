@@ -19,7 +19,7 @@ for (const a of document.querySelectorAll('a[data-ig]')) {
   const li = a.closest('li');
   b.onclick = () => {
     const f = document.createElement('iframe');
-    f.src = `https://www.instagram.com/p/${a.dataset.ig}/embed`; f.className = 'ig-frame';
+    f.src = `https://www.instagram.com/p/${a.dataset.ig}/embed`; f.className = 'ig-frame'; f.referrerPolicy = 'strict-origin';
     f.title = `${li.querySelector('h3').textContent}, Instagram post`;
     f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
     const x = document.createElement('button');

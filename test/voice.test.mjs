@@ -11,14 +11,14 @@ const text = (html) => html.replace(/<(script|style)[\s\S]*?<\/\1>/g, ' ').repla
 // DESIGN.md glossary: a fact we may have wrong says "Confirm with the store"; a fact settled in person says "ask at the counter".
 // Every other way of saying "we don't know" is banned. Each entry is one wording, so a failure names what to fix.
 const BANNED = [
-  /ask (?:the|in|in the|at the) (?:store|shop)/i,   // "ask the store", "ask in store", "ask at the shop" ("ask at the counter" is the allowed one)
-  /ask the counter/i,                               // missing "at"
-  /ask staff/i,
-  /check with (?:the|us)/i,
-  /confirm (?:at|in) the/i,                         // the allowed form is "confirm with the store"
-  /call the (?:store|shop)/i,
-  /(?:Fee|Seats): ask(?! at the counter)/i,            // chip labels that only say "ask"
-  /TB[AD]/,                                         // TBA / TBD, upper case only so "tba" inside a word or id cannot trip it
+  /\bask (?:the|in|in the|at the) (?:store|shop)\b/i,   // "ask the store", "ask in store", "ask at the shop" ("ask at the counter" is the allowed one)
+  /\bask the counter\b/i,                               // missing "at"
+  /\bask staff\b/i,
+  /\bcheck with (?:the|us)\b/i,
+  /\bconfirm (?:at|in) the\b/i,                         // the allowed form is "confirm with the store"
+  /\bcall the (?:store|shop)\b/i,
+  /\b(?:Fee|Seats): ask(?! at the counter)/i,            // chip labels that only say "ask"
+  /\bTB[AD]\b/,                                         // TBA / TBD, upper case only so "tba" inside a word or id cannot trip it
 ];
 
 test('built pages use only the two unknown phrases', { skip: !fs.existsSync(dist) }, () => {

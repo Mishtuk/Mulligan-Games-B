@@ -10,10 +10,6 @@
     "image": {
       "webp": [
         [
-          "/media/releases/star-trek-480.webp",
-          480
-        ],
-        [
           "/media/releases/star-trek-960.webp",
           960
         ]
@@ -36,6 +32,10 @@
     "prereleaseDate": "2026-10-24",
     "image": {
       "webp": [
+        [
+          "/media/releases/pokemon-delta-reign-320.webp",
+          320
+        ],
         [
           "/media/releases/pokemon-delta-reign-480.webp",
           480
@@ -64,6 +64,10 @@
     "image": {
       "webp": [
         [
+          "/media/releases/riftbound-roadmap-320.webp",
+          320
+        ],
+        [
           "/media/releases/riftbound-roadmap-480.webp",
           480
         ],
@@ -90,6 +94,10 @@
     "prereleaseDate": null,
     "image": {
       "webp": [
+        [
+          "/media/releases/hololive-volume-vortex-320.webp",
+          320
+        ],
         [
           "/media/releases/hololive-volume-vortex-480.webp",
           480

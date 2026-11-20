@@ -3,7 +3,7 @@ export const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim()
 export const plural = (n) => `${n} ${n === 1 ? 'thing' : 'things'}`;
 
 // ?sent=<name> -> 'ok'; ?<name>=error -> 'err'. `sent` maps other ?sent= values to a panel suffix.
-export function resultFromQuery(search, name, sent = { [name]: 'ok' }) {
+function resultFromQuery(search, name, sent = { [name]: 'ok' }) {
   const q = new URLSearchParams(search);
   return sent[q.get('sent')] ?? (q.get(name) === 'error' ? 'err' : null);
 }
