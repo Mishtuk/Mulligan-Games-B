@@ -24,6 +24,12 @@
   --sky: #7EC8F0;         /* FILL only */
   --error: #B3261E;
   --ok: #1E6B3A;
+  /* release ads (DESIGN.md pairs): deep-space banner, per-game card panels */
+  --trek-bg: #04100E; --trek-text: #E8F5EE; --trek-glow: #6FE3B4;
+  --pk-bg: #FFF4C9; --pk-hi: #B42318; --pk-red: #E8402A; --pk-blue: #2F80ED; --pk-yellow: #FFD23F;
+  --rift-bg: #0C1D3A; --rift-ink: #F6EBCB; --rift-gold: #E2B84A;
+  --holo-bg: #FDE7F3; --holo-ink: #3B1A52; --holo-hi: #7B2D9B; --holo-sky: #8FD3F4; --holo-lav: #C4B1F0;
+  --mana-w: #F4EBC8; --mana-u: #4A90D9; --mana-b: #2B2433; --mana-r: #D9503A; --mana-g: #3F9B5A;
   --font-display: "Titan One", "Arial Black", system-ui, sans-serif;
   --font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;

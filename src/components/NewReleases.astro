@@ -18,17 +18,17 @@ const pic = (r, sizes, lazy) => {
 <section class="home-releases" aria-labelledby="rel-h">
   <h2 id="rel-h">New releases</h2>
   <p class="rel-lede">Big sets, out now and coming soon. Ask us at the counter.</p>
-  {[feat].map((r) => { const p = pic(r, '(min-width: 720px) 560px, 100vw', false); return (
+  {[feat].map((r) => { const p = pic(r, '100vw', false); return (
   <article class="rel rel-feat" data-release={r.releaseDate} data-theme={r.theme}>
     <picture>
       <source type="image/webp" srcset={p.srcset} sizes={p.sizes} />
       <img src={p.jpg} width={p.width} height={p.height} alt={p.alt} />
     </picture>
     <div class="rel-body">
-      <p class="rel-game">{r.game}</p>
-      <h3>{r.name}</h3>
-      <p class="rel-when"><span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span> <span class="muted" data-when hidden={!isOut(r.releaseDate, today)}>Released {fmtDate(r.releaseDate, today)}</span></p>
-      <p class="rel-ad"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>{r.name} is here. Shop the new set in store.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{r.name} is coming. Ask us to hold one.</span></p>
+      <p class="rel-game">{r.game} · {r.name}</p>
+      <h3>New frontier. New cards.</h3>
+      <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span><span data-when hidden={!isOut(r.releaseDate, today)}> · Released {fmtDate(r.releaseDate, today)}</span></p>
+      <p class="rel-ad"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>{r.name} has landed at Mulligan.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{r.name} is almost here. Ask us to hold one.</span></p>
       {r.types && <p>{r.types}</p>}
       <p><a class="btn" href="/visit/#contact">Shop {r.name} in store</a></p>
       <p class="rel-credit">{r.credit}</p>
@@ -43,9 +43,10 @@ const pic = (r, sizes, lazy) => {
       </picture>
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
-        <h3>{r.name}</h3>
-        <p class="rel-ad"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Out now. Grab a pack in store.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>Ask us to hold a box.</span></p>
-        <p class="rel-when"><span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span> <span class="muted" data-when hidden={!isOut(r.releaseDate, today)}>Released {fmtDate(r.releaseDate, today)}</span></p>
+        <h3><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Out now. Grab a pack.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>Hold a box for {fmtDate(r.releaseDate, today).replace(/, d{4}$/, '')}</span></h3>
+        <p class="rel-name">{r.name}</p>
+        <p class="rel-date"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Released {fmtDate(r.releaseDate, today)}</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>In store {fmtDate(r.releaseDate, today)}</span></p>
+        <p class="rel-when"><span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span></p>
         <p class="rel-credit">{r.credit}</p>
       </div>
     </li>); })}

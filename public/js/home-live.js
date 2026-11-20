@@ -10,7 +10,7 @@ if (hours) {
     el.hidden = isStale(d, t);
     el.querySelector('[data-status]').textContent = releaseLabel(d, t);
     for (const s of el.querySelectorAll('[data-if]')) s.hidden = (s.dataset.if === 'out') !== isOut(d, t);
-    w.hidden = !isOut(d, t); w.textContent = `Released ${fmtDate(d, t)}`;
+    if (w) { w.hidden = !isOut(d, t); w.textContent = ` · Released ${fmtDate(d, t)}`; }
   }
 }
 for (const a of document.querySelectorAll('a[data-ig]')) {

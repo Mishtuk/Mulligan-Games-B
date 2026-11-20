@@ -47,7 +47,9 @@ test('releases.json: only Confirmed or Likely rows; every image has width, heigh
 
 test('built Home: New releases cards are complete pictures and the featured one is Star Trek', { skip: !built }, () => {
   const h = home();
-  assert.match(h, /<h3>Star Trek<\/h3>/);
+  assert.match(h, /<h3>New frontier\. New cards\.<\/h3>/);
+  assert.match(h, /class="rel-date"/);
+  assert.match(h, /Out now\. Grab a pack\./);
   assert.match(h, /Shop Star Trek in store/);
   const cards = [...h.matchAll(/<(?:article|li) class="rel[^"]*"[\s\S]*?<\/(?:article|li)>/g)].map((m) => m[0]);
   assert.ok(cards.length >= 3);
@@ -97,4 +99,10 @@ test('releases.json: TCG sets only, each with a theme (star-trek, or the game id
     assert.ok(games.includes(r.gameId), r.id);
     assert.equal(r.theme, r.id === 'mtg-star-trek' ? 'star-trek' : r.gameId, r.id);
   }
+});
+
+test('release ads: themed colours are :root tokens (no literals in releases.css) and every theme in the data has a panel rule', () => {
+  const css = fs.readFileSync(path.join(root, 'src/styles/releases.css'), 'utf8');
+  assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i);
+  for (const th of new Set(rel.map((r) => r.theme).filter((x) => x !== 'star-trek'))) assert.match(css, new RegExp('data-theme=' + th), th);
 });
