@@ -11,6 +11,7 @@
     "serve": "node tools/serve.mjs",
     "a11y": "node tools/a11y-check.mjs",
     "gaps": "node tools/gaps.mjs",
+    "check:all": "node tools/check-all.mjs",
     "gaps:selftest": "node tools/gaps.mjs --selftest"
   },
   "dependencies": {
