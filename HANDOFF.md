@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 41 of 50 (Home). Loops 1-40 done.
+- RESUME HERE: loop 42 of 50 (Events). Loops 1-41 done.
 - [boss] refinement loop 41 (Home): see docs/review/loop-40/review.md priority list (41-49 aimed at launch quality) and its owner launch checklist
 
 ## Waiting on the owner
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 41 (Home): Binder week is an even 3x3 page at 1280 (equal 206px pockets, 12px gaps, closed Mon/Tue full size); 390 hero 44px higher (stale margin override fixed); cut dead flex rules. 138 tests, check-site and a11y pass. Next: loop 42 Events.
 - Loop 40 (Review of 31-39): independent 25 found -> 26/30. Forms 5 x 4 modes pass; header row aligned 800-1600 in all filters; photo <img> branch proven with a fake store.json (restored). Fixed: game filters with no nights (Pokemon etc.) hide the sheet and say so, empty days hide; Events columns 8/12/30/9/41 + stack at 42.5rem (no Seat or fee-sticker wrap); Sell sticky only in windows >= 38rem tall; gzip budget back to 19,200; dead thead CSS cut. 138 tests. Priorities 41-49 + owner launch checklist in docs/review/loop-40/review.md.
 - Loop 39 (Code): shop.css -> shared.css (imports updated, no rule lost or doubled); dead-CSS sweep found nothing to cut; voice regex tidied; budget 19,550 gz / 132,100 raw (heaviest Home 18,616 gz, Events 125,812 raw); README.md added; cut dead `joinNames`. 137 tests.
 - Loop 38 (Copy, 25 -> 25.5 est.): unknown fee shows nothing site-wide (.ics too, dist test); duplicate lines varied; Shop shelf line cut; Events photo placeholder hidden under 52rem; DESIGN.md updated for loop 37. 137 tests, check-site, a11y pass.
