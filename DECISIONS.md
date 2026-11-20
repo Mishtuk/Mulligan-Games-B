@@ -25,6 +25,9 @@ used in two rounds gets deleted.
   owner sends a real card photo; per-game "Ask in store" pockets replaced by one "On the shelf" panel; product pockets
   render only from products.json rows. **Why:** empty placeholders read as a template, not a shop (D4 marked it optional).
   DESIGN.md to be brought in line at loop 10.
+- **D7** (2026-11-20, boss, loop 52): Page-weight budget after the owner-requested New releases and Instagram
+  sections? **Ruling:** raise to 143,000 raw / 22,700 gzip (about 5% above Home at 21,651 gzip). **Why:** an owner
+  feature, measured cost (~3.3k gzip), no slack left to trim. Future raises need a new entry here.
 
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.

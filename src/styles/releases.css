@@ -1,0 +1,38 @@
+/* Home: New releases and From our Instagram. Cards use the sleeve/toploader frame: line border, padded art with its own border. */
+.home-releases, .home-ig { margin-top: var(--section); grid-column: 1 / -1; }
+.rel-lede { margin-top: .25rem; }
+.rel { display: grid; align-content: start; gap: var(--s-2); padding: var(--s-2); background: var(--card); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.rel picture { display: block; }
+.rel img { display: block; width: 100%; height: auto; border: 2px solid var(--line); border-radius: 2px; background: var(--bg2); }
+.rel-body { display: grid; gap: .3rem; align-content: start; min-width: 0; }
+.rel h3 { font-size: var(--step-0); line-height: 1.2; }
+.rel-game { font: 700 var(--step--1)/1.2 var(--font-mono); text-transform: uppercase; }
+.rel-when { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem var(--s-2); font-size: var(--step--1); }
+.rel-credit { font-size: .75rem; line-height: 1.3; color: var(--muted); }
+.rel-feat { margin-top: var(--s-3); box-shadow: var(--shadow); }
+.rel-feat h3 { font-size: var(--step-2); }
+.rel-grid, .ig-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3) var(--s-2); margin-top: var(--s-3); }
+.rel-grid .rel { padding: .4rem; gap: .4rem; }
+.ig-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+.ig-card { display: grid; align-content: start; gap: .35rem; padding: var(--s-3); background: var(--card); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.ig-card h3 { font-size: var(--step-1); line-height: 1.15; }
+.ig-card p { font-size: var(--step--1); }
+.ig-slot { margin-top: var(--s-2); }
+.ig-slot .btn { box-shadow: var(--shadow-sm); }
+.ig-frame { display: block; width: 100%; height: 34rem; border: 2px solid var(--line); border-radius: 2px; background: var(--card); }
+.home-ig > p { margin-top: var(--s-3); }
+@media (min-width: 720px) {
+  .rel-feat { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: var(--s-4); padding: var(--s-3); }
+  .ig-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+}
+@media (min-width: 960px) { .rel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.rel { --rel-c: var(--accent2); }
+.rel { box-shadow: 3px 3px 0 var(--rel-c); }
+.rel-feat { box-shadow: 6px 6px 0 var(--rel-c); }
+.rel[data-theme=pokemon], .rel[data-theme=hololive] { --rel-c: var(--accent); }
+.rel[data-theme=riftbound] { --rel-c: var(--sky); }
+.rel[data-theme=star-trek] { --rel-c: var(--accent); }
+.rel[data-theme=star-trek] h3 { text-transform: uppercase; letter-spacing: .06em; }
+.rel[data-theme=star-trek] img { border-color: var(--accent2); }
+.rel-ad { font-weight: 700; }
+.rel-feat .rel-ad { font-size: var(--step-1); line-height: 1.25; }

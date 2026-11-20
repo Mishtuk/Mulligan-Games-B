@@ -38,6 +38,11 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
 - (2026-11-20) "Since it's a card shop, I want to [show] the latest releases for major sets. Like there's a Star Trek
   set that got released not too long ago. Put images of that on the homepage to advertise that, and things that
   Mulligan Games are advertising on their Instagram and everything."
+- (2026-11-20) "Just for TCG sets, advertise... card sets... find set release advertisements on Instagram and
+  Facebook and other social media posts to get references... or make it yourself. It should imply something like
+  shop now, buy latest Star Trek... research the genre, or if it's just a standard set of Magic or Pokemon or any
+  other TCG that's not themed, just make it generic to that TCG." (No online checkout exists: "shop now" CTAs
+  lead to holding one at the counter.)
 
 ## Hard rules
 1. No HTML or SQL injection. Prepared statements with `?`, escaped output, a test per form.

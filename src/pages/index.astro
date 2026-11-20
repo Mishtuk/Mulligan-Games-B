@@ -3,11 +3,14 @@ import Base from '../layouts/Base.astro';
 import Turnstile from '../components/Turnstile.astro';
 import BinderWeek from '../components/BinderWeek.astro';
 import TonightStrip from '../components/TonightStrip.astro';
+import NewReleases from '../components/NewReleases.astro';
+import InstagramStrip from '../components/InstagramStrip.astro';
 import Pocket from '../components/Pocket.astro';
 import games from '../data/games.json';
 import products from '../data/products.json';
 import '../styles/sleeve.css';
 import '../styles/home.css';
+import '../styles/releases.css';
 
 // Worker field values for /api/request (src/worker.js GAMES)
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer and tabletop'], ['other', 'Something else']];
@@ -30,6 +33,9 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
       <h2 id="binder-h">Binder week</h2>
       <BinderWeek />
     </section>
+
+    <NewReleases />
+    <InstagramStrip />
 
     <section class="box request" id="request" aria-labelledby="request-h">
       <span class="tab">Find a card</span>
@@ -115,6 +121,7 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
     </section>
     </div>
   </div>
+  <script is:inline slot="scripts" type="module" src="/js/home-live.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/form-check.js"></script>
 </Base>

@@ -1,0 +1,31 @@
+[
+ {
+  "id": "ig-championships",
+  "code": "Df7WioalHyN",
+  "title": "Pauper and Legacy Championships",
+  "lines": [
+   "Not-So-Pauper Championship: $15 entry, 6 rounds plus Top 8.",
+   "Old Heads Legacy Championship: $30 entry, up to 6 rounds plus Top 8.",
+   "Pre-register on TopDeck."
+  ],
+  "note": "Confirm the date with the store."
+ },
+ {
+  "id": "ig-series",
+  "code": "DfkGcTCjf6u",
+  "title": "Championship Series 2027 (cEDH)",
+  "lines": [
+   "First Sunday of each month: Dec 6, Jan 3, Feb 7, Mar 7, and later.",
+   "Circuit points count toward next year's invitational."
+  ]
+ },
+ {
+  "id": "ig-arrivals",
+  "code": "Dfp0g0IDanZ",
+  "title": "Look what showed up",
+  "lines": [
+   "New arrivals, posted this month."
+  ],
+  "note": "Ask at the counter what is on the shelf."
+ }
+]

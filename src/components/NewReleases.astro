@@ -1,0 +1,54 @@
+---
+// New releases: official publisher images (CONTEXT rule 12), status computed at build and again in public/js/home-live.js (store zone).
+import all from '../data/releases.json';
+import store from '../data/store.json';
+import { zoned } from '../lib/hours.js';
+import { shownReleases, releaseLabel, isOut, fmtDate } from '../lib/releases.js';
+
+const today = zoned(store.timezone).date;
+const rows = shownReleases(all.filter((r) => /^(Confirmed|Likely)/.test(r.certainty)), today);
+const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows[0];
+const rest = rows.filter((r) => r !== feat);
+const pic = (r, sizes, lazy) => {
+  const { image: i } = r;
+  return { srcset: i.webp.map(([u, w]) => `${u} ${w}w`).join(', '), sizes, loading: lazy ? 'lazy' : undefined, ...i };
+};
+---
+{feat && (
+<section class="home-releases" aria-labelledby="rel-h">
+  <h2 id="rel-h">New releases</h2>
+  <p class="rel-lede">Big sets, out now and coming soon. Ask us at the counter.</p>
+  {[feat].map((r) => { const p = pic(r, '(min-width: 720px) 560px, 100vw', false); return (
+  <article class="rel rel-feat" data-release={r.releaseDate} data-theme={r.theme}>
+    <picture>
+      <source type="image/webp" srcset={p.srcset} sizes={p.sizes} />
+      <img src={p.jpg} width={p.width} height={p.height} alt={p.alt} />
+    </picture>
+    <div class="rel-body">
+      <p class="rel-game">{r.game}</p>
+      <h3>{r.name}</h3>
+      <p class="rel-when"><span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span> <span class="muted" data-when hidden={!isOut(r.releaseDate, today)}>Released {fmtDate(r.releaseDate, today)}</span></p>
+      <p class="rel-ad"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>{r.name} is here. Shop the new set in store.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>{r.name} is coming. Ask us to hold one.</span></p>
+      {r.types && <p>{r.types}</p>}
+      <p><a class="btn" href="/visit/#contact">Shop {r.name} in store</a></p>
+      <p class="rel-credit">{r.credit}</p>
+    </div>
+  </article>); })}
+  <ul class="rel-grid">
+    {rest.map((r) => { const p = pic(r, '(min-width: 960px) 280px, 50vw', true); return (
+    <li class="rel" data-release={r.releaseDate} data-theme={r.theme}>
+      <picture>
+        <source type="image/webp" srcset={p.srcset} sizes={p.sizes} />
+        <img src={p.jpg} width={p.width} height={p.height} alt={p.alt} loading="lazy" />
+      </picture>
+      <div class="rel-body">
+        <p class="rel-game">{r.game}</p>
+        <h3>{r.name}</h3>
+        <p class="rel-ad"><span data-if="out" hidden={!isOut(r.releaseDate, today)}>Out now. Grab a pack in store.</span><span data-if="soon" hidden={isOut(r.releaseDate, today)}>Ask us to hold a box.</span></p>
+        <p class="rel-when"><span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span> <span class="muted" data-when hidden={!isOut(r.releaseDate, today)}>Released {fmtDate(r.releaseDate, today)}</span></p>
+        <p class="rel-credit">{r.credit}</p>
+      </div>
+    </li>); })}
+  </ul>
+</section>
+)}
