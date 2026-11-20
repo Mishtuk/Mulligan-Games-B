@@ -74,10 +74,10 @@ try {
     await t.close();
   }
   // 1c. Sell side column: sticky only while it fits the window (guide folded); open guide => not sticky
-  for (const h of [700, 800]) {
+  for (const h of [500, 700, 800]) {
     const t = await b.page({ w: 1280, h }); await t.go(base + '/sell/');
     const q = (open) => t.ev(`(() => { document.querySelectorAll('.sell-side details').forEach((d) => (d.open = ${open})); const e = document.querySelector('.sell-side'); return { pos: getComputedStyle(e).position, tall: Math.round(e.getBoundingClientRect().height) }; })()`);
-    let r = await q(false); ok(r.pos === 'sticky' && r.tall + 88 <= h, `sell side folded @1280x${h}: sticky and fits ${JSON.stringify(r)}`);
+    let r = await q(false); ok(h < 608 ? r.pos !== 'sticky' : r.pos === 'sticky' && r.tall + 88 <= h, `sell side folded @1280x${h}: sticky only when it fits ${JSON.stringify(r)}`);
     r = await q(true); ok(r.pos !== 'sticky' || r.tall + 88 <= h, `sell side guide open @1280x${h}: not sticky when taller than the window ${JSON.stringify(r)}`);
     await t.close();
   }

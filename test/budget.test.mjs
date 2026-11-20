@@ -13,7 +13,7 @@ const read = (f) => fs.readFileSync(path.join(dist, f));
 
 // Loop 39 measure (HTML+CSS+JS, fonts counted raw): heaviest raw page Events 125,812 bytes; heaviest gzipped page Home 18,616 (Events 18,270, Sell 17,764).
 // Budget is about 5% above the heaviest page. Before adding CSS, put it in the page file, not global.css; trim before raising.
-const BUDGET = { raw: 132100, gzip: 19550 };
+const BUDGET = { raw: 132100, gzip: 19200 }; // loop 40: gzip back to 19,200 (loop 39 raised it with no page over it)
 
 // Every CSS and JS file the page loads: linked files plus the modules they import.
 function assets(html) {

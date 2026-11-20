@@ -47,13 +47,15 @@ function filter() {
     const out = g !== 'all' && r.dataset.game !== g;
     r.hidden = out || r.hasAttribute('data-past');
   }
+  // Filtered: a day with no shown rows is hidden (closed days too); no rows at all hides the whole sheet and its header row.
   let weekly = 0;
   for (const sec of $$('.day')) {
-    const rows = $$('tbody tr', sec), shown = rows.filter((r) => !r.hidden).length;
+    const shown = $$('tbody tr', sec).filter((r) => !r.hidden).length;
     weekly += shown;
-    const table = $('table', sec), none = $('.day-none', sec);
-    if (table) { table.hidden = rows.length > 0 && shown === 0; if (none) none.hidden = !(rows.length > 0 && shown === 0); }
+    sec.hidden = g !== 'all' && shown === 0;
   }
+  const sheet = $('.sheet');
+  if (sheet) sheet.hidden = g !== 'all' && weekly === 0;
   const tickets = $$('.ticket[data-game]');
   const specialShown = tickets.filter((t) => !t.hidden).length;
   const sn = $('#special-none');
@@ -62,7 +64,7 @@ function filter() {
     sn.textContent = g === 'all' ? 'No special nights on the calendar yet.' : `No ${label} special nights booked.`;
   }
   const none = $('#ev-none');
-  if (none) { none.hidden = weekly > 0 || g === 'all'; none.textContent = weekly > 0 || g === 'all' ? '' : `No ${label} nights this week.`; }
+  if (none) { none.hidden = weekly > 0 || g === 'all'; none.textContent = weekly > 0 || g === 'all' ? '' : `No ${label} nights on our list yet.`; }
 }
 
 async function seats() {

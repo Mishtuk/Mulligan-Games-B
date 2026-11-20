@@ -31,22 +31,21 @@
 .ev-note { margin-top: var(--s-3); color: var(--muted); font-size: var(--step--1); }
 
 /* one visible header row for the whole sheet (aria-hidden); each day's table keeps a visually hidden thead so every table stays valid for screen readers */
-.sheet-head { display: grid; grid-template-columns: 10% 12% 25% 9% 44%; margin-top: var(--s-2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+.sheet-head { display: grid; grid-template-columns: 8% 12% 30% 9% 41%; margin-top: var(--s-2); border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
 .sheet-head span { padding: .4rem .5rem; }
 .pairings { width: 100%; margin-top: var(--s-2); border-collapse: collapse; table-layout: fixed; text-align: left; }
-.pairings thead th { padding: .4rem .5rem; border-bottom: var(--border-w) solid var(--line); font: 700 var(--step--1)/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
 .pairings td, .pairings tbody th { padding: .55rem .5rem; border-bottom: 1px solid var(--soft-line); vertical-align: middle; font-weight: 400; }
 .pairings tbody th { font-weight: 700; }
 .pairings tbody tr[data-today] { background: var(--sky); }
 .act { display: flex; align-items: center; flex-wrap: wrap; gap: 0 var(--s-2); }
-.pairings col:nth-child(1) { width: 10%; } .pairings col:nth-child(2) { width: 12%; } .pairings col:nth-child(3) { width: 25%; } .pairings col:nth-child(4) { width: 9%; } .pairings col:nth-child(5) { width: 44%; }
+.pairings col:nth-child(1) { width: 8%; } .pairings col:nth-child(2) { width: 12%; } .pairings col:nth-child(3) { width: 30%; } .pairings col:nth-child(4) { width: 9%; } .pairings col:nth-child(5) { width: 41%; }
 .cap { display: block; color: var(--muted); font-size: var(--step--1); font-weight: 400; }
 .btn-sm { min-height: var(--tap); padding: .25rem var(--s-2); box-shadow: var(--shadow-sm); }
 .cal { display: inline-flex; align-items: center; min-height: var(--tap); }
 
 /* stack when the sheet is narrow (rem container query, so 200% text stacks too): one compact card per night. Line 1 time + format, line 2 game, fee and cap chips, line 3 actions.
-   Still a table (roles kept); data-label only prefixes the cap. */
-@container sheet (max-width: 40rem) {
+   Still a table (roles kept); data-label only prefixes the cap. 42.5rem (loop 40; the query reads the content box, about the table width): below it the Seat column cannot hold Hold a seat + Add to calendar on one line. */
+@container sheet (max-width: 42.5rem) {
   .sheet-head, .pairings colgroup { display: none; }
   .pairings thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .pairings, .pairings tbody { display: block; }

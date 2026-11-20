@@ -135,6 +135,15 @@ test('Events shows a fee only when known: no dash chip, no legend, one visible h
   assert.match(page, /<thead role="rowgroup" class="vh">/);
 });
 
+// Loop 40: a filter with no nights (Pokemon, One Piece...) used to show the header row over seven "No nights" lines.
+test('filtered sheet: empty days hide, a game with no nights hides the whole sheet (header row included)', () => {
+  const page = read('src/pages/events/index.astro'), js = read('public/js/events.js');
+  assert.doesNotMatch(page, /day-none|No nights for this game/);
+  assert.match(js, /sec\.hidden = g !== 'all' && shown === 0;/);
+  assert.match(js, /sheet\.hidden = g !== 'all' && weekly === 0;/);
+  assert.ok(read('src/pages/events/index.astro').indexOf('class="sheet-head') > page.indexOf('<div class="sheet">'), 'header row lives inside .sheet so it hides with it');
+});
+
 test('pairings sheet ships Wed..Tue and the script rotates from today; closed days are one line', () => {
   const page = read('src/pages/events/index.astro'), js = read('public/js/events.js');
   assert.match(page, /const order = \[3, 4, 5, 6, 0, 1, 2\]/);

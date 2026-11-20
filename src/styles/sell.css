@@ -45,7 +45,8 @@ input[type="number"] { width: 100%; min-height: var(--tap); padding: .5rem .75re
   .sell-grid { grid-template-columns: minmax(0, 42rem) minmax(0, 1fr); column-gap: var(--s-5); }
   .slip-wrap { grid-column: 1; grid-row: 1; }
   .sell-side { grid-column: 2; grid-row: 1; }
-  .sell-side:has(details:not([open])) { position: sticky; top: 5.5rem; }
+  /* sticky only while it fits: 5.5rem top + ~30rem column needs a window at least 38rem tall (loop 40) */
+  @media (min-height: 38rem) { .sell-side:has(details:not([open])) { position: sticky; top: 5.5rem; } }
 }
 @container sell (min-width: 40rem) {
   .stubs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
