@@ -55,6 +55,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
     <section class="box request" id="request" aria-labelledby="request-h">
       <h2 id="request-h">Not in the case? Ask for it.</h2>
       <p>No online catalog yet. Send a want list and we will email you if it turns up.</p>
+      {rows.map((r) => <p class="hold-line" id={`hold-${r.id}`}>Holding {r.name}? Write "Hold: {r.name}" in the cards box below.</p>)}
       <p class="hold-note" id="req-hold" role="status" hidden></p>
       <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
         <h3><strong>Got it.</strong> Want list sent.</h3>

@@ -184,7 +184,7 @@ try {
   // 5. scripts OFF, end to end: post all 5 forms through the browser (good and bad email); the Worker redirects to #<form>-ok|-wait|-err,
   // that result panel must show and sit in view, at 100% and at 200% text. Then every result panel by URL, at 390 and 1280.
   const FORMS = [['/', 'request-form'], ['/shop/', 'request-form'], ['/events/', 'signup-form'], ['/sell/', 'buylist-form'], ['/visit/', 'contact-form']];
-  const panelProbe = `(() => { const e = document.querySelector(':target'); if (!e) return { id: null }; const r = e.getBoundingClientRect(); return { id: e.id, disp: getComputedStyle(e).display, top: Math.round(r.top), bottom: Math.round(r.bottom), tall: Math.round(r.height), vh: innerHeight, text: e.textContent.trim().length }; })()`;
+  const panelProbe = `(() => { const e = document.querySelector(':target'); if (!e) return { id: null }; const r = e.getBoundingClientRect(); return { id: e.id, disp: getComputedStyle(e).display, top: Math.round(r.top), bottom: Math.round(r.bottom), tall: Math.round(r.height), vh: innerHeight, text: e.textContent.trim().length, txt: e.textContent.trim() }; })()`;
   const refocus = `(() => { const id = location.hash.slice(1); location.hash = ''; location.hash = '#' + id; return 0; })()`;
   const panelOk = (r, want) => r.id && want.test(r.id) && r.disp !== 'none' && r.text > 0 && r.top >= 0 && r.bottom <= r.vh; // fully in view, under no header
   const noJs = async (w) => { const t = await b.page({ w, h: 844 }); await t.cdp('Emulation.setScriptExecutionDisabled', { value: true }); return t; };
@@ -213,10 +213,10 @@ try {
     await t.close();
   }
   // 6. prefilled hold flow (Home/Shop ad -> /shop/?hold=<id>#request): with scripts, focus lands on the filled textarea, the status line
-  // names the set and the field is in view under no header; with scripts OFF the form is the target and Tab goes into it; both at 200% text.
+  // names the set and the field is in view under no header; with scripts OFF the set's own line (#hold-<id>) is the target, shown and in view, and Tab goes to the cards box; both at 200% text.
   // And New releases: when every release is stale (client date 2027-08-01) the section and its heading are gone.
   const holdId = (await (await fetch(base + '/shop/')).text()).match(/data-hold="([^"]+)"/)[1];
-  const holdUrl = base + '/shop/?hold=' + holdId + '#request';
+  const holdUrl = base + '/shop/?hold=' + holdId + '#hold-' + holdId;
   const inView = `(() => { const e = document.activeElement, r = e.getBoundingClientRect(), h = document.querySelector('header')?.getBoundingClientRect().bottom ?? 0; return { id: e.id, top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight, hdr: Math.round(h), val: e.value, note: document.getElementById('req-hold')?.textContent, desc: e.getAttribute('aria-describedby') }; })()`;
   for (const [w, z] of [[390, ''], [390, '200%'], [1280, '']]) {
     const t = await b.page({ w, h: 844 }); await t.go(holdUrl);
@@ -228,9 +228,9 @@ try {
   for (const z of ['', '200%']) {
     const t = await noJs(390); await t.go(holdUrl);
     if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(refocus); await sleep(300); }
-    let r = await t.ev(panelProbe); ok(r.id === 'request' && r.top >= 0 && r.top < r.vh, `hold flow, scripts off, ${z || '100%'}: the request section is the target and in view ${JSON.stringify(r)}`);
+    let r = await t.ev(panelProbe); ok(r.id === 'hold-' + holdId && r.disp !== 'none' && r.top >= 0 && r.bottom <= r.vh && /^Holding .+? Write "Hold: .+" in the cards box below.$/.test(r.txt), `hold flow, scripts off, ${z || '100%'}: the set's own line is the target, shown and in view ${JSON.stringify(r)}`);
     await t.tab(); r = await t.ev(`({ id: document.activeElement.id, inReq: !!document.activeElement.closest('#request') })`);
-    ok(r.inReq, `hold flow, scripts off, ${z || '100%'}: first Tab after the jump lands inside the request form ${JSON.stringify(r)}`);
+    ok(r.inReq && r.id === 'req-cards', `hold flow, scripts off, ${z || '100%'}: first Tab after the jump lands on the cards box ${JSON.stringify(r)}`);
     await t.close();
   }
   for (const w of [390, 1280]) {

@@ -108,7 +108,7 @@ test('page scripts have no inline handlers and page CSS has no colour literals',
 test('shop: Sealed and Preorders come from releases.json (confirmed rows, out = sealed, coming = preorders) with a hold link each', { skip: !built && 'run npm run build first' }, async () => {
   const { holdHref, holdLine } = await import('../src/lib/shop.js');
   const rels = JSON.parse(fs.readFileSync(path.join(root, 'src/data/releases.json'), 'utf8'));
-  assert.equal(holdHref('mtg-star-trek'), '/shop/?hold=mtg-star-trek#request');
+  assert.equal(holdHref('mtg-star-trek'), '/shop/?hold=mtg-star-trek#hold-mtg-star-trek');
   assert.equal(holdLine({ name: 'Star Trek', types: 'Main set' }, true), 'Hold: Star Trek (Main set)');
   assert.equal(holdLine({ name: 'X' }, false), 'Hold: X (preorder)');
   const shop = html('shop/index.html');
@@ -116,10 +116,11 @@ test('shop: Sealed and Preorders come from releases.json (confirmed rows, out = 
   assert.ok(ids.length > 0);
   for (const id of ids) {
     assert.ok(rels.some((r) => r.id === id && r.certainty === 'Confirmed'), id);
-    assert.ok(shop.includes(`href="/shop/?hold=${id}#request"`), `link ${id}`);
+    assert.ok(shop.includes(`href="/shop/?hold=${id}#hold-${id}"`), `link ${id}`);
+    assert.match(shop, new RegExp(`<p class="hold-line" id="hold-${id}">Holding [^<]+\\? Write "Hold: [^<]+" in the cards box below\.</p>`), `scripts-off line ${id}`);
   }
   const home = html('index.html');
-  for (const m of home.matchAll(/id="rel-([a-z0-9]+-[^"]+)"/g)) assert.ok(home.includes(`href="/shop/?hold=${m[1]}#request"`), `home ${m[1]}`);
+  for (const m of home.matchAll(/id="rel-([a-z0-9]+-[^"]+)"/g)) assert.ok(home.includes(`href="/shop/?hold=${m[1]}#hold-${m[1]}"`), `home ${m[1]}`);
   assert.doesNotMatch(shop, /Preorders at the counter|shelf-art/);
   assert.match(shop, /Sol Ring, Commander Masters, NM, 1/);
   assert.doesNotMatch(shop, /Photo coming/);

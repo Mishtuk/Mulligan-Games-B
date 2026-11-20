@@ -169,7 +169,7 @@ test('release ads: one link per ad whose name says the set; publisher images are
   const ads = [...h.matchAll(/<(?:article|li) class="rel[^"]*"[^>]*data-release[\s\S]*?<\/(?:article|li)>/g)].map((m) => m[0]).filter((c) => !/ig-card/.test(c));
   assert.ok(ads.length >= 5);
   for (const c of ads) {
-    const links = [...c.matchAll(/<a [^>]*href="\/shop\/\?hold=[a-z0-9-]+#request"[^>]*>([\s\S]*?)<\/a>/g)].map((m) => m[1].replace(/<[^>]+>/g, ''));
+    const links = [...c.matchAll(/<a [^>]*href="\/shop\/\?hold=[a-z0-9-]+#hold-[a-z0-9-]+"[^>]*>([\s\S]*?)<\/a>/g)].map((m) => m[1].replace(/<[^>]+>/g, ''));
     assert.equal(links.length, 1, c.slice(0, 90));
     const set = c.includes('rel-feat') ? 'Star Trek' : c.match(/<p class="rel-name">([^<]+)/)[1];
     assert.ok(links[0].includes(set), `${links[0]} names ${set}`);

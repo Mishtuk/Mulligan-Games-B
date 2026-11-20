@@ -11,8 +11,11 @@
 .request .example { margin-bottom: var(--s-1); font-size: var(--step--1); color: var(--muted); }
 .mono-ex { font-family: var(--font-mono); color: var(--text); font-weight: 700; }
 .request .hint { font-weight: 400; }
-.request .hold-note { font-weight: 700; }
-.request p + p { margin-top: .25rem; }
+.request .hold-note, .request .hold-line { font-weight: 700; }
+/* Scripts off: a hold link lands on its own line (built from releases.json); scripts on, hold.js fills the box and says so instead. */
+.request .hold-line { display: none; }
+.request .hold-line:target { display: block; }
+html.js .request .hold-line { display: none !important; }
 
 /* Sealed and preorder pockets */
 .shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-3); }
