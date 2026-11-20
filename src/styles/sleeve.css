@@ -1,0 +1,15 @@
+/* Game sleeve backs (Home What we play, Events Game cell): tokens only, drawn, static. One back per game: same tokens, different pattern and mark */
+.sleeve { position: relative; height: 100%; border: 2px solid var(--line); border-bottom: 0; border-radius: 2px 2px 0 0; background: repeating-linear-gradient(45deg, var(--sky) 0 .3rem, var(--card) .3rem .6rem); }
+.sleeve::before { content: ""; position: absolute; left: 50%; top: 50%; width: 1.1rem; height: 1.1rem; translate: -50% -50%; rotate: 45deg; background: var(--accent); border: 2px solid var(--line); }
+.g-pokemon { background: repeating-linear-gradient(0deg, var(--accent) 0 .3rem, var(--card) .3rem .6rem); }
+.g-pokemon::before { border-radius: 50%; background: var(--sky); }
+.g-one-piece { background: repeating-linear-gradient(90deg, var(--accent2) 0 .3rem, var(--card) .3rem .6rem); }
+.g-one-piece::before { rotate: 0deg; }
+.g-riftbound { background: repeating-linear-gradient(45deg, var(--sky) 0 .3rem, var(--card) .3rem .6rem), repeating-linear-gradient(-45deg, var(--sky) 0 .3rem, var(--card) .3rem .6rem); background-blend-mode: multiply; }
+.g-riftbound::before { background: var(--accent2); }
+.g-hololive { background: radial-gradient(circle, var(--accent) 0 .15rem, var(--card) .16rem) 0 0 / .7rem .7rem; }
+.g-hololive::before { border-radius: 50%; background: var(--accent2); }
+.g-tabletop { background: repeating-linear-gradient(135deg, var(--accent2) 0 .3rem, var(--sky) .3rem .6rem); }
+.g-tabletop::before { rotate: 0deg; background: var(--card); }
+.g-dnd { background: repeating-linear-gradient(45deg, var(--accent) 0 .3rem, var(--card) .3rem .6rem); }
+.g-dnd::before { background: var(--sky); }

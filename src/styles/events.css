@@ -24,7 +24,7 @@
 .day[data-today] { margin-inline: calc(var(--s-3) * -1); padding-inline: var(--s-3); background: var(--bg2); }
 .day[data-today] .day-date { background: var(--sky); }
 .day-note { margin-top: var(--s-1); color: var(--muted); }
-.day[data-closed] { padding-block: var(--s-2); }
+.day[data-closed] { padding-block: var(--s-1); }
 .day[data-closed] h3 { font-size: var(--step-0); color: var(--muted); }
 .day-closed { font-weight: 500; }
 .ev-none { margin: var(--s-2) 0; padding: var(--s-2) var(--s-3); background: var(--bg2); border: 2px solid var(--line); border-radius: var(--radius); font-weight: 700; }
@@ -41,7 +41,11 @@
 .pairings col:nth-child(1) { width: 8%; } .pairings col:nth-child(2) { width: 12%; } .pairings col:nth-child(3) { width: 30%; } .pairings col:nth-child(4) { width: 9%; } .pairings col:nth-child(5) { width: 41%; }
 .cap { display: block; color: var(--muted); font-size: var(--step--1); font-weight: 400; }
 .btn-sm { min-height: var(--tap); padding: .25rem var(--s-2); box-shadow: var(--shadow-sm); }
-.cal { display: inline-flex; align-items: center; min-height: var(--tap); }
+.cal { display: inline-flex; align-items: center; min-height: var(--tap); font-size: var(--step--1); }
+/* game swatch: fixed 1rem x 1.4rem sleeve (5:7) beside the name, so nothing shifts */
+.gm { display: inline-flex; align-items: center; gap: .4rem; }
+.gm .sleeve { flex: none; width: 1rem; height: 1.4rem; border-bottom-width: 2px; border-radius: 2px; }
+.gm .sleeve::before { width: .45rem; height: .45rem; border-width: 1px; }
 
 /* stack when the sheet is narrow (rem container query, so 200% text stacks too): one compact card per night. Line 1 time + format, line 2 game, fee and cap chips, line 3 actions.
    Still a table (roles kept); data-label only prefixes the cap. 42.5rem (loop 40; the query reads the content box, about the table width): below it the Seat column cannot hold Hold a seat + Add to calendar on one line. */
@@ -57,6 +61,8 @@
   .pairings tr > :nth-child(2) { grid-column: 1; grid-row: 2; font: 700 var(--step--1)/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
   .pairings tr > :nth-child(4) { grid-column: 2; grid-row: 2; }
   .pairings tr > :nth-child(5) { grid-column: 1 / -1; grid-row: 3; }
+  /* no Hold a seat: the lone Add to calendar link shares the game line */
+  .pairings tr:not(:has(.btn)) > :nth-child(5) { grid-column: 3; grid-row: 2; justify-self: end; }
   .cap { display: inline; }
   .pairings .act { gap: 0 var(--s-3); }
 }

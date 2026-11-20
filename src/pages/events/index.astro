@@ -9,6 +9,7 @@ import games from '../../data/games.json';
 import { DAYS, toWeek, fmtTime, byTime, zoned } from '../../lib/hours.js';
 import { seedEvents } from '../../lib/seed-events.js';
 import { gameId, isShown, isLikely, upcomingOneoffs, dateParts, signupLabel, upcomingSignup } from '../../lib/events.js';
+import '../../styles/sleeve.css';
 import '../../styles/events.css';
 
 const week = toWeek(store.hours);
@@ -28,7 +29,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
   <div class="wrap ev">
     <header class="ev-head">
       <h1>Game nights</h1>
-      <p class="ev-lead">Commander, draft FNM and more. Find your night, then hold a seat.</p>
+      <p class="ev-lead">Commander, draft FNM and more.</p>
     </header>
 
     <div class="ev-layout">
@@ -64,7 +65,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
                         {x.rows.map((e) => (
                           <tr role="row" data-game={gameId(e.game)}>
                             <td role="cell" data-label="Time"><span class="mono">{fmtTime(e.time)}</span></td>
-                            <td role="cell" data-label="Game">{e.game}</td>
+                            <td role="cell" data-label="Game"><span class="gm"><i class={`sleeve g-${gameId(e.game)}`} aria-hidden="true"></i>{e.game}</span></td>
                             <th scope="row" role="rowheader" data-label="Format">{e.format}{e.cap !== null && <span class="cap"> {e.cap} seats</span>}</th>
                             <td role="cell" data-label="Fee">{e.fee !== null && <span class="sticker">${e.fee}</span>}</td>
                                                         <td role="cell" data-label="Seat" class="row-act"><div class="act">
