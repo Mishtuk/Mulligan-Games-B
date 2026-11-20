@@ -11,6 +11,7 @@
 .request .example { margin-bottom: var(--s-1); font-size: var(--step--1); color: var(--muted); }
 .mono-ex { font-family: var(--font-mono); color: var(--text); font-weight: 700; }
 .request .hint { font-weight: 400; }
+.request .hold-note { font-weight: 700; }
 .request p + p { margin-top: .25rem; }
 
 /* Sealed and preorder pockets */

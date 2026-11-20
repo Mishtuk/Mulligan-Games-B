@@ -15,3 +15,13 @@ test('hold param: unknown, missing, empty and hostile values find nothing', () =
     assert.equal(holdFor(q, holds), null, q);
   }
 });
+
+test('hold flow: the status line, focus and the stale-section hide are wired', async () => {
+  const { readFileSync } = await import('node:fs');
+  const shop = readFileSync('dist/shop/index.html', 'utf8'), js = readFileSync('public/js/hold.js', 'utf8'), live = readFileSync('public/js/home-live.js', 'utf8');
+  assert.match(shop, /id="req-hold"[^>]*role="status"[^>]*hidden/);
+  assert.match(shop, /data-hold="[^"]+" data-name="[^"]+"/);
+  assert.match(js, /Hold request for \$\{h\.dataset\.name\} filled in\. Add your name and email\./);
+  assert.match(js, /cards\.focus\(\)/);
+  assert.match(live, /home-releases[\s\S]*sec\.hidden = !/);
+});

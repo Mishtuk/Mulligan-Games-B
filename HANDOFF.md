@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 66 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-60/review.md (66 A11y).
+- RESUME HERE: loop 67 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-60/review.md (67 Identity, designer).
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 66 (A11y + motion): hold flow focuses the prefilled textarea with a status line "Hold request for <set> filled in. Add your name and email." (a11y checks: keyboard, JS off, 200%); stale releases hide the whole New releases section after the client pass (build already omits it; SITE_NOW=<iso> fixes the build date for checking); Events 768-1023 ask line moved under the clipboard so both columns end together. 173 tests, a11y green.
 - Loop 65 (Visit + chrome): drawn storefront beside Visit photo slot, drawn play table beside Events slot (tokens, aria-hidden; real photo replaces them via :has; deploy shows drawn only). Shots docs/review/loop-65/.
 - Loop 64 (Sell): slip-wrap max-width none under 70rem (768 edge), Home Sell box = teaser (display-type slab, button beside it from 60rem), want-list success says "We will email you back" (Worker only stores). 172 tests. Shots docs/review/loop-64/.
 - Loop 63 (Shop): Sealed (out) and Preorders (coming) now built from releases.json, confirmed rows only, same rows as Home; each pocket and every Home release CTA links `/shop/?hold=<id>#request` (`holdHref` in src/lib/shop.js). public/js/hold.js fills the want list ("Hold: <set> (<type>)" + game) only when the id matches a pocket on the page; text comes from build-time data attributes, never the query. products.json, splitProducts, shelf/slip CSS cut. 172 tests. Home gzip 22,259. Shots docs/review/loop-63/.

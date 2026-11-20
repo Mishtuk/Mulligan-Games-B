@@ -10,5 +10,10 @@ if (typeof document !== 'undefined') {
   if (h && cards && game && !cards.value) {
     cards.value = h.dataset.line;
     if ([...game.options].some((o) => o.value === h.dataset.game)) game.value = h.dataset.game;
+    // Say it and put the cursor there: focus reads the label plus this line (name is the page's own text, set as text).
+    const note = document.getElementById('req-hold');
+    note.textContent = `Hold request for ${h.dataset.name} filled in. Add your name and email.`; note.hidden = false;
+    cards.setAttribute('aria-describedby', 'req-hold ' + cards.getAttribute('aria-describedby'));
+    requestAnimationFrame(() => cards.focus());
   }
 }

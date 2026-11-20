@@ -54,6 +54,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
     <section class="box request" id="request" aria-labelledby="request-h">
       <h2 id="request-h">Not in the case? Ask for it.</h2>
       <p>No online catalog yet. Send a want list and we will email you if it turns up.</p>
+      <p class="hold-note" id="req-hold" role="status" hidden></p>
       <div class="form-msg ok" id="request-ok" role="status" tabindex="-1" hidden>
         <h3><strong>Got it.</strong> Want list sent.</h3>
         <p>We will email you back. Nothing else gets sent to you.</p>
@@ -103,7 +104,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
                   <Pocket href={holdHref(r.id)} title={r.name} variant={id === 'sealed' ? 'sealed' : 'preorder'}>
                     <Fragment slot="art"><div class={`box-sil${id === 'sealed' ? '' : ' is-pack'}`} aria-hidden="true"></div></Fragment>
                     <p>{r.game}</p>
-                    <Fragment slot="foot"><span class="mono">{dateLine(r.releaseDate, today)}</span><span class="hold" data-hold={r.id} data-game={r.gameId} data-line={holdLine(r, id === 'sealed')}>Hold one for me</span></Fragment>
+                    <Fragment slot="foot"><span class="mono">{dateLine(r.releaseDate, today)}</span><span class="hold" data-hold={r.id} data-name={r.name} data-game={r.gameId} data-line={holdLine(r, id === 'sealed')}>Hold one for me</span></Fragment>
                   </Pocket>
                 ))}
               </ul>

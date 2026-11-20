@@ -12,6 +12,9 @@ if (hours) {
     for (const s of el.querySelectorAll('[data-if]')) s.hidden = (s.dataset.if === 'out') !== isOut(d, t);
     if (w) w.textContent = dateLine(d, t);
   }
+  // every release stale: no lonely "New releases" heading
+  const sec = document.querySelector('.home-releases');
+  if (sec) sec.hidden = ![...sec.querySelectorAll('[data-release]')].some((e) => !e.hidden);
 }
 for (const a of document.querySelectorAll('a[data-ig]')) {
   const b = document.createElement('button');

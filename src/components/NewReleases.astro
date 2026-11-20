@@ -6,7 +6,7 @@ import { zoned } from '../lib/hours.js';
 import { holdHref } from '../lib/shop.js';
 import { shownReleases, releaseLabel, dateLine, isOut } from '../lib/releases.js';
 
-const today = zoned(store.timezone).date;
+const today = zoned(store.timezone, process.env.SITE_NOW ? new Date(process.env.SITE_NOW) : undefined).date; // SITE_NOW: fixed-date build check
 const rows = shownReleases(all.filter((r) => /^Confirmed/.test(r.certainty)), today);
 // Star Trek leads while it is under 90 days old; after that the newest set with a publisher image does (never the drawn One Piece panel).
 const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows.find((r) => r.image);
@@ -19,21 +19,20 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
 {feat && (
 <section class="home-releases" aria-labelledby="rel-h">
   <h2 id="rel-h">New releases</h2>
-  {[feat].map((r) => { const p = r.image; return (
-  <article class="rel rel-feat" id={`rel-${r.id}`} data-release={r.releaseDate} data-theme={r.theme}>
+  <article class="rel rel-feat" id={`rel-${feat.id}`} data-release={feat.releaseDate} data-theme={feat.theme}>
     <picture>
-      <source type="image/webp" srcset={p.webp[0][0]} />
-      <img src={p.jpg} width={p.width} height={p.height} alt="" loading="lazy" />
+      <source type="image/webp" srcset={feat.image.webp[0][0]} />
+      <img src={feat.image.jpg} width={feat.image.width} height={feat.image.height} alt="" loading="lazy" />
     </picture>
     <div class="rel-body">
-      <p class="rel-game">{r.game} · {r.name}</p>
-      <h3>{r.ad ?? 'New in the case'}</h3>
-      {r.types && <p class="rel-name">{r.types}</p>}
-      <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span> · <span data-when>{dateLine(r.releaseDate, today)}</span></p>
-      <p><a class="btn" href={holdHref(r.id)}>Pick up {r.name} at the counter</a></p>
-      <p class="rel-credit">{r.credit}</p>
+      <p class="rel-game">{feat.game} · {feat.name}</p>
+      <h3>{feat.ad ?? 'New in the case'}</h3>
+      {feat.types && <p class="rel-name">{feat.types}</p>}
+      <p class="rel-date"><span data-status>{releaseLabel(feat.releaseDate, today)}</span> · <span data-when>{dateLine(feat.releaseDate, today)}</span></p>
+      <p><a class="btn" href={holdHref(feat.id)}>Pick up {feat.name} at the counter</a></p>
+      <p class="rel-credit">{feat.credit}</p>
     </div>
-  </article>); })}
+  </article>
   <ul class="rel-grid">
     {rest.map((r, n) => { const p = r.image; return (
     <li class="rel" id={`rel-${r.id}`} data-release={r.releaseDate} data-theme={r.theme}>

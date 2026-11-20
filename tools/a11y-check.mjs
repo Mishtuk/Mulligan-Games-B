@@ -209,6 +209,35 @@ try {
     const r = await t.ev(panelProbe); ok(panelOk(r, /./), `no-JS result ${u} @${w} ${z || '100%'}: ${JSON.stringify(r)}`);
     await t.close();
   }
+  // 6. prefilled hold flow (Home/Shop ad -> /shop/?hold=<id>#request): with scripts, focus lands on the filled textarea, the status line
+  // names the set and the field is in view under no header; with scripts OFF the form is the target and Tab goes into it; both at 200% text.
+  // And New releases: when every release is stale (client date 2027-08-01) the section and its heading are gone.
+  const holdId = (await (await fetch(base + '/shop/')).text()).match(/data-hold="([^"]+)"/)[1];
+  const holdUrl = base + '/shop/?hold=' + holdId + '#request';
+  const inView = `(() => { const e = document.activeElement, r = e.getBoundingClientRect(), h = document.querySelector('header')?.getBoundingClientRect().bottom ?? 0; return { id: e.id, top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight, hdr: Math.round(h), val: e.value, note: document.getElementById('req-hold')?.textContent, desc: e.getAttribute('aria-describedby') }; })()`;
+  for (const [w, z] of [[390, ''], [390, '200%'], [1280, '']]) {
+    const t = await b.page({ w, h: 844 }); await t.go(holdUrl);
+    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(`document.getElementById('req-cards').blur(); document.getElementById('req-cards').focus()`); await sleep(300); }
+    const r = await t.ev(inView);
+    ok(r.id === 'req-cards' && /^Hold: /.test(r.val) && /^Hold request for .+ filled in. Add your name and email.$/.test(r.note) && /^req-hold /.test(r.desc) && r.top >= r.hdr && r.bottom <= r.vh, `hold flow @${w} ${z || '100%'}: focus on the filled request field, status line, in view ${JSON.stringify(r)}`);
+    await t.close();
+  }
+  for (const z of ['', '200%']) {
+    const t = await noJs(390); await t.go(holdUrl);
+    if (z) { await t.ev(`document.documentElement.style.fontSize='${z}'`); await t.ev(refocus); await sleep(300); }
+    let r = await t.ev(panelProbe); ok(r.id === 'request' && r.top >= 0 && r.top < r.vh, `hold flow, scripts off, ${z || '100%'}: the request section is the target and in view ${JSON.stringify(r)}`);
+    await t.tab(); r = await t.ev(`({ id: document.activeElement.id, inReq: !!document.activeElement.closest('#request') })`);
+    ok(r.inReq, `hold flow, scripts off, ${z || '100%'}: first Tab after the jump lands inside the request form ${JSON.stringify(r)}`);
+    await t.close();
+  }
+  for (const w of [390, 1280]) {
+    const t = await b.page({ w, h: 844 });
+    await t.cdp('Page.addScriptToEvaluateOnNewDocument', { source: `{ const R = Date; const T = R.parse('2027-08-01T16:00:00Z'); Date = class extends R { constructor(...a) { super(...(a.length ? a : [T])); } static now() { return T; } }; }` });
+    await t.go(base + '/');
+    const r = await t.ev(`({ sec: [...document.querySelectorAll('.home-releases')].map((e) => e.hidden || !e.getClientRects().length), h2: [...document.querySelectorAll('h2')].filter((e) => e.textContent.trim() === 'New releases' && e.getClientRects().length).length })`);
+    ok(r.h2 === 0 && r.sec.every(Boolean), `stale releases @${w}: no visible "New releases" heading after the status pass ${JSON.stringify(r)}`);
+    await t.close();
+  }
 } finally { b.quit(); server?.kill(); }
 console.log(fails.length ? `a11y: ${fails.length} failure(s)` : 'a11y: all checks passed');
 process.exit(fails.length ? 1 : 0);

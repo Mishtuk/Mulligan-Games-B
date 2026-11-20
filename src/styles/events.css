@@ -121,14 +121,14 @@
 @container page (max-width: 51.99rem) { .ev-room:not(:has(.photo)) { display: none; } }
 .ev-ask { margin-top: var(--s-3); padding: var(--s-2) var(--s-3); background: var(--bg2); border: 2px dashed var(--line); border-radius: var(--radius); }
 .ev-ask a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 700; }
-/* 768 to 1023: special nights, ask line and photo stack beside the clipboard (photo fills the left column so no hole) */
+/* 768 to 1023: special nights and the photo stack beside the clipboard; the ask line sits under the clipboard so neither column ends ~125px short (gaps cannot see a hole in one column) */
 @container (min-width: 48rem) and (max-width: 63.99rem) {
   .ev-side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-3) var(--s-4); align-items: start; grid-template-rows: auto auto 1fr; }
   .ev-side .special { margin-top: 0; }
   .ev-side .tickets { grid-template-columns: 1fr; }
   .ev-side .special { grid-column: 1; grid-row: 1; }
-  .ev-side .signup { grid-column: 2; grid-row: 1 / span 3; margin: .9rem 0 0; max-width: none; }
-  .ev-side .ev-ask { grid-column: 1; grid-row: 2; margin-top: 0; }
-  .ev-side .ev-room { grid-column: 1; grid-row: 3; margin-top: 0; align-content: start; }
+  .ev-side .signup { grid-column: 2; grid-row: 1 / span 2; margin: .9rem 0 0; max-width: none; }
+  .ev-side .ev-ask { grid-column: 2; grid-row: 3; margin-top: 0; }
+  .ev-side .ev-room { grid-column: 1; grid-row: 2 / span 2; margin-top: 0; align-content: start; }
 }
 .ticket-rel a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 700; }
