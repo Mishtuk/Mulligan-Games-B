@@ -28,7 +28,7 @@ const HOME = /(href=["'])\/(["'])/g;     // href="/"
 const HASH_HOME = /(["'`])\/(#[\w-]*["'`])/g; // '/#x' style
 const rewrite = (s) => s.replace(REF, `$1${BASE}/`).replace(HOME, `$1${BASE}/$2`).replace(HASH_HOME, `$1${BASE}/$2`);
 
-const STYLE = `<style>.preview-banner{background:var(--accent2,#5B2A86);color:var(--on-accent2,#fff);font:1rem/1.4 var(--font-body,system-ui,sans-serif);padding:.75rem var(--gutter,16px);text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center}.preview-msg{margin:1rem 0;padding:.75rem 1rem;border:3px solid var(--line,#1B1030);border-radius:5px;background:var(--bg2,#DDF0FB);color:var(--text,#1B1030);font-weight:700}</style>`;
+const STYLE = `<style>.preview-banner{background:var(--accent2,#5B2A86);color:var(--on-accent2,#fff);font-family:var(--font-body,system-ui,sans-serif);padding:.15rem var(--gutter,16px);text-align:center;min-height:28px;font-size:.875rem;line-height:1.3;display:flex;align-items:center;justify-content:center}.preview-msg{margin:1rem 0;padding:.75rem 1rem;border:3px solid var(--line,#1B1030);border-radius:5px;background:var(--bg2,#DDF0FB);color:var(--text,#1B1030);font-weight:700}</style>`;
 const BANNER = `<div class="preview-banner" role="note">Preview of a concept site. Forms don't send here.</div>`;
 
 for (const f of walk(out)) {
@@ -38,6 +38,8 @@ for (const f of walk(out)) {
   if (path.basename(f) === 'robots.txt') { fs.writeFileSync(f, 'User-agent: *\nDisallow: /\n'); continue; }
   if (ext === '.html') {
     // Forms first: action to the static page, GET so a no-JS submit never posts (the Worker does not exist here).
+    // D11(C): fields lose name= so a no-JS GET submit carries nothing in the URL.
+    s = s.replace(/<(?:input|select|textarea|button)\b[^>]*>/g, (tag) => /\btype="radio"/.test(tag) ? tag : tag.replace(/\sname=(?:"[^"]*"|'[^']*'|[^\s>]+)/, ''));
     s = s.replace(/<form\b[^>]*>/g, (tag) => tag.replace(/\saction="[^"]*"/, '').replace(/\smethod="[^"]*"/, '').replace(/^<form/, `<form action="${BASE}/preview-form.html" method="get"`));
   }
   // No Worker on Pages: skip the seat-count request (it would 404 and log a console error); events.js already handles a failed fetch.

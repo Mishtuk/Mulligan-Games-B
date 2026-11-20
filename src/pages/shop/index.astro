@@ -71,7 +71,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
         <p>Nothing was sent. Please check the fields and send it again, or ask at the counter.</p>
       </div>
       <form id="request-form" method="post" action="/api/request" novalidate>
-        <div class="field">
+        <div class="field" id="req-field">
           <label for="req-cards">Cards you want <span class="hint">(required, up to 50 lines)</span></label>
           <p class="example" id="req-cards-ex">One card per line: name, set, condition, how many. Example: <span class="mono-ex">Sol Ring, Commander Masters, NM, 1</span></p>
           <textarea id="req-cards" name="cards" required maxlength="2000" rows="6" aria-describedby="req-cards-ex"></textarea>

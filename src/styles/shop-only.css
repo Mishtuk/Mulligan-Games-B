@@ -13,6 +13,7 @@
 /* Scripts off: a hold link lands on its own line (built from releases.json); scripts on, hold.js fills the box and says so instead. */
 .request .hold-line { display: none; }
 .request .hold-line:target { display: block; }
+#req-field { scroll-margin-top: 6rem; } /* a hold link lands here: the label and the line above stay in view */
 html.js .request .hold-line { display: none !important; }
 
 /* Sealed and preorder pockets */

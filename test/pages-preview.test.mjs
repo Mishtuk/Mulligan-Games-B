@@ -71,3 +71,15 @@ test('normal build has none of the Pages additions', () => {
   assert.ok(!fs.existsSync(path.join(dist, 'js/preview-forms.js')));
   assert.ok(!fs.existsSync(path.join(dist, 'preview-form.html')));
 });
+test('Pages build (D11C): no name= on any form field, so a no-JS GET submit carries nothing; the banner is slim', () => {
+  let fields = 0;
+  for (const f of html()) {
+    const s = read(f);
+    for (const m of s.matchAll(/<(?:input|select|textarea|button)\b[^>]*>/g)) { if (/\btype="radio"/.test(m[0])) continue; fields++; assert.doesNotMatch(m[0], /\sname=/, f + ' ' + m[0]); }
+    for (const m of s.matchAll(/<form\b[^>]*>/g)) assert.match(m[0], new RegExp(`action="${BASE}/preview-form\.html"`), f);
+  }
+  assert.ok(fields > 10);
+  assert.match(read(path.join(out, 'index.html')), /\.preview-banner\{[^}]*min-height:28px/);
+  const dist = path.join(root, 'dist');
+  if (fs.existsSync(dist)) assert.match(read(path.join(dist, 'index.html')), /<input[^>]* name="/); // the normal build keeps names
+});

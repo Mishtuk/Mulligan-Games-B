@@ -58,13 +58,13 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
                 <p class="row-top"><span class="mono">Card <span class="row-no">{n}</span></span>
                   <button type="button" class="row-remove btn btn-ghost" hidden aria-label={`Remove card ${n}`}>Remove</button></p>
                 <label class="f-name"><span>Card name{n === 1 ? ' (required)' : ''}</span>
-                  <input type="text" id={n === 1 ? 'card-1' : undefined} name="item_name[]" maxlength="100" autocomplete="off" required={n === 1} /></label>
+                  <input type="text" id={n === 1 ? 'card-1' : undefined} name="item_name[]" class="slip-in" maxlength="100" autocomplete="off" required={n === 1} /></label>
                 <label class="f-set"><span>Set <span class="hint">(optional)</span></span>
-                  <input type="text" name="item_set[]" maxlength="80" autocomplete="off" /></label>
+                  <input type="text" name="item_set[]" class="slip-in" maxlength="80" autocomplete="off" /></label>
                 <label class="f-cond"><span>Condition</span>
-                  <select name="item_cond[]">{CONDS.map(([v, l]) => <option value={v}>{l}</option>)}</select></label>
+                  <select name="item_cond[]" class="slip-in">{CONDS.map(([v, l]) => <option value={v}>{l}</option>)}</select></label>
                 <label class="f-qty"><span>Quantity</span>
-                  <input type="number" name="item_qty[]" min="1" max="99" value="1" inputmode="numeric" /></label>
+                  <input type="number" name="item_qty[]" class="slip-in" min="1" max="99" value="1" inputmode="numeric" /></label>
               </li>
             ))}
           </ol>

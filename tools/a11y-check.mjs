@@ -131,16 +131,17 @@ try {
   // 2. menu sheet
   {
     const t = await b.page({ w: 390, h: 844 }); await t.go(base + '/events/');
-    const st = () => t.ev(`({exp: document.getElementById('menu-btn').getAttribute('aria-expanded'), open: document.getElementById('menu-sheet').hasAttribute('data-open'), act: document.activeElement.id || document.activeElement.textContent.trim().slice(0, 20)})`);
+    const st = () => t.ev(`({exp: document.getElementById('menu-btn').getAttribute('aria-expanded'), open: document.getElementById('menu-sheet').hasAttribute('data-open'), inert: [...document.querySelectorAll('main, .site-footer')].every((e) => e.inert) ? 'all' : [...document.querySelectorAll('main, .site-footer')].some((e) => e.inert) ? 'some' : 'none', act: document.activeElement.id || document.activeElement.textContent.trim().slice(0, 20)})`);
     await t.ev(`document.getElementById('menu-btn').focus()`); await t.enter();
     let s = await st(); ok(s.exp === 'true' && s.open, 'menu: Enter opens the sheet ' + JSON.stringify(s));
+    ok(s.inert === 'all', 'menu: main and footer are inert while the sheet is open ' + JSON.stringify(s));
     await t.tab(); s = await st(); ok(/Events/.test(s.act), 'menu: Tab lands on the first sheet link: ' + s.act);
-    await t.esc(); s = await st(); ok(s.exp === 'false' && !s.open && s.act === 'menu-btn', 'menu: Esc closes and returns focus to Menu ' + JSON.stringify(s));
+    await t.esc(); s = await st(); ok(s.exp === 'false' && !s.open && s.inert === 'none' && s.act === 'menu-btn', 'menu: Esc closes and returns focus to Menu ' + JSON.stringify(s));
     await t.ev(`document.getElementById('menu-btn').focus()`); await t.enter(); for (let i = 0; i < 6; i++) await t.tab();
-    s = await st(); ok(s.exp === 'false', 'menu: tabbing out of the sheet closes it ' + JSON.stringify(s));
+    s = await st(); ok(s.exp === 'false' && s.inert === 'none', 'menu: tabbing out of the sheet closes it ' + JSON.stringify(s));
     await t.ev(`document.getElementById('menu-btn').click()`);
     for (const type of ['mousePressed', 'mouseReleased']) await t.cdp('Input.dispatchMouseEvent', { type, x: 200, y: 700, button: 'left', clickCount: 1 });
-    s = await st(); ok(s.exp === 'false', 'menu: click outside closes ' + JSON.stringify(s));
+    s = await st(); ok(s.exp === 'false' && s.inert === 'none', 'menu: click outside closes ' + JSON.stringify(s));
     await t.close();
   }
   // 2b. Events filter in the accessibility tree: every game filter => a status line with the count (or "No X nights listed"),
