@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: Refinement complete. Next work comes from the owner (README "Owner launch checklist").
+- RESUME HERE: loop 51 of 80 (phase 2, docs/refinement-plan.md). Priorities: docs/review/loop-50/final-review.md.
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.

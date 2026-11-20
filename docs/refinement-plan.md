@@ -18,6 +18,21 @@ Card-shop identity (does it read as a card shop at a glance) · main actions (ev
 obvious) · content truth (real facts, honest placeholders) · accessibility and motion safety (needs a check-site run
 for >4) · craft (layout, type, spacing at 390 and 1280) · code (clean, tested, secure, fast).
 
+## Phase 2: loops 51-80 (owner, 2026-11-20: "do 30 more loops until the score is 30 out of 30, or at least 29.5")
+Start: 27/30 at loop 50 (identity 4, actions 4, truth 5, a11y 5, craft 4, code 5). Bar for a 5, judged by the
+review loops (60, 70, 80) from fresh shots and runs:
+- **Identity 5:** every page reads as this card shop at a glance at 390 and 1280, with one strong card object per page
+  carrying real information, a consistent object family and no generic boxes left. Real photos help most; until
+  the owner sends them, the drawn objects and slots must look intended, not missing.
+- **Main actions 5:** events, find a card and visit are one tap from every page, and each ends in a useful result.
+  "Find a card" hands off to a real stock search if one is verified (`docs/research/online-store.md`); otherwise the
+  want list must be the best possible request flow.
+- **Craft 5:** no dead space over 120px inside main at 390/768/1024/1280/1600, aligned edges and a consistent
+  rhythm, measured by script, plus a pixel look at every page.
+- Truth, a11y and code stay at 5: every loop keeps all gates green.
+Review loops write the remaining gap per axis and the next nine loops' priorities. A score is never raised without
+evidence, and never by inventing facts or loosening a check.
+
 ## Lenses (loop n uses lens ((n-1) mod 10) + 1)
 1. Home: hero, the binder-week idea element, tonight strip, order of sections.
 2. Events: schedule, one-offs, event card, sign-up form, empty states, .ics.
