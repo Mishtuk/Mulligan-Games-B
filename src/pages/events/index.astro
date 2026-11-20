@@ -170,7 +170,12 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
         </div>
       </section>
       <p class="ev-ask">Want a night we do not list? <a href="/visit/#contact">Ask us</a></p>
-      <Photo class="ev-photo" photo={store.photos.playRoom} label="the play room" />
+      <div class="ev-room">
+        <div class="mat" aria-hidden="true">
+          <span class="mat-felt"><span class="mat-card mc1"></span><span class="mat-card mc2"></span><span class="mat-card mc3"></span><span class="mat-card mc4"></span><span class="mat-die"></span><span class="mat-die md2"></span></span>
+        </div>
+        <Photo class="ev-photo" photo={store.photos.playRoom} label="the play room" />
+      </div>
         </div>
     </div>
   </div>

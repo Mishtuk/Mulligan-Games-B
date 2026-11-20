@@ -48,9 +48,9 @@ test('no unknown-fee chip or "Fee: ask" text anywhere in dist', { skip: !fs.exis
   assert.deepEqual(bad, []);
 });
 
-test('Events play-room placeholder is hidden under 52rem page width; a real photo is never hidden', () => {
+test('Events play-room table and placeholder are hidden under 52rem page width; a real photo is never hidden', () => {
   const css = fs.readFileSync(path.resolve(dist, '..', 'src', 'styles', 'events.css'), 'utf8');
-  assert.match(css, /@container page \(max-width: 51\.99rem\) \{ \.ph\.ev-photo \{ display: none; \} \}/);
+  assert.ok(css.includes("@container page (max-width: 51.99rem) { .ev-room:not(:has(.photo)) { display: none; } }"));
   assert.doesNotMatch(css, /[^h]\.ev-photo\s*\{\s*display:\s*none/);
   const photo = fs.readFileSync(path.resolve(dist, '..', 'src', 'components', 'Photo.astro'), 'utf8');
   assert.match(photo, /class:list=\{\['ph', cls\]\}/); // placeholder carries .ph

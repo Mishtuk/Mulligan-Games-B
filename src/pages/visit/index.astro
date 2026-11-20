@@ -27,7 +27,14 @@ const road = rest.join(' ');
           <span class="placard-town">{a.city}, {a.state} {a.zip}</span>
         </address>
         <p class="visit-actions"><a class="btn btn-wide" href={store.mapsUrl}>Open in Maps<span class="vh"> (Google Maps)</span></a></p>
-        <Photo class="visit-photo" photo={store.photos.storefront} label="the storefront at 445 York Road" />
+        <div class="visit-front">
+          <div class="storefront" aria-hidden="true">
+            <span class="sf-sign">{store.name}</span>
+            <span class="sf-awning"></span>
+            <span class="sf-wall"><span class="sf-win"></span><span class="sf-door"></span><span class="sf-win"></span></span>
+          </div>
+          <Photo class="visit-photo" photo={store.photos.storefront} label="the storefront at 445 York Road" />
+        </div>
         {(store.phone || store.email || L.discord) && (
           <ul class="reach">
             {store.phone && <li>Phone: <a href={`tel:${store.phone}`}>{store.phone}</a></li>}
