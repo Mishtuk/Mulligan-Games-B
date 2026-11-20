@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Turnstile from '../../components/Turnstile.astro';
 import Photo from "../../components/Photo.astro";
 import HoursTable from '../../components/HoursTable.astro';
 import store from '../../data/store.json';
@@ -71,6 +72,7 @@ const road = rest.join(' ');
             <label for="c-website">Leave this empty</label>
             <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off" />
           </div>
+          <Turnstile />
           <button class="btn" type="submit">Send my message</button>
         </form>
       </section>

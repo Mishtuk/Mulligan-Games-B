@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Turnstile from '../../components/Turnstile.astro';
 import ConditionGuide from '../../components/ConditionGuide.astro';
 import '../../styles/shared.css';
 import '../../styles/sell.css';
@@ -95,6 +96,7 @@ const ROWS = [1, 2, 3]; // without JS: three rows; with JS the slip starts at on
           </div>
           <div class="tear" aria-hidden="true"></div>
           <p class="slip-total mono" id="line-total" aria-live="polite"></p>
+          <Turnstile />
           <button class="btn" type="submit">Send my buylist</button>
         </form>
       </section>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Turnstile from '../../components/Turnstile.astro';
 import Pocket from '../../components/Pocket.astro';
 import ConditionGuide from '../../components/ConditionGuide.astro';
 import products from '../../data/products.json';
@@ -81,6 +82,7 @@ const price = (n: number | null) => (n === null || n === undefined ? 'Ask at the
           <label for="req-website">Leave this empty</label>
           <input type="text" id="req-website" name="website" tabindex="-1" autocomplete="off" />
         </div>
+        <Turnstile />
         <button class="btn" type="submit">Send my want list</button>
       </form>
     </section>

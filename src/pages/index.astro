@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Turnstile from '../components/Turnstile.astro';
 import BinderWeek from '../components/BinderWeek.astro';
 import TonightStrip from '../components/TonightStrip.astro';
 import Pocket from '../components/Pocket.astro';
@@ -66,6 +67,7 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
           <label for="req-website">Leave this empty</label>
           <input type="text" id="req-website" name="website" tabindex="-1" autocomplete="off" />
         </div>
+        <Turnstile />
         <button class="btn" type="submit">Send my want list</button>
       </form>
     </section>

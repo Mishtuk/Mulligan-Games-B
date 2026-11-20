@@ -72,3 +72,4 @@ Researchers run on cheaper models. Process: kit `process/`. Refinement loops: `d
 - [ ] Hosted store / POS for singles search (TCGplayer, Shopify + BinderPOS, none yet?)
 - [ ] Entry fees for weekly nights; buylist rates and store-credit bonus
 - [ ] Discord invite to publish (two different invites found in past research)
+- [ ] Domain, Cloudflare account (D1 database, Turnstile site key + secret), who reads form rows, and the OK to deploy (README "Owner launch checklist", 2026-11-19 loop 50)

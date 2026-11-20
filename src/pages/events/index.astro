@@ -3,6 +3,7 @@
 // Weekdays, not dates, so "this week" is right on the day it is viewed without a rebuild; public/js/events.js adds today's date and marks tonight.
 import Photo from "../../components/Photo.astro";
 import Base from '../../layouts/Base.astro';
+import Turnstile from '../../components/Turnstile.astro';
 import events from '../../data/events.json';
 import store from '../../data/store.json';
 import games from '../../data/games.json';
@@ -159,6 +160,7 @@ const chips = games.map((g) => ({ id: g.id, name: g.name }));
             <label for="su-website">Leave this empty</label>
             <input type="text" id="su-website" name="website" tabindex="-1" autocomplete="off" />
           </div>
+          <Turnstile />
           <button class="btn" type="submit">Hold my seat</button>
         </form>
         </div>

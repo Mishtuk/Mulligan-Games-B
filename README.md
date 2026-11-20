@@ -29,11 +29,11 @@ node tools/check-site.mjs http://localhost:PORT / /events/ /shop/ /sell/ /visit/
 
 ## Owner launch checklist
 None of these can be guessed; the build never invents them. Data first, deploy last.
-- [ ] **Domain**: set `SITE_URL` in `src/lib/site.js` (now the placeholder `https://mulligangames.example`; feeds canonical, sitemap, robots, og:image, JSON-LD). `npm run build:deploy` refuses the placeholder.
+- [ ] **Domain**: set `SITE_URL` in `src/lib/site.js` (now the placeholder `https://mulligangames.example`; feeds canonical, sitemap, robots, og:image, JSON-LD). `npm run build:deploy` refuses the placeholder (and a missing Turnstile site key, below).
 - [ ] **Photos**: storefront and play room, no people, by [docs/photo-swap.md](docs/photo-swap.md) into `src/data/store.json` `photos.*`. A null photo shows a marked "Photo coming" box on `npm run build` and nothing at all on `build:deploy`.
 - [ ] **Phone and email** (`store.json` `phone`, `email`) or confirm "form only"; **Discord** invite (`discord`; two were found, confirm which).
 - [ ] **Weekly nights, times and fees** (`src/data/events.json`; a null `fee` shows nothing; add Pokemon, One Piece, Hololive, Riftbound nights if they run). **Buylist rates** and store-credit bonus (or keep "Rates are set at the counter"); a hosted store for singles, if any.
 - [ ] **Cloudflare**: account, then `wrangler d1 create mulligan` and put the id in `wrangler.jsonc`; `wrangler d1 execute mulligan --remote --file schema.sql`; seed nights with `node tools/seed-events.mjs > .work/seed.sql` then `wrangler d1 execute mulligan --remote --file .work/seed.sql` (safe to re-run; rebuild and re-seed at least every 3 weeks).
-- [ ] **Turnstile**: create a widget and run `wrangler secret put TURNSTILE_SECRET` (the Worker only passes a missing secret in local mode). The pages carry no widget site key yet: add it with the owner before launch.
+- [ ] **Turnstile** (spam check on the 5 forms): create a widget in Cloudflare for the real domain, put its public **site key** in `src/lib/site.js` (`SITE_KEY`, or the `TURNSTILE_SITE_KEY` env var at build) and run `wrangler secret put TURNSTILE_SECRET`. With a key, each form gets the widget (invisible unless Cloudflare asks) and the page loads Cloudflare's script (CSP already allows it); without one, nothing renders. `npm run build:deploy` refuses an empty or test site key; the Worker refuses posts without a token once the secret is set.
 - [ ] **Who reads sign-ups and messages** (D1 rows) and how; deleting data on request (the privacy page promises it).
 - [ ] **Build and deploy**: `npm run build:deploy`, then `npm test` and `npm run a11y`, then a preview deploy and the live site, each only with the owner's OK.

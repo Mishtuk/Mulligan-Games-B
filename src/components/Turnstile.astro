@@ -1,0 +1,13 @@
+---
+// Cloudflare Turnstile spam check, one per form (every page has one form, so the script loads once per page).
+// No site key (local builds): renders nothing and loads nothing; the local server passes posts without a token.
+// Compact + interaction-only: invisible for most visitors; when Cloudflare does ask, the 150px box fits at 320px.
+import { TURNSTILE_SITE_KEY } from '../lib/site.js';
+---
+{TURNSTILE_SITE_KEY && (
+  <>
+    <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-size="compact" data-appearance="interaction-only"></div>
+    <noscript><p class="hint">Sending needs scripts on (a spam check). Or ask at the counter.</p></noscript>
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  </>
+)}

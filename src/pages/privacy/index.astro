@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import '../../styles/pages.css';
+import { TURNSTILE_SITE_KEY } from '../../lib/site.js';
 ---
 <Base title="Privacy and your data" description="What the Mulligan Games site saves when you send a form, why it uses no analytics or ad trackers, and how to ask us to delete your data.">
   <div class="wrap prose">
@@ -30,6 +31,7 @@ import '../../styles/pages.css';
         <li>The one thing saved in your browser is your Motion on or off choice, and it never leaves your device.</li>
         <li>Fonts and images are served from this site, not from another company.</li>
       </ul>
+      {TURNSTILE_SITE_KEY && <p>Pages with a form also run Cloudflare Turnstile, a spam check from Cloudflare under its own privacy terms.</p>}
       <p>Links to Google Maps, Instagram, X, Patreon, TopDeck and Wizards open other sites with their own rules.</p>
     </section>
 

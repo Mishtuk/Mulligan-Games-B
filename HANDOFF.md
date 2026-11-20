@@ -8,7 +8,7 @@
 - Team agents: `.claude/agents/`. Research: `docs/research/`. Reviews: `docs/review/`.
 
 ## Current task
-- **Task:** Phase 3 refinement loops (docs/refinement-plan.md, standing brief docs/loop-brief.md) | one agent per loop | boss commits + pushes per loop
+- **Task:** 50 loops complete; waiting on owner (see README launch checklist). Final review: docs/review/loop-50/final-review.md (27/30).
 - **Done when:** 50 loops logged in docs/refinement-log.md, tests green, check-site exit 0 on all 7 paths.
 - **Out of scope:** deploy, contacting the store, editing the kit.
 
@@ -36,16 +36,15 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 **Phase 4, late (owner)** Real photos, phone/email, fees, hosted store, Discord; then preview deploy with the owner's OK.
 
 ## Status
-- Stage: 3 refinement (first build done 2026-11-19). Gates: G1 passed (owner brief + D4/D5).
-- Last build: pass 2026-11-19 (loop 40). Last test run: 138/138. check-site: 7/7 paths pass. npm run a11y: pass.
+- Stage: 3 refinement done (50 loops); phase 4 waits on the owner. Gates: G1 passed (owner brief + D4/D5).
+- Last build: pass 2026-11-19 (loop 50). Last test run: 147/147. check-site: 7/7 paths pass. npm run a11y: pass. build:deploy: refuses (placeholder SITE_URL, empty Turnstile key) as designed.
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: loop 50 of 50 (final review). Loops 1-49 done.
-- [boss] refinement loop 41 (Home): see docs/review/loop-40/review.md priority list (41-49 aimed at launch quality) and its owner launch checklist
+- RESUME HERE: Refinement complete. Next work comes from the owner (README "Owner launch checklist").
 
 ## Waiting on the owner
-- **To set before launch:** `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
+- **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
 - [ ] Phone/email to publish, photos, hosted store for singles, weekly fees, buylist rates, Discord invite (see CONTEXT open questions)
 - [ ] Preview deploy to Cloudflare (later)
 
@@ -67,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Loop 50 (final review): independent 26 -> 27/30. Turnstile launch blocker fixed (src/components/Turnstile.astro in all 5 forms when TURNSTILE_SITE_KEY is set; nothing locally; build:deploy refuses empty/test key; live test-key run: 0 CSP violations, token posted; privacy line only with a key; test/turnstile.test.mjs). Loop 40 checks run: forms 20/20, header 42/42 aligned, accretion lower. DESIGN.md pages section updated, CONTEXT open question for domain/Cloudflare/Turnstile/deploy OK. 147 tests, check-site and a11y pass. docs/review/loop-50/final-review.md.
 - Loop 49 (code): `src/lib/photo.js` photoMode: null photo = marked placeholder on `npm run build`, NOTHING on `build:deploy` (DEPLOY=1; verified by a temp deploy build: no figure, no "Photo coming"). Gzip max 18,988 (Events) under 19,200; dead-CSS/JS sweep clean; npm audit --omit=dev 0 vulnerabilities. README launch checklist rewritten. FLAG: pages carry no Turnstile widget/site key, so production form posts would fail the Worker check until it is added. 141 tests.
 - Loop 48 (copy): all pages read; Visit footer bare hours link; footer note uses "Confirm with the store"; cut unsourced age/deposit lines, Shop lede, hero "in Warminster"; voice test added (139). Owner skim sheet: docs/review/loop-48/copy-sheet.md.
 - Loop 47 (Identity, designer): all 7 paths x 2 widths + Home Motion off looked at. 3 fixes: Events Game col 15% (Tabletop no longer touches Format), Hold a seat column so Add to calendar links align, Home 1280 request band 3rem below Tonight. docs/photo-swap.md written (linked from README, HANDOFF). Shots docs/review/loop-47/. 138 tests, check-site PASS, a11y PASS.
