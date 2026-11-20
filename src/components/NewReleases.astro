@@ -32,7 +32,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       <h3>{feat.ad ?? 'New in the case'}</h3>
       {feat.types && <p class="rel-name">{feat.types}</p>}
       <p class="rel-date"><span data-status>{releaseLabel(feat.releaseDate, today)}</span> · <span data-when>{dateLine(feat.releaseDate, today)}</span></p>
-      <p><a class="btn" href={holdHref(feat.id)}>Hold one for me<span class="vh">, {feat.name}</span></a></p>
+      <p><a class="btn" href={holdHref(feat.id)}>{feat.cta ?? (<>Hold one for me<span class="vh">, {feat.name}</span></>)}</a></p>
       <p class="rel-credit">{feat.credit}</p>
     </div>
   </article>

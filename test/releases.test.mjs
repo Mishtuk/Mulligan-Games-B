@@ -73,7 +73,7 @@ test('built Home: New releases cards are complete pictures and the featured one 
   assert.match(h, /class="rel-date"/);
   assert.match(h, /Hold a box for me/);
   assert.match(h, /Hold a deck for me/);
-  assert.match(h, /Hold one for me/);
+  assert.match(h, /Get Star Trek: hold one for me/); // featured CTA (loop 70)
   const all = [...h.matchAll(/<(?:article|li) class="rel[^"]*"[\s\S]*?<\/(?:article|li)>/g)].map((m) => m[0]);
   const cards = all.filter((c) => /<img/.test(c));
   assert.ok(cards.length >= 3);

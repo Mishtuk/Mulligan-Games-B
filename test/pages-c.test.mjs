@@ -124,3 +124,14 @@ test('shop: Sealed and Preorders come from releases.json (confirmed rows, out = 
   assert.match(shop, /Sol Ring, Commander Masters, NM, 1/);
   assert.doesNotMatch(shop, /Photo coming/);
 });
+
+// Loop 70: the pocket's core rules lived in home.css, so Shop's Sealed/Preorders pockets (loop 63) rendered with no title bar or
+// padding for seven loops. Every built page that renders a pocket must load the stylesheet that styles its title bar and body.
+test('every page with a pocket loads the pocket core styles', { skip: !fs.existsSync(path.join(root, 'dist')) && 'run npm run build first' }, () => {
+  for (const f of ['index.html', 'shop/index.html', 'events/index.html', 'sell/index.html', 'visit/index.html']) {
+    const html = read(`dist/${f}`);
+    if (!/class="pocket /.test(html)) continue;
+    const css = [...html.matchAll(/href="(\/_astro\/[^"]+\.css)"/g)].map((m) => read(`dist${m[1]}`)).join('\n');
+    for (const sel of ['.pocket-title{', '.pocket-body{', '.pocket-foot{']) assert.ok(css.includes(sel), `${f} loads ${sel}`);
+  }
+});
