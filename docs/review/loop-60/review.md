@@ -68,6 +68,7 @@ the release ads with a tiny generic drawing.
 - **66 A11y:** prefilled request flow by keyboard, JS off and at 200%; empty "New releases" heading never shown when all stale.
 - **67 Identity (designer):** Star Trek product shot (box/pack, official), Riftbound Legacy product art if published; object family audit.
 - **68 Copy:** CTA bank for hold requests; One Piece "Out now" line should not say "pack" for decks.
+- **70 must also judge:** did cutting the What we play band (loop 61) cost identity or wayfinding? Restore a compact version if so.
 - **69 Code:** trim Home CSS to <= 22,700 gzip (D7 line) before anything else; gaps nested-row check; client hides the section when
   every ad is stale (test); request prefill params escaped and tested.
 
