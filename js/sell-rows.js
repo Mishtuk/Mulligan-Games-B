@@ -21,7 +21,7 @@ if (typeof document !== 'undefined') {
   if (form) {
     const list = form.querySelector('.slip-rows'), add = document.getElementById('add-row'), total = document.getElementById('line-total');
     const rows = () => [...list.children];
-    const names = () => rows().map((r) => r.querySelector('[name="item_name[]"]').value);
+    const names = () => rows().map((r) => r.querySelector('.slip-in').value);
     const refresh = () => {
       rows().forEach((r, i) => {
         r.setAttribute('aria-label', `Card ${i + 1}`);
@@ -37,7 +37,7 @@ if (typeof document !== 'undefined') {
     const announce = () => { total.textContent = totalText(names()); };
 
     // JS starts the slip at one row; the extra server rows are only for no-JS use.
-    rows().slice(1).forEach((r) => { if (!r.querySelector('[name="item_name[]"]').value.trim()) r.remove(); });
+    rows().slice(1).forEach((r) => { if (!r.querySelector('.slip-in').value.trim()) r.remove(); });
     add.hidden = false;
     refresh();
     announce();
@@ -47,25 +47,25 @@ if (typeof document !== 'undefined') {
       const row = rows()[0].cloneNode(true);
       row.querySelector('[id]')?.removeAttribute('id'); // the first row's id must stay unique
       row.querySelector('[required]')?.removeAttribute('required');
-      for (const el of row.querySelectorAll('input')) el.value = el.name === 'item_qty[]' ? '1' : '';
+      for (const el of row.querySelectorAll('input')) el.value = el.type === 'number' ? '1' : '';
       row.querySelector('select').value = 'NM';
       list.append(row);
       refresh();
       announce();
-      row.querySelector('[name="item_name[]"]').focus();
+      row.querySelector('.slip-in').focus();
     });
     list.addEventListener('click', (e) => {
       const rm = e.target.closest('.row-remove');
       if (!rm) return;
       const row = rm.closest('.slip-row'), i = rows().indexOf(row);
       if (rows().length === 1) { // never leave the slip empty: clear the row instead
-        for (const el of row.querySelectorAll('input')) el.value = el.name === 'item_qty[]' ? '1' : '';
+        for (const el of row.querySelectorAll('input')) el.value = el.type === 'number' ? '1' : '';
         row.querySelector('select').value = 'NM';
-        row.querySelector('[name="item_name[]"]').focus();
+        row.querySelector('.slip-in').focus();
       } else {
         row.remove();
         const next = focusAfterRemove(i, rows().length);
-        rows()[next].querySelector('[name="item_name[]"]').focus();
+        rows()[next].querySelector('.slip-in').focus();
       }
       refresh();
       announce();
