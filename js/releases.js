@@ -12,3 +12,5 @@ export const shownReleases = (rows, t) => rows.filter((r) => !isStale(r.releaseD
   const x = isOut(a.releaseDate, t), y = isOut(b.releaseDate, t);
   return x !== y ? (x ? -1 : 1) : x ? b.releaseDate.localeCompare(a.releaseDate) : a.releaseDate.localeCompare(b.releaseDate);
 });
+// Top panel status chip: "Out now, Nov 13" / "In store Dec 18" (writer's deck, section 2).
+export const releaseChip = (d, t) => (isOut(d, t) ? `Out now, ${fmtDate(d, t)}` : `In store ${fmtDate(d, t)}`);

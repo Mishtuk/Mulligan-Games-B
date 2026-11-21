@@ -22,7 +22,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:once-2026-11-21-star-trek-commander-party@mulligan-games
-DTSTAMP:20261121T040403Z
+DTSTAMP:20261121T140602Z
 DTSTART;TZID=America/New_York:20261121T140000
 SUMMARY:Star Trek Commander Party (Magic)
 LOCATION:Mulligan Games\, 445 York Road\, Warminster\, PA 18974

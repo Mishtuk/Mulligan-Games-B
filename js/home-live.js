@@ -1,14 +1,16 @@
 // Release status in the store's zone; Instagram posts load only after a tap.
 import { zoned } from '/Mulligan-Games-B/js/hours.js';
 import { readJson } from '/Mulligan-Games-B/js/form-state.js';
-import { releaseLabel, dateLine, isStale, isOut } from '/Mulligan-Games-B/js/releases.js';
+import { releaseLabel, releaseChip, dateLine, isStale, isOut } from '/Mulligan-Games-B/js/releases.js';
 const hours = readJson('hours-data');
 if (hours) {
   const t = zoned(hours.tz).date;
   for (const el of document.querySelectorAll('[data-release]')) {
     const d = el.dataset.release, w = el.querySelector('[data-when]');
     el.hidden = isStale(d, t);
-    el.querySelector('[data-status]').textContent = releaseLabel(d, t);
+    const st = el.querySelector('[data-status]'), ch = el.querySelector('[data-chip]');
+    if (st) st.textContent = releaseLabel(d, t);
+    if (ch) ch.textContent = releaseChip(d, t);
     for (const s of el.querySelectorAll('[data-if]')) s.hidden = (s.dataset.if === 'out') !== isOut(d, t);
     if (w) w.textContent = dateLine(d, t);
   }
