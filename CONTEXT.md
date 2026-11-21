@@ -15,6 +15,8 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
 - **The site:** Card / game store (kit type `site-types/card-game-store.md`).
 - **Goal (one sentence the boss holds everyone to):** The best website we can make for Mulligan Games so that
   local players can see what's on this week, find a card or product, sell their cards, and know when to come in.
+- **Second goal (owner, 2026-11-20): self-sufficiency.** Store managers sign in and make small changes themselves
+  (events, singles and shop items, sales), and see the site's logs, without a developer.
 - **Main actions (one tap from every page):** 1) See this week's events (and sign up) 2) Find cards / shop
   3) Visit (hours, directions)
 - **Audience:** Local players aged 12 to 50 on phones, often the same day ("is there Commander tonight?"),
@@ -51,11 +53,20 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
   from the kit into .claude/agents/; project addition in boss.md.)
 - (2026-11-20) "When you are completely done, push the website out onto pages for me to look at." (GitHub Pages preview,
   noindex, forms marked as not sending there.)
+- (2026-11-20) "I would like to not see the motion on button... just get rid of that button altogether. Make new
+  releases cycle through other advertisements like the ones below it. Find some pictures online, like through their
+  Instagram, to put as placeholders [in] from our Instagram. Make the spacing for find us online a little bit more
+  consistent. Also make an admin login so that they can add singles and other things to the shop list and add events
+  easily. The main goal also of the website should be also self-sufficiency, so that the managers of the store can log
+  into the website and make minute changes to events and sales and see logs from the website."
 
 ## Hard rules
 1. No HTML or SQL injection. Prepared statements with `?`, escaped output, a test per form.
 2. Epilepsy-safe motion: nothing flashes more than 3 times a second (WCAG 2.3.1), every animation off under
-   `prefers-reduced-motion`, a visible Motion on/off switch; nothing moves on its own except what the user starts.
+   `prefers-reduced-motion`; nothing moves on its own except what the user starts, and anything that moves on its
+   own (the New releases rotation, owner 2026-11-20) has a visible Pause, stops on hover/focus, and never auto-moves
+   under `prefers-reduced-motion`. **Owner override (2026-11-20):** no visible Motion on/off switch; the OS
+   reduced-motion setting is the switch.
 3. Accessibility: 4.5:1 text contrast, keyboard use, visible focus, labels, alt text, 48px targets, 200% text without sideways scroll.
 4. Real photos only. No stock people, no AI-generated or AI-upscaled people. Until the owner sends photos, use
    clearly marked placeholders (kit `patterns/ph.md`).
@@ -73,8 +84,10 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
     toploaders). **Exception (owner, 2026-11-20):** a "New releases" section may show the publishers' own official
     product images (box, pack, key art from the publisher's product or press page) to advertise sets the store
     sells, each with a credit line and source in `docs/research/releases.md`. Never fan scans or third-party card scans.
-13. Instagram content is shown only through Instagram's own embed, loaded after a visitor taps (click-to-load,
-    no third-party script before that). Never download or rehost images from Instagram.
+13. Instagram posts are shown through Instagram's own embed, loaded after a visitor taps (click-to-load, no
+    third-party script before that). **Owner override (2026-11-20):** a few of the store's own @mulligangames images
+    may be used as placeholder thumbnails, credited, flyers/product shots only (no identifiable customers), marked
+    to confirm with the store before launch.
 
 ## Commit rules
 - Author name: Alex Mishtuk
