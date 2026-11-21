@@ -8,9 +8,22 @@
 - Team agents: `.claude/agents/`. Research: `docs/research/`. Reviews: `docs/review/`.
 
 ## Current task
-- **Task:** 80 loops complete; waiting on owner (README launch checklist). Final review: docs/review/loop-80/final-review.md (29.5/30, owner target met; 30 needs real photos).
-- **Done when:** 80 loops logged in docs/refinement-log.md, `npm run check:all` 5/5 PASS.
-- **Out of scope:** deploy, contacting the store, editing the kit.
+- **Handed off from the Laptop to the DESKTOP on 2026-11-21** (owner: "hand off your work to continue working on by the desktop"). Safe stop: V3 committed (ea3e332), tree clean, Pages preview republished (gh-pages dfeec04).
+- **Next task (V5): apply the black dark palette** - `docs/meeting/spec-dark-black.md` + its "Advisor review + boss rulings" section at the end (owner 2026-11-21: dark mode black, not purple; no generic-AI purple anywhere; light mode drops purple as the main UI colour too). Coder, mediator-checked against the designer's spec. Grep out every old purple/tint hex listed in the spec (incl. #16283A). Screenshots of all pages dark + light, LOOK, then the gate.
+- **Done when:** `bash tools/verify-commit.sh "<message>"` passes (build, tests, check-site on all 12 paths incl. /shop/<id>/, a11y, gaps, Pages check) and pushes.
+- **Out of scope:** Cloudflare deploy, contacting the store, editing the kit.
+
+## How to work (team rules, owner 2026-11-20)
+- Agents: `.claude/agents/` boss, advisor, mediator, designer, coder, **writer** (new). Pairing rule + owner addition in `boss.md`: advisor sits with boss<->coder/designer/writer; mediator between coder, designer and writer, and always available to talk to the boss; **the boss has the final say** (log rulings in DECISIONS.md).
+- Pattern that worked: designer spec + writer copy deck -> mediator handoff in coder terms -> coder builds -> mediator (or advisor) checks the result and screenshots -> boss runs `tools/verify-commit.sh` -> republish Pages.
+- Never cut the store's own words or owner-requested sections to fit the page budget (D8); log a budget D-entry with the measured number instead (D12, D14-D16 so far).
+- Republish the preview: `npm run build:pages`, copy `dist-pages/` into a checkout of the `gh-pages` branch, add an empty `.nojekyll` (Astro's `_astro` folder needs it), commit as Alex Mishtuk noreply, push. Verify live with check-site against https://mishtuk.github.io/Mulligan-Games-B.
+- Laptop notes: low RAM (7.5 GB) killed one long gate run; run gates one at a time and stop stray serve/Chrome processes. The a11y run takes ~3 min.
+
+## Queue after V5 (in order)
+1. **V4 polish** (`docs/meeting/handoff-visual.md` V4 + the V3 check): carousel/grid ad CTAs become "Shop <short name>" linking to /shop/<id>/ (boss ruling; writer supplies the 5 strings <=24 chars and adds `short` to every release, plus clean One Piece product names); One Piece product shot covers the art title at 390 and its box lists need bullets; the designer's "less bland" list (docs/meeting/spec-top-product.md part 3); the writer's 20 audit fixes (docs/copy/visual-batch.md section 6, docs/copy/audit.md); Pages banner/preview-form styles follow dark; radio buttons styled in dark. Advisor: trim Home code weight (now ~29k gzip, D16).
+2. **Admin + self-sufficiency** (owner 2026-11-20): build slices S0-S10 exactly as `docs/admin/architecture.md` (accepted D13) with the UI in `docs/admin/design.md`; advisor review before merging S1, S2, S4, S5, S6, S8. Owner answers still open (D13 ASSUMED: singles typed in the admin, prices shown when entered else "Ask at the counter", inbox kept 180 days).
+3. Republish the preview after each batch; tell the owner what changed.
 
 ## Plan (roadmap)
 **Phase 1, early (gate G1)**
@@ -36,12 +49,12 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 **Phase 4, late (owner)** Real photos, phone/email, fees, hosted store, Discord; then preview deploy with the owner's OK.
 
 ## Status
-- Stage: 3 refinement done (80 loops); phase 4 waits on the owner. Gates: G1 passed (owner brief + D4/D5).
-- Last build: pass 2026-11-20 (loop 80). npm run check:all 5/5: tests 183/183, check-site 7/7 paths, a11y pass, gaps 0 on 7 paths. build:deploy: refuses (placeholder SITE_URL, empty Turnstile key) as designed.
-- Preview: none. Live: none.
+- Stage: owner-requested features after 80 loops (dark mode, release panels, product pages done; palette, polish and admin next).
+- Last build: pass 2026-11-21 (V3 ea3e332): 215 tests (214 pass, 1 skipped), check-site on 12 paths, a11y, gaps, Pages check all clean.
+- Preview: https://mishtuk.github.io/Mulligan-Games-B/ (gh-pages dfeec04, includes V3). Live: none.
 
 ## Now working on
-- RESUME HERE: done. 80 loops + team meeting (docs/meeting/) complete; preview live at https://mishtuk.github.io/Mulligan-Games-B/ (gh-pages, rebuilt with npm run build:pages). Waiting on owner (README launch checklist).
+- RESUME HERE (Desktop): V5 black palette (see Current task), then the Queue. Nothing claimed, nothing uncommitted.
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +79,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- 2026-11-21 Laptop -> Desktop handoff: owner features since loop 80 done and pushed: Motion switch removed, footer list, dark mode default + sun/moon button (V1), New this month tabs + rotating New releases + Instagram flyers (V2), product pages /shop/<id>/ (V3); writer agent added; team meeting fixes (D11); Pages preview republished. Black palette spec + advisor rulings ready; admin architecture accepted (D13). Gate script saved as tools/verify-commit.sh.
 - Meeting T3 (coder, 2026-11-20): Shop one grid + shorter case, One Piece sea tile, Visit storefront/rules/label, Events table removed (no sticky: clipboard taller than viewport-6rem), Sell stubs, binder foot 14px at all widths. Screens: docs/review/meeting-t3/.
 - Meeting T2 (coder, 2026-11-20): Home order, Instagram CSS art + quiet Confirm line, header pill 600-831, 1100+ hero/binder; budget D12 23,200; tests 190 green; screenshots docs/review/meeting-t2/. Next: T3.
 - T1 (coder, D11): Pages build strips name= from every field; Menu sheet makes main + footer inert while open (a11y asserts it); hold links now end #req-field (the label/textarea wrapper, scroll-margin 6rem), JS-off shows a generic hold line, JS-on unchanged; Pages banner 28px. 190 tests, a11y all passed. Not committed.

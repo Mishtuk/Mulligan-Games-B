@@ -63,3 +63,12 @@ Trek, Pokemon, Riftbound, One Piece: unchanged. Their outer frame and shadow mus
 - Soft shadows, big radius pills, emoji icons, identical 3-up feature cards: 5px radius, stickers, tickets, price tags, binder pockets.
 - Purple-on-white default links and buttons: sky-blue links, orange primary actions.
 - Rule of thumb: if a colour is not the logo's sky/orange, an object colour, or a release panel's own, it should be grey or ink.
+
+## Advisor review + boss rulings (2026-11-21, final say) - apply these with the spec
+- Advisor verified 17 contrast pairs; all match. GO after these fixes.
+- Dark card hard shadow: neutral grey by default (`--shadow: 6px 6px 0 #5A5A5F`, about 3:1 on bg), one variable in the dark block so it can be swapped in one line. Sky stays for fills, links and the focus ring; orange stays the primary action (and today/pressed states). Look at one screenshot; only if the grey reads flat may it go to the sky shadow as specced.
+- Hover: no colour change on orange or card elements; hover = the existing lift/shadow change (motion-gated) plus, for links, underline thickness. Sky-filled hover as specced.
+- Light primary button: orange shadow not required; ink hard shadow like other cards.
+- The `prefers-color-scheme` block in global.css (old purple values, ~lines 57-62) gets the SAME new dark values (one source of truth: generate both from one list or keep them identical with a test).
+- Orange text on dark is allowed (8.0:1). `--on-accent2` is a new token: add it explicitly.
+- Add `#16283A` (old blue-ish dark bg2) to the purple/tint grep-out list.
