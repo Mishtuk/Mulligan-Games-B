@@ -47,7 +47,14 @@ used in two rounds gets deleted.
   attributes so nothing typed reaches a URL; the normal build is unchanged. **Why:** owner-requested sections must
   look as good as the ads; privacy (hard rule 5); owner wants the releases advertised high on Home.
 
-- **D12** (2026-11-20, boss pre-ruling, applied in T2): Home gzip budget raised from 22,700 to 23,200 (measured 23,104 after the Instagram CSS art and header pill; measured +2% exceeds the +500 cap, so the cap applies). No copy cut. test/budget.test.mjs updated.
+- **D12** (2026-11-20, boss pre-ruling, applied in T2): Home gzip budget raised from 22,700 to 23,200 (measured 23,104 after the Instagram CSS art and header pill; measured +2% exceeds the +500 cap, so the cap applies). No copy cut. test/budget.test.mjs updated.- **D13** (2026-11-20, boss after advisor, docs/admin/architecture.md): Admin and self-sufficiency architecture?
+  **Ruling:** accepted as written: Cloudflare Access + origin JWT check, admin at /admin/ and /admin/api/*, owners from
+  a secret and staff in D1, numbered migrations, audit log with before/after, live regions filled by the Worker with
+  escaped values and a static fallback, singles search at /shop/singles/, Pages demo mode in localStorage, build order
+  S0-S10 with advisor review on S1, S2, S4, S5, S6 and S8. **ASSUMED until the owner answers:** singles are typed in the
+  admin (no POS sync); prices show when staff enter one, else "Ask at the counter"; inbox rows kept 180 days.
+  **Order (owner, 2026-11-20):** presentable first (dark mode, release panels, product detail, polish), then admin.
+
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.
 - Hard rules in `CONTEXT.md` are never traded away.
