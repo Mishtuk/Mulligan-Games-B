@@ -36,6 +36,8 @@ Whenever a coder or designer is working, a partner works alongside them for the 
   advisor, may always ask for a **mediator** to help it talk to you when it disagrees with a brief or a ruling.
   The mediator states both sides and recommends; **you always have the final say**, and you log the ruling in
   `DECISIONS.md`. The option to call a mediator is never taken away.
+- **Writer (owner, 2026-11-20):** the team has a writer (`writer.md`) who owns visible words. Same pairing: an advisor
+  for boss <-> writer, a mediator for writer <-> designer or coder. The writer delivers copy decks; the coder applies them.
 
 ## How you work
 - Keep the task list in `HANDOFF.md` ("Next up"): short, ordered, each task with an owner and a checkable

@@ -59,6 +59,19 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
   consistent. Also make an admin login so that they can add singles and other things to the shop list and add events
   easily. The main goal also of the website should be also self-sufficiency, so that the managers of the store can log
   into the website and make minute changes to events and sales and see logs from the website."
+- (2026-11-20) "Make a dark mode and set that to the default for the website. And make a little icon in the bottom
+  right of the screen to toggle between light and dark mode. It shouldn't be like a switch, but it should just be one
+  button that from a sun turns into a moon and from a moon turns into a sun."
+- (2026-11-20) "For the shop, when you click on the advertisements and it takes you to the shop, it should take you to
+  a little thing that should show you the details of the ad and what the box contains. Go on websites like
+  TCGplayer.com and other really popular card shop websites and see how they do it... In general, I want to focus on
+  making this presentable soon... it looks pretty rough in general, but with a little tweaking, I think it will look
+  amazing. Also at the top... put a little panel at the top of the screen above Pull up a chair and Binder week for
+  the new releases, like a little switch tab, and then have new releases again lower down, cycling... to add more
+  images to the screen because it looks very bland and plain." (Priority now: presentable first, then admin.)
+- (2026-11-20) "Add a writer subagent and ask the writer subagent to do research on writing websites and writing text
+  for websites, and then have designer and coder work with the writer to make eloquent prompts that fundamentally fit
+  the needs of the website." (.claude/agents/writer.md; pairing in boss.md.)
 
 ## Hard rules
 1. No HTML or SQL injection. Prepared statements with `?`, escaped output, a test per form.
@@ -97,7 +110,7 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
 - Push rules: `git pull --rebase` first. Never touch the template repo.
 
 ## Team
-Agents in `.claude/agents/` (copied from the kit): boss, designer, coder, advisor, mediator. They load as agent
+Agents in `.claude/agents/` (copied from the kit): boss, designer, coder, advisor, mediator, plus writer (owner, 2026-11-20). They load as agent
 types only when a session starts in this folder; otherwise spawn general-purpose and point it at the role file.
 Researchers run on cheaper models. Process: kit `process/`. Refinement loops: `docs/refinement-plan.md`.
 
