@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: Meeting T3 done, awaiting mediator check; refinement complete (80 loops). Next: the owner's answers to the README launch checklist; nothing else is queued.
+- RESUME HERE: done. 80 loops + team meeting (docs/meeting/) complete; preview live at https://mishtuk.github.io/Mulligan-Games-B/ (gh-pages, rebuilt with npm run build:pages). Waiting on owner (README launch checklist).
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
