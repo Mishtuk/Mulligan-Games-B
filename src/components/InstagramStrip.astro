@@ -2,6 +2,7 @@
 // "From our Instagram": promo text from instagram.json, one click-to-load facade per post (CONTEXT rule 13). No Instagram request until a tap.
 import posts from '../data/instagram.json';
 import store from '../data/store.json';
+const SIZES = '(min-width: 720px) 540px, calc(100vw - 2rem)';
 const ok = posts.filter((p) => /^[\w-]{6,20}$/.test(p.code));
 ---
 {ok.length > 0 && (
@@ -9,8 +10,15 @@ const ok = posts.filter((p) => /^[\w-]{6,20}$/.test(p.code));
   <h2 id="ig-h">From our Instagram</h2>
   <ul class="ig-grid">
     {ok.map((p) => (
-      <li class="rel ig-card">
-        <div class="ig-art" data-kind={p.kind ?? 'series'} aria-hidden="true"></div>
+      <li class="rel ig-card" data-placeholder={p.image?.placeholder ? '' : undefined}>
+        {/* I4: placeholder flyer from the store's own Instagram. Confirm permission with the store before launch (CONTEXT rule 13). Native ratio, never cropped. */}
+        {p.image ? (<>
+          <picture>
+            <source type="image/webp" srcset={`${p.image.src480} 480w, ${p.image.src960} 960w`} sizes={SIZES} />
+            <img src={p.image.jpg} width={p.image.width} height={p.image.height} alt={p.image.alt} loading="lazy" />
+          </picture>
+          <p class="rel-credit ig-credit">{p.image.credit}</p>
+        </>) : (<div class="ig-art" data-kind={p.kind ?? 'series'} aria-hidden="true"></div>)}
         <div class="rel-body">
           <p class="rel-game">{p.tag}</p>
           <h3>{p.ad}</h3>

@@ -75,17 +75,17 @@ test('built Home: New releases cards are complete pictures and the featured one 
   assert.match(h, /Hold a deck for me/);
   assert.match(h, /Get Star Trek: hold one for me/); // featured CTA (loop 70)
   const all = [...h.matchAll(/<(?:article|li) class="rel[^"]*"[\s\S]*?<\/(?:article|li)>/g)].map((m) => m[0]);
-  const cards = all.filter((c) => /<img/.test(c));
+  const cards = all.filter((c) => /<img/.test(c) && !/class="rel-art"/.test(c)).filter((c) => !/ig-card/.test(c));
   assert.ok(cards.length >= 3);
   for (const c of cards) {
-    assert.match(c, /<source type="image\/webp" srcset="[^"]+-(480|578|960)\.webp/);
+    assert.match(c, /<source type="image\/webp" srcset="[^"]+-(320|480|578|960)\.webp/);
     const img = c.match(/<img\b[^>]*>/)[0];
     assert.match(img, /\swidth="\d+"/); assert.match(img, /\sheight="\d+"/); assert.match(img, /\salt=""/); // decorative: the card text names the set
     assert.match(c, /class="rel-credit">Image: /);
     assert.match(c, /data-status>(Out now|Coming soon)</);
   }
   assert.doesNotMatch(cards.join(''), /fetchpriority/); // the whole section is below the fold (see test/images.test.mjs)
-  assert.equal([...cards.join('').matchAll(/<img\b[^>]*loading="lazy"/g)].length, cards.length + 1); // + the Star Trek product inset
+  assert.equal([...cards.join('').matchAll(/<img\b[^>]*loading="lazy"/g)].length, [...cards.join('').matchAll(/<img\b/g)].length); // every card image is lazy
 });
 
 test('Instagram facade: built pages make no request to Instagram before a tap', { skip: !built }, () => {
@@ -154,14 +154,15 @@ test('One Piece ad: drawn aria-hidden panel in place of a publisher image; sets 
   assert.doesNotMatch(op, /<img|<picture/);
   assert.match(op, /One Piece Card Game/); assert.match(op, /ST.37 and ST.38/);
   const dates = [...h.matchAll(/<li class="rel"[^>]*data-release="([\d-]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(dates, [...dates].sort());
+  assert.ok(dates[0] > dates[1]); // out now, newest first (Star Trek, then Delta Reign)
+  assert.deepEqual(dates.slice(2), [...dates.slice(2)].sort()); // then coming, soonest first
 });
 
 test('Instagram promo cards use the ad language and keep the click-to-load link', { skip: !built }, () => {
   const cards = [...home().matchAll(/<li class="rel ig-card"[\s\S]*?<\/li>/g)].map((m) => m[0]);
   assert.ok(cards.length >= 2);
   for (const c of cards) { assert.match(c, /data-ig="/); }
-  assert.match(cards[0], /Confirm with the store/); assert.match(cards[0], /[$]15 or [$]30 entry/);
+  assert.match(cards[0], /Feb 20 and Mar 14. Confirm with the store./); assert.match(cards[0], /[$]15 or [$]30 entry/);
 });
 
 test('release ads: one link per ad whose name says the set; publisher images are decorative (alt=""); art panel hidden from AT', { skip: !built }, () => {
@@ -171,15 +172,15 @@ test('release ads: one link per ad whose name says the set; publisher images are
   for (const c of ads) {
     const links = [...c.matchAll(/<a [^>]*href="\/shop\/\?hold=[a-z0-9-]+#hold-[a-z0-9-]+"[^>]*>([\s\S]*?)<\/a>/g)].map((m) => m[1].replace(/<[^>]+>/g, ''));
     assert.equal(links.length, 1, c.slice(0, 90));
-    const set = c.includes('rel-feat') ? 'Star Trek' : c.match(/<p class="rel-name">([^<]+)/)[1];
+    const set = c.includes('data-theme="star-trek"') ? 'Star Trek' : (c.match(/<p class="rel-name">([^<]+)/) ?? c.match(/<p class="rel-game">[^<]*· ([^<]+)</))[1];
     assert.ok(links[0].includes(set), `${links[0]} names ${set}`);
     assert.doesNotMatch(c, /<img(?![^>]*\salt="")/);
   }
 });
 
-test('release ads and Instagram: releases.css has no animation or transition; the facade has a title, moves focus and has a Hide button', () => {
+test('release ads and Instagram: releases.css has no animation, and its only transition is the rotation crossfade under no-preference; the facade has a title, moves focus and has a Hide button', () => {
   const css = fs.readFileSync(path.join(root, 'src/styles/releases.css'), 'utf8');
-  assert.doesNotMatch(css, /animation|transition|@keyframes/);
+  assert.doesNotMatch(css.replace(/@media \(prefers-reduced-motion: no-preference\) \{[^{]*\{[^}]*\}[^{]*\{[^}]*\}\s*\}/, ''), /animation|transition|@keyframes/); // the only motion is the 400ms crossfade, inside no-preference
   const js = fs.readFileSync(path.join(root, 'public/js/home-live.js'), 'utf8');
   assert.match(js, /f\.title = /); assert.match(js, /x\.focus\(\)/); assert.match(js, /Escape/); assert.match(js, /Hide this post/); assert.match(js, /b\.focus\(\)/);
 });

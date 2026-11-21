@@ -1,0 +1,36 @@
+---
+// Top release panel above the Home hero: real ARIA tabs (public/js/rel-tabs.js upgrades the links), no timer.
+// Without JS: a list of links to each release and the first panel. Copy: docs/copy/visual-batch.md section 2.
+import all from '../data/releases.json';
+import store from '../data/store.json';
+import { zoned } from '../lib/hours.js';
+import { shownReleases, releaseChip } from '../lib/releases.js';
+
+const today = zoned(store.timezone, process.env.SITE_NOW ? new Date(process.env.SITE_NOW) : undefined).date;
+const rows = shownReleases(all.filter((r) => /^Confirmed/.test(r.certainty)), today);
+// TODO(V3 coder): the product pages do not exist yet, so these point at the Shop hold line for the set. Replace `href` below with productHref(r.id) = /shop/<id>/ (src/lib/shop.js).
+const href = (r) => `/shop/#hold-${r.id}`;
+const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
+const SIZES = '(min-width: 960px) 560px, (min-width: 720px) 48vw, calc(100vw - 2rem)';
+---
+{rows.length > 0 && (
+<section class="top-rel" aria-label="New this month">
+  <ul class="tr-tabs" aria-label="Releases">
+    {rows.map((r, i) => <li><a id={`tr-tab-${r.id}`} href={href(r)} data-tab={r.id}>{r.tab}</a></li>)}
+  </ul>
+  {rows.map((r, i) => (
+  <div class="rel tr-panel" id={`tr-panel-${r.id}`} data-panel={r.id} data-release={r.releaseDate} data-theme={r.theme} data-active={i === 0 ? '' : undefined}>
+    {r.image ? (<picture>
+      <source type="image/webp" srcset={srcset(r.image)} sizes={SIZES} />
+      <img src={r.image.jpg} width={r.image.width} height={r.image.height} alt="" {...(i === 0 ? { fetchpriority: 'high' } : { loading: 'lazy' })} />
+    </picture>) : (<div class="rel-art" aria-hidden="true"><span>One Piece</span></div>)}
+    <div class="rel-body">
+      <p class="tr-head">{r.headline}</p>
+      <p class="tr-line">{r.line}</p>
+      <p class="rel-date" data-chip>{releaseChip(r.releaseDate, today)}</p>
+      <p class="tr-cta"><a class="btn" href={href(r)}>See what's in the box<span class="vh">, {r.name}</span></a></p>
+      {r.credit && <p class="rel-credit">{r.credit}</p>}
+    </div>
+  </div>))}
+</section>
+)}

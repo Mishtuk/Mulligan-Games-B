@@ -4,40 +4,53 @@ import all from '../data/releases.json';
 import store from '../data/store.json';
 import { zoned } from '../lib/hours.js';
 import { holdHref } from '../lib/shop.js';
-import { shownReleases, releaseLabel, dateLine, isOut } from '../lib/releases.js';
+import { shownReleases, releaseLabel, dateLine } from '../lib/releases.js';
 
 const today = zoned(store.timezone, process.env.SITE_NOW ? new Date(process.env.SITE_NOW) : undefined).date; // SITE_NOW: fixed-date build check
 const rows = shownReleases(all.filter((r) => /^Confirmed/.test(r.certainty)), today);
-// Star Trek leads while it is under 90 days old; after that the newest set with a publisher image does (never the drawn One Piece panel).
-const feat = rows.find((r) => r.id === 'mtg-star-trek') ?? rows.find((r) => r.image);
-const rest = rows.filter((r) => r !== feat);
-// Grid sizes match the laid-out slot (measured in Chrome: 2 / 4 columns). The featured image is object-fit: cover in a box at least 31rem tall, so it always shows at 926-1120px wide: one 960 file, no srcset. Every image is lazy: even the featured one starts below the fold (top 1792 / 1331 / 922px at 390 / 768 / 1280). Test: test/images.test.mjs.
-const GRID = '(min-width: 1200px) 266px, (min-width: 960px) 22vw, calc(50vw - 2rem)';
+// Star Trek leads while it is under 90 days old (shownReleases order). One list feeds the carousel and the grid: slide ids are slide-<id>, grid ids rel-<id>.
+const GRID = '(min-width: 1200px) 211px, (min-width: 960px) 17vw, calc(50vw - 2rem)';
+const SLIDE = '(min-width: 960px) 616px, (min-width: 720px) 55vw, calc(100vw - 2rem)';
 const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
 ---
-{feat && (
+{rows.length > 0 && (
 <section class="home-releases" aria-labelledby="rel-h">
   <h2 id="rel-h">New releases</h2>
-  <article class="rel rel-feat" id={`rel-${feat.id}`} data-release={feat.releaseDate} data-theme={feat.theme}>
-    <picture>
-      <source type="image/webp" srcset={feat.image.webp[0][0]} />
-      <img src={feat.image.jpg} width={feat.image.width} height={feat.image.height} alt="" loading="lazy" />
-    </picture>
-    {feat.product && (<picture class="rel-product">
-      <source type="image/webp" srcset={srcset(feat.product)} sizes="(min-width: 720px) 26vw, 7rem" />
-      <img src={feat.product.jpg} width={feat.product.width} height={feat.product.height} alt="" loading="lazy" />
-    </picture>)}
-    <div class="rel-body">
-      <p class="rel-game">{feat.short ?? feat.game} · {feat.name}</p>
-      <h3>{feat.ad ?? 'New in the case'}</h3>
-      {feat.types && <p class="rel-name">{feat.types}</p>}
-      <p class="rel-date"><span data-status>{releaseLabel(feat.releaseDate, today)}</span> · <span data-when>{dateLine(feat.releaseDate, today)}</span></p>
-      <p><a class="btn" href={holdHref(feat.id)}>{feat.cta ?? (<>Hold one for me<span class="vh">, {feat.name}</span></>)}</a></p>
-      <p class="rel-credit">{feat.credit}</p>
+  <div class="rel-car" role="group" aria-roledescription="carousel" aria-label="New releases">
+    <div class="rel-track" aria-live="off">
+      {rows.map((r, i) => (
+      <article class="rel rel-slide" id={`slide-${r.id}`} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${rows.length}: ${r.tab}`} data-name={r.tab} data-release={r.releaseDate} data-theme={r.theme} data-active={i === 0 ? '' : undefined}>
+        {r.image ? (<picture>
+          <source type="image/webp" srcset={srcset(r.image)} sizes={SLIDE} />
+          <img src={r.image.jpg} width={r.image.width} height={r.image.height} alt="" loading="lazy" />
+        </picture>) : (<div class="rel-art" aria-hidden="true"><span>One Piece</span></div>)}
+        <div class="rel-body">
+          <p class="rel-game">{r.short ?? r.game} · {r.name}</p>
+          <h3>{r.ad ?? r.headline}</h3>
+          {r.types && <p class="rel-name">{r.types}</p>}
+          <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span> · <span data-when>{dateLine(r.releaseDate, today)}</span></p>
+          <p><a class="btn" href={holdHref(r.id)}>{r.cta ?? (<>Hold a {r.unit ?? 'box'} for me<span class="vh">, {r.name}</span></>)}</a></p>
+          {r.credit && <p class="rel-credit">{r.credit}</p>}
+        </div>
+        {r.product && (<picture class="rel-product">
+          <source type="image/webp" srcset={srcset(r.product)} sizes="7rem" />
+          <img src={r.product.jpg} width={r.product.width} height={r.product.height} alt="" loading="lazy" />
+        </picture>)}
+      </article>))}
     </div>
-  </article>
+    <div class="rel-ctl">
+      <button type="button" class="btn btn-secondary rel-pp" data-state="pause">Pause</button>
+      <button type="button" class="btn btn-secondary rel-prev" aria-label="Previous release"><span aria-hidden="true"></span></button>
+      <span class="rel-pos">1 of {rows.length}</span>
+      <button type="button" class="btn btn-secondary rel-next" aria-label="Next release"><span aria-hidden="true"></span></button>
+      <ul class="rel-dots">
+        {rows.map((r, i) => <li><button type="button" aria-label={`Show release ${i + 1}: ${r.tab}`} aria-current={i === 0 ? 'true' : undefined}></button></li>)}
+      </ul>
+      <p class="rel-note">Auto-play is off (your device setting)</p>
+    </div>
+  </div>
   <ul class="rel-grid">
-    {rest.map((r) => { const p = r.image; return (
+    {rows.map((r) => { const p = r.image; return (
     <li class="rel" id={`rel-${r.id}`} data-release={r.releaseDate} data-theme={r.theme}>
       {p ? (<picture>
         <source type="image/webp" srcset={srcset(p)} sizes={GRID} />

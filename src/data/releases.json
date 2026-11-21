@@ -12,6 +12,14 @@
     "image": {
       "webp": [
         [
+          "/media/releases/star-trek-320.webp",
+          320
+        ],
+        [
+          "/media/releases/star-trek-480.webp",
+          480
+        ],
+        [
           "/media/releases/star-trek-960.webp",
           960
         ]
@@ -42,7 +50,10 @@
       "alt": "Star Trek Bundle box for Magic: The Gathering, with two dice",
       "credit": "Image: Wizards of the Coast",
       "sourceUrl": "https://magic.wizards.com/en/products/star-trek"
-    }
+    },
+    "tab": "Star Trek",
+    "headline": "Star Trek has landed",
+    "line": "Magic's new set, with Commander decks."
   },
   {
     "id": "pokemon-delta-reign",
@@ -92,7 +103,10 @@
       "alt": "Mega Evolution: Delta Reign Elite Trainer Box, green dragon on the lid",
       "credit": "Image: The Pokemon Company International",
       "sourceUrl": "https://www.pokemon.com/us/news/pokemon-tcg-mega-evolution-delta-reign-product-showcase"
-    }
+    },
+    "tab": "Delta Reign",
+    "headline": "Mega Evolution: Delta Reign",
+    "line": "The new Pokemon set, in store."
   },
   {
     "id": "riftbound-legacy",
@@ -124,7 +138,10 @@
     "sourceUrl": "https://playriftbound.com/en-us/news/announcements/riftbounds-latest-2026-roadmap/",
     "certainty": "Confirmed",
     "theme": "riftbound",
-    "gameId": "riftbound"
+    "gameId": "riftbound",
+    "tab": "Riftbound",
+    "headline": "Riftbound: Legacy",
+    "line": "The 2027 opener, with Pre-Rift events."
   },
   {
     "id": "hololive-volume-vortex",
@@ -156,7 +173,10 @@
     "sourceUrl": "https://en.hololive-official-cardgame.com/products/",
     "certainty": "Confirmed",
     "theme": "hololive",
-    "gameId": "hololive"
+    "gameId": "hololive",
+    "tab": "Hololive",
+    "headline": "Hololive: Volume Vortex",
+    "line": "BIG3 on the packaging."
   },
   {
     "id": "one-piece-st37-38",
@@ -188,6 +208,9 @@
       "alt": "One Piece Card Game Starter Deck ST-37 box, purple, with the straw-hat crew on the front",
       "credit": "Image: Bandai / ONE PIECE CARD GAME",
       "sourceUrl": "https://en.onepiece-cardgame.com/products/st37.html"
-    }
+    },
+    "tab": "One Piece",
+    "headline": "Two new starter decks",
+    "line": "ST-37 and ST-38, 51 cards each."
   }
 ]

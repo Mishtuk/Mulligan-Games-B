@@ -69,9 +69,28 @@ test('release images: the file Chrome picks at 1x is at most 2x its slot at 390,
   }
 });
 
-test('lazy loading: every release image is lazy (the section is below the fold); none uses fetchpriority', { skip }, () => {
-  for (const [tag] of html('index').matchAll(/<img\b[^>]*>/g)) {
-    assert.doesNotMatch(tag, /fetchpriority/);
-    if (/media\/releases/.test(tag)) assert.match(tag, /loading="lazy"/, tag);
+test('lazy loading: every release image is lazy except the first top-panel art (fetchpriority=high, the only eager one)', { skip }, () => {
+  const imgs = [...html('index').matchAll(/<img\b[^>]*>/g)].map((m) => m[0]);
+  const eager = imgs.filter((t) => /fetchpriority/.test(t));
+  assert.equal(eager.length, 1);
+  assert.match(eager[0], /star-trek-960\.jpg/);
+  assert.doesNotMatch(eager[0], /loading=/);
+  for (const tag of imgs) if (/media\/(releases|instagram)/.test(tag) && tag !== eager[0]) assert.match(tag, /loading="lazy"/, tag);
+});
+
+test('Instagram flyers: width and height equal the file, native ratio (no crop), 480 and 960 webp, alt and credit from the data', { skip: skip || !sharp }, async () => {
+  const data = JSON.parse(fs.readFileSync(path.join(root, 'src/data/instagram.json'), 'utf8')), h = html('index');
+  const pics = [...h.matchAll(/<picture>[\s\S]*?<\/picture>/g)].map((m) => m[0]);
+  for (const p of data.filter((d) => d.image)) {
+    const i = p.image, pic = pics.find((x) => x.includes(i.jpg));
+    assert.ok(pic, p.id);
+    const [w, ht] = await px(i.jpg);
+    assert.deepEqual([i.width, i.height], [w, ht], p.id);
+    assert.ok(pic.includes('width="' + w + '" height="' + ht + '"'), p.id);
+    assert.ok(pic.includes(i.src480 + ' 480w') && pic.includes(i.src960 + ' 960w'), p.id);
+    assert.ok(pic.includes('alt="' + i.alt + '"'), p.id); // the writer's alt, verbatim
+    assert.ok(h.includes(i.credit), p.id);
   }
+  const css = fs.readFileSync(path.join(root, 'src/styles/releases.css'), 'utf8');
+  assert.doesNotMatch(css.match(/\.ig-card[^{]*img[^{]*\{[^}]*\}/g)?.join('') ?? '', /object-fit|aspect-ratio/); // never cropped
 });

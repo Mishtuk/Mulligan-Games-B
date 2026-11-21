@@ -221,6 +221,29 @@ try {
     for (const p of PATHS) { await r.go(base + p); const s = await r.ev(motionProbe); ok(!s.switchPresent && s.anims === 0 && s.tr === 0, `reduced motion ${p}: ${JSON.stringify(s)}`); }
     await r.close();
   }
+  // 3b. Home release tabs and rotation: tabs are real ARIA tabs with arrow keys; the rotation never advances under reduced motion, has a named Pause,
+  // advances on its own otherwise (7s), and stops while focus is inside (one slide, the panel stays put). 
+  {
+    const cur = `[...document.querySelectorAll('.rel-slide')].findIndex((e) => e.hasAttribute('data-active'))`;
+    let t = await b.page({ w: 390, h: 844, reduce: true }); await t.go(base + '/');
+    ok(await t.ev(`document.querySelectorAll('[role=tablist]').length === 1 && document.querySelectorAll('[role=tab]').length === 5 && document.querySelectorAll('[role=tabpanel]').length === 5`), 'home tabs: one tablist, 5 tabs, 5 panels');
+    await t.ev(`document.querySelector('[role=tab][aria-selected=true]').focus()`); await t.key('ArrowRight', 'ArrowRight', 39);
+    ok(await t.ev(`document.activeElement.id === 'tr-tab-pokemon-delta-reign' && document.activeElement.getAttribute('aria-selected') === 'true' && document.activeElement.tabIndex === 0 && document.querySelectorAll('[role=tab][tabindex="0"]').length === 1`), 'home tabs: ArrowRight selects the next tab (roving tabindex)');
+    await t.key('End', 'End', 35); ok(await t.ev(`document.activeElement.id === 'tr-tab-hololive-volume-vortex'`), 'home tabs: End jumps to the last tab');
+    await t.key('Home', 'Home', 36); ok(await t.ev(`document.activeElement.id === 'tr-tab-mtg-star-trek'`), 'home tabs: Home jumps to the first tab');
+    ok(await t.ev(`(() => { const p = document.querySelector('.rel-pp'); return p.textContent.trim() === 'Play' && p.disabled && getComputedStyle(document.querySelector('.rel-note')).display !== 'none'; })()`), 'rotation (reduced motion): starts Paused, Play disabled, the "Auto-play is off" note shows');
+    await sleep(8500);
+    ok(await t.ev(cur) === 0, 'rotation (reduced motion): no auto-advance after 8.5s');
+    await t.ev(`document.querySelector('.rel-next').click()`); ok(await t.ev(cur) === 1, 'rotation (reduced motion): Next still works by hand');
+    await t.close();
+    t = await b.page({ w: 390, h: 844 }); await t.go(base + '/');
+    ok(await t.ev(`(() => { const p = document.querySelector('.rel-pp'); return p.textContent.trim() === 'Pause' && p.getBoundingClientRect().height >= 48 && p.getClientRects().length > 0; })()`), 'rotation: a named Pause button is visible and 48px');
+    ok(await t.ev(`document.querySelector('.rel-track').getAttribute('aria-live') === 'off' && document.querySelectorAll('.rel-slide[inert]').length === 4 && document.querySelectorAll('.rel-slide[aria-hidden=true]').length === 4`), 'rotation: live region off while running, 4 inactive slides inert and hidden from AT');
+    await sleep(7600); ok(await t.ev(cur) === 1, 'rotation: advances by itself after 7s when nothing holds it');
+    await t.ev(`document.querySelector('.rel-pp').focus()`); const at = await t.ev(cur); await sleep(8000);
+    ok(await t.ev(cur) === at, 'rotation: focus inside the section stops it');
+    await t.close();
+  }
   // 4. forms: an empty submit shows a focused error summary (no script error); ?sent= shows the focused success panel
   for (const [p, name, fid] of [['/', 'request', 'request-form'], ['/events/', 'signup', 'signup-form'], ['/shop/', 'request', 'request-form'], ['/sell/', 'buylist', 'buylist-form'], ['/visit/', 'contact', 'contact-form']]) {
     const t = await b.page({ w: 390, h: 844 }); await t.go(base + p);

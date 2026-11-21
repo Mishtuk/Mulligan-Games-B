@@ -48,3 +48,11 @@ Tests: voice, no-jargon, events, a11y-check forms (error text), privacy page tex
 - (c) Top panel, rotating banner and the release grid all stay (all owner-requested; the grid is "the ones below it"). Budget: measure after V2 and log D14 with the number; never cut copy or these sections.
 - (d) V3 starts after the dark-mode coder lands; the toggle offset applies on product pages only.
 - (e) Instagram fee chip stays (store's own caption), flagged for the owner.
+
+## V2 check (mediator)
+- Met: panel first, 5 tabs with roving tabindex and arrow/Home/End, no timer, first image eager and the rest lazy, art alt="", CTA "See what's in the box" (boss a), carousel slide-/rel- ids split, inert + aria-hidden slides, live region off while running, R1-R9 strings verbatim, writer headline/line/status verbatim, IG one column at 390.
+- Not met (expected, V3): panel CTA and tabs point to /shop/#hold-<id> (TODO in TopReleases.astro); grid links still holdHref, not /shop/<id>/. Fix at V3 start, not now.
+- Visual 1280: clean, no defects. 768: clean (tabs, one slide, 2-col grid, IG 2-col). 390: tab strip clips at "One Piece" (Riftbound and Hololive off-screen). Confirm it scrolls and add an edge fade or a visible scrollbar cue in releases.css; do not shrink targets below 48px.
+- Open point 1: accept "Releases" for the tablist label for now (it is a different role from the region "New this month" and the carousel "New releases", so no duplicate landmark). Ask the writer for one line to replace it (suggest "Pick a release"); no code change until then.
+- Open point 2: accept <p>. Headings are not required to start at h1 for the page order to work, and the region is already named "New this month" so screen readers can jump to it as a landmark; an h2 before the h1 would give a worse outline. Keep the aria-label on the section, keep h1 in the hero.
+- Verdict: accept V2; one fix (390 tab-strip overflow cue) and the V3 link swap.

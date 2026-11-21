@@ -5,13 +5,12 @@
     "title": "Pauper and Legacy Championships",
     "lines": [
       "Not-So-Pauper Championship: $15 entry, 6 rounds plus Top 8.",
-      "Old Heads Legacy Championship: $30 entry, up to 6 rounds plus Top 8.",
-      "Pre-register on TopDeck."
+      "Old Heads Legacy Championship: $30 entry, up to 6 rounds plus Top 8."
     ],
     "kind": "champ",
     "tag": "Magic event",
-    "ad": "Sign up for a championship",
-    "date": null,
+    "ad": "Pre-register on TopDeck",
+    "date": "Feb 20 and Mar 14. Confirm with the store.",
     "fee": "$15 or $30 entry",
     "image": {
       "src480": "/media/instagram/ig-championships-480.webp",
@@ -19,7 +18,7 @@
       "jpg": "/media/instagram/ig-championships-960.jpg",
       "width": 960,
       "height": 621,
-      "alt": "Mulligan Games flyer: Not-So-Pauper Championship on February 20 and Old-Heads Legacy Championship on March 14, 11am open, 12pm start, register on TopDeck.gg, 445 York Road, Warminster",
+      "alt": "Mulligan Games flyer: Not-So-Pauper Championship Feb 20 and Old Heads Legacy Championship Mar 14. Doors 11am, start 12pm. Register on TopDeck.gg. 445 York Road, Warminster.",
       "credit": "Photo: @mulligangames on Instagram",
       "postUrl": "https://www.instagram.com/p/Df7WioalHyN/",
       "placeholder": true
@@ -30,7 +29,7 @@
     "code": "DfkGcTCjf6u",
     "title": "Championship Series 2027 (cEDH)",
     "lines": [
-      "Circuit points count toward next year's invitational."
+      "Points from each Sunday add up over the series."
     ],
     "kind": "series",
     "tag": "Magic: cEDH",
@@ -44,7 +43,7 @@
       "jpg": "/media/instagram/ig-series-960.jpg",
       "width": 960,
       "height": 540,
-      "alt": "Mulligan Games Sunday flyer: free play all day every day, cEDH starts at 2pm",
+      "alt": "Mulligan Games Sunday flyer: free play all day, cEDH starts at 2pm.",
       "credit": "Photo: @mulligangames on Instagram",
       "postUrl": "https://www.instagram.com/p/DfxYEv5DfAx/",
       "placeholder": true

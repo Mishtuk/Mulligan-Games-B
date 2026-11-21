@@ -26,33 +26,15 @@
 .rel-art { position: relative; min-height: 5.5rem; display: grid; place-items: center; aspect-ratio: 16 / 9; border-bottom: 6px solid var(--t-bar); overflow: hidden; background: repeating-linear-gradient(90deg, var(--op-rope) 0 .6rem, transparent .6rem 1rem) 0 calc(100% - .4rem) / 100% 3px no-repeat, radial-gradient(circle at 50% 100%, var(--op-bg) 0 .5rem, transparent calc(.5rem + 1px)) left .6rem bottom 12% / 1.2rem .5rem repeat-x, linear-gradient(var(--op-sea), var(--op-sea)) bottom / 100% 34% no-repeat, radial-gradient(circle at 50% 100%, var(--op-sea) 0 .6rem, transparent calc(.6rem + 1px)) left 0 bottom 34% / 1.2rem .6rem repeat-x, var(--op-bg); }
 .rel-art::after { content: ""; position: absolute; right: 5%; top: 4%; width: 1.4rem; aspect-ratio: 1; border-radius: 50%; background: var(--op-hi); }
 .rel-art span { position: relative; z-index: 1; padding: .2rem .7rem; margin-top: .6rem; background: var(--op-parch); color: var(--op-sea); border: 3px solid var(--op-rope); border-radius: 1rem; font: var(--display-weight) var(--step-1)/1.2 var(--font-display); }
-/* Star Trek banner: key art full-bleed, scrim for contrast, text stays HTML */
-.rel-feat { --t-bg: var(--trek-bg); --t-ink: var(--trek-text); --t-hi: var(--trek-glow); --t-bar: var(--trek-glow); grid-template-columns: minmax(0, 1fr); align-content: end; min-height: 24rem; margin-top: var(--s-3); box-shadow: var(--shadow); }
-.rel-feat > picture { position: absolute; inset: 0; border: 0; }
-.rel-feat > .rel-product { inset: var(--s-3) var(--s-3) auto auto; width: 7rem; z-index: 2; filter: drop-shadow(0 .3rem .6rem var(--trek-bg)); }
-.rel-feat .rel-product img { height: auto; object-fit: contain; }
-.rel-feat img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; }
-.rel-feat::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, color-mix(in srgb, var(--trek-bg) 96%, transparent) 65%, color-mix(in srgb, var(--trek-bg) 70%, transparent)); }
-.rel-feat .rel-game { margin-right: 7rem; }
-/* phones: the headline starts under the product inset (it ran into it at 390) */
-@media (max-width: 719px) { .rel-feat > .rel-product ~ .rel-body h3 { margin-top: 3.6rem; } }
-.rel-feat .rel-body { position: relative; z-index: 2; gap: .6rem; padding: var(--s-4) var(--s-3) var(--s-3); }
-.rel-feat .rel-game { letter-spacing: .2em; color: var(--t-hi); }
-.rel-feat h3 { font-size: var(--step-3); line-height: 1.02; text-transform: uppercase; letter-spacing: .08em; }
-.rel-feat .rel-date { font-size: var(--step-0); letter-spacing: .16em; }
-@media (min-width: 720px) {
-  .rel-feat { min-height: 26rem; align-content: center; }
-  .rel-feat::before { background: linear-gradient(to right, color-mix(in srgb, var(--trek-bg) 96%, transparent) 40%, transparent); }
-  .rel-feat .rel-body { max-width: 34rem; padding: var(--s-5) var(--s-5); }
-  .rel-feat .rel-game { margin-right: 0; }
-  .rel-feat > .rel-product { inset: 50% var(--s-5) auto auto; translate: 0 -50%; width: clamp(11rem, 26vw, 22rem); }
-}
+.rel[data-theme=star-trek] { --t-bg: var(--trek-bg); --t-ink: var(--trek-text); --t-hi: var(--trek-glow); --t-bar: var(--trek-glow); }
+.rel[data-theme=star-trek] :is(.rel-game, h3, .tr-head) { letter-spacing: .08em; text-transform: uppercase; }
 .rel-grid, .ig-grid { display: grid; gap: var(--s-3) var(--s-2); margin-top: var(--s-3); }
 .rel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rel-grid > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .ig-frame { display: block; width: 100%; height: 34rem; border: 2px solid var(--line); background: var(--card); }
 .rel-ask, .home-ig > p { margin-top: var(--s-3); }
 @media (min-width: 720px) { .ig-grid { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); } .ig-grid:has(iframe) { align-items: start; } .ig-card { align-content: stretch; } .ig-card .rel-body { display: flex; flex-direction: column; } .ig-card .sticker { align-self: start; } .ig-card .rel-body > div { margin-top: auto; } }
-@media (min-width: 960px) { .rel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .rel-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } .rel-grid > li:last-child:nth-child(odd) { grid-column: auto; } }
 /* wide Home: the Follow button joins the heading row (right), so no half-empty row under the cards */
 @media (min-width: 960px) { .home-ig { display: grid; grid-template-columns: 1fr auto; align-items: end; column-gap: var(--s-3); } .home-ig > ul { grid-column: 1 / -1; margin-top: var(--s-3); } .home-ig > p { grid-row: 1; grid-column: 2; margin-top: 0; } }
 
@@ -67,3 +49,76 @@
 .ig-art[data-kind=series]::before, .ig-art[data-kind=series]::after { width: 44%; height: 14%; background: var(--card); border: var(--border-w) solid var(--line); }
 .ig-art[data-kind=series]::before { left: 12%; top: 3%; }
 .ig-art[data-kind=series]::after { left: 44%; top: 82%; }
+
+/* Instagram flyers: native ratio, never cropped (the flyer text is the content); cards size to their own image */
+.ig-card { align-self: start; grid-template-rows: none; }
+.ig-card picture { border-bottom: 0; }
+.ig-credit { padding: .35rem var(--s-2) 0; border-top: var(--border-w) solid var(--line); }
+@media (min-width: 720px) { .ig-card { align-content: start; } .ig-card .rel-body { display: grid; } .ig-grid:not(:has(iframe)) .ig-card { align-self: stretch; display: flex; flex-direction: column; } .ig-grid:not(:has(iframe)) .ig-card .rel-body { flex: 1; display: flex; flex-direction: column; } .ig-grid:not(:has(iframe)) .ig-card .rel-body > div:last-child { margin-top: auto; } }
+
+/* Top release panel: real tabs above the Home hero. No timer. Without JS it is a list of links plus the first panel. */
+.top-wrap { padding-top: var(--s-3); }
+.top-rel { min-width: 0; }
+.tr-tabs { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
+.tr-tabs::-webkit-scrollbar { display: none; }
+.tr-tabs li { flex: 0 0 auto; scroll-snap-align: start; }
+.tr-tabs a { display: flex; align-items: center; min-height: 48px; padding: 0 var(--s-3); background: var(--card); color: var(--text); border: var(--border-w) solid var(--line); border-radius: var(--radius) var(--radius) 0 0; font: 700 13px/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; text-decoration: none; }
+.tr-tabs a:hover { text-decoration: underline; }
+.tr-tabs a:focus-visible { outline-offset: -6px; }
+.tr-tabs a[aria-selected=true] { background: var(--accent); color: var(--on-accent); }
+html:not(.js) .tr-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html:not(.js) .tr-tabs a { border-radius: var(--radius); border-bottom: var(--border-w) solid var(--line); }
+.tr-panel { border-radius: 0 var(--radius) var(--radius) var(--radius); box-shadow: var(--shadow); }
+.tr-panel:not([data-active]) { display: none; }
+.tr-panel img, .tr-panel .rel-art { width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; }
+.tr-panel .rel-art { min-height: 0; }
+.tr-panel .rel-body { gap: .5rem; padding: var(--s-2); }
+.tr-head { font: var(--display-weight) var(--step-1)/1.1 var(--font-display); }
+.tr-panel .rel-date { position: absolute; top: .5rem; left: .5rem; padding: .25rem .5rem; background: var(--t-bg); color: var(--t-ink); border: 2px solid var(--t-bar); border-radius: var(--radius); }
+.tr-cta { margin-top: .25rem; }
+@media (min-width: 720px) {
+  .tr-panel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; align-content: stretch; min-height: 15rem; }
+  .top-rel .tr-panel[data-theme] picture { position: relative; padding: 0; border: 0; border-right: 6px solid var(--t-bar); }
+  .tr-panel picture img { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
+  .tr-panel .rel-art { height: 100%; aspect-ratio: auto; border-bottom: 0; border-right: 6px solid var(--t-bar); }
+  .tr-panel .rel-body { align-content: center; padding: var(--s-3) var(--s-4); }
+  .tr-head { font-size: var(--step-2); }
+}
+
+/* New releases rotation (docs/meeting/spec-rotation.md): all slides share one grid cell, so the box is the tallest slide and nothing shifts */
+.rel-car { margin-top: var(--s-3); }
+.rel-track { display: grid; }
+.rel-slide { grid-area: 1 / 1; opacity: 0; visibility: hidden; box-shadow: var(--shadow); }
+.rel-slide[data-active] { opacity: 1; visibility: visible; }
+html:not(.js) .rel-slide:not(:first-child) { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .rel-slide { transition: opacity .4s ease, visibility 0s linear .4s; }
+  .rel-slide[data-active] { transition: opacity .4s ease; }
+}
+.rel-slide h3 { font-size: var(--step-2); line-height: 1.05; }
+.rel-slide .rel-product { position: absolute; top: var(--s-2); left: var(--s-2); z-index: 2; width: 6rem; border: 0; filter: drop-shadow(0 .25rem .5rem var(--trek-bg)); }
+.rel-slide .rel-product img { height: auto; object-fit: contain; }
+@media (min-width: 720px) {
+  .rel-slide { grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); align-items: stretch; align-content: stretch; }
+  .rel-slide > picture:not(.rel-product), .rel-slide .rel-art { position: relative; min-height: 18rem; border-bottom: 0; border-right: 6px solid var(--t-bar); padding: 0; }
+  .rel-slide > picture:not(.rel-product) img { position: absolute; inset: 0; height: 100%; object-fit: cover; }
+  .rel-slide .rel-art { aspect-ratio: auto; }
+  .rel-slide .rel-product { width: 8rem; }
+  .rel-slide .rel-body { align-content: center; padding: var(--s-4); }
+}
+.rel-ctl { display: none; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: var(--s-2); }
+.js .rel-ctl:not([hidden]) { display: flex; }
+.rel-ctl .btn { min-width: 48px; padding-inline: var(--s-2); }
+.rel-pos { min-width: 3.5rem; text-align: center; font: 700 var(--step-0)/1 var(--font-mono); }
+.rel-pp::before { content: ""; display: inline-block; width: .6rem; height: .9rem; margin-right: .5rem; border-inline: 3px solid currentColor; }
+.rel-pp[data-state=play]::before { width: 0; height: 0; border-inline: 0; border-block: .5rem solid transparent; border-left: .8rem solid currentColor; }
+.rel-prev span, .rel-next span { display: block; width: 0; height: 0; border-block: .5rem solid transparent; }
+.rel-prev span { border-right: .75rem solid currentColor; }
+.rel-next span { border-left: .75rem solid currentColor; }
+.rel-dots { display: flex; flex-basis: 100%; margin: 0; padding: 0; list-style: none; }
+.rel-dots button { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; background: none; border: 0; cursor: pointer; }
+.rel-dots button::before { content: ""; width: 14px; height: 14px; border: 3px solid var(--link); border-radius: 50%; }
+.rel-dots button[aria-current=true]::before { background: var(--link); }
+.rel-note { display: none; flex-basis: 100%; font-size: var(--step--1); }
+@media (min-width: 720px) { .rel-dots { flex-basis: auto; margin-left: auto; } }
+@media (prefers-reduced-motion: reduce) { .js .rel-note { display: block; } }

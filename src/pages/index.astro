@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Turnstile from '../components/Turnstile.astro';
 import BinderWeek from '../components/BinderWeek.astro';
 import TonightStrip from '../components/TonightStrip.astro';
+import TopReleases from '../components/TopReleases.astro';
 import NewReleases from '../components/NewReleases.astro';
 import InstagramStrip from '../components/InstagramStrip.astro';
 import '../styles/sleeve.css';
@@ -13,6 +14,7 @@ import '../styles/releases.css';
 const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 'One Piece'], ['riftbound', 'Riftbound'], ['hololive', 'Hololive'], ['tabletop', 'Warhammer and tabletop'], ['other', 'Something else']];
 ---
 <Base title="Magic, Pokemon and One Piece nights" description="Local card and gaming shop at 445 York Road, Warminster, PA. Game nights, singles, sealed product and a buylist. Stop in and stay for a game.">
+  <div class="wrap top-wrap"><TopReleases /></div>
   <div class="wrap home">
     <section class="hero box" aria-labelledby="hero-h">
       <h1 id="hero-h">Pull up a chair.</h1>
@@ -87,6 +89,7 @@ const requestGames = [['magic', 'Magic'], ['pokemon', 'Pokemon'], ['one-piece', 
     </section>
   </div>
   <script is:inline slot="scripts" type="module" src="/js/home-live.js"></script>
+  <script is:inline slot="scripts" type="module" src="/js/rel-tabs.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/request-form.js"></script>
   <script is:inline slot="scripts" type="module" src="/js/form-check.js"></script>
 </Base>

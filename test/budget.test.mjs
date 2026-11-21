@@ -16,7 +16,7 @@ const read = (f) => fs.readFileSync(path.join(dist, f));
 // D7 (loop 52): owner-requested New releases + Instagram sections on Home cost ~3.3k gzip; budget set ~5% above
 // Home's measured 21,651 gzip / 136,116 raw. Do not raise again without a DECISIONS.md entry.
 // D8 (loop 57): +300 gzip so the store's own bio line is never cut to fit the budget.
-const BUDGET = { raw: 143000, gzip: 24200 }; // D14 (dark mode, 24,135 measured; was 23200) D12 (T2, 23,104 measured; was 22700) D9 (loop 69): back to the D7 line; Home measured 22,3xx after loops 61-68 trims
+const BUDGET = { raw: 166320, gzip: 29305 }; // D15 (V2: Home measured 163,057 raw / 28,730 gzip, budget +2%; was D14 143000 / 24200) // D14 (dark mode, 24,135 measured; was 23200) D12 (T2, 23,104 measured; was 22700) D9 (loop 69): back to the D7 line; Home measured 22,3xx after loops 61-68 trims
 
 // Every CSS and JS file the page loads: linked files plus the modules they import.
 function assets(html) {
