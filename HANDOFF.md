@@ -41,7 +41,7 @@ loop, lens rotation, every 10th loop an Opus review that re-scores and sets the 
 - Preview: none. Live: none.
 
 ## Now working on
-- RESUME HERE: Refinement complete (80 loops). Next: the owner's answers to the README launch checklist; nothing else is queued.
+- RESUME HERE: Meeting T3 done, awaiting mediator check; refinement complete (80 loops). Next: the owner's answers to the README launch checklist; nothing else is queued.
 
 ## Waiting on the owner
 - **To set before launch:** `TURNSTILE_SITE_KEY` (public, `src/lib/site.js`) + `wrangler secret put TURNSTILE_SECRET`. `SITE_URL` in `src/lib/site.js` is the placeholder https://mulligangames.example (canonical, sitemap, robots, og:image, JSON-LD). Replace with the real domain.
@@ -66,6 +66,7 @@ Two marked placeholders show "Photo coming: ..." until the owner sends photos. T
 - Buylist slip rows (server-rendered 5, JS add/remove, parallel item_*[] fields) in public/js/sell-rows.js; condition guide as a container-query-stacking table; Toploader/Slab CSS placeholders; privacy page text (no kit pattern).
 
 ## Log (newest first)
+- Meeting T3 (coder, 2026-11-20): Shop one grid + shorter case, One Piece sea tile, Visit storefront/rules/label, Events table removed (no sticky: clipboard taller than viewport-6rem), Sell stubs, binder foot 14px at all widths. Screens: docs/review/meeting-t3/.
 - Meeting T2 (coder, 2026-11-20): Home order, Instagram CSS art + quiet Confirm line, header pill 600-831, 1100+ hero/binder; budget D12 23,200; tests 190 green; screenshots docs/review/meeting-t2/. Next: T3.
 - T1 (coder, D11): Pages build strips name= from every field; Menu sheet makes main + footer inert while open (a11y asserts it); hold links now end #req-field (the label/textarea wrapper, scroll-margin 6rem), JS-off shows a generic hold line, JS-on unchanged; Pages banner 28px. 190 tests, a11y all passed. Not committed.
 - Loop 80 (final boss review of 71-79): independent 28.5 -> 29.5/30 (identity 4.5, actions 5, truth 5, a11y 5, craft 5, code 5). check:all 5/5 as found and after. Fixed: Shop pockets now follow today in the browser (shop-live.js reuses Home's release logic: out-now sets move Preorders -> Sealed with date and hold line, 90-day-old sets hide; proved with a Nov 1 build in Chrome + 3 fake-DOM tests); JS-off hold line names the game; Shop pocket rows aligned by subgrid + one 4:3 art window; Visit storefront fills the band at 1000+ (330px gap gone). Hold CTAs 15/15 JS on + 15/15 JS off stored. 183 tests. Review: docs/review/loop-80/final-review.md. Not committed.

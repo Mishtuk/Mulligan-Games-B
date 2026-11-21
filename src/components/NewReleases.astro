@@ -42,7 +42,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       {p ? (<picture>
         <source type="image/webp" srcset={srcset(p)} sizes={GRID} />
         <img src={p.jpg} width={p.width} height={p.height} alt="" loading="lazy" />
-      </picture>) : (<div class="rel-art" aria-hidden="true"></div>)}
+      </picture>) : (<div class="rel-art" aria-hidden="true"><span>One Piece</span></div>)}
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
         <h3><a class="rel-link" href={holdHref(r.id)}>Hold a {r.unit ?? 'box'} for me<span class="vh">, {r.name}</span></a></h3>

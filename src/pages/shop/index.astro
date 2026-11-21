@@ -45,7 +45,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
           <div class="case-shelf">
             <p class="shelf-tag">{shelfTags[r]}</p>
             <div class="slots" aria-hidden="true">
-            {Array.from({ length: 8 }, (_, i) => (
+            {Array.from({ length: 6 }, (_, i) => (
               <span class={`slot${(i + r * 3) % 4 === 1 ? ' is-top' : ''}`}><i class={`cback ${shelfGames[r][i % shelfGames[r].length]}`}></i></span>
             ))}
             </div>

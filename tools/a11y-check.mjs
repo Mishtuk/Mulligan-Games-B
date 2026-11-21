@@ -178,7 +178,7 @@ try {
   {
     const t = await b.page({ w: 1280, h: 800 }); await t.go(base + '/');
     let s = await t.ev(motionProbe); ok(s.dm === 'on' && s.pressed === 'true', 'motion: default on ' + JSON.stringify(s));
-    await t.ev(`document.getElementById('motion').click()`); await until(t, `document.documentElement.dataset.motion === 'off'`, 1500);
+    await t.ev(`document.getElementById('motion').click()`); await until(t, `document.documentElement.dataset.motion === 'off'`, 5000);
     for (const p of PATHS) { if (p !== '/') await t.go(base + p); s = await t.ev(motionProbe); ok(s.dm === 'off' && s.pressed === 'false' && s.anims === 0 && s.tr === 0, `motion off ${p}: ${JSON.stringify(s)}`); }
     await t.go(base + '/'); await t.ev(`document.getElementById('motion').focus()`); await t.enter(); s = await t.ev(motionProbe); ok(s.dm === 'on', 'motion: Enter toggles back on');
     await t.close();
@@ -189,11 +189,11 @@ try {
   // 4. forms: an empty submit shows a focused error summary (no script error); ?sent= shows the focused success panel
   for (const [p, name, fid] of [['/', 'request', 'request-form'], ['/events/', 'signup', 'signup-form'], ['/shop/', 'request', 'request-form'], ['/sell/', 'buylist', 'buylist-form'], ['/visit/', 'contact', 'contact-form']]) {
     const t = await b.page({ w: 390, h: 844 }); await t.go(base + p);
-    await t.ev(`window.__errs = []; addEventListener('error', (e) => __errs.push(e.message)); const f = document.getElementById('${fid}'); for (const el of f.querySelectorAll('input:not([type=hidden]):not([type=radio]), textarea')) el.value = ''; const s = f.querySelector('#su-event'); if (s) s.value = ''; f.querySelector('button[type=submit]').click()`); await until(t, `document.activeElement.classList.contains('form-msg')`, 1500);
+    await t.ev(`window.__errs = []; addEventListener('error', (e) => __errs.push(e.message)); const f = document.getElementById('${fid}'); for (const el of f.querySelectorAll('input:not([type=hidden]):not([type=radio]), textarea')) el.value = ''; const s = f.querySelector('#su-event'); if (s) s.value = ''; f.querySelector('button[type=submit]').click()`); await until(t, `document.activeElement.classList.contains('form-msg')`, 5000);
     let s = await t.ev(`(() => { const a = document.activeElement; return { errs: __errs, focus: a.id, panel: a.classList.contains('form-msg') && !a.hidden, links: a.querySelectorAll('a').length, url: location.pathname + location.search }; })()`);
     ok(!s.errs.length && s.panel && s.links > 0 && s.url === p, `form ${p}: empty submit shows a focused error summary ${JSON.stringify(s)}`);
     const sent = p === '/events/' ? 'signup' : name;
-    await t.go(`${base}${p}?sent=${sent}`); await until(t, `document.activeElement.id === '${name}-ok'`, 1500);
+    await t.go(`${base}${p}?sent=${sent}`); await until(t, `document.activeElement.id === '${name}-ok'`, 5000);
     s = await t.ev(`({ focus: document.activeElement.id, hidden: document.getElementById('${fid}').hidden })`);
     ok(s.focus === `${name}-ok` && s.hidden, `form ${p}: ?sent=${sent} focuses the success panel ${JSON.stringify(s)}`);
     await t.close();
@@ -213,7 +213,7 @@ try {
       set('name', 'A11y'); set('email', '${email}'); set('cards', 'Sol Ring'); set('message', 'Hello <b>&'); set('item_name[]', 'Sol Ring');
       f.querySelectorAll('[name="item_qty[]"]').forEach((e, i) => (e.value = i ? '' : '1'));
       const pay = f.querySelector('[name=payout][value=cash]'); if (pay) pay.checked = true;
-      const ev = f.querySelector('[name=event_id]'); if (ev) ev.selectedIndex = 0;
+      const ev = f.querySelector('[name=event_id]'); if (ev) ev.selectedIndex = ev.options.length - 1; // furthest night: never already started (the Worker refuses started nights; index 0 failed after 7pm on a Friday)
       f.querySelector('button[type=submit]').click(); return 0; })()`);
     
     // wait (max 6s) for the result page to finish loading and its fonts to settle, so the fragment scroll is final

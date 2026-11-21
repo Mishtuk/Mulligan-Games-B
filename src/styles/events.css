@@ -104,20 +104,14 @@
   .ev-side .special { margin-top: 0; }
   .ev-side .tickets { grid-template-columns: 1fr; }
   .ev-side .signup { margin-top: calc(var(--s-4) + .9rem); }
+  /* the clipboard is taller than the screen, so no sticky: the photo tile fills the column down to the sheet bottom instead */
+  .ev-side { align-self: stretch; display: flex; flex-direction: column; }
+  .ev-side .ev-room { flex: 1; grid-template-rows: minmax(0, 1fr); }
 }
 .ev-room { display: grid; gap: var(--s-2); margin-top: var(--s-3); }
-.ev-room:has(.photo) .mat { display: none; }
-.ev-room .ph { aspect-ratio: auto; padding: var(--s-1); }
-/* drawn play table: top view, playmat, four cards, two dice. Tokens only; stands in until the owner's photo arrives */
-.mat { padding: var(--s-2); background: var(--card); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-.mat-felt { position: relative; display: block; height: 7.5rem; background: var(--sky); border: 2px solid var(--line); border-radius: var(--radius); }
-.mat-felt::before { content: ""; position: absolute; inset: 50% .75rem auto; border-top: 2px dashed var(--line); }
-.mat-card { position: absolute; width: 2.1rem; height: 2.9rem; background: var(--card); border: 2px solid var(--line); border-radius: 3px; }
-.mc1 { left: 18%; top: .6rem; rotate: -6deg; } .mc2 { left: 34%; top: .8rem; rotate: 4deg; background: var(--accent); }
-.mc3 { right: 34%; bottom: .6rem; rotate: 5deg; } .mc4 { right: 18%; bottom: .8rem; rotate: -4deg; background: var(--accent2); }
-.mat-die { position: absolute; left: 62%; top: 1rem; width: 1.1rem; height: 1.1rem; background: var(--card); border: 2px solid var(--line); border-radius: 3px; rotate: 15deg; }
-.md2 { left: 16%; top: auto; bottom: 1rem; rotate: -12deg; }
-/* the table is hidden on narrow screens: it adds ~200px before the form */
+.ev-room .ph { aspect-ratio: auto; padding: var(--s-2); }
+.ev-room .ph figcaption { border: 3px solid var(--line); }
+/* the photo tile only shows from 52rem (it adds ~100px before the form on a phone) */
 @container page (max-width: 51.99rem) { .ev-room:not(:has(.photo)) { display: none; } }
 .ev-ask { margin-top: var(--s-3); padding: var(--s-2) var(--s-3); background: var(--bg2); border: 2px dashed var(--line); border-radius: var(--radius); }
 .ev-ask a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 700; }
