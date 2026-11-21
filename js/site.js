@@ -1,26 +1,5 @@
-// Motion switch and Menu sheet (every page).
+// Menu sheet (every page).
 (() => {
-  const root = document.documentElement, btn = document.getElementById('motion');
-  const rq = matchMedia('(prefers-reduced-motion: reduce)');
-  const saved = () => { try { return localStorage.getItem('motion'); } catch { return null; } };
-  if (btn) {
-    const sync = () => {
-      const device = rq.matches, on = !device && root.dataset.motion === 'on';
-      btn.textContent = `Motion: ${on ? 'on' : 'off'}`;
-      if (device) { const s = document.createElement('span'); s.className = 'vh'; s.textContent = ' (device setting)'; btn.append(s); }
-      btn.setAttribute('aria-pressed', String(on));
-      btn.disabled = device;
-      dispatchEvent(new Event('motionchange'));
-    };
-    btn.addEventListener('click', () => {
-      root.dataset.motion = root.dataset.motion === 'on' ? 'off' : 'on';
-      try { localStorage.setItem('motion', root.dataset.motion); } catch { /* storage blocked */ }
-      sync();
-    });
-    rq.addEventListener('change', () => { root.dataset.motion = rq.matches || saved() === 'off' ? 'off' : 'on'; sync(); });
-    sync();
-  }
-
   const menu = document.getElementById('menu-btn'), sheet = document.getElementById('menu-sheet');
   if (menu && sheet) {
     const behind = document.querySelectorAll('main, .site-footer'); // inert while open
@@ -36,4 +15,22 @@
     document.addEventListener('click', (e) => { if (!header.contains(e.target)) set(false); });
     matchMedia('(min-width: 820px)').addEventListener('change', (e) => { if (e.matches) set(false); });
   }
+})();
+
+// Theme toggle: one button, the icon and name show the mode you will get. Saves the choice in this browser (key mg-theme).
+(() => {
+  const btn = document.querySelector('.theme-toggle');
+  if (!btn) return;
+  const root = document.documentElement;
+  const label = () => { const n = root.getAttribute('data-theme') === 'light' ? 'Switch to dark mode' : 'Switch to light mode'; btn.setAttribute('aria-label', n); btn.title = n; };
+  label();
+  btn.addEventListener('click', () => {
+    const t = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', t);
+    root.style.colorScheme = t;
+    const m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', t === 'light' ? '#FAF8FF' : '#120B1E');
+    try { localStorage.setItem('mg-theme', t); } catch { /* blocked storage: the choice lasts until reload */ }
+    label();
+  });
 })();
