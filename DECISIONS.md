@@ -55,6 +55,8 @@ used in two rounds gets deleted.
   admin (no POS sync); prices show when staff enter one, else "Ask at the counter"; inbox rows kept 180 days.
   **Order (owner, 2026-11-20):** presentable first (dark mode, release panels, product detail, polish), then admin.
 
+- **D14** (2026-11-20, coder, owner feature "dark mode default + sun/moon button"): Home gzip budget raised from 23,200 to 24,200. **Measured:** Home 24,135 gzip after the dark token set, the logo sign plate, the sky-surface ink rules, the toggle button with two inline SVGs and its 20 lines in site.js (+1,031 over D12's 23,104); raw stays under 143,000. **Ruling:** owner-requested feature, no copy cut, budget +1,000 (about 4%). Future raises need a new entry. **Why:** D12/D8: the cost is code, measured, and nothing else can go.
+
 ## Decision rules
 - Check here before asking. A recorded decision answers the question.
 - Hard rules in `CONTEXT.md` are never traded away.

@@ -23,7 +23,7 @@ test('data files: ids unique, store facts present, nothing invented', () => {
 
 test('CSS: colour literals only inside :root', () => {
   for (const f of ['src/styles/global.css', 'src/styles/home.css']) {
-    const css = read(f).replace(/:root\s*\{[^}]*\}/, '');
+    const css = read(f).replace(/:root[^{]*\{[^}]*\}/g, ''); // every token block: light base, dark
     assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(/, f);
   }
 });

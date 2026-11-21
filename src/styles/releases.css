@@ -1,6 +1,6 @@
 /* Home: New releases (ads) and From our Instagram. Release ads: image on top, themed panel below; Star Trek is a full-bleed deep-space banner. Colours are :root tokens (DESIGN.md pairs). */
 .home-releases, .home-ig { margin-top: var(--section); grid-column: 1 / -1; }
-.rel { --t-bg: var(--card); --t-ink: var(--text); --t-hi: var(--accent2); --t-bar: var(--accent2); position: relative; display: grid; align-content: start; background: var(--t-bg); color: var(--t-ink); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+.rel { --t-bg: var(--card); --t-ink: var(--text); --t-hi: var(--link); --t-bar: var(--accent2); position: relative; display: grid; align-content: start; background: var(--t-bg); color: var(--t-ink); border: var(--border-w) solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
 .rel picture { display: block; border-bottom: 6px solid var(--t-bar); }
 .rel img { display: block; width: 100%; height: auto; }
 .rel-body { display: grid; gap: .35rem; align-content: start; min-width: 0; padding: var(--s-2); }
@@ -14,7 +14,7 @@
 .rel-link::after { content: ""; position: absolute; inset: 0; }
 .rel:has(.rel-link:focus-visible) { outline: 3px solid var(--link); outline-offset: 3px; }
 .rel-grid h3 { font-size: var(--step-0); }
-.rel[data-theme=pokemon] { --t-bg: var(--pk-bg); --t-hi: var(--pk-hi); --t-bar: var(--pk-red); }
+.rel[data-theme=pokemon] { --t-bg: var(--pk-bg); --t-ink: var(--on-accent); --t-hi: var(--pk-hi); --t-bar: var(--pk-red); }
 .rel:is([data-theme=pokemon], [data-theme=hololive]) picture { border-bottom: 0; padding-bottom: 8px; }
 .rel[data-theme=pokemon] picture { background: linear-gradient(90deg, var(--pk-red) 33.3%, var(--pk-blue) 33.3% 66.6%, var(--pk-yellow) 66.6%); }
 .rel[data-theme=riftbound] { --t-bg: var(--rift-bg); --t-ink: var(--rift-ink); --t-hi: var(--rift-gold); --t-bar: var(--rift-gold); }

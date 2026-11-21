@@ -14,12 +14,12 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const args = process.argv.slice(2), opt = (n) => { const i = args.indexOf(n); return i < 0 ? null : args.splice(i, 2)[1]; };
-const port = opt('--port'), chromeArg = opt('--chrome');
+const port = opt('--port'), chromeArg = opt('--chrome'), theme = opt('--theme') === 'light' ? 'light' : 'dark'; // --theme light stores mg-theme=light, so the whole run checks the light theme
 const base = (args.shift() || '').replace(/\/$/, ''), pages = args.length ? args : ['/'];
 if (!/^https?:\/\//.test(base)) { console.error('usage: node tools/check-site.mjs <base-url> [paths...] [--port N] [--chrome path]'); process.exit(2); }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // The SKILL step 4 rendered-ground check (text on the sampled pixels; text on a coloured box is skipped; best of 4 corners).
-const GROUND = "async p=>{const f=[],im=await createImageBitmap(new Blob([Uint8Array.from(atob(p),c=>c.charCodeAt())])),c=new OffscreenCanvas(im.width,im.height).getContext('2d'),k=im.width/innerWidth,Y=a=>{const[r,g,b]=a.map(v=>(v/=255)<=.04?v/12.92:((v+.055)/1.055)**2.4);return .2126*r+.7152*g+.0722*b},boxed=a=>{for(;a!=document.body;a=a.parentElement)if(getComputedStyle(a).backgroundColor!='rgba(0, 0, 0, 0)')return 1};c.drawImage(im,0,0);let hb=0;for(const a of document.querySelectorAll('body>*,header,nav')){const p=getComputedStyle(a).position;if(p=='sticky'||p=='fixed')hb=Math.max(hb,a.getBoundingClientRect().bottom)}for(const e of document.querySelectorAll('h1,h2,h3,p,li,a,button,label,small')){const r=e.getBoundingClientRect(),s=getComputedStyle(e);if(e.firstElementChild||boxed(e)||!r.width||r.top<hb||r.bottom>innerHeight||!e.textContent.trim())continue;const t=Y(s.color.match(/[\\d.]+/g).slice(0,3).map(Number)),q=Math.max(...[[2,2],[r.width-3,2],[2,r.height-3],[r.width-3,r.height-3]].map(([x,y])=>{const g=Y([...c.getImageData((r.left+x)*k,(r.top+y)*k,1,1).data]);return(Math.max(g,t)+.05)/(Math.min(g,t)+.05)}));if(q<(parseFloat(s.fontSize)>=24?3:4.5))f.push('contrast '+q.toFixed(2)+' '+e.tagName+' '+e.textContent.trim().slice(0,20))}document.querySelectorAll('.ln').forEach(l=>l.offsetWidth>l.parentElement.clientWidth+1&&f.push('.ln wider than box: '+l.textContent));return f}";
+const GROUND = "async p=>{const f=[],im=await createImageBitmap(new Blob([Uint8Array.from(atob(p),c=>c.charCodeAt())])),c=new OffscreenCanvas(im.width,im.height).getContext('2d'),k=im.width/innerWidth,Y=a=>{const[r,g,b]=a.map(v=>(v/=255)<=.04?v/12.92:((v+.055)/1.055)**2.4);return .2126*r+.7152*g+.0722*b},boxed=a=>{for(;a!=document.body;a=a.parentElement)if(getComputedStyle(a).backgroundColor!='rgba(0, 0, 0, 0)')return 1};c.drawImage(im,0,0);let hb=0;for(const a of document.querySelectorAll('body>*,header,nav')){const p=getComputedStyle(a).position;if((p=='sticky'||p=='fixed')&&a.getBoundingClientRect().top<innerHeight/2)hb=Math.max(hb,a.getBoundingClientRect().bottom)}for(const e of document.querySelectorAll('h1,h2,h3,p,li,a,button,label,small')){const r=e.getBoundingClientRect(),s=getComputedStyle(e);if(e.firstElementChild||boxed(e)||!r.width||r.top<hb||r.bottom>innerHeight||!e.textContent.trim())continue;const t=Y(s.color.match(/[\\d.]+/g).slice(0,3).map(Number)),q=Math.max(...[[2,2],[r.width-3,2],[2,r.height-3],[r.width-3,r.height-3]].map(([x,y])=>{const g=Y([...c.getImageData((r.left+x)*k,(r.top+y)*k,1,1).data]);return(Math.max(g,t)+.05)/(Math.min(g,t)+.05)}));if(q<(parseFloat(s.fontSize)>=24?3:4.5))f.push('contrast '+q.toFixed(2)+' '+e.tagName+' '+e.textContent.trim().slice(0,20))}document.querySelectorAll('.ln').forEach(l=>l.offsetWidth>l.parentElement.clientWidth+1&&f.push('.ln wider than box: '+l.textContent));return f}";
 const FOCUSABLE = 'a[href],button,input:not([type=hidden]),select,textarea,summary,[tabindex],[contenteditable=true]';
 
 async function connect() {
@@ -63,7 +63,7 @@ try {
   // motion: 'on' = no-preference; 'off' or 'reduce' = device reduced-motion emulated (no site switch)
   async function load(path, w, motion) {
     if (initId) await cdp('Page.removeScriptToEvaluateOnNewDocument', { identifier: initId });
-    ({ identifier: initId } = await cdp('Page.addScriptToEvaluateOnNewDocument', { source: `try{localStorage.removeItem('motion')}catch{}` }));
+    ({ identifier: initId } = await cdp('Page.addScriptToEvaluateOnNewDocument', { source: `try{localStorage.removeItem('motion')}catch{}try{${theme === 'light' ? "localStorage.setItem('mg-theme','light')" : "localStorage.removeItem('mg-theme')"}}catch{}` }));
     await cdp('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: motion !== 'on' ? 'reduce' : 'no-preference' }] });
     await cdp('Emulation.setDeviceMetricsOverride', { width: w, height: 900, deviceScaleFactor: 1, mobile: false });
     const done = new Promise((r) => { loaded = r; setTimeout(r, 15000); });
@@ -123,4 +123,4 @@ try {
 } catch (e) { console.error('check-site could not run: ' + e.message); await b.close(); process.exit(2); }
 await b.close();
 if (fails.length) { console.log(`FAIL  ${base}  ${pages.length} page(s), ${fails.length} problem(s)\n` + fails.map((f) => '  - ' + f).join('\n')); process.exit(1); }
-console.log(`PASS  ${base}  ${pages.join(' ')}  (overflow 320-1600, animations off/reduced, ids, console/CSP, Tab + rings, ground contrast)`);
+console.log(`PASS  ${base}  ${pages.join(' ')}  [${theme} theme]  (overflow 320-1600, animations off/reduced, ids, console/CSP, Tab + rings, ground contrast)`);

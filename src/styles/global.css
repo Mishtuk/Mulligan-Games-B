@@ -6,8 +6,10 @@
 @font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-hyperlegible-latin-700.woff2") format("woff2"); }
 @font-face { font-family: "Space Mono"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/space-mono-latin-700.woff2") format("woff2"); }
 
-:root {
+/* Light tokens are the base (also forced for print). Dark is the default: it is set on <html data-theme="dark"> and overrides only the tokens that differ. */
+:root, :root[data-theme="light"] {
   color-scheme: light;
+  --plate: #FFFFFF;       /* the logo's white sign plate (logo is never recoloured) */
   --bg: #FAF8FF;          /* page; never warm toward cream */
   --bg2: #DDF0FB;         /* sky tint panels */
   --card: #FFFFFF;        /* pocket / paper surface */
@@ -46,6 +48,19 @@
   --section: clamp(2.75rem,1.5rem + 5vw,6rem);
   --gutter: clamp(16px,12px + 2vw,40px);
   --measure: 62ch; --tap: 48px; --max: 1200px;
+}
+
+/* Dark (default). Release-panel tokens are self-contained and stay as above. Print never gets this block. */
+@media not print {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #120B1E; --bg2: #16283A; --card: #1D1330; --bg3: #2A2140;
+    --text: #F3EEFB; --muted: #BDB4D0;
+    --line: #A99BCB; --soft-line: #7468A0;
+    --accent2: #9B72D6; --on-accent2: #1B1030;
+    --link: #C8ADF7;
+    --error: #FF8F86; --ok: #6FD79A;
+  }
 }
 
 /* ---- base ---- */
@@ -156,6 +171,9 @@ textarea { min-height: 6.5rem; resize: vertical; }
 .site-header-in { display: flex; align-items: center; gap: var(--s-1); padding-block: .4rem; }
 .brand { display: block; flex: none; width: 160px; margin-right: auto; line-height: 0; aspect-ratio: 340 / 98; overflow: hidden; } /* crop the file's bottom 18%: orange specks sit below the letters (rows 100+ of 120) */
 .brand img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; } /* the logo file has a white ground: multiply lets the page colour show through */
+/* dark: the logo (white ground, never recoloured) sits on a white sign plate; object-fit crops the same bottom 18% as the light crop */
+:root[data-theme="dark"] .brand { aspect-ratio: auto; overflow: visible; padding: 8px; background: var(--plate); border: 2px solid var(--line); border-radius: 5px; }
+:root[data-theme="dark"] .brand img { mix-blend-mode: normal; aspect-ratio: 340 / 98; object-fit: cover; object-position: top; }
 .nav-desk { display: none; }
 .nav-desk a, .menu-sheet a { display: flex; white-space: nowrap; align-items: center; min-height: var(--tap); color: var(--text); font-weight: 700; text-decoration: none; }
 .nav-desk a { padding: 0 var(--s-2); border-bottom: 3px solid transparent; }
@@ -179,6 +197,8 @@ html:not(.js) .site-header { position: static; }
 @media (max-width: 359px) { .site-header-in { flex-wrap: wrap; } }
 @container page (min-width: 52rem) {
   .brand img { width: 170px; }
+  :root[data-theme="dark"] .brand img { width: 100%; }
+  :root[data-theme="dark"] .brand { width: 190px; }
   .nav-desk { display: flex; margin-right: var(--s-2); }
   .header-chip { display: inline-flex; }
   .chip-strip, #menu-btn, .menu-sheet, html:not(.js) .menu-sheet { display: none; }
@@ -203,6 +223,15 @@ html:not(.js) .site-header { position: static; }
 .foot-note { color: var(--muted); font-size: var(--step--1); margin-top: var(--s-1); }
 .foot-legal { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--soft-line); color: var(--muted); font-size: var(--step--1); max-width: none; }
 
+/* ---- theme toggle: one round button, bottom right; the icon is the mode you will get (sun in dark, moon in light) ---- */
+body { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+.theme-toggle { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 30; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; background: var(--bg3); color: var(--text); border: 3px solid var(--line); border-radius: 50%; cursor: pointer; }
+.theme-toggle svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle .i-moon, :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .i-moon { display: block; }
+html:not(.js) .theme-toggle { display: none; }
+@media print { .theme-toggle { display: none; } body { padding-bottom: 0; } }
+
 /* ---- motion: nothing moves on its own; only hover / press, 120ms ---- */
 @media (prefers-reduced-motion: no-preference) {
   html .btn,
@@ -222,3 +251,7 @@ html:not(.js) .site-header { position: static; }
 }
 /* 600-831px: the Open now pill rides in the header row, not above the page */
 @container page (min-width: 37.5rem) and (max-width: 51.99rem) { .header-chip { display: inline-flex; white-space: nowrap; min-height: var(--tap); margin-left: auto; } .chip-strip { display: none; } .site-header-in { gap: var(--s-2); } }
+
+/* Dark: surfaces filled with --sky are light, so every word on them uses the dark ink (--on-accent, 9.8:1); buttons keep their own pair. */
+:root[data-theme="dark"] :is(.chip.is-open:not(.chip-strip .chip), .slab, .pocket:not(.pocket-closed) .pocket-title, .tonight-day, .chip-filter[aria-current="page"], .day[data-today] .day-date, .pairings tbody tr[data-today], .ticket[data-today], .hours-table [aria-current="date"]) { color: var(--on-accent); }
+:root[data-theme="dark"] :is(.chip.is-open:not(.chip-strip .chip), .slab, .pocket:not(.pocket-closed) .pocket-title, .tonight-day, .chip-filter[aria-current="page"], .day[data-today] .day-date, .pairings tbody tr[data-today], .ticket[data-today], .hours-table [aria-current="date"]) :not(.btn, .btn *, .sticker, svg *) { color: var(--on-accent); }

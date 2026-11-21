@@ -70,6 +70,8 @@ const scrimProbe = `async (p) => { const f = [], im = await createImageBitmap(ne
  return { n, f: [...new Set(f)].slice(0, 8) }; }`;
 
 const b = await launch();
+// The profile is shared, so every page states its theme first (dark is the site default).
+const themed = async (t, th) => t.cdp('Page.addScriptToEvaluateOnNewDocument', { source: th === 'light' ? "try{localStorage.setItem('mg-theme','light')}catch{}" : "try{localStorage.removeItem('mg-theme')}catch{}" });
 try {
   // 1. zoom 200% (root font-size only, like browser text zoom); then shapes at 100% with a tall viewport so elementFromPoint sees all
   for (const w of [1280, 390, 320]) for (const p of PATHS) {
@@ -88,8 +90,9 @@ try {
     await t.close();
   }
   // 1d. scrim/panel contrast behind text in the Home ads and Instagram cards (4.5:1, 3:1 at 24px+), 390 and 1280
-  for (const w of [390, 1280]) {
-    const t = await b.page({ w, h: 800 }); await t.go(base + '/');
+  for (const th of ['dark', 'light']) for (const w of [390, 1280]) {
+    const t = await b.page({ w, h: 800 }); await themed(t, th); await t.go(base + '/');
+    ok(await t.ev(`document.documentElement.dataset.theme`) === th, `scrim pass runs in the ${th} theme`);
     await t.ev(`document.querySelectorAll('.rel img').forEach((i) => (i.loading = 'eager')); document.querySelectorAll('.rel *').forEach((e) => { e.style.setProperty('color', 'transparent', 'important'); e.style.setProperty('text-shadow', 'none', 'important'); })`); await until(t, `[...document.querySelectorAll('.rel img')].every((i) => i.complete)`); await settle(t);
     const h = await t.ev(`document.documentElement.scrollHeight`);
     await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await settle(t);
@@ -98,8 +101,8 @@ try {
     // colours come from the live page, so restore them for reading getComputedStyle while the screenshot holds the pixels
     await t.ev(`document.querySelectorAll('.rel *').forEach((e) => { e.style.removeProperty('color'); e.style.removeProperty('text-shadow'); })`);
     const r = await t.ev(`(${scrimProbe})("${shot.data}")`);
-    ok(r.n >= 20, `scrim contrast @${w}: only ${r.n} text nodes found in .rel`);
-    for (const m of r.f) ok(false, `scrim contrast @${w}: ${m}`);
+    ok(r.n >= 20, `scrim contrast ${th} @${w}: only ${r.n} text nodes found in .rel`);
+    for (const m of r.f) ok(false, `scrim contrast ${th} @${w}: ${m}`);
     await t.close();
   }
   // 1b. no word broken mid-word in pocket titles, slabs and short labels at 320, 390, 430 and the two-column 768 and 1024
@@ -127,6 +130,44 @@ try {
     ok(r.front !== null, `visit @${w}: a storefront is visible`);
     if (r.sideBySide) ok(Math.abs(r.placard - r.front) <= 4, `visit @${w}: placard and storefront top edges level (4px) ${JSON.stringify(r)}`);
     await t.close();
+  }
+  // 1g. theme toggle, both themes, every path at 390: reached by Tab (the last stop), named for the action and flipping with it, 48px round,
+  // clear of the footer's last link at the bottom of the page, saves the choice across a reload, never a switch (no aria-pressed / role=switch)
+  for (const th of ['dark', 'light']) for (const p of PATHS) {
+    const t = await b.page({ w: 390, h: 844 }); await themed(t, th); await t.go(base + p);
+    const q = () => t.ev(`(() => { const e = document.querySelector('.theme-toggle'), r = e.getBoundingClientRect(), cs = getComputedStyle(e), svg = [...e.querySelectorAll('svg')].filter((x) => getComputedStyle(x).display !== 'none');
+      return { theme: document.documentElement.dataset.theme, name: e.getAttribute('aria-label'), title: e.title, w: Math.round(r.width), h: Math.round(r.height), radius: cs.borderRadius, pos: cs.position, right: Math.round(innerWidth - r.right), bottom: Math.round(innerHeight - r.bottom), icons: svg.map((x) => x.getAttribute('class')), sw: e.hasAttribute('aria-pressed') || e.getAttribute('role') === 'switch', inForm: !!e.closest('form'), text: e.textContent.trim() }; })()`);
+    let r = await q(); const want = th === 'dark' ? ['Switch to light mode', 'i-sun'] : ['Switch to dark mode', 'i-moon'];
+    ok(r.theme === th && r.name === want[0] && r.title === want[0] && r.icons.join() === want[1], `toggle ${th} ${p}: name/icon ${JSON.stringify(r)}`);
+    ok(r.w === 48 && r.h === 48 && r.pos === 'fixed' && r.right >= 16 && r.bottom >= 16 && !r.sw && !r.inForm && r.text === '' && r.radius.startsWith('50%'), `toggle ${th} ${p}: 48px round, fixed bottom-right, not a switch ${JSON.stringify(r)}`);
+    // Tab from the top until the toggle: it must be the last focusable thing (all others come first) and show a ring
+    const last = await t.ev(`(() => { const all = [...document.querySelectorAll('a[href],button,input:not([type=hidden]),select,textarea,summary')].filter((e) => e.getClientRects().length && !e.closest('[hidden],[inert]') && e.tabIndex >= 0); return all[all.length - 1].classList.contains('theme-toggle'); })()`);
+    ok(last, `toggle ${th} ${p}: last stop in the Tab order`);
+    await t.ev(`document.querySelector('.theme-toggle').focus()`);
+    ok(await t.ev(`(() => { const s = getComputedStyle(document.querySelector('.theme-toggle')); return s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) >= 3; })()`), `toggle ${th} ${p}: focus ring`);
+    // at the very bottom the toggle must not sit on the footer's last link or any form button
+    await t.ev(`scrollTo(0, document.documentElement.scrollHeight)`); await sleep(150);
+    const hit = await t.ev(`(() => { const g = document.querySelector('.theme-toggle').getBoundingClientRect(), bad = [];
+      for (const e of document.querySelectorAll('.site-footer a, main button, main .btn, main input, main select, main textarea, main summary')) { const r = e.getBoundingClientRect(); if (r.width && r.height && !(r.right <= g.left || r.left >= g.right || r.bottom <= g.top || r.top >= g.bottom)) bad.push(e.tagName + '.' + e.className + ' ' + e.textContent.trim().slice(0, 20)); }
+      const lk = [...document.querySelectorAll('.site-footer a')].pop(), lr = lk.getBoundingClientRect(); return { bad, gap: Math.round(g.top - lr.bottom), lastLinkBottom: Math.round(lr.bottom), toggleTop: Math.round(g.top) }; })()`);
+    ok(!hit.bad.length, `toggle ${th} ${p}: overlaps ${hit.bad.join('; ')}`);
+    await t.close();
+  }
+  // 1h. the choice is saved: click -> light, reload keeps light (no themed() script here); click again -> dark, reload keeps dark
+  {
+    const t = await b.page({ w: 390, h: 844 }); await themed(t, 'dark'); await t.go(base + '/'); await t.cdp('Page.addScriptToEvaluateOnNewDocument', { source: '0' }); // storage starts empty
+    const th = () => t.ev(`document.documentElement.dataset.theme + '|' + document.querySelector('.theme-toggle').getAttribute('aria-label') + '|' + (localStorage.getItem('mg-theme') || '-')`);
+    ok(await th() === 'dark|Switch to light mode|-', 'theme: default dark with empty storage, nothing saved yet');
+    await t.ev(`document.querySelector('.theme-toggle').click()`); ok(await th() === 'light|Switch to dark mode|light', 'theme: click saves light ' + await th());
+    await t.close();
+    const u = await b.page({ w: 390, h: 844 }); await u.go(base + '/'); const g = () => u.ev(`document.documentElement.dataset.theme + '|' + document.querySelector('.theme-toggle').getAttribute('aria-label')`);
+    ok(await g() === 'light|Switch to dark mode', 'theme: light survives a reload (and a new tab, same storage) ' + await g());
+    await u.ev(`document.querySelector('.theme-toggle').click()`); await u.go(base + '/'); ok(await g() === 'dark|Switch to light mode', 'theme: back to dark survives a reload ' + await g());
+    // storage that throws: the page still renders dark and the button still works for this visit
+    await u.cdp('Page.addScriptToEvaluateOnNewDocument', { source: "Object.defineProperty(window, 'localStorage', { get() { throw new Error('blocked'); } })" }); await u.go(base + '/');
+    ok(await g() === 'dark|Switch to light mode', 'theme: blocked storage stays dark ' + await g());
+    await u.ev(`document.querySelector('.theme-toggle').click()`); ok(await g() === 'light|Switch to dark mode', 'theme: blocked storage, click still flips for this visit');
+    await u.close();
   }
   // 2. menu sheet
   {
