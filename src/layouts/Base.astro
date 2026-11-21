@@ -5,11 +5,11 @@ import OpenChip from '../components/OpenChip.astro';
 import { DAYS, toWeek, hoursText } from '../lib/hours.js';
 import { SITE_URL, LOGO } from '../lib/site.js';
 
-interface Props { title: string; description: string; noindex?: boolean; footHours?: 'full' | 'link'; footVisit?: boolean; }
+interface Props { title: string; description: string; noindex?: boolean; exactTitle?: boolean; footHours?: 'full' | 'link'; footVisit?: boolean; }
 // footVisit=false: the page already shows the address, Maps link and contacts, so the footer drops its Visit us column.
 // footHours='link': the page already shows the hours table, so the footer points to it instead of repeating it.
-const { title, description, noindex = false, footHours = 'full', footVisit = true } = Astro.props;
-const fullTitle = `${title} | Mulligan Games, Warminster PA`;
+const { title, description, noindex = false, exactTitle = false, footHours = 'full', footVisit = true } = Astro.props;
+const fullTitle = exactTitle ? title : `${title} | Mulligan Games, Warminster PA`; // exactTitle: product pages carry the writer's whole title
 const path = Astro.url.pathname;
 const canonical = SITE_URL + path;
 const logoUrl = SITE_URL + LOGO.path;

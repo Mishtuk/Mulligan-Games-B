@@ -61,9 +61,9 @@ test('Events play-room table and placeholder are hidden under 52rem page width; 
 test('copy: Pokemon spelling, no exclamation marks, Visit footer has no Hours heading', { skip: !fs.existsSync(dist) }, () => {
   const bad = [];
   for (const f of walk(dist).filter((x) => x.endsWith('.html'))) {
-    const t = text(fs.readFileSync(f, 'utf8')).replace(/The Pokémon Company/g, '');
+    const t = text(fs.readFileSync(f, 'utf8')).replace(/The Pokémon Company/g, ''); // DON!! (One Piece) is printed verbatim from the publisher
     if (/Pokémon/.test(t)) bad.push(`${path.relative(dist, f)}: Pokémon`);
-    if (/!/.test(t.replace(/<!doctype html>/i, ''))) bad.push(`${path.relative(dist, f)}: !`);
+    if (/!/.test(t.replace(/<!doctype html>/i, '').replace(/DON!!/g, 'DON'))) bad.push(`${path.relative(dist, f)}: !`);
   }
   assert.deepEqual(bad, []);
   const visit = fs.readFileSync(path.join(dist, 'visit', 'index.html'), 'utf8');

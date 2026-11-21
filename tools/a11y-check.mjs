@@ -5,7 +5,7 @@
 import { spawn } from 'node:child_process';
 import { launch, sleep } from './cdp.mjs';
 
-const PATHS = ['/', '/events/', '/shop/', '/sell/', '/visit/', '/privacy/', '/nope'];
+const PATHS = ['/', '/events/', '/shop/', '/sell/', '/visit/', '/privacy/', '/nope', ...['mtg-star-trek','pokemon-delta-reign','riftbound-legacy','hololive-volume-vortex','one-piece-st37-38'].map((id) => `/shop/${id}/`)];
 let base = process.argv[2], server = null;
 if (!base) {
   const port = process.env.PORT || 4399; base = `http://localhost:${port}`;

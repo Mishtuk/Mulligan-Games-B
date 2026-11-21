@@ -122,7 +122,7 @@ test('shop: Sealed and Preorders come from releases.json (confirmed rows, out = 
     if (rels.find((r) => r.id === id).gameId !== 'magic') assert.match(shop, new RegExp(`id="hold-${id}">[^<]+ and choose [A-Za-z ]+ as the game\\.</p>`), `game ${id}`);
   }
   const home = html('index.html');
-  for (const m of home.matchAll(/id="rel-([a-z0-9]+-[^"]+)"/g)) assert.ok(home.includes(`href="/shop/?hold=${m[1]}#hold-${m[1]}"`), `home ${m[1]}`);
+  for (const m of home.matchAll(/id="rel-([a-z0-9]+-[^"]+)"/g)) assert.ok(home.includes(`href="/shop/${m[1]}/"`), `home ${m[1]}`);
   assert.doesNotMatch(shop, /Preorders at the counter|shelf-art/);
   assert.match(shop, /Sol Ring, Commander Masters, NM, 1/);
   assert.doesNotMatch(shop, /Photo coming/);

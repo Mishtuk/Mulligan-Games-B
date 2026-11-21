@@ -58,7 +58,12 @@
 
 /* Top release panel: real tabs above the Home hero. No timer. Without JS it is a list of links plus the first panel. */
 .top-wrap { padding-top: var(--s-3); }
-.top-rel { min-width: 0; }
+.top-rel { position: relative; min-width: 0; }
+/* 390: the tab strip scrolls sideways; an accent fade on the side that has more tabs (rel-tabs.js sets data-more-l / data-more-r) */
+.top-rel::before, .top-rel::after { content: ""; position: absolute; top: 0; z-index: 1; width: 2.25rem; height: 48px; pointer-events: none; opacity: 0; }
+.top-rel::before { left: 0; background: linear-gradient(90deg, var(--accent), transparent); }
+.top-rel::after { right: 0; background: linear-gradient(270deg, var(--accent), transparent); }
+.top-rel[data-more-l]::before, .top-rel[data-more-r]::after { opacity: 1; }
 .tr-tabs { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
 .tr-tabs::-webkit-scrollbar { display: none; }
 .tr-tabs li { flex: 0 0 auto; scroll-snap-align: start; }

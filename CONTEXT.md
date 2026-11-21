@@ -72,6 +72,9 @@ Kit: `Mishtuk/Base-Website-Design-Template` (local `C:\Users\alexm\projects\Base
 - (2026-11-20) "Add a writer subagent and ask the writer subagent to do research on writing websites and writing text
   for websites, and then have designer and coder work with the writer to make eloquent prompts that fundamentally fit
   the needs of the website." (.claude/agents/writer.md; pairing in boss.md.)
+- (2026-11-21) "Dark mode should not be purple, it should be black more than anything. A very common thing with AI is
+  that purple background. I don't like the purple. So try your best to not use generic AI looking colors like that
+  purple background."
 
 ## Hard rules
 1. No HTML or SQL injection. Prepared statements with `?`, escaped output, a test per form.

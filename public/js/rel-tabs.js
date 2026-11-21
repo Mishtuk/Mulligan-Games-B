@@ -12,6 +12,8 @@ if (top) {
   const list = top.querySelector('.tr-tabs'), tabs = [...top.querySelectorAll('[data-tab]')], panels = tabs.map((t) => top.querySelector(`[data-panel="${t.dataset.tab}"]`));
   if (!tabs.length) top.hidden = true;
   else {
+    const cue = () => { top.toggleAttribute('data-more-l', list.scrollLeft > 2); top.toggleAttribute('data-more-r', list.scrollLeft + list.clientWidth < list.scrollWidth - 2); };
+    list.addEventListener('scroll', cue, { passive: true }); addEventListener('resize', cue); addEventListener('load', cue); cue();
     list.setAttribute('role', 'tablist');
     list.querySelectorAll('li').forEach((li) => li.setAttribute('role', 'presentation'));
     const pick = (i, focus) => {

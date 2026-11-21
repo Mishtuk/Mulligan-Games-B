@@ -1,0 +1,120 @@
+---
+// Product detail page /shop/<release-id>/: what the ad advertises and what the box holds. Static, no new form (handoff R1):
+// the hold links go to the existing /shop/?hold=<id>#hold-<id> flow. Copy: docs/copy/visual-batch.md section 4.
+import Base from '../../layouts/Base.astro';
+import all from '../../data/releases.json';
+import events from '../../data/events.json';
+import store from '../../data/store.json';
+import { zoned } from '../../lib/hours.js';
+import { SITE_URL } from '../../lib/site.js';
+import { upcomingOneoffs } from '../../lib/events.js';
+import { holdHref, productHref } from '../../lib/shop.js';
+import { shownReleases, releaseLabel, dateLine } from '../../lib/releases.js';
+import { COPY, D4, productReleases, productsFor, productStatus, shortSet, holdCta, eventLine } from '../../lib/product.js';
+import '../../styles/releases.css';
+import '../../styles/product.css';
+
+export function getStaticPaths() {
+  return productReleases().map((r) => ({ params: { id: r.id }, props: { id: r.id } }));
+}
+const { id } = Astro.props;
+const r = all.find((x) => x.id === id)!;
+const copy = COPY[id];
+const today = zoned(store.timezone, process.env.SITE_NOW ? new Date(process.env.SITE_NOW) : undefined).date;
+const { shown, hidden } = productsFor(id);
+const when = upcomingOneoffs(events.oneoffs, today).filter((e) => e.release === id);
+const others = shownReleases(productReleases(), today).filter((x) => x.id !== id);
+const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
+const credits = [...new Set([r.credit, r.product?.credit].filter(Boolean))];
+const absolute = (p: string) => SITE_URL + p;
+const cta = holdCta(r);
+// JSON-LD Product with no offers, price or availability: we sell nothing online and publish no price (D13), so those fields would be untrue.
+const ld = { '@context': 'https://schema.org', '@type': 'Product', name: `${r.game}: ${r.name}`, description: copy.description, url: absolute(productHref(id)), category: r.game, ...((r.image || r.product) ? { image: absolute((r.image ?? r.product).jpg) } : {}) };
+const ldJson = JSON.stringify(ld).replace(/</g, '\\u003c');
+---
+<Base title={copy.title} description={copy.description} exactTitle>
+  <script type="application/ld+json" slot="head" set:html={ldJson}></script>
+  <div class="wrap pp">
+    <nav class="pp-crumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href="/shop/">Shop</a></li>
+        <li><span aria-current="page">{r.name}</span></li>
+      </ol>
+    </nav>
+
+    <section class="rel pp-hero" data-theme={r.theme} aria-labelledby="pp-h">
+      {r.image ? (<picture class="pp-art">
+        <source type="image/webp" srcset={srcset(r.image)} sizes="(min-width: 768px) 60vw, 100vw" />
+        <img src={r.image.jpg} width={r.image.width} height={r.image.height} alt="" fetchpriority="high" />
+      </picture>) : (<div class="rel-art pp-art" aria-hidden="true"><span>{r.short ?? r.game}</span></div>)}
+      <div class="pp-shot" aria-hidden={r.product ? undefined : 'true'}>
+        {r.product ? (<picture>
+          <source type="image/webp" srcset={srcset(r.product)} sizes="(min-width: 768px) 24vw, 45vw" />
+          <img src={r.product.jpg} width={r.product.width} height={r.product.height} alt={r.product.alt} {...(r.image ? { loading: 'lazy' } : { fetchpriority: 'high' })} />
+        </picture>) : (<span class="pp-pack"></span>)}
+      </div>
+      <div class="rel-body pp-body">
+        <p class="rel-game">{r.game}</p>
+        <h1 id="pp-h">{copy.h1}</h1>
+        <p class="rel-date" data-status-line data-release={r.releaseDate} data-prerelease={r.prereleaseDate ?? undefined}>{productStatus(r, today)}</p>
+        <p class="pp-price"><span>Price</span> <strong>Ask at the counter</strong></p>
+        <p class="pp-cta"><a class="btn" href={holdHref(id)}>{cta}<span class="vh">, {r.name}</span></a></p>
+        <p class="pp-help">Hold one, then pick it up at 445 York Road. Nothing is charged online.</p>
+      </div>
+    </section>
+
+    <section class="pp-box" aria-labelledby="box-h">
+      <h2 id="box-h">What's in the box</h2>
+      {shown.length === 0 ? <p class="pp-none">{D4}</p> : (
+      <ul class="pp-cards">
+        {shown.map((p) => (
+        <li class="pp-card">
+          <p class="chip pp-type">{p.type}</p>
+          <h3>{p.name}</h3>
+          {p.lines.length ? <ul>{p.lines.map((l) => <li>{l}</li>)}</ul> : <p>{D4}</p>}
+        </li>))}
+      </ul>)}
+      {hidden > 0 && <p class="pp-more">More {shortSet(r)} products: contents not announced yet.</p>}
+    </section>
+
+    <section class="pp-sum" aria-labelledby="sum-h">
+      <h2 id="sum-h">About this set</h2>
+      <p>{copy.summary}</p>
+    </section>
+
+    {when.length > 0 && (
+    <section class="pp-events" aria-labelledby="ev-h">
+      <h2 id="ev-h">Game night</h2>
+      {when.map((e) => <p>{eventLine(e, today)}</p>)}
+      <p><a class="btn btn-secondary" href="/events/">See it on game night</a></p>
+    </section>)}
+
+    {others.length > 0 && (
+    <section class="pp-other" aria-labelledby="oth-h">
+      <h2 id="oth-h">Other releases</h2>
+      <ul class="rel-grid">
+        {others.map((o) => (
+        <li class="rel" data-theme={o.theme}>
+          {o.image ? (<picture>
+            <source type="image/webp" srcset={srcset(o.image)} sizes="(min-width: 960px) 17vw, calc(50vw - 2rem)" />
+            <img src={o.image.jpg} width={o.image.width} height={o.image.height} alt="" loading="lazy" />
+          </picture>) : (<div class="rel-art" aria-hidden="true"><span>{o.short ?? o.game}</span></div>)}
+          <div class="rel-body">
+            <p class="rel-game">{o.game}</p>
+            <h3><a class="rel-link" href={productHref(o.id)}>{o.name}</a></h3>
+            <p class="rel-date">{dateLine(o.releaseDate, today)}</p>
+            <span class="sticker" data-status>{releaseLabel(o.releaseDate, today)}</span>
+          </div>
+        </li>))}
+      </ul>
+    </section>)}
+
+    <footer class="pp-credit">
+      {credits.map((c) => <p>{c}</p>)}
+      <p>Source: <a href={r.sourceUrl} target="_blank" rel="noopener">{new URL(r.sourceUrl).hostname.replace(/^www\./, '')}<span class="vh"> (opens another site)</span></a></p>
+    </footer>
+  </div>
+  <div class="holdbar"><a class="btn" href={holdHref(id)}>{cta}<span class="vh">, {r.name}</span></a></div>
+  <script is:inline slot="scripts" type="module" src="/js/product-live.js"></script>
+</Base>

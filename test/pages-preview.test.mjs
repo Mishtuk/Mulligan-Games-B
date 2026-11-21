@@ -83,3 +83,15 @@ test('Pages build (D11C): no name= on any form field, so a no-JS GET submit carr
   const dist = path.join(root, 'dist');
   if (fs.existsSync(dist)) assert.match(read(path.join(dist, 'index.html')), /<input[^>]* name="/); // the normal build keeps names
 });
+
+test('Pages build: product pages exist and every href, src and srcset starts with the sub-path or https', () => {
+  const pages = html().filter((f) => /[\\/]shop[\\/][a-z0-9-]+[\\/]index\.html$/.test(f));
+  assert.ok(pages.length >= 5);
+  for (const f of pages) {
+    const s = read(f);
+    for (const m of s.matchAll(/\s(?:href|src)="([^"]+)"/g)) assert.match(m[1], /^(?:\/Mulligan-Games-B(?:\/|$)|https?:|#|mailto:|tel:)/, f + ' ' + m[1]);
+    for (const m of s.matchAll(/srcset="([^"]+)"/g)) for (const u of m[1].split(',')) assert.match(u.trim(), /^\/Mulligan-Games-B\//, f + ' ' + u);
+    assert.match(s, /<meta name="robots" content="noindex"/);
+  }
+  assert.match(read(path.join(out, 'sitemap.xml')), /\/shop\/mtg-star-trek\//);
+});

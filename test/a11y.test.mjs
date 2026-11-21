@@ -7,7 +7,7 @@ import { emailOk, plural } from '../public/js/form-check.js';
 
 const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist');
 const built = fs.existsSync(dist);
-const pages = ['index.html', 'events/index.html', 'shop/index.html', 'sell/index.html', 'visit/index.html', 'privacy/index.html', '404.html'];
+const pages = ['index.html', 'events/index.html', 'shop/index.html', 'sell/index.html', 'visit/index.html', 'privacy/index.html', '404.html', ...['mtg-star-trek','pokemon-delta-reign','riftbound-legacy','hololive-volume-vortex','one-piece-st37-38'].map((id) => `shop/${id}/index.html`)];
 const html = (p) => fs.readFileSync(path.join(dist, p), 'utf8');
 
 test('every page: one h1 and no skipped heading level', { skip: !built }, () => {

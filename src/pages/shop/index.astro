@@ -7,7 +7,7 @@ import all from '../../data/releases.json';
 import store from '../../data/store.json';
 import { zoned } from '../../lib/hours.js';
 import { shownReleases, dateLine, isOut } from '../../lib/releases.js';
-import { holdHref, holdLine } from '../../lib/shop.js';
+import { holdHref, holdLine, productHref } from '../../lib/shop.js';
 const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
 import '../../styles/shared.css';
 import '../../styles/sleeve.css';
@@ -106,7 +106,7 @@ const shelfTags = ["Magic · Commander staples", "Pokemon · One Piece · Riftbo
             <h2 id={`${id}-h`}>{h}</h2>
             <ul class="shop-grid" hidden={!list.length}>
               {list.map((r) => (
-                <Pocket href={holdHref(r.id)} title={r.name} variant={id === 'sealed' ? 'sealed' : 'preorder'} release={r.releaseDate}>
+                <Pocket href={productHref(r.id)} title={r.name} variant={id === 'sealed' ? 'sealed' : 'preorder'} release={r.releaseDate}>
                   <Fragment slot="art">{r.product ? (<div class="box-shot"><picture><source type="image/webp" srcset={srcset(r.product)} sizes="(min-width: 1000px) 15rem, 40vw" /><img src={r.product.jpg} width={r.product.width} height={r.product.height} alt={r.product.alt} loading="lazy" /></picture></div>) : (<div class={`box-sil${id === 'sealed' ? '' : ' is-pack'}`} aria-hidden="true"></div>)}</Fragment>
                   <p>{r.game}</p>
                   <Fragment slot="foot"><span class="mono" data-when>{dateLine(r.releaseDate, today)}</span><a class="btn hold" href={holdHref(r.id)} data-hold={r.id} data-name={r.name} data-game={r.gameId} data-line={holdLine(r, id === 'sealed')} data-line-out={holdLine(r, true)} data-line-soon={holdLine(r, false)}>Hold one for me<span class="vh">, {r.name}</span></a></Fragment>

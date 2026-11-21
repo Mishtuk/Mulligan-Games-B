@@ -3,7 +3,7 @@
 import all from '../data/releases.json';
 import store from '../data/store.json';
 import { zoned } from '../lib/hours.js';
-import { holdHref } from '../lib/shop.js';
+import { productHref } from '../lib/shop.js';
 import { shownReleases, releaseLabel, dateLine } from '../lib/releases.js';
 
 const today = zoned(store.timezone, process.env.SITE_NOW ? new Date(process.env.SITE_NOW) : undefined).date; // SITE_NOW: fixed-date build check
@@ -29,7 +29,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
           <h3>{r.ad ?? r.headline}</h3>
           {r.types && <p class="rel-name">{r.types}</p>}
           <p class="rel-date"><span data-status>{releaseLabel(r.releaseDate, today)}</span> · <span data-when>{dateLine(r.releaseDate, today)}</span></p>
-          <p><a class="btn" href={holdHref(r.id)}>{r.cta ?? (<>Hold a {r.unit ?? 'box'} for me<span class="vh">, {r.name}</span></>)}</a></p>
+          <p><a class="btn" href={productHref(r.id)}>{r.cta ?? (<>Hold a {r.unit ?? 'box'} for me<span class="vh">, {r.name}</span></>)}</a></p>
           {r.credit && <p class="rel-credit">{r.credit}</p>}
         </div>
         {r.product && (<picture class="rel-product">
@@ -58,7 +58,7 @@ const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
       </picture>) : (<div class="rel-art" aria-hidden="true"><span>One Piece</span></div>)}
       <div class="rel-body">
         <p class="rel-game">{r.game}</p>
-        <h3><a class="rel-link" href={holdHref(r.id)}>Hold a {r.unit ?? 'box'} for me<span class="vh">, {r.name}</span></a></h3>
+        <h3><a class="rel-link" href={productHref(r.id)}>Hold a {r.unit ?? 'box'} for me<span class="vh">, {r.name}</span></a></h3>
         <p class="rel-name">{r.name}</p>
         <p class="rel-date" data-when>{dateLine(r.releaseDate, today)}</p>
         <span class="sticker" data-status>{releaseLabel(r.releaseDate, today)}</span>

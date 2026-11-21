@@ -7,7 +7,8 @@ import { SITE_URL, LOGO } from '../src/lib/site.js';
 
 const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist');
 const skip = !fs.existsSync(dist);
-const PUBLIC = { index: '/', 'events/index': '/events/', 'shop/index': '/shop/', 'sell/index': '/sell/', 'visit/index': '/visit/', 'privacy/index': '/privacy/' };
+const PUBLIC = { index: '/', 'events/index': '/events/', 'shop/index': '/shop/', 'sell/index': '/sell/', 'visit/index': '/visit/', 'privacy/index': '/privacy/',
+  ...Object.fromEntries(['mtg-star-trek','pokemon-delta-reign','riftbound-legacy','hololive-volume-vortex','one-piece-st37-38'].map((id) => [`shop/${id}/index`, `/shop/${id}/`])) };
 const read = (f) => fs.readFileSync(path.join(dist, f), 'utf8');
 const tag = (h, re) => h.match(re)?.[1];
 

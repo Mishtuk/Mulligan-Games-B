@@ -4,12 +4,12 @@
 import all from '../data/releases.json';
 import store from '../data/store.json';
 import { zoned } from '../lib/hours.js';
+import { productHref } from '../lib/shop.js';
 import { shownReleases, releaseChip } from '../lib/releases.js';
 
 const today = zoned(store.timezone, process.env.SITE_NOW ? new Date(process.env.SITE_NOW) : undefined).date;
 const rows = shownReleases(all.filter((r) => /^Confirmed/.test(r.certainty)), today);
-// TODO(V3 coder): the product pages do not exist yet, so these point at the Shop hold line for the set. Replace `href` below with productHref(r.id) = /shop/<id>/ (src/lib/shop.js).
-const href = (r) => `/shop/#hold-${r.id}`;
+const href = (r) => productHref(r.id); // tabs (no-JS links) and CTA go to the product page /shop/<id>/
 const srcset = (i) => i.webp.map(([u, w]) => `${u} ${w}w`).join(', ');
 const SIZES = '(min-width: 960px) 560px, (min-width: 720px) 48vw, calc(100vw - 2rem)';
 ---
