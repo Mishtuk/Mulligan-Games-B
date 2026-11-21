@@ -12,7 +12,18 @@
     "tag": "Magic event",
     "ad": "Sign up for a championship",
     "date": null,
-    "fee": "$15 or $30 entry"
+    "fee": "$15 or $30 entry",
+    "image": {
+      "src480": "/media/instagram/ig-championships-480.webp",
+      "src960": "/media/instagram/ig-championships-960.webp",
+      "jpg": "/media/instagram/ig-championships-960.jpg",
+      "width": 960,
+      "height": 621,
+      "alt": "Mulligan Games flyer: Not-So-Pauper Championship on February 20 and Old-Heads Legacy Championship on March 14, 11am open, 12pm start, register on TopDeck.gg, 445 York Road, Warminster",
+      "credit": "Photo: @mulligangames on Instagram",
+      "postUrl": "https://www.instagram.com/p/Df7WioalHyN/",
+      "placeholder": true
+    }
   },
   {
     "id": "ig-series",
@@ -26,6 +37,17 @@
     "ad": "First Sunday is cEDH",
     "date": "Dec 6 · Jan 3 · Feb 7 · Mar 7",
     "fee": null,
-    "note": "Dates: confirm with the store."
+    "note": "Dates: confirm with the store.",
+    "image": {
+      "src480": "/media/instagram/ig-series-480.webp",
+      "src960": "/media/instagram/ig-series-960.webp",
+      "jpg": "/media/instagram/ig-series-960.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "Mulligan Games Sunday flyer: free play all day every day, cEDH starts at 2pm",
+      "credit": "Photo: @mulligangames on Instagram",
+      "postUrl": "https://www.instagram.com/p/DfxYEv5DfAx/",
+      "placeholder": true
+    }
   }
 ]

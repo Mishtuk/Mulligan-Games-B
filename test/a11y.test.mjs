@@ -55,8 +55,8 @@ test('form panels: success is role=status, error panels are focusable, the check
   }
 });
 
-test('motion switch is a named toggle on every page', { skip: !built }, () => {
-  for (const p of pages) assert.match(html(p), /<button type="button" id="motion" aria-pressed="true">Motion: on<\/button>/, p);
+test('no visible Motion switch on any page (the device setting is the switch)', { skip: !built }, () => {
+  for (const p of pages) assert.doesNotMatch(html(p), /id="motion"|Motion: o/, p);
 });
 
 test('form-check helpers', () => {

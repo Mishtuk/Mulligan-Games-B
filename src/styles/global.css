@@ -162,9 +162,8 @@ textarea { min-height: 6.5rem; resize: vertical; }
 .nav-desk a:hover { border-bottom-color: var(--soft-line); }
 .nav-desk a[aria-current], .menu-sheet a[aria-current] { border-bottom-color: var(--accent2); }
 .header-chip { display: none; }
-#motion, #menu-btn { min-height: var(--tap); padding: 0 .5rem; font: 700 var(--step--1)/1.1 var(--font-mono); color: var(--text); background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); cursor: pointer; }
+#menu-btn { min-height: var(--tap); padding: 0 .5rem; font: 700 var(--step--1)/1.1 var(--font-mono); color: var(--text); background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); cursor: pointer; }
 #menu-btn { background: var(--accent); }
-#motion:disabled { color: var(--muted); }
 .menu-sheet { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--card); border-bottom: var(--border-w) solid var(--line); box-shadow: var(--shadow-sm); }
 .menu-sheet[data-open] { display: block; }
 .menu-sheet a { min-height: 56px; padding: 0 var(--gutter); border-top: 1px solid var(--soft-line); border-left: 6px solid transparent; font-size: var(--step-1); }
@@ -172,7 +171,7 @@ textarea { min-height: 6.5rem; resize: vertical; }
 .chip-strip { display: flex; align-items: center; background: var(--bg); }
 .chip-strip .chip { border-color: transparent; background: transparent; padding-inline: 0; }
 .chip-strip .chip.is-open { background: transparent; }
-html:not(.js) #menu-btn, html:not(.js) #motion { display: none; }
+html:not(.js) #menu-btn { display: none; }
 html:not(.js) .menu-sheet { display: block; position: static; box-shadow: none; }
 /* Scripts off the menu links sit open in the header, so the header scrolls away instead of covering a third of the screen. */
 html:not(.js) { scroll-padding-top: var(--s-3); }
@@ -198,27 +197,28 @@ html:not(.js) .site-header { position: static; }
 .hours dd { margin: 0; text-align: right; white-space: nowrap; }
 .hours [aria-current="date"] { background: var(--card); border-left: 4px solid var(--accent2); }
 .hours [aria-current="date"] dt::after { content: " (today)"; font-weight: 400; }
-.foot-links { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-3); }
+.foot-links { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-3); max-width: 24rem; margin: 0; padding: 0; list-style: none; } /* even 48px rows with hairlines, like the Hours table beside it */
+.foot-links li { border-bottom: 1px solid var(--soft-line); }
+.foot-links li a { display: flex; width: 100%; }
 .foot-note { color: var(--muted); font-size: var(--step--1); margin-top: var(--s-1); }
 .foot-legal { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--soft-line); color: var(--muted); font-size: var(--step--1); max-width: none; }
 
 /* ---- motion: nothing moves on its own; only hover / press, 120ms ---- */
 @media (prefers-reduced-motion: no-preference) {
-  html:not([data-motion="off"]) .btn,
-  html:not([data-motion="off"]) .pocket { transition: translate 120ms ease-out, box-shadow 120ms ease-out; }
-  html:not([data-motion="off"]) .btn:hover { translate: -2px -2px; box-shadow: 8px 8px 0 var(--accent2); }
-  html:not([data-motion="off"]) .btn-ghost:hover { box-shadow: none; }
-  html:not([data-motion="off"]) .btn:active { translate: 4px 4px; box-shadow: 2px 2px 0 var(--accent2); }
-  html:not([data-motion="off"]) .btn-ghost:active { box-shadow: none; }
-  html:not([data-motion="off"]) .pocket:not(.pocket-closed):hover,
-  html:not([data-motion="off"]) .pocket:not(.pocket-closed):has(.pocket-title a:focus-visible) { translate: -2px -2px; box-shadow: 5px 5px 0 var(--accent2); }
+  html .btn,
+  html .pocket { transition: translate 120ms ease-out, box-shadow 120ms ease-out; }
+  html .btn:hover { translate: -2px -2px; box-shadow: 8px 8px 0 var(--accent2); }
+  html .btn-ghost:hover { box-shadow: none; }
+  html .btn:active { translate: 4px 4px; box-shadow: 2px 2px 0 var(--accent2); }
+  html .btn-ghost:active { box-shadow: none; }
+  html .pocket:not(.pocket-closed):hover,
+  html .pocket:not(.pocket-closed):has(.pocket-title a:focus-visible) { translate: -2px -2px; box-shadow: 5px 5px 0 var(--accent2); }
 
   /* cross-document view transition: crossfade only, header stays still */
   @view-transition { navigation: auto; }
-  html:not([data-motion="off"]) .site-header { view-transition-name: site-header; }
-  html:not([data-motion="off"])::view-transition-old(root), html:not([data-motion="off"])::view-transition-new(root) { animation-duration: 150ms; animation-timing-function: ease-out; }
-  html:not([data-motion="off"])::view-transition-group(site-header), html:not([data-motion="off"])::view-transition-old(site-header), html:not([data-motion="off"])::view-transition-new(site-header) { animation: none; }
+  html .site-header { view-transition-name: site-header; }
+  html::view-transition-old(root), html::view-transition-new(root) { animation-duration: 150ms; animation-timing-function: ease-out; }
+  html::view-transition-group(site-header), html::view-transition-old(site-header), html::view-transition-new(site-header) { animation: none; }
 }
-html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; }
 /* 600-831px: the Open now pill rides in the header row, not above the page */
 @container page (min-width: 37.5rem) and (max-width: 51.99rem) { .header-chip { display: inline-flex; white-space: nowrap; min-height: var(--tap); margin-left: auto; } .chip-strip { display: none; } .site-header-in { gap: var(--s-2); } }

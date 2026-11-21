@@ -89,12 +89,12 @@ Max 1200px, gutter 16px at 390, breakpoints 390 (check), 820 (nav to Menu), 1280
 
 ## 3. Motion (low; nothing moves on its own)
 - Moves: button press (translate 4px 4px, shadow 6px to 2px) and Pocket hover/focus lift (translate -2px -2px, shadow grows). Both 120ms ease-out, only on `:hover` / `:active` / `:focus-visible`.
-- Page change: cross-document view transition, crossfade 150ms (kit pattern); instant under Motion off.
-- Motion switch (kit `motion-switch`): in the header on every page, visible label "Motion: on/off", real `<button aria-pressed>`, 48px, default on unless `prefers-reduced-motion: reduce` (then off and the switch says off); choice in `localStorage` (try/catch), applied as `data-motion="off"` on `<html>`. All motion CSS is under `@media (prefers-reduced-motion: no-preference) { html:not([data-motion="off"]) ... }`.
+- Page change: cross-document view transition, crossfade 150ms (kit pattern); instant under the device's reduced-motion setting.
+- No visible Motion switch (owner, 2026-11-20: "get rid of that button altogether"). The device's `prefers-reduced-motion` is the only switch; all motion CSS is under `@media (prefers-reduced-motion: no-preference)`; no localStorage choice (any old `motion` value is cleared).
 - Banned: foil shimmer, glow, pulse, parallax, autoplay carousel or video, spinning dice, counters that animate, flash/strobe, sound. Nothing flashes over 3/s.
 
 ## 4. Components (states: default, hover, focus, pressed, disabled, empty, loading, error where relevant)
-**Header.** Sticky, bg `--bg`, 3px bottom border. Left: logo as link to Home (`<img alt="Mulligan Games, home">`, 340x120 source shown 160px wide at 390, 170px at 1280, explicit width/height). At >=820: nav Events, Shop, Sell to us, Visit (links, 48px, current page = 3px underline in `--accent2` plus `aria-current`), then the Open chip and the Motion switch. Below 820: logo, Motion switch, and a "Menu" button (48px, `aria-expanded`) opening a full-width bordered sheet (all five destinations incl. Home, 56px rows, Events/Shop/Visit first, Esc and focus return, no scroll lock trap). Under the header at 390: a one-line strip with the Open chip. Skip link first. **Open chip:** computed in the browser from `store.json` hours in America/New_York: "Open now, until 10pm" (sky fill, ink text) or "Opens Wed 2pm" (white, ink border); with JS off shows "Hours" linking to Visit. Chip text and an icon, never colour alone.
+**Header.** Sticky, bg `--bg`, 3px bottom border. Left: logo as link to Home (`<img alt="Mulligan Games, home">`, 340x120 source shown 160px wide at 390, 170px at 1280, explicit width/height). At >=820: nav Events, Shop, Sell to us, Visit (links, 48px, current page = 3px underline in `--accent2` plus `aria-current`), then the Open chip. Below 820: logo and a "Menu" button (48px, `aria-expanded`) opening a full-width bordered sheet (all five destinations incl. Home, 56px rows, Events/Shop/Visit first, Esc and focus return, no scroll lock trap). Under the header at 390: a one-line strip with the Open chip. Skip link first. **Open chip:** computed in the browser from `store.json` hours in America/New_York: "Open now, until 10pm" (sky fill, ink text) or "Opens Wed 2pm" (white, ink border); with JS off shows "Hours" linking to Visit. Chip text and an icon, never colour alone.
 **Footer.** `--bg2` with 3px top border (no stripe). Three blocks (stack at 390): Visit us (address + Open in Maps); Hours (today marked) with one line "Hours and nights can change. Confirm with the store." (on Visit the Hours block is one link, "Opening hours are above", and the Visit us column drops); Find us online (Instagram, X, Patreon, TopDeck, Wizards locator, Privacy in two 48px columns; Discord, phone, email only when set). Legal line: "Not affiliated with Wizards of the Coast, The Pokémon Company, Bandai or any publisher. Game names belong to their owners."
 **Buttons.** `.btn` primary: orange fill, ink text, 3px ink border, radius 5, `--shadow` 6px purple, min-height 48. Secondary: `--accent2` fill, white text. Ghost: transparent, ink border. Hover: lift (motion on). Pressed: translate 4px, shadow 2px (motion on); with motion off pressed = shadow removed and bg darken via border only. Disabled: `--bg3`, muted text, no shadow, `aria-disabled`. Loading: label becomes "Sending..." and disabled.
 **Chips.** 2px ink border, 4px radius, 14-16px text, filter chips are links/buttons 48px high with `aria-pressed`/`aria-current`; selected = sky fill + check mark. Status chips: "Tonight", "Today", "Full", "Waitlist" with word + border. Research words ("Likely", "Unverified") never appear on a public page (`test/no-jargon.test.mjs`).
@@ -115,7 +115,7 @@ Titles: "<Page> | Mulligan Games, Warminster PA". Every page: header, `<main id=
 Purpose: what's on this week, find a card, when to come in. Source: `events.json`, `store.json`.
 ```
 390                      1280
-[logo]   [Motion][Menu]  [logo] Events Shop Sell Visit [Open] [Motion]
+[logo]        [Menu]     [logo] Events Shop Sell Visit [Open]
 [Open now, until 10pm]   +-----------------------+  +------------+
 +----------------------+ | Pull up a chair.      |  | binder page |
 | TONIGHT   Fri        | | Singles, sealed,      |  | o [Wed][Thu]|
@@ -180,11 +180,11 @@ Needed from owner: storefront, play room, singles case, a shot of tables during 
 | Misty Mountain / Nutmeg / Cardsurfer | events with price, table counts, sell page | their copy |
 
 ## 10. Checks the build must pass
-- Screenshots 390x844 and 1280x800, Motion on and off (switch and reduced-motion), look at them; no horizontal scroll at 320, 390, 768, 1024, 1280, 1600.
+- Screenshots 390x844 and 1280x800, with and without reduced-motion emulated, look at them; no horizontal scroll at 320, 390, 768, 1024, 1280, 1600.
 - 200% text zoom: no clipping, pockets drop to 1 column, tables stack.
 - `tools/check-site.mjs` on `/`, `/events/`, `/shop/`, `/sell/`, `/visit/`, 404, privacy: no duplicate ids, 48px targets, one h1, labels, alt, a skip link.
 - Contrast: a test asserts every pair in section 2 (>=4.5 text, >=3 UI); banned pairs not used.
-- `document.getAnimations().length` is 0 at rest; Motion off removes hover lift and transition; nothing flashes.
+- `document.getAnimations().length` is 0 at rest; reduced motion removes hover lift and transition; nothing flashes.
 - Forms: valid, empty, hostile input, honeypot, 303 redirect; output escaped.
 - Home: a pocket visible inside the first 844px at 390; no "The"+word headings; footer non-affiliation line present; no placeholder data shown as fact. No stripe, no ASK stickers.
 - Budget (`test/budget.test.mjs`, D7-D9): every page <= 143,000 raw and 22,700 gzip bytes of HTML + CSS + JS (images and fonts aside); Home 390 <= 5,600px tall. Never trim the store's own words to fit (D8): trim code.

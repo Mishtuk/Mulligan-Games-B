@@ -3,9 +3,9 @@
 // Usage: node tools/check-site.mjs <base-url> [/ /about.html ...] [--port 9222] [--chrome path]
 //   Without --port it starts a headless browser itself (CHROME env or --chrome, else Chrome, then Edge).
 //   With --port it attaches to one you started: chrome --headless=new --remote-debugging-port=9222 --user-data-dir=%TEMP%\chk about:blank
-// Checks per page: no sideways overflow at 320-1600; getAnimations() 0 with Motion off and with reduced motion emulated;
+// Checks per page: no sideways overflow at 320-1600; getAnimations() 0 with reduced motion emulated;
 // no duplicate ids; no console errors or CSP violations; Tab reaches every control with a visible ring (390 and 1280);
-// rendered-ground contrast (4.5:1, 3:1 at 24px+) and `.ln` width, scrolled down the whole page (390 and 1280, Motion off).
+// rendered-ground contrast (4.5:1, 3:1 at 24px+) and `.ln` width, scrolled down the whole page (390 and 1280).
 // Project copy (Mulligan-Games-B): text under the sticky header is skipped (loop 29: the 'What we play' 2.45 flake was the header's orange Menu button passing over the heading's corner at one scroll step, not a low-contrast ground; measured: the band is flat #5B2A86 at every scroll offset, 399 samples at 390 and 1280); radio groups count as one Tab stop; the deliberate 404 page status is not a console error.
 // Exit 0 = clean, 1 = failures (listed), 2 = could not run.
 import { spawn } from 'node:child_process';
@@ -60,11 +60,11 @@ try {
   for (const d of ['Page', 'Runtime', 'Log']) await cdp(d + '.enable');
   await cdp('Emulation.setFocusEmulationEnabled', { enabled: true });
   let initId = null;
-  // motion: 'off' (switch stored off), 'on' (switch cleared), 'reduce' (switch cleared + device reduced-motion emulated)
+  // motion: 'on' = no-preference; 'off' or 'reduce' = device reduced-motion emulated (no site switch)
   async function load(path, w, motion) {
     if (initId) await cdp('Page.removeScriptToEvaluateOnNewDocument', { identifier: initId });
-    ({ identifier: initId } = await cdp('Page.addScriptToEvaluateOnNewDocument', { source: `try{${motion === 'off' ? "localStorage.setItem('motion','off')" : "localStorage.removeItem('motion')"}}catch{}` }));
-    await cdp('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: motion === 'reduce' ? 'reduce' : 'no-preference' }] });
+    ({ identifier: initId } = await cdp('Page.addScriptToEvaluateOnNewDocument', { source: `try{localStorage.removeItem('motion')}catch{}` }));
+    await cdp('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: motion !== 'on' ? 'reduce' : 'no-preference' }] });
     await cdp('Emulation.setDeviceMetricsOverride', { width: w, height: 900, deviceScaleFactor: 1, mobile: false });
     const done = new Promise((r) => { loaded = r; setTimeout(r, 15000); });
     await cdp('Page.navigate', { url: base + path }); await done; loaded = null;
@@ -75,17 +75,17 @@ try {
   for (const path of pages) {
     const bad = (what, msg) => { fails.push(`${path}  ${what}: ${msg}`); };
     errs = new Set();
-    // 1. overflow, 320-1600, Motion off
+    // 1. overflow, 320-1600
     for (const w of [320, 390, 768, 1024, 1280, 1600]) {
       await load(path, w, 'off');
       const o = await ev(`(()=>{const d=document.documentElement,sw=Math.max(d.scrollWidth,document.body.scrollWidth),wide=[...document.querySelectorAll('body *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1).slice(0,3).map(e=>e.tagName.toLowerCase()+(e.className&&typeof e.className=='string'?'.'+e.className.trim().split(/\\s+/)[0]:''));return {x:sw-innerWidth,wide}})()`);
       if (o.x > 0) bad(`overflow @${w}`, `page is ${o.x}px wider than the window` + (o.wide.length ? ` (reaches past the edge: ${o.wide.join(', ')})` : ''));
     }
-    // 2. animations: Motion off, then reduced motion emulated
-    for (const mo of ['off', 'reduce']) {
+    // 2. animations: reduced motion emulated
+    for (const mo of ['reduce']) {
       await load(path, 1280, mo); const n = new Set();
       await scrollAll(async () => (await ev(`document.getAnimations().map(a=>a.animationName||a.transitionProperty||a.constructor.name)`)).forEach((x) => n.add(x)));
-      if (n.size) bad(`animations (${mo === 'off' ? 'Motion off' : 'reduced motion'})`, `getAnimations() not empty: ${[...n].join(', ')}`);
+      if (n.size) bad('animations (reduced motion)', `getAnimations() not empty: ${[...n].join(', ')}`);
     }
     // 3. duplicate ids
     await load(path, 1280, 'off');
@@ -107,7 +107,7 @@ try {
       if (missed.length) bad(`keyboard @${w}`, `Tab never reached: ${missed.slice(0, 8).join('; ')}${missed.length > 8 ? ` (+${missed.length - 8} more)` : ''}`);
       if (noRing.size) bad(`focus ring @${w}`, `no visible ring on: ${[...noRing].slice(0, 8).join('; ')}`);
     }
-    // 5. rendered-ground contrast + headline overflow, scrolled down the whole page, Motion off
+    // 5. rendered-ground contrast + headline overflow, scrolled down the whole page
     for (const w of [390, 1280]) {
       await load(path, w, 'off'); const found = new Set();
       await scrollAll(async () => {

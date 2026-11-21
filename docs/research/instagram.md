@@ -20,3 +20,9 @@ No preorder or prerelease posts in the last 6 weeks. No sale beyond anniversary 
 - Instagram profile captions blocked; embeds worked. Headless Chrome not needed.
 
 Embed usable: all post URLs in instagram-draft.json. Pricing is public on TopDeck/locator; CONTEXT rule 5 says no pricing in the public repo, so owner should OK fees before publishing.
+
+## Placeholder thumbnails (2026-11-20, owner override of rule 13)
+Source: each post's public embed page `https://www.instagram.com/p/<code>/embed/` (fetched with curl; image URL on the scontent CDN). Originals in downloads/media/instagram (local only); processed WebP 480/960 + JPEG 960 in public/media/instagram, each under 120 KB. Recorded as `image` objects in src/data/instagram.json, all `placeholder: true`. **Placeholder: confirm permission with the store before launch.**
+- ig-championships: https://www.instagram.com/p/Df7WioalHyN/ . Green flyer, 960x621 (about 3:2). Shows Pauper Championship Feb 20, Legacy Championship Mar 14, 11am open / 12pm start, TopDeck QR codes, 445 York Road. No people. The flyer gives the dates (instagram.json has date null): confirm with the store.
+- ig-series (cEDH): the post DfkGcTCjf6u is a photo of a person holding the championship belt (face identifiable), so SKIPPED. Used instead https://www.instagram.com/p/DfxYEv5DfAx/ (Nov 15), red "Sunday @ Mulligan Games, Free Play All Day, cEDH 2pm" flyer, 960x540 (16:9), card art cutouts only, no customers.
+- Not used: DefCT2iocj4 (4 Year Anniversary flyer, Oct 18, past event; no people; available if wanted).

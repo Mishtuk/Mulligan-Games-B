@@ -1,9 +1,6 @@
-// Runs in <head> before first paint: sets the Motion state on <html> and marks that JavaScript is available.
+// Runs in <head> before first paint: marks that JavaScript is available.
+// Motion follows the device setting (prefers-reduced-motion) in CSS alone; there is no site switch.
 (() => {
-  const root = document.documentElement;
-  root.classList.add('js');
-  let saved = null;
-  try { saved = localStorage.getItem('motion'); } catch { /* blocked storage: follow the device */ }
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  root.dataset.motion = reduce || saved === 'off' ? 'off' : 'on';
+  document.documentElement.classList.add('js');
+  try { localStorage.removeItem('motion'); } catch { /* blocked storage: nothing to clear */ }
 })();

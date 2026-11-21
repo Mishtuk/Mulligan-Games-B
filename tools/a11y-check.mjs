@@ -1,7 +1,7 @@
 // npm run a11y [baseUrl]: accessibility and motion checks in real Chrome (CDP). Needs `npm run build` first.
 // Without a URL it serves dist/ itself on port 4399. Checks: 200% text zoom on all paths at 1280/390/320 (no sideways
 // scroll, no clipped text), tilted text stays within 3deg and nothing sits on top of text, drawn shapes are aria-hidden,
-// body text >= .8rem, menu sheet (Enter, Esc returns focus, focus out and outside click close), motion off => 0 animations and no transitions, forms: empty submit -> focused error summary, ?sent= -> success panel, and with scripts OFF every form posted for real (good and bad email) plus every :target result panel (success, waitlist, error) visible and in view at 100% and 200% text.
+// body text >= .8rem, menu sheet (Enter, Esc returns focus, focus out and outside click close), reduced motion emulated => 0 animations and no transitions, forms: empty submit -> focused error summary, ?sent= -> success panel, and with scripts OFF every form posted for real (good and bad email) plus every :target result panel (success, waitlist, error) visible and in view at 100% and 200% text.
 import { spawn } from 'node:child_process';
 import { launch, sleep } from './cdp.mjs';
 
@@ -87,10 +87,10 @@ try {
     }
     await t.close();
   }
-  // 1d. scrim/panel contrast behind text in the Home ads and Instagram cards (4.5:1, 3:1 at 24px+), 390 and 1280, Motion off
+  // 1d. scrim/panel contrast behind text in the Home ads and Instagram cards (4.5:1, 3:1 at 24px+), 390 and 1280
   for (const w of [390, 1280]) {
     const t = await b.page({ w, h: 800 }); await t.go(base + '/');
-    await t.ev(`document.documentElement.dataset.motion = 'off'; document.querySelectorAll('.rel img').forEach((i) => (i.loading = 'eager')); document.querySelectorAll('.rel *').forEach((e) => { e.style.setProperty('color', 'transparent', 'important'); e.style.setProperty('text-shadow', 'none', 'important'); })`); await until(t, `[...document.querySelectorAll('.rel img')].every((i) => i.complete)`); await settle(t);
+    await t.ev(`document.querySelectorAll('.rel img').forEach((i) => (i.loading = 'eager')); document.querySelectorAll('.rel *').forEach((e) => { e.style.setProperty('color', 'transparent', 'important'); e.style.setProperty('text-shadow', 'none', 'important'); })`); await until(t, `[...document.querySelectorAll('.rel img')].every((i) => i.complete)`); await settle(t);
     const h = await t.ev(`document.documentElement.scrollHeight`);
     await t.cdp('Emulation.setDeviceMetricsOverride', { width: w, height: Math.min(h, 16000), deviceScaleFactor: 1, mobile: w < 600 }); await settle(t);
     await t.ev(`document.documentElement.scrollTop = 0`);
@@ -172,18 +172,12 @@ try {
       await t.close();
     }
   }
-  // 3. motion: off => no animations, no transitions, on every path; reduced motion starts off with the switch disabled
+  // 3. reduced motion emulated => no animations, no transitions, on every path (there is no site switch; the device setting is the switch)
   const motionProbe = `(() => { let tr = 0; for (const e of document.querySelectorAll('body *')) { const d = getComputedStyle(e).transitionDuration; if (d.split(',').some((x) => parseFloat(x) > 0)) tr++; }
-    const m = document.getElementById('motion'); return { dm: document.documentElement.dataset.motion, pressed: m.getAttribute('aria-pressed'), disabled: m.disabled, anims: document.getAnimations().length, tr }; })()`;
+    return { switchPresent: !!document.getElementById('motion'), anims: document.getAnimations().length, tr }; })()`;
   {
-    const t = await b.page({ w: 1280, h: 800 }); await t.go(base + '/');
-    let s = await t.ev(motionProbe); ok(s.dm === 'on' && s.pressed === 'true', 'motion: default on ' + JSON.stringify(s));
-    await t.ev(`document.getElementById('motion').click()`); await until(t, `document.documentElement.dataset.motion === 'off'`, 5000);
-    for (const p of PATHS) { if (p !== '/') await t.go(base + p); s = await t.ev(motionProbe); ok(s.dm === 'off' && s.pressed === 'false' && s.anims === 0 && s.tr === 0, `motion off ${p}: ${JSON.stringify(s)}`); }
-    await t.go(base + '/'); await t.ev(`document.getElementById('motion').focus()`); await t.enter(); s = await t.ev(motionProbe); ok(s.dm === 'on', 'motion: Enter toggles back on');
-    await t.close();
     const r = await b.page({ w: 1280, h: 800, reduce: true });
-    for (const p of PATHS) { await r.go(base + p); s = await r.ev(motionProbe); ok(s.dm === 'off' && s.anims === 0 && s.tr === 0 && s.disabled, `reduced motion ${p}: ${JSON.stringify(s)}`); }
+    for (const p of PATHS) { await r.go(base + p); const s = await r.ev(motionProbe); ok(!s.switchPresent && s.anims === 0 && s.tr === 0, `reduced motion ${p}: ${JSON.stringify(s)}`); }
     await r.close();
   }
   // 4. forms: an empty submit shows a focused error summary (no script error); ?sent= shows the focused success panel

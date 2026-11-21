@@ -82,7 +82,6 @@ const hoursData = JSON.stringify({ tz: store.timezone, hours: store.hours });
           {navDesk.map(([label, href]) => <a href={href} aria-current={current(href) ? 'page' : undefined}>{label}</a>)}
         </nav>
         <OpenChip class="header-chip" />
-        <button type="button" id="motion" aria-pressed="true">Motion: on</button>
         <button type="button" id="menu-btn" aria-expanded="false" aria-controls="menu-sheet">Menu</button>
       </div>
       <nav class="menu-sheet" id="menu-sheet" aria-label="Menu">
